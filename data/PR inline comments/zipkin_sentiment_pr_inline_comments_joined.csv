@@ -1,0 +1,862 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+2093128,0,"Yeah, you're right.  I didn't really understand Futures when I wrote that.""",2012-11-11 09:20:07,mosesn,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/201#discussion_r2093128,2012-11-11T20:20:07Z,2012-11-18T04:43:17Z,mosesn,CONTRIBUTOR,zipkin-redis/src/main/scala/com/twitter/zipkin/storage/redis/RedisListMap.scala,,,,,1,"@@ -0,0 +1,84 @@
++/*
++ * Copyright 2012 Tumblr Inc.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the ""License"");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an ""AS IS"" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.twitter.zipkin.storage.redis
++
++import com.twitter.conversions.time.longToTimeableNumber
++import com.twitter.finagle.redis.Client
++import com.twitter.util.{Duration, Future}
++import org.jboss.netty.buffer.ChannelBuffer
++
++/**
++ * RedisListMap is a map from strings to lists.
++ * @database the redis client to use
++ * @prefix the namespace of the list
++ * @defaultTTL the timeout on the list
++ */
++class RedisListMap(database: Client, prefix: String, defaultTTL: Option[Duration]) {
++
++  private[this] def preface(key: String): String = ""%s:%s"".format(prefix, key)
++
++  /**
++   * Gets every item in the list
++   */
++  def get(key: String): Future[Seq[ChannelBuffer]] =
++    database.lRange(preface(key), 0, -1)
++
++  /**
++   * Obliterates the list stored at this key.
++   */
++  def delete(key: String): Future[Long] = database.del(Seq(preface(key))) map (_.longValue)
++
++  /**
++   * Removes items from the list, not atomic.
++   * @key which list to retrieve
++   * @members the items to be removed
++   */
++  def remove(key: String, members: Seq[ChannelBuffer]): Future[Unit] = {
++    Future.join(members map { buffer =>
++      database.lRem(preface(key), 1, buffer)
++    })
++  }
++
++  /**
++   * Returns whether following key refers to a data structure
++   */
++  def exists(key: String): Future[Boolean] = database.exists(preface(key)) map (_.booleanValue)
++
++  /**
++   * Inserts an item into a list
++   */
++  def put(key: String, value: ChannelBuffer): Future[Unit] = {
++    val string = preface(key)
++    Future.join(Seq(database.lPush(string, List(value)),
++    defaultTTL match {
++      case Some(ttl) => database.expire(string, ttl.inSeconds)
++      case None => Future.Unit
++    }))","Yeah, you're right.  I didn't really understand Futures when I wrote that.
+",ce7be247e2b91802a22529c2b6943519c9b93e8f
+1055448,0,"Can this use the preprocessing util?""",2012-06-26 09:49:46,johanoskarsson,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/47#discussion_r1055448,2012-06-26T21:49:46Z,2012-06-28T20:06:34Z,johanoskarsson,CONTRIBUTOR,zipkin-hadoop/src/main/scala/com/twitter/zipkin/hadoop/MemcacheRequest.scala,,,,,1,"@@ -0,0 +1,78 @@
++/*
++ * Copyright 2012 Twitter Inc.
++ *
++ * Licensed under the Apache License, Version 2.0 (the ""License"");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an ""AS IS"" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.twitter.zipkin.hadoop
++
++import com.twitter.scalding._
++import sources.SpanSource
++import java.nio.ByteBuffer
++import java.util.Arrays
++
++//import com.twitter.zipkin.util.Util
++import com.twitter.zipkin.gen.{BinaryAnnotation, Span, Constants, Annotation}
++import sources.Util
++
++/**
++ * Find out how often each service does memcache accesses
++ */
++class MemcacheRequest(args : Args) extends Job(args) with DefaultDateRangeJob {
++
++  val preprocessed = SpanSource()","Can this use the preprocessing util?
+",0143a18c5d50f45ff37da10637cb7703c09f4d5a
+5386019,0,"What part of the code does this comment refer to?  Seems like above, but maybe below.""",2013-07-24 10:24:41,bmdhacks,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/272#discussion_r5386019,2013-07-24T22:24:41Z,2013-07-25T23:50:59Z,bmdhacks,CONTRIBUTOR,zipkin-anormdb/src/main/scala/com/twitter/zipkin/storage.anormdb/DB.scala,,,,,1,"@@ -0,0 +1,188 @@
++/*
++ * Copyright 2013 Twitter Inc.
++ *
++ * Licensed under the Apache License, Version 2.0 (the ""License"");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an ""AS IS"" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.twitter.zipkin.storage.anormdb
++
++import anorm._
++import anorm.SqlParser._
++import java.sql.{Blob, Connection, DriverManager}
++
++/**
++ * The companion object is mainly to make installation easier.
++ */
++object DB {
++  def apply() = {
++    new DB()
++  }
++}
++/**
++ * Provides SQL database access via ANORM from the Play framework.
++ *
++ * See http://www.playframework.com/documentation/2.1.1/ScalaAnorm for
++ * documentation on using ANORM.
++ */
++case class DB(dbconfig: DBConfig = new DBConfig()) {
++
++  // Load the driver
++  Class.forName(dbconfig.driver)
++
++  /**
++   * Gets a java.sql.Connection to the SQL database.
++   *
++   * Example usage:
++   *
++   * implicit val conn: Connection = DB.getConnection()
++   * // Do database updates
++   * conn.close()
++   *
++   * This is a useful method if you need to hold a connection open for several
++   * transactions that can happen at different times, e.g. in another class
++   * that interacts with the database in different methods. If you just need a
++   * connection open for a single block of code, see withConnection().
++   */
++  def getConnection() = {
++    DriverManager.getConnection(dbconfig.location)
++  }
++
++  /**
++   * Execute transactions on a SQL database.
++   *
++   * A database connection is created when this method is invoked and
++   * automatically destroyed when it is completed.
++   *
++   * Example usage:
++   *
++   * DB.withConnection { implicit conn =>
++   *   // Do database updates
++   * }
++   *
++   * This is useful when you only need a connection open for a single block of
++   * code. Because it creates a new connection, if you need to make a lot of
++   * updates at different times or locations, it may be better to hold open a
++   * single connection using getConnection() as long as you remember to
++   * manually close it.
++   */
++  def withConnection[A](block: Connection => A) : A = {
++    val conn = this.getConnection()
++    try {
++      block(conn)
++    }
++    finally {
++      conn.close()
++    }
++  }
++
++  /**
++   * Set up the database tables.
++   *
++   * Ideally this should only be run once.
++   *
++   * Takes a boolean indicating whether to keep the connection open after the
++   * installation completes. Pass true for in-memory databases or they will
++   * disappear immediately.
++   */
++  def install(keepAlive: Boolean = false): Connection = {
++    implicit val con = this.getConnection()
++    SQL(
++      """"""CREATE TABLE IF NOT EXISTS zipkin_spans (
++        |  span_id BIGINT NOT NULL,
++        |  parent_id BIGINT,
++        |  trace_id BIGINT NOT NULL,
++        |  span_name VARCHAR(255) NOT NULL,
++        |  debug SMALLINT NOT NULL,
++        |  duration BIGINT,
++        |  created_ts BIGINT
++        |)
++      """""".stripMargin).execute()
++    //SQL(""CREATE INDEX trace_id ON zipkin_spans (trace_id)"").execute()
++    SQL(
++      """"""CREATE TABLE IF NOT EXISTS zipkin_annotations (
++        |  span_id BIGINT NOT NULL,
++        |  trace_id BIGINT NOT NULL,
++        |  span_name VARCHAR(255) NOT NULL,
++        |  service_name VARCHAR(255) NOT NULL,
++        |  value TEXT,
++        |  ipv4 INT,
++        |  port INT,
++        |  a_timestamp BIGINT NOT NULL,
++        |  duration BIGINT
++        |)
++      """""".stripMargin).execute()
++    //SQL(""CREATE INDEX trace_id ON zipkin_annotations (trace_id)"").execute()
++    SQL(
++      """"""CREATE TABLE IF NOT EXISTS zipkin_binary_annotations (
++        |  span_id BIGINT NOT NULL,
++        |  trace_id BIGINT NOT NULL,
++        |  span_name VARCHAR(255) NOT NULL,
++        |  service_name VARCHAR(255) NOT NULL,
++        |  key VARCHAR(255) NOT NULL,
++        |  value %s,
++        |  annotation_type_value INT NOT NULL,
++        |  ipv4 INT,
++        |  port INT
++        |)
++      """""".stripMargin.format(this.getBlobType)).execute()
++    //SQL(""CREATE INDEX trace_id ON zipkin_binary_annotations (trace_id)"").execute()
++    if (!keepAlive) con.close() else ()
++    con
++  }
++
++  // Get the column the current database type uses for BLOBs.
++  private def getBlobType = dbconfig.description match {
++    case ""PostgreSQL"" => ""BYTEA"" /* As usual PostgreSQL has to be different */
++    case ""MySQL"" => ""MEDIUMBLOB"" /* MySQL has length limits, in this case 16MB */
++    case _ => ""BLOB""
++  }
++
++  // Provide Anorm with the ability to handle BLOBs.","What part of the code does this comment refer to?  Seems like above, but maybe below.
+",6971f5ab8191d8a46f4681119e9c052017ca0d5d
+1086705,0,"Is it possible to use the Thrift isSetParent_id (or whatever it is called) here instead? As mentioned the id !=0 is fine as a hack, but if possible we should figure out the correct solution.""",2012-07-02 06:49:13,johanoskarsson,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/58#discussion_r1086705,2012-07-02T18:49:13Z,2012-07-02T20:24:54Z,johanoskarsson,CONTRIBUTOR,zipkin-hadoop/src/main/scala/com/twitter/zipkin/hadoop/ExpensiveEndpoints.scala,,,,,1,"@@ -0,0 +1,64 @@
++/*
++* Copyright 2012 Twitter Inc.
++*
++* Licensed under the Apache License, Version 2.0 (the ""License"");
++* you may not use this file except in compliance with the License.
++* You may obtain a copy of the License at
++*
++*      http://www.apache.org/licenses/LICENSE-2.0
++*
++* Unless required by applicable law or agreed to in writing, software
++* distributed under the License is distributed on an ""AS IS"" BASIS,
++* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++* See the License for the specific language governing permissions and
++* limitations under the License.
++*/
++
++package com.twitter.zipkin.hadoop
++
++import com.twitter.zipkin.gen.{Constants, SpanServiceName, Annotation}
++import cascading.pipe.joiner.LeftJoin
++import com.twitter.scalding.{Tsv, DefaultDateRangeJob, Job, Args}
++import sources.{PrepTsvSource, Util, PreprocessedSpanSource}
++
++/**
++ * Per service call (i.e. pair of services), finds the average run time (in microseconds) of that service call
++ */
++class ExpensiveEndpoints(args : Args) extends Job(args) with DefaultDateRangeJob {
++
++  val spanInfo = PreprocessedSpanSource()
++    .read
++    .mapTo(0 -> ('id, 'parent_id, 'cService, 'service, 'annotations))
++      { s: SpanServiceName => (s.id, s.parent_id, s.client_service, s.service_name, s.annotations.toList) }
++    .flatMap('annotations -> 'duration) {
++      al : List[Annotation] => {
++        var clientSend : Option[Annotation] = None
++        var clientReceive : Option[Annotation] = None
++        var serverReceive : Option[Annotation] = None
++        var serverSend : Option[Annotation] = None
++        al.foreach( {
++          a : Annotation => {
++            if (a.getHost != null) {
++              if (Constants.CLIENT_SEND.equals(a.value)) clientSend = Some(a)
++              else if (Constants.CLIENT_RECV.equals(a.value)) clientReceive = Some(a)
++              else if (Constants.SERVER_RECV.equals(a.value)) serverReceive = Some(a)
++              else if (Constants.SERVER_SEND.equals(a.value)) serverSend = Some(a)
++            }
++          }
++        })
++        val clientDuration = for (cs <- clientSend; cr <- clientReceive) yield (cr.timestamp - cs.timestamp)
++        val serverDuration = for (sr <- serverReceive; ss <- serverSend) yield (ss.timestamp - sr.timestamp)
++          // to deal with the case where there is no server duration
++        if (clientDuration == None) serverDuration else clientDuration
++      }
++    }
++
++  val idName = PrepTsvSource()
++    .read
++  /* Join with the original on parent ID to get the parent's service name */
++  val spanInfoWithParent = spanInfo
++    .filter('parent_id){ id : Long => id != 0 }","Is it possible to use the Thrift isSetParent_id (or whatever it is called) here instead? As mentioned the id !=0 is fine as a hack, but if possible we should figure out the correct solution.
+",da0963847ad396c260115f586315af97e199d57d
+5326553,0,"The thought was that this class has nothing specific to zipkin in it.  It's really just an async facade on the hbase client.""",2013-07-22 06:31:10,elliottneilclark,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/274#discussion_r5326553,2013-07-22T18:31:10Z,2013-08-02T20:55:57Z,elliottneilclark,CONTRIBUTOR,zipkin-hbase/src/main/scala/com/twitter/hbase/HBaseTable.scala,,,,,1,"@@ -0,0 +1,125 @@
++package com.twitter.hbase","The thought was that this class has nothing specific to zipkin in it.  It's really just an async facade on the hbase client.
+",68abe2acf2066ceb32ce0c4ff517048fa08dc61e
+5347892,0,"never mind, I thought this was a network call.""",2013-07-23 03:30:09,mosesn,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/274#discussion_r5347892,2013-07-23T15:30:09Z,2013-08-02T20:55:57Z,mosesn,CONTRIBUTOR,zipkin-hbase/src/main/scala/com/twitter/zipkin/storage/hbase/mapping/Mapper.scala,,,,,1,"@@ -0,0 +1,162 @@
++package com.twitter.zipkin.storage.hbase.mapping
++
++import com.twitter.hbase.utils.{Retry, ThreadProvider}
++import com.twitter.logging.Logger
++import com.twitter.util.{Await, ExecutorServiceFuturePool, Future}
++import com.twitter.zipkin.hbase.TableLayouts
++import com.twitter.zipkin.storage.hbase.utils.{HBaseTable, IDGenerator, ByteBufferUtil}
++import java.nio.ByteBuffer
++import java.util.concurrent.ConcurrentHashMap
++import org.apache.hadoop.hbase.client._
++import org.apache.hadoop.hbase.util.Bytes
++
++trait Mapper[T <: Mapping] {
++  val log = Logger.get(getClass.getName)
++
++  val mappingTable: HBaseTable
++  val qualBytes: Array[Byte]
++  val idGen: IDGenerator
++  val parentId: Long
++  val typeBytes: Array[Byte]
++
++
++  private lazy val cache = new ConcurrentHashMap[ByteBuffer, T]()
++  private lazy val pool = new ExecutorServiceFuturePool(ThreadProvider.defaultExecutor)
++  private val emptyBytes: Array[Byte] = Array[Byte]()
++
++  /**
++   * All implementations need to provide their own implementation that creates
++   * whichever type of mapping is being generated.
++   *
++   * @param id The id of the mapping.  A positive Long.
++   * @param value The value that is being mapped to an id.
++   * @return New Mapping object to represent id <-> value.
++   */
++  protected def createInternal(id: Long, value: Array[Byte]): T
++
++  /**
++   * Get the mapping for a name.
++   * @param name
++   * @return
++   */
++  def get(name: String): Future[T] = {
++    val normString = name.toLowerCase
++    if (normString.equals("""")) {
++      throw new Exception(""Can't get empty string"")
++    }
++    get(ByteBuffer.wrap(Bytes.toBytes(normString)))
++  }
++
++  def get(value: ByteBuffer): Future[T] = {
++    val result = Retry(100) {
++      val cachedOption: Option[Future[T]] = Option(cache.get(value)).map(Future.value)
++
++      val mapping: Future[T] = cachedOption.getOrElse {
++        // Spin up a pool future here as we need to await fully to make sure that it's durable before returning.
++        pool {
++          val valueBytes: Array[Byte] = ByteBufferUtil.getBytesFromByteBuffer(value)
++          val fromOrToHBase: Future[T] = getFromHBase(valueBytes).flatMap { mo =>
++            mo match {
++              // If there is already a mapping wrap the mapping in a future after putting it in the cache.
++              case Some(mapping) => {
++                cache.put(ByteBuffer.wrap(mapping.value), mapping)","never mind, I thought this was a network call.
+",68abe2acf2066ceb32ce0c4ff517048fa08dc61e
+1487709,0,"Ideally we want all style in the stylesheets""",2012-08-29 05:05:23,franklinhu,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/131#discussion_r1487709,2012-08-29T17:05:23Z,2012-08-30T02:50:05Z,franklinhu,NONE,zipkin-finatra/src/main/resources/templates/aggregates.mustache,,,,,1,"@@ -0,0 +1,62 @@
++<div class=""page-header fill tabbable"">
++  <div class=""clearfix"">
++    <div class=""trace-nav pull-left"">
++      <ul class=""nav nav-pills"">
++        <li class=""active""><a id=""dependencies-pill"" href=""#dependency"">Dependencies</a></li>
++        <li><a id=""service-report-pill"" href=""#service-report"">Service Reports</a></li>
++      </ul>
++    </div>
++    <div class=""trace-nav pull-right"">
++      <ul class=""nav nav-dropdowns"" role=""navigation"">
++        <li class=""dropdown"">
++          <a id=""drop1"" href=""#"" role=""button"" class=""dropdown-toggle"" data-toggle=""dropdown"">Metric Type<b class=""caret""></b>
++          </a>
++          <ul class=""dropdown-menu"" role=""menu"" aria-labelledby=""drop1"">
++            <li><a tabindex=""-1"" id=""dropdown-by-count"" class=""active"">By Number of Calls</a></li>
++            <li><a tabindex=""-1"" id=""dropdown-by-duration"">By Duration</a></li>
++          </ul>
++        </li>
++      </ul>
++    </div>
++    <div class=""clearfix pull-right"">
++      Aggregates For <input class=""span2 date-input"" id=""date"" name=""date"" type=""text"" value=""08-24-2012"">
++    </div>
++  </div>
++</div>
++
++<div class=""span5 offset3"" style=""vertical-align: 50%;"" id=""loading-data"">","Ideally we want all style in the stylesheets
+",4c3ca0702a246f472be2c2381d20bceb60b9acb1
+1487844,1,"> Suspension of a parent implies suspension of children  Uhm, yes, this was originally about hierarchial suspension, wasn't it? There's the flaw in my plan ... just forget everything I said - sorry! :-) """,2012-08-29 05:17:28,franklinhu,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/131#discussion_r1487844,2012-08-29T17:17:28Z,2012-08-30T02:50:06Z,franklinhu,NONE,zipkin-finatra/src/main/resources/public/js/application.js,,129.0,,,1,"@@ -120,6 +120,27 @@ Zipkin.Base = (function() {
+     // Bind click handler for brand button
+     $("".brand"").click(brandClick);
+ 
++    // Hook up trace nav buttons
++    $("".js-zipkin-navbar > li"").each(function (index, elem) {
++      $(elem).on('click', function (event) {
++        if (!$(elem).hasClass(""active"")) {
++          $("".js-zipkin-navbar > li"").each(function (i, e) {
++            $(e).removeClass(""active"");
++          });
++          $(elem).addClass(""active"");
++        }
++        var hash = event.target.hash;
++
++        $("".js-zipkin-navbar > li > a"").each(function (i, e) {
++          if (e.hash != hash) {
++            $(e.hash).hide();
++          }
++        });
++        $(hash).show();
++        $(""html body"").animate({scrollTop: 0}, ""slow"");
++      });
++    });","Instead of iterating through the pills and binding a click handler to each you can just bind it via the selector
+
+``` javascript
+$("".js-zipkin-navbar > li"").click(function(elem) {...});
+```
+",4c3ca0702a246f472be2c2381d20bceb60b9acb1
+1314067,0,"You can avoid using the HashSet with something like ```   ids.flatMap {     // return None if we don't want to include the id     // return Some(id) if we do   }.toSet ```""",2012-08-06 06:07:01,franklinhu,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/100#discussion_r1314067,2012-08-06T18:07:01Z,2012-08-06T18:29:58Z,franklinhu,NONE,zipkin-server/src/main/scala/com/twitter/zipkin/storage/cassandra/CassandraStorage.scala,,,,,1,"@@ -90,6 +91,35 @@ trait CassandraStorage extends Storage with Cassandra {
+   }
+ 
+   /**
++   * Finds traces that have been stored from a list of trace IDs
++   *
++   * @param traceIds a List of trace IDs
++   * @return a Set of those trace IDs from the list which are stored
++   */
++
++  def tracesExist(traceIds: Seq[Long]): Future[Set[Long]] = {
++//    CASSANDRA_GET_TRACE.incr
++    Future.collect {
++      traceIds.grouped(storageConfig.traceFetchBatchSize).toSeq.map { ids =>
++        traces.multigetRows(ids.toSet.asJava, None, None, Order.Normal, 1).map { rowSet =>
++          var traceSet = new HashSet[Long]()
++          ids.foreach { id =>
++            val spans = rowSet.asScala(id).asScala.map {
++              case (colName, col) => ThriftAdapter(col.value)
++            }
++            if (!spans.isEmpty) {
++              traceSet += spans.head.traceId
++            }
++          }","You can avoid using the HashSet with something like
+
+```
+  ids.flatMap {
+    // return None if we don't want to include the id
+    // return Some(id) if we do
+  }.toSet
+```
+",e784a02ec88a26a7a62359cdcee7c6ad9239a732
+1070353,2,"Indentation gets a bit weird here""",2012-06-28 06:18:27,johanoskarsson,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/47#discussion_r1070353,2012-06-28T18:18:27Z,2012-06-28T20:06:35Z,johanoskarsson,CONTRIBUTOR,zipkin-hadoop/src/main/scala/com/twitter/zipkin/hadoop/MemcacheRequest.scala,,,,,1,"@@ -0,0 +1,54 @@
++/*
++ * Copyright 2012 Twitter Inc.
++ *
++ * Licensed under the Apache License, Version 2.0 (the ""License"");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an ""AS IS"" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.twitter.zipkin.hadoop
++
++import com.twitter.scalding._
++import java.nio.ByteBuffer
++import java.util.Arrays
++import com.twitter.zipkin.gen.{BinaryAnnotation, Span, Constants, Annotation}
++import sources.{PrepSpanSource, SpanSource, Util}
++
++/**
++ * Find out how often each service does memcache accesses
++ */
++class MemcacheRequest(args : Args) extends Job(args) with DefaultDateRangeJob {
++
++  val preprocessed = PrepSpanSource()
++    .read
++    .mapTo(0 -> ('annotations, 'binary_annotations))
++      { s: Span => (s.annotations.toList, s.binary_annotations.toList) }
++
++
++  val result = preprocessed
++    // from the annotations, find the service name
++    .flatMap(('annotations, 'binary_annotations) -> ('service, 'memcacheNames)){ al : (List[Annotation], List[BinaryAnnotation]) =>
++      var clientSent: Option[Annotation] = None
++      al._1.foreach { a : Annotation =>
++        if (Constants.CLIENT_SEND.equals(a.getValue)) clientSent = Some(a)
++      }
++      // from the binary annotations, find the value of the memcache visits if there are any
++    var memcachedKeys : Option[BinaryAnnotation] = None","Indentation gets a bit weird here
+",0143a18c5d50f45ff37da10637cb7703c09f4d5a
+1070395,2,"Indent this, gets hard to read otherwise""",2012-06-28 06:21:28,johanoskarsson,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/47#discussion_r1070395,2012-06-28T18:21:28Z,2012-06-28T20:06:35Z,johanoskarsson,CONTRIBUTOR,zipkin-hadoop/src/main/scala/com/twitter/zipkin/hadoop/WorstRuntimes.scala,,,,,1,"@@ -0,0 +1,55 @@
++/*
++ * Copyright 2012 Twitter Inc.
++ *
++ * Licensed under the Apache License, Version 2.0 (the ""License"");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an ""AS IS"" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.twitter.zipkin.hadoop
++
++import com.twitter.scalding._
++import com.twitter.zipkin.gen.{Span, Constants, Annotation}
++import sources.{PrepSpanSource}
++
++/**
++ * Obtain the IDs and the durations of the one hundred service calls which take the longest per service
++ */
++
++class WorstRuntimes(args: Args) extends Job(args) with DefaultDateRangeJob {
++
++  val clientAnnotations = Seq(Constants.CLIENT_RECV, Constants.CLIENT_SEND)
++
++  val preprocessed = PrepSpanSource()
++    .read
++    .mapTo(0 -> ('id, 'annotations)) {
++      s : Span => (s.id, s.annotations.toList)
++    }
++
++  val result = preprocessed
++    .project('id, 'annotations)
++    // let's find those client annotations and convert into service name and duration
++    .flatMap('annotations -> ('service, 'duration)) { annotations: List[Annotation] =>
++    var clientSend: Option[Annotation] = None","Indent this, gets hard to read otherwise
+",0143a18c5d50f45ff37da10637cb7703c09f4d5a
+5008348,2,"what's the point of this dependency?""",2013-07-03 01:07:47,mosesn,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/272#discussion_r5008348,2013-07-03T13:07:47Z,2013-07-25T23:50:59Z,mosesn,CONTRIBUTOR,project/Project.scala,,,,,1,"@@ -163,6 +163,23 @@ object Zipkin extends Build {
+     }
+   ).dependsOn(scrooge)
+ 
++  lazy val anormDB = Project(
++    id = ""zipkin-anormdb"",
++    base = file(""zipkin-anormdb""),
++    settings = defaultSettings
++  ).settings(
++    libraryDependencies ++= Seq(
++      ""play""        %% ""anorm""        % ""2.1-09142012"",
++      ""org.xerial""  %  ""sqlite-jdbc""  % ""3.7.2""","what's the point of this dependency?
+",6971f5ab8191d8a46f4681119e9c052017ca0d5d
+5337788,2,":\ Maybe Retry should operate over Future[T] so it can respond to errors accordingly? Can use  ``` future.transform {   case Return(r) => r   case Throw(t) => // log the error and try again }""",2013-07-22 17:46:37,franklinhu,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/274#discussion_r5337788,2013-07-23T05:46:37Z,2013-08-02T20:55:57Z,franklinhu,NONE,zipkin-hbase/src/main/scala/com/twitter/zipkin/storage/hbase/mapping/Mapper.scala,,,,,1,"@@ -0,0 +1,164 @@
++package com.twitter.zipkin.storage.hbase.mapping
++
++import com.twitter.hbase.HBaseTable
++import com.twitter.hbase.utils.{Retry, ThreadProvider}
++import com.twitter.logging.Logger
++import com.twitter.util.{Await, ExecutorServiceFuturePool, Future}
++import com.twitter.zipkin.hbase.TableLayouts
++import com.twitter.zipkin.storage.hbase.IDGenerator
++import java.nio.ByteBuffer
++import java.util.concurrent.ConcurrentHashMap
++import org.apache.hadoop.hbase.client._
++import org.apache.hadoop.hbase.util.Bytes
++
++trait Mapper[T <: Mapping] {
++  val log = Logger.get(getClass.getName)
++
++  val mappingTable: HBaseTable
++  val qualBytes: Array[Byte]
++  val idGen: IDGenerator
++  val parentId: Long
++  val typeBytes: Array[Byte]
++
++
++  private lazy val cache = new ConcurrentHashMap[ByteBuffer, T]()
++  private lazy val pool = new ExecutorServiceFuturePool(ThreadProvider.defaultExecutor)
++
++  /**
++   * All implementations need to provide their own implementation that creates
++   * whichever type of mapping is being generated.
++   *
++   * @param id The id of the mapping.  A positive Long.
++   * @param value The value that is being mapped to an id.
++   * @return New Mapping object to represent id <-> value.
++   */
++  protected def createInternal(id: Long, value: ByteBuffer): T
++
++  /**
++   * Get the mapping for a
++   * @param name
++   * @return
++   */
++  def get(name: String): Future[T] = {
++    val normString = name.toLowerCase
++    if (normString.equals("""")) {
++      throw new Exception(""Can't get empty string"")
++    }
++    get(ByteBuffer.wrap(Bytes.toBytes(normString)))
++  }
++
++  def get(value: ByteBuffer): Future[T] = pool {
++
++    val result = Retry(100) {
++      val preCreated: Option[T] = getPreCreated(value)
++      val m = preCreated.getOrElse {
++        val proposedFuture: Future[T] = createProposed(value)
++        val storedFuture: Future[T] = proposedFuture.flatMap { pm =>
++          store(pm)
++        }
++        Await.result(storedFuture)",":\
+Maybe Retry should operate over Future[T] so it can respond to errors accordingly? Can use
+
+```
+future.transform {
+  case Return(r) => r
+  case Throw(t) => // log the error and try again
+}
+```
+",68abe2acf2066ceb32ce0c4ff517048fa08dc61e
+1189387,0,"Have you tried pulling in the same version of finagle that we use for the rest of the project? Too different?""",2012-07-18 04:23:25,johanoskarsson,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/75#discussion_r1189387,2012-07-18T16:23:25Z,2012-07-18T18:09:30Z,johanoskarsson,CONTRIBUTOR,project/Project.scala,,,,,1,"@@ -275,6 +280,31 @@ object Zipkin extends Build {
+           (base / ""config"" +++ base / ""src"" / ""test"" / ""resources"").get
+       }
+     ).dependsOn(server, scrooge)
++
++  lazy val web =
++    Project(
++      id = ""zipkin-finatra"",
++      base = file(""zipkin-finatra""),
++      settings = Project.defaultSettings ++
++        StandardProject.newSettings ++
++        TravisCiRepos.newSettings
++    ).settings(
++      version := ""0.2.0-SNAPSHOT"",
++      resolvers += ""finatra"" at ""http://repo.juliocapote.com"",
++      resolvers += ""codahale"" at ""http://repo.codahale.com"",
++
++      libraryDependencies ++= Seq(
++        ""com.posterous"" % ""finatra"" % ""4.3.2"",
++
++        ""com.twitter.common.zookeeper"" % ""server-set"" % ""1.0.7"",
++
++        ""com.twitter"" % ""finagle-serversets"" % ""5.0.0"",","Have you tried pulling in the same version of finagle that we use for the rest of the project? Too different?
+",1dd303552a6664a5867eba23ef13369bd9a0a266
+2090197,2,"Yeah I think we should make the interface return `Future[Unit]` :\ I'll file a ticket""",2012-11-09 13:50:08,franklinhu,twitter,zipkin,,https://github.com/openzipkin/zipkin/pull/201#discussion_r2090197,2012-11-10T00:50:08Z,2012-11-18T04:43:17Z,franklinhu,NONE,zipkin-redis/src/main/scala/com/twitter/zipkin/storage/redis/RedisIndex.scala,,,,,1,"@@ -0,0 +1,194 @@
++/*
++ * Copyright 2012 Tumblr Inc.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the ""License"");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an ""AS IS"" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package com.twitter.zipkin.storage.redis
++
++import com.twitter.finagle.redis.Client
++import com.twitter.finagle.redis.protocol.ZRangeResults
++import com.twitter.util.{Duration, Future}
++import com.twitter.zipkin.common.{AnnotationType, BinaryAnnotation, Span}
++import com.twitter.zipkin.storage.{Index, IndexedTraceId, TraceIdDuration}
++import java.nio.ByteBuffer
++import org.jboss.netty.buffer.{ChannelBuffer, ChannelBuffers}
++
++trait RedisIndex extends Index {
++
++  val database: Client
++
++  val ttl: Option[Duration]
++
++  /**
++   * A special data structure for dealing with keys which are treated differently if different
++   * arguments are passed in.
++   */
++  case class OptionSortedSetMap(_client: Client, firstPrefix: String, secondPrefix: String) {
++    lazy val firstSetMap = new RedisSortedSetMap(_client, firstPrefix, ttl)
++    lazy val secondSetMap = new RedisSortedSetMap(_client, secondPrefix, ttl)
++
++    def get(primaryKey: String,
++      secondaryKey: Option[String],
++      start: Option[Double],
++      stop: Double,
++      count: Int) = secondaryKey match {
++        case Some(contents) =>
++          firstSetMap.get(redisJoin(primaryKey, contents), start.getOrElse(0), stop, count)
++        case None => secondSetMap.get(primaryKey, start.getOrElse(0), stop, count)
++      }
++
++    def put(primaryKey: String, secondaryKey: Option[String], score: Double, value: ChannelBuffer) = {
++      val first = secondaryKey map { secondValue =>
++        firstSetMap.add(redisJoin(primaryKey, secondValue), score, value)
++      }
++      val second = secondSetMap.add(primaryKey, score, value)
++      Future.join(Seq(first.getOrElse(Future.Unit), second))
++    }
++  }
++
++  /**
++   * A singleton RedisSet
++   */
++  case class RedisSet(client: Client, key: String) {
++    val _underlying = new RedisSetMap(client, ""singleton"", ttl)
++    def get() = _underlying.get(key)
++    def add(bytes: ChannelBuffer) = _underlying.add(key, bytes)
++  }
++
++  lazy val annotationsListMap = new RedisSortedSetMap(database, ""annotations"", ttl)
++  lazy val binaryAnnotationsListMap = new RedisSortedSetMap(database, ""binary_annotations"", ttl)
++  lazy val serviceSpanMap = OptionSortedSetMap(database, ""service"", ""service:span"")
++  lazy val spanMap = new RedisSetMap(database, ""span"", ttl)
++  lazy val serviceArray = new RedisSet(database, ""services"")
++  lazy val traceHash = new RedisHash(database, ""ttlMap"")
++
++  override def close() = {
++    database.release()
++  }
++
++  private[this] def zRangeResultsToSeqIds(arr: ZRangeResults): Seq[IndexedTraceId] =
++    arr.asTuples map (tup => IndexedTraceId(tup._1, tup._2.toLong))
++
++  private[redis] def redisJoin(items: String*) = items.mkString("":"")
++
++  override def getTraceIdsByName(serviceName: String, span: Option[String],
++    endTs: Long, limit: Int): Future[Seq[IndexedTraceId]] =
++    serviceSpanMap.get(
++      serviceName,
++      span,
++      ttl map (dur => endTs - dur.inMicroseconds),
++      endTs,
++      limit) map zRangeResultsToSeqIds
++
++  override def getTraceIdsByAnnotation(serviceName: String, annotation: String, value: Option[ByteBuffer],
++    endTs: Long, limit: Int): Future[Seq[IndexedTraceId]] = (value match {
++      case Some(anno) =>
++        binaryAnnotationsListMap.get(
++          redisJoin(serviceName, annotation, ChannelBuffers.copiedBuffer(anno)),
++          (ttl map (dur => (endTs - dur.inMicroseconds).toDouble)).getOrElse(0.0),
++          endTs,
++          limit)
++      case None =>
++        annotationsListMap.get(
++          redisJoin(serviceName, annotation),
++          (ttl map (dur => (endTs - dur.inMicroseconds).toDouble)).getOrElse(0.0),
++          endTs,
++          limit)
++    }) map zRangeResultsToSeqIds
++
++  override def getTracesDuration(traceIds: Seq[Long]): Future[Seq[TraceIdDuration]] = Future.collect(
++    traceIds map (getTraceDuration(_))
++  ) map (_ flatten)
++
++  private[this] def getTraceDuration(traceId: Long): Future[Option[TraceIdDuration]] =
++    traceHash.get(traceId) map {
++      _ flatMap { bytes =>
++        val TimeRange(start, end) = decodeStartEnd(bytes)
++        Some(TraceIdDuration(traceId, end - start, start))
++      }
++    }
++
++  override def getServiceNames: Future[Set[String]] = serviceArray.get() map (serviceNames =>
++    (serviceNames map (new String(_))).toSet
++  )
++
++  override def getSpanNames(service: String): Future[Set[String]] = spanMap.get(service) map (
++    strings => (strings map (new String(_))).toSet
++  )
++
++  override def indexTraceIdByServiceAndName(span: Span) : Future[Unit] = Future.join(
++    (span.serviceNames toSeq) map { serviceName =>
++      (span.lastAnnotation map { last =>
++        serviceSpanMap.put(serviceName, Some(span.name), last.timestamp, span.traceId)
++      }).getOrElse(Future.Unit)
++    }
++  )
++
++  override def indexSpanByAnnotations(span: Span) : Future[Unit] = Future.join(
++    {
++      def encodeAnnotation(bin: BinaryAnnotation): String = bin.annotationType match {
++        case AnnotationType.Bool => (if (bin.value.get() != 0) true else false).toString
++        case AnnotationType.Double => bin.value.getDouble.toString
++        case AnnotationType.I16 => bin.value.getShort.toString
++        case AnnotationType.I32 => bin.value.getInt.toString
++        case AnnotationType.I64 => bin.value.getLong.toString
++        case _ => ChannelBuffers.copiedBuffer(bin.value)
++      }
++
++      def binaryAnnoStringify(bin: BinaryAnnotation, service: String): String =
++        redisJoin(service, bin.key, encodeAnnotation(bin))
++
++      val time = span.lastAnnotation.get.timestamp
++      val binaryAnnos: Seq[Future[Unit]] = span.serviceNames.toSeq flatMap { serviceName =>
++        span.binaryAnnotations map { binaryAnno =>
++          binaryAnnotationsListMap.add(
++            binaryAnnoStringify(binaryAnno, serviceName),
++            time,
++            span.traceId
++          )
++        }
++      }
++      val annos = for (serviceName <- span.serviceNames toSeq;
++        anno <- span.annotations)
++        yield annotationsListMap.add(redisJoin(serviceName, anno.value), time, span.traceId)
++      annos ++ binaryAnnos
++    }
++  )
++
++  override def indexServiceName(span: Span): Future[Unit] = Future.join(
++    span.serviceNames.toSeq collect {case name if name != """" => serviceArray.add(name)}
++  )
++
++  override def indexSpanNameByService(span: Span): Future[Unit] =
++    if (span.name != """") Future.join(
++      for (serviceName <- span.serviceNames.toSeq
++        if serviceName != """")
++        yield spanMap.add(serviceName, span.name)
++    ) else Future.Unit
++
++  override def indexSpanDuration(span: Span): Future[Void] = {
++    traceHash.get(span.traceId) map {
++      case None => TimeRange.fromSpan(span) map { timeRange =>
++        traceHash.put(span.traceId, timeRange)
++      }
++      case Some(bytes) => indexNewStartAndEnd(span, bytes)
++    }
++    Future.Void","Yeah I think we should make the interface return `Future[Unit]` :\ I'll file a ticket
+",ce7be247e2b91802a22529c2b6943519c9b93e8f

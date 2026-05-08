@@ -1,0 +1,81 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3411503,0,"This is causing the year to return always with the current year, ignoring the default **maxYear** since the value will always be greater than the maxYear.  I don't know if this should be done in the formHelper by who is coding and check if the value year""",2013-06-12 09:21:03,luksm,cakephp,cakephp,fd72f894ad091bbe3c10314091ee3ab34769afa2,luksm,868687,"This is causing the year to return always with the current year, ignoring the default **maxYear** since the value will always be greater than the maxYear.
+
+I don't know if this should be done in the formHelper by who is coding and check if the value year is greater than the maxYear set in the view.
+",2013-06-12T21:21:03Z,2013-06-12T21:21:03Z
+2245783,0,"@Scottymeuk Read the associated ticket [#3283](http://cakephp.lighthouseapp.com/projects/42648/tickets/3283)""",2012-12-03 11:25:13,ADmad,cakephp,cakephp,ea467e72d72e9eb7cd140816ee8d7abd900b2629,ADmad,142658,"@Scottymeuk Read the associated ticket [#3283](http://cakephp.lighthouseapp.com/projects/42648/tickets/3283)
+",2012-12-03T22:25:13Z,2012-12-03T22:25:13Z
+1040482,0,"https://github.com/petteyg/code_check""",2012-03-04 07:12:51,josegonzalez,cakephp,cakephp,a6da7361494b85411f1b93ea589e58405a77524b,josegonzalez,65675,"https://github.com/petteyg/code_check
+",2012-03-04T18:12:51Z,2012-03-04T18:12:51Z
+998908,1,"I'm an idiot, I don't know how I missed that the first time around.  I merged in your changes :D""",2012-02-22 14:22:03,markstory,cakephp,cakephp,89df484fc5a93fac7b01bdf086a395ecf284217d,markstory,24086,"I'm an idiot, I don't know how I missed that the first time around.  I merged in your changes :D
+",2012-02-23T01:22:03Z,2012-02-23T01:22:03Z
+744111,2,"Sorry, guys. Yes individually tests pass. I am working on a fix which includes moving this form constructor to beforeFind, to ensure correct ordering. Sometimes tests fail because the find results are incorrectly ordered. I have setup postgres now, so i ca""",2011-11-24 01:02:20,ceeram,cakephp,cakephp,05940ae1ec703a23714ff815e4e2e19cd1c6b5b7,ceeram,111448,"Sorry, guys. Yes individually tests pass. I am working on a fix which includes moving this form constructor to beforeFind, to ensure correct ordering. Sometimes tests fail because the find results are incorrectly ordered. I have setup postgres now, so i can ensure the fix wont break postgres either. I wasnt able to test with postgres before. I was suprised by the fact, that mysql and sqlite accept ORDER BY, where postgres doesnt: example query:
+SELECT MAX(""AfterTree"".""rght"") AS ""rght"" FROM ""after_trees"" AS ""AfterTree""   WHERE 1 = 1 AND ""AfterTree"".""id"" <> 8   ORDER BY ""AfterTree"".""id"" ASC  LIMIT 1
+
+I will work on it tonight to get the test passing again, and include the fix for correct ordering
+",2011-11-24T12:02:20Z,2011-11-24T12:02:20Z
+678270,0,"indeed. we could either make the tests use the new methods instead (has to be done some day anyway) or simply switch to static calls.  But working with E_STRICT is kind of impossible at the moment anyway with the current 2.0 head. too much stuff not yet""",2011-10-26 21:15:23,dereuromark,cakephp,cakephp,010abd9e189cc37cbea2ce3a294aa4304ad6e669,dereuromark,39854,"indeed. we could either make the tests use the new methods instead (has to be done some day anyway) or simply switch to static calls.
+
+But working with E_STRICT is kind of impossible at the moment anyway with the current 2.0 head.
+too much stuff not yet commited for E_STRICT to be useful
+",2011-10-27T09:15:23Z,2011-10-27T10:26:05Z
+335841,0,"Theaxiom, it was fixed (comment of ADmad) after the release 1.3.8 (current master version).""",2011-04-09 17:16:35,jrbasso,cakephp,cakephp,21a9904a71b24e753049a31a47b6dab26fde6743,jrbasso,26548,"Theaxiom, it was fixed (comment of ADmad) after the release 1.3.8 (current master version).
+",2011-04-10T05:16:35Z,2011-04-10T05:16:35Z
+562892,0,"nvm it already does mention that""",2011-08-31 10:51:36,ADmad,cakephp,cakephp,f7f3515135745b86911b227347d7adb6c350fe49,ADmad,142658,"nvm it already does mention that
+",2011-08-31T22:51:36Z,2011-08-31T22:51:36Z
+2794576,2,"Ouch, that is not a very happy thing for me. I use tons of datasources that do not extend the base class :(""",2013-03-12 21:55:34,lorenzo,cakephp,cakephp,3d4ebc038cc3336a11a263eca5f465b05cfce896,lorenzo,37621,"Ouch, that is not a very happy thing for me. I use tons of datasources that do not extend the base class :(
+",2013-03-13T08:55:34Z,2013-03-13T08:55:34Z
+2246535,2,"I could have been clearer in the original commit message, my bad.""",2012-12-03 14:31:47,markstory,cakephp,cakephp,ea467e72d72e9eb7cd140816ee8d7abd900b2629,markstory,24086,"I could have been clearer in the original commit message, my bad.
+",2012-12-04T01:31:47Z,2012-12-04T01:31:47Z
+1761307,2,"Figures, I only ran tests for MySQL and SQLite :(""",2012-08-24 01:36:48,markstory,cakephp,cakephp,dcc5a9548221b3dd42b72862bc664905cc1b0c4f,markstory,24086,"Figures, I only ran tests for MySQL and SQLite :(
+",2012-08-24T13:36:48Z,2012-08-24T13:36:48Z
+1760439,2,"postgres did not like this change :(""",2012-08-23 21:19:01,ceeram,cakephp,cakephp,dcc5a9548221b3dd42b72862bc664905cc1b0c4f,ceeram,111448,"postgres did not like this change :(
+",2012-08-24T09:19:01Z,2012-08-24T09:19:01Z
+1621752,2,"Hmm, this will break some plugins that are passing objects to represent models in the view :(""",2012-07-24 01:14:46,lorenzo,cakephp,cakephp,66b296527f5a8297897738afe8c00f57da6e2e49,lorenzo,37621,"Hmm, this will break some plugins that are passing objects to represent models in the view :(
+",2012-07-24T13:14:46Z,2012-07-24T13:14:46Z
+1763224,2,"@markstory yes, it seemed odd...""",2012-08-24 08:39:10,bar,cakephp,cakephp,28bd6880df2f4a6bd182bcb0f3a04dd5a1b64fad,bar,88155,"@markstory yes, it seemed odd...
+",2012-08-24T20:39:10Z,2012-08-24T20:39:10Z
+954543,2,"Bloody hell, I'm a fool.  Sorry about that.""",2012-02-10 06:42:24,markstory,cakephp,cakephp,0cfec525b226436361ad9d0ca2802ba7af30ae14,markstory,24086,"Bloody hell, I'm a fool.  Sorry about that.
+",2012-02-10T17:42:24Z,2012-02-10T17:42:24Z
+663083,2,"Yeah I'm an idiot.  It broke a pile of tests, and I forgot a pile of view files too :(""",2011-10-19 15:11:56,markstory,cakephp,cakephp,7c70b371bf5e1c67099cbbc00fdec3ae60cebcb2,markstory,24086,"Yeah I'm an idiot.  It broke a pile of tests, and I forgot a pile of view files too :(
+",2011-10-20T03:11:56Z,2011-10-20T03:11:56Z
+531442,2,"Merging commits from 1.3 has this problem that we loose the visibility keyword for functions :(""",2011-08-14 18:52:19,ADmad,cakephp,cakephp,d93c8cb20092557c58e4694866f3382151a5917b,ADmad,142658,"Merging commits from 1.3 has this problem that we loose the visibility keyword for functions :(
+",2011-08-15T06:52:19Z,2011-08-15T06:52:19Z
+556105,2,"Whoops, amazing that this lasted a year in the repo :(  I fixed things up in [27ab9093b5be7ca16192982d4f6640130d963421]""",2011-08-28 06:18:56,markstory,cakephp,cakephp,3099a15f176bc206e1a0ba90a416b6f19baea528,markstory,24086,"Whoops, amazing that this lasted a year in the repo :(  I fixed things up in [27ab9093b5be7ca16192982d4f6640130d963421]
+",2011-08-28T18:18:56Z,2011-08-28T18:18:56Z
+2332221,2,"Well that's annoying.""",2012-12-19 03:04:51,markstory,cakephp,cakephp,fe2f56e8bd18cac0ca92be3b9e736251d0a96f06,markstory,24086,"Well that's annoying.
+",2012-12-19T14:04:51Z,2012-12-19T14:04:51Z
+1496318,2,"Hardcoded :(  Unless I'm missing something its no longer possible to do 'starting in 5 hours, 23 minutes'. Relative time > assuming people can handle timezones :/""",2012-06-23 16:06:57,sitedyno,cakephp,cakephp,0729aca706e65a6d7198af22a81c25c10d88638d,sitedyno,216721,"Hardcoded :(
+
+Unless I'm missing something its no longer possible to do 'starting in 5 hours, 23 minutes'. Relative time > assuming people can handle timezones :/
+",2012-06-24T04:06:57Z,2012-06-24T04:09:52Z
+1497653,2,"I reverted the changes in behaviour in [3f78216e9654d21f7d892931369d51b8c972794c].  I missed this when reviewing the original changes sorry about that.""",2012-06-24 14:01:20,markstory,cakephp,cakephp,0729aca706e65a6d7198af22a81c25c10d88638d,markstory,24086,"I reverted the changes in behaviour in [3f78216e9654d21f7d892931369d51b8c972794c].  I missed this when reviewing the original changes sorry about that.
+",2012-06-25T02:01:20Z,2012-06-25T02:01:20Z
+1324638,2,"That's a lot of fixes to my patch, sorry for that.""",2012-05-12 19:22:14,mfjohansson,cakephp,cakephp,64f03acd4c78f388222620a31bfba303d10f6947,mfjohansson,1045456,"That's a lot of fixes to my patch, sorry for that.
+",2012-05-13T07:22:14Z,2012-05-13T07:22:14Z
+3955607,0,"No worries. I often forget the docblocks too.""",2013-08-27 06:23:47,markstory,cakephp,cakephp,ad7563736f5735b0a373b9c127b86871441554e6,markstory,24086,"No worries. I often forget the docblocks too.
+",2013-08-27T18:23:47Z,2013-08-27T18:23:47Z
+2603352,0,"Those changes can then be reverted again with https://github.com/cakephp/cakephp-codesniffer/commit/469b0b6a9c5eb4861eb3df440fa86854132e88da""",2013-02-11 14:48:52,dereuromark,cakephp,cakephp,ee4a116936efe6c015ecd69cd55885ce8fbdf7f8,dereuromark,39854,"Those changes can then be reverted again with https://github.com/cakephp/cakephp-codesniffer/commit/469b0b6a9c5eb4861eb3df440fa86854132e88da
+",2013-02-12T01:48:52Z,2013-02-12T01:48:52Z
+1040393,0,"What kind of CodeSniffer are you using for the corrections? Will that be partly open source for user land code, as well?""",2012-03-04 06:38:03,dereuromark,cakephp,cakephp,a6da7361494b85411f1b93ea589e58405a77524b,dereuromark,39854,"What kind of CodeSniffer are you using for the corrections? Will that be partly open source for user land code, as well?
+",2012-03-04T17:38:03Z,2012-03-04T17:38:03Z
+1040447,0,"thx. even more interesting would be how to get the sniffer to automatically correct those smells (manually would probably drive you insane for more files and is not worth it). shouldn't be too difficult to accomplish.""",2012-03-04 07:02:34,dereuromark,cakephp,cakephp,a6da7361494b85411f1b93ea589e58405a77524b,dereuromark,39854,"thx. even more interesting would be how to get the sniffer to automatically correct those smells (manually would probably drive you insane for more files and is not worth it). shouldn't be too difficult to accomplish.
+",2012-03-04T18:02:34Z,2012-03-04T18:02:34Z
+675119,2,"I hate them too. Anyway, please add urlencode or rawurlencode in _writeUrl(). If you decode it, you must encode it again.""",2011-10-25 14:21:05,basuke,cakephp,cakephp,477c492e86bb463877c9f0bf61363f4ec9537f85,basuke,42601,"I hate them too. Anyway, please add urlencode or rawurlencode in _writeUrl(). If you decode it, you must encode it again.
+",2011-10-26T02:21:05Z,2011-10-26T02:21:05Z
+3290069,0,"OK, fair enough, it was like that before your edit.  I guess my question is: is it logical to send an not-yet-authorised user to ```loginRedirect```?  From the class comments it appears that ```loginAction``` is used to typically display a login form, wh""",2013-05-25 13:53:15,SimonEast,cakephp,cakephp,676872d623753db5f748a696582d7298a9a28914,SimonEast,813734,"OK, fair enough, it was like that before your edit.
+
+I guess my question is: is it logical to send an not-yet-authorised user to `loginRedirect`?  From the class comments it appears that `loginAction` is used to typically display a login form, while `loginRedirect` is where to send a user post-login, such as a member area, dashboard, admin area or whatsoever.  Does it make sense to send unauthorised users there?
+",2013-05-26T01:53:15Z,2013-05-26T01:53:15Z
+2623722,0,"Why does it now need to implement CakeLog all of a sudden for `$logger->config()` to run? Can't it check for the method if it exists instead of forcing to be an `instanceof` BaseLog? Breaks scopes for custom loggers that only implement CakeLogInterface but""",2013-02-14 04:50:38,jadb,cakephp,cakephp,e5b33627d57c28c9131b87f23d22d24567ab37b4,jadb,33527,"Why does it now need to implement CakeLog all of a sudden for `$logger->config()` to run? Can't it check for the method if it exists instead of forcing to be an `instanceof` BaseLog? Breaks scopes for custom loggers that only implement CakeLogInterface but do not extend BaseLog or FileLog, as per the documentation.
+",2013-02-14T15:50:38Z,2013-02-14T15:52:21Z
+859280,0,"One drawback to outputting directly is you cannot send headers/cookies/sessions which makes it no different than using the command line runner.""",2012-01-11 14:01:02,markstory,cakephp,cakephp,b3396538b71340a3ca091af01845a40cc54d148f,markstory,24086,"One drawback to outputting directly is you cannot send headers/cookies/sessions which makes it no different than using the command line runner.
+",2012-01-12T01:01:02Z,2012-01-12T01:01:02Z
+1324737,1,"@mfjohansson You can use [this](https://github.com/cakephp/cakephp-codesniffer) in future :)""",2012-05-12 21:19:28,ADmad,cakephp,cakephp,64f03acd4c78f388222620a31bfba303d10f6947,ADmad,142658,"@mfjohansson You can use [this](https://github.com/cakephp/cakephp-codesniffer) in future :)
+",2012-05-13T09:19:28Z,2012-05-13T09:19:28Z
+1210072,2,"The code sniffer didn't barf on brace on new line? :(""",2012-04-14 02:40:56,ADmad,cakephp,cakephp,0f2100767b1352e2c6712584eb7ea37d144558d8,ADmad,142658,"The code sniffer didn't barf on brace on new line? :(
+",2012-04-14T14:40:56Z,2012-04-14T14:40:56Z
+1460716,0,"Don't forget to remove the comment if it's not used""",2012-06-14 09:55:17,ceeram,cakephp,cakephp,e3a6e9e169644d93fd02877e545a99ca1963b59e,ceeram,111448,"I came up with this fix: 74a0bd98c28991664fc0a3b0e8b34dc4f9dbf009
+All now passes again on 5.2 in travis: http://travis-ci.org/#!/ceeram/cakephp/builds/1622157
+Is this ok by you to merge in?
+",2012-06-14T21:55:17Z,2012-06-14T21:55:17Z

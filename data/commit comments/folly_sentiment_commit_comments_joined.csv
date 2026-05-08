@@ -1,0 +1,3 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1412776,0,"Inscrutable huge changesets like this one tend to undermine the """"open-source-ness"""" of this effort.  Would it be possible to get the actual change history in here?""",2012-06-04 04:11:08,dabrahams,facebook,folly,27494a20393fa45072e7d526d358835f3abe312a,dabrahams,44065,"Inscrutable huge changesets like this one tend to undermine the ""open-source-ness"" of this effort.  Would it be possible to get the actual change history in here?
+",2012-06-04T16:11:08Z,2012-06-04T16:11:08Z

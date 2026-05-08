@@ -1,0 +1,508 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3915540,0,"no clue ... i refactored the packaging script at one point to match up with ios and atv2 - i guess since then you lost it ;)""",2013-08-21 09:36:36,Memphiz,xbmc,xbmc,dc0edf03c7fe069d810265a60ebbfc41b4aa12db,Memphiz,701326,"no clue ... i refactored the packaging script at one point to match up with ios and atv2 - i guess since then you lost it ;)
+",2013-08-21T21:36:36Z,2013-08-21T21:36:36Z
+3806455,0,"@fritsch well on my sandy bridge it crashed the gpu. As far as I know there is no way to ask vaapi what it support.""",2013-08-06 22:45:50,elupus,xbmc,xbmc,33ac5433dab9d2e04ea93729c8b9c794b8aaa801,elupus,482976,"@fritsch well on my sandy bridge it crashed the gpu. As far as I know there is no way to ask vaapi what it support.
+",2013-08-07T10:45:50Z,2013-08-07T10:45:50Z
+3770131,0,"Stagefright handling needs to use our threading routines like everyone else. Then this isn't necessary.""",2013-08-01 07:48:59,theuni,xbmc,xbmc,0b8b619b16572322d5481f4684f4f92f974820a5,theuni,417043,"Stagefright handling needs to use our threading routines like everyone else. Then this isn't necessary.
+",2013-08-01T19:48:59Z,2013-08-01T19:48:59Z
+3601766,0,"Well in my case it still works, perhaps a specific things of ATI that would remember the normally available screens.  Got numbers of other problems with all video playing at 2 or 3x speed but this is another story.""",2013-07-09 21:41:52,Tolriq,xbmc,xbmc,c1f628e1bfc1d4117d151bccdf3a9c22cf6429e7,Tolriq,932609,"Well in my case it still works, perhaps a specific things of ATI that would remember the normally available screens.
+
+Got numbers of other problems with all video playing at 2 or 3x speed but this is another story.
+",2013-07-10T09:41:52Z,2013-07-10T09:41:52Z
+2920294,0,"It's not better for what I'm talking about. But since I don't know any samples, I can't say if it's a real issue.""",2013-04-01 03:56:55,elupus,xbmc,xbmc,372a14d33a1f3325ffec09d38dbf2bf77f1afaa7,elupus,482976,"It's not better for what I'm talking about. But since I don't know any
+samples, I can't say if it's a real issue.
+",2013-04-01T15:56:55Z,2013-04-01T15:56:55Z
+2707534,0,"Is 10 intentional?""",2013-02-27 08:02:14,jmarshallnz,xbmc,xbmc,8d2e0fe0d3cd5592765910de545ff471c90cea8c,jmarshallnz,406571,"Is 10 intentional?
+",2013-02-27T19:02:14Z,2013-02-27T19:02:14Z
+2638170,0,"Don't you have to resume the device here? Aka initialize it with the last format used? Think of someone pressing pause within a song and it goes idling? """,2013-02-17 08:04:51,fritsch,xbmc,xbmc,c468689eb8b954b57af84226931c0d9f1dbb666e,fritsch,1089309,"Don't you have to resume the device here? Aka initialize it with the last format used? Think of someone pressing pause within a song and it goes idling? 
+",2013-02-17T19:04:51Z,2013-02-17T19:04:51Z
+2358161,0,"Scraping of VNSI recordings got broken with this. They start with pvr://recordings/ There seems to be more broken in parsing the pvr filename for the title. @opdenkamp or has something changed in the pvr API I am not aware of?""",2012-12-26 21:46:05,FernetMenta,xbmc,xbmc,5ca0942b257aca62378bedf94733758547a7e659,FernetMenta,576009,"Scraping of VNSI recordings got broken with this. They start with pvr://recordings/
+There seems to be more broken in parsing the pvr filename for the title.
+@opdenkamp or has something changed in the pvr API I am not aware of?
+",2012-12-27T08:46:05Z,2012-12-27T08:46:05Z
+2027431,0,"I discussed this with cptspiff on IRC before committing it and we were both of the opinion that the sets node should show all the sets in case we want to extend support for sets within XBMC to e.g. allow adding movies to a set which will not be possible if""",2012-10-20 06:35:28,Montellese,xbmc,xbmc,d2455c3f64d583cc065362162f784da63bd0e38d,Montellese,75864,"I discussed this with cptspiff on IRC before committing it and we were both of the opinion that the sets node should show all the sets in case we want to extend support for sets within XBMC to e.g. allow adding movies to a set which will not be possible if you don't show empty sets or sets only containing a single movie.
+",2012-10-20T18:35:28Z,2012-10-20T18:35:28Z
+2026523,0,"I think the current """"sets"""" directory node is now also showing 1-movie sets, which is pretty annoying.  It can be solved by passing true to GetSetsNav in the CDirectoryNodeSets::GetContent""",2012-10-19 18:10:01,Voyager1,xbmc,xbmc,d2455c3f64d583cc065362162f784da63bd0e38d,Voyager1,549958,"I think the current ""sets"" directory node is now also showing 1-movie sets, which is pretty annoying. 
+It can be solved by passing true to GetSetsNav in the CDirectoryNodeSets::GetContent
+",2012-10-20T06:10:01Z,2012-10-20T06:10:01Z
+1990981,0,"I think this change broke the channel icons with PVR. When watching a channel and going to the home screen, it does not show the channel icon, only shows the default 'video' icon.  Same happens on the info screen while watching PVR.  Edit: Channel icon""",2012-10-13 02:58:04,wileecoyotejr,xbmc,xbmc,217efbc6480dc77b596a5414528390b1f8aac124,wileecoyotejr,2318678,"I think this change broke the channel icons with PVR. When watching a channel and going to the home screen, it does not show the channel icon, only shows the default 'video' icon.
+
+Same happens on the info screen while watching PVR.
+
+Edit: Channel icons still show fine in the guide and mini guide.
+",2012-10-13T14:58:04Z,2012-10-13T14:58:45Z
+1855903,0,"hey ametAE :p - what issue solves this? *just curious*""",2012-09-14 03:15:36,Memphiz,xbmc,xbmc,6d6123f0a0e9f79209a0a1026821ac4d8172707b,Memphiz,701326,"hey ametAE :p - what issue solves this? _just curious_
+",2012-09-14T15:15:36Z,2012-09-14T15:15:36Z
+1845405,0,"I think README.android also need swig.""",2012-09-12 08:56:54,fape,xbmc,xbmc,990b69af0926eb2bf644d90d2b7b95b1bbb30b73,fape,1052464,"I think README.android also need swig.
+",2012-09-12T20:56:54Z,2012-09-12T20:57:42Z
+1766397,1,"Thanks again for the quick fix :-)""",2012-08-25 22:22:34,arnova,xbmc,xbmc,1cff98f6748b658264da6fbfa05416385723e57c,arnova,544531,"Thanks again for the quick fix :-)
+",2012-08-26T10:22:34Z,2012-08-26T10:22:34Z
+1697195,0,"This will mean everythings that will be added to pre-Frdo repo will need to be 2.1 dependent? """,2012-08-09 22:00:42,MartijnKaijser,xbmc,xbmc,5431ae1c475636ef133b6ec489a6447f550e72f3,MartijnKaijser,907436,"This will mean everythings that will be added to pre-Frdo repo will need to be 2.1 dependent? 
+",2012-08-10T10:00:42Z,2012-08-10T10:00:42Z
+1301959,0,"No  On Mon, May 7, 2012 at 11:22 PM, Voyager-xbmc < reply@reply.github.com > wrote:  > interesting, does this impact existing databases, or is rescraping > necessary? > > --- > Reply to this email directly or view it on GitHub: > > https://github.com/xbmc/""",2012-05-07 07:49:43,jmarshallnz,xbmc,xbmc,1b29060b464f6ec3be0fa031eef8ce0355ea4e0c,jmarshallnz,406571,"No
+
+On Mon, May 7, 2012 at 11:22 PM, Voyager-xbmc <
+reply@reply.github.com
+
+> wrote:
+> 
+> interesting, does this impact existing databases, or is rescraping
+> necessary?
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/xbmc/xbmc/commit/1b29060b464f6ec3be0fa031eef8ce0355ea4e0c#commitcomment-1299755
+",2012-05-07T19:49:43Z,2012-05-07T19:49:43Z
+1297815,0,"glext.h is included in system_gl.h not GL/glx.h and GLX_GLXEXT_PROTOTYPES affects glx.h not glext.h. Unless I'm mistaken here. """,2012-05-06 04:55:41,davilla,xbmc,xbmc,21b4df85d6bbb1975e22c10d299de4f8801583ad,davilla,419526,"glext.h is included in system_gl.h not GL/glx.h and GLX_GLXEXT_PROTOTYPES affects glx.h not glext.h. Unless I'm mistaken here. 
+",2012-05-06T16:55:41Z,2012-05-06T16:55:41Z
+994420,2,"Doh!!! Sorry guys - first push here - forgot to rebase.""",2012-02-21 16:37:57,DDDamian,xbmc,xbmc,121211e15b6918ea3ecd34af1a5699526d2b5162,DDDamian,1334703,"Doh!!! Sorry guys - first push here - forgot to rebase.
+",2012-02-22T03:37:57Z,2012-02-22T03:37:57Z
+977402,1,"grats - first stable thing in eden i guess :D *running*""",2012-02-16 23:24:06,Memphiz,xbmc,xbmc,937f8ad5279059018516532555200e05f856dba0,Memphiz,701326,"grats - first stable thing in eden i guess :D _running_
+",2012-02-17T10:24:06Z,2012-02-17T10:24:06Z
+868933,0,"bootstrap generated files should be removed and added to gitignore.""",2012-01-15 07:34:50,davilla,xbmc,xbmc,a58b862f288a2dd4a9f188225d7aec8e64b34816,davilla,419526,"bootstrap generated files should be removed and added to gitignore.
+",2012-01-15T18:34:50Z,2012-01-15T18:34:50Z
+643201,0,"@cory ok will change it to use dlopen  -------- Original message -------- Subject: Re: [xbmc] cec: use libcec as an internal lib and fetch it in """"bootstrap"""". added --enable-external-libcec option to configure. (4f2c2b6)  From: Cory Fields <reply@reply.gith""",2011-10-10 18:30:26,opdenkamp,xbmc,xbmc,4f2c2b68ba04c6cc041d13f47583940759e97693,opdenkamp,441806,"@cory ok will change it to use dlopen
+
+-------- Original message --------
+Subject: Re: [xbmc] cec: use libcec as an internal lib and fetch it in ""bootstrap"". added --enable-external-libcec option to configure. (4f2c2b6) 
+From: Cory Fields reply@reply.github.com 
+To: Lars Op den Kamp opdenkamp@gmail.com 
+CC:  
+
+This still looks very rushed, especially for feature freeze.
+
+Why use a static lib? Please don't.
+Why the need to bootstrap if we're so close with upstream?
+Why not dlopen like chd until this hits distros?
+## 
+
+Reply to this email directly or view it on GitHub:
+https://github.com/xbmc/xbmc/commit/4f2c2b68ba04c6cc041d13f47583940759e97693#commitcomment-642668
+",2011-10-11T06:30:26Z,2011-10-11T06:30:26Z
+643347,0,"Change this under  https://github.com/xbmc/xbmc/blob/master/configure.in#L1154 and it'll  work again: # external libcec USE_EXTERNAL_LIBCEC=0 if test """"$use_libcec"""" = """"yes""""; then    if test """"$use_external_libcec"""" = """"yes""""; then      USE_EXTERNAL_LIBCEC=1; PK""",2011-10-10 19:51:11,opdenkamp,xbmc,xbmc,4f2c2b68ba04c6cc041d13f47583940759e97693,opdenkamp,441806,"Change this under 
+https://github.com/xbmc/xbmc/blob/master/configure.in#L1154 and it'll 
+work again:
+# external libcec
+
+USE_EXTERNAL_LIBCEC=0
+if test ""$use_libcec"" = ""yes""; then
+   if test ""$use_external_libcec"" = ""yes""; then
+     USE_EXTERNAL_LIBCEC=1; PKG_CHECK_MODULES([CEC], [libcec],
+       [INCLUDES=""$INCLUDES $CEC_CFLAGS""; LIBS=""$LIBS $CEC_LIBS""],
+       AC_MSG_ERROR($libcec_external_missing))
+   else
+     [INCLUDES=""$INCLUDES -I\$(abs_top_srcdir)/lib/libcec/include""]
+     AC_MSG_NOTICE($libcec_internal)
+   fi
+fi
+
+will push asap, but can't do that from my mobile phone :)
+
+Op 11-10-2011 8:22, Albinoman887 schreef:
+
+> go in irc, it wont build at all if its a clean build. it falils at libcee.a during the make process try it
+",2011-10-11T07:51:11Z,2011-10-11T07:51:11Z
+531789,0,"Well, the db (item) path holds: davs://dirtomovie/stack/movie.avi  But the actual itemlist (items[] in CGUIWindowVideoNav::LoadVideoInfo()) path holds: stack://davs://dirtomovie/stack/movie.cd1.avi.  And first stacking items[] here doesn't work. So the""",2011-08-15 01:25:02,arnova,xbmc,xbmc,bccb52dd1fb708959a4cf93e14761178b337182a,arnova,544531,"Well, the db (item) path holds: davs://dirtomovie/stack/movie.avi
+
+But the actual itemlist (items[] in CGUIWindowVideoNav::LoadVideoInfo()) path holds: stack://davs://dirtomovie/stack/movie.cd1.avi.
+
+And first stacking items[] here doesn't work. So the question is: what's causing the difference and how do we properly fix this?
+
+Btw. this is the reason why I used GetStackedTitlePath() in CFileItemList::Get()
+",2011-08-15T13:25:02Z,2011-08-15T17:21:14Z
+469852,0,"Hah, I suggested the same just the other day. +1 from me. OSX would need the same treatment.""",2011-07-10 07:24:10,theuni,xbmc,xbmc,20d9e7d0d7b7807a5e38f4e09b1b15cc125e665e,theuni,417043,"Hah, I suggested the same just the other day. +1 from me. OSX would need the same treatment.
+",2011-07-10T19:24:10Z,2011-07-10T19:24:10Z
+459263,0,"wasn't wavpack.dll removed in favor of ffmpeg?""",2011-07-03 06:54:51,wsoltys,xbmc,xbmc,bef8d0a33c1349527c0b6072b6e081a495dd1c88,wsoltys,487357,"wasn't wavpack.dll removed in favor of ffmpeg?
+",2011-07-03T18:54:51Z,2011-07-03T18:54:51Z
+469077,0,"I'm on both xbmc and xbmc-linux...   building right now..   -----Original Message-----  From: jimfcarroll Sent: Saturday, July 09, 2011 10:34 AM To: giftie61@hotmail.com Subject: Re: [xbmc] This is a fix for the CEventGroup deadlock. (1e1ff65)  @Giftie, ar""",2011-07-09 04:43:34,Giftie,xbmc,xbmc,1e1ff6503eac46d330e2263bcff2dadf9df4cd2a,Giftie,342445,"I'm on both xbmc and xbmc-linux...   building right now..
+
+-----Original Message----- 
+From: jimfcarroll
+Sent: Saturday, July 09, 2011 10:34 AM
+To: giftie61@hotmail.com
+Subject: Re: [xbmc] This is a fix for the CEventGroup deadlock. (1e1ff65)
+
+@Giftie, are you in one of the IRC channels?
+## 
+
+Reply to this email directly or view it on GitHub:
+https://github.com/xbmc/xbmc/commit/1e1ff6503eac46d330e2263bcff2dadf9df4cd2a#commitcomment-469072
+",2011-07-09T16:43:34Z,2011-07-09T16:43:34Z
+460327,0,"`Lets say the refreshrate is 24 hertz, and the current video playing is 23.976 fps, then you want to speed up the clock by 0.1% to make the vblank ticks increment the same as the video timestamps, but if the video is 23.976 fps but is reported as 24 fps th""",2011-07-04 03:59:56,TheSwissKnife,xbmc,xbmc,7844bbf3d6c7a9fb5c1fc9a2f4e4394ca254d2ca,TheSwissKnife,817114,"`Lets say the refreshrate is 24 hertz, and the current video playing is 23.976 fps, then you want to speed up the clock by 0.1% to make the vblank ticks increment the same as the video timestamps, but if the video is 23.976 fps but is reported as 24 fps this won't happen.`
+
+I need to take another look I guess. If refresh rate is 24Hz (or 23.976Hz) and stream hint is 23.976 then you get a speed factor of 1.001, and unfactored clock interval of 1/24, so with speed factor applied 1/23.976 tick intervals so clock is effectively sped up (from the rounded approximate version) - agreed.  If hint is incorrect then CalcFrameRate() spots that and fixes m_fFrameRate and reconfigures renderer right? Does this not end up being catered for in clock?  That I need to check.  But that is the correct place to fix it if not already the case.  Drifting the clock along with any pts drift gives a moving target for any other sync operations - so I agree when bad streams are detected the clock tick should adjust but it should be a clear decision and clear event to change.
+
+`CDVDClock::GetClock() is a clock based on g_VideoReferenceClock with an offset, CDVDClock::GetClock() basically returns the current playback position, the perfect time to present a frame is when the value from CDVDClock::GetClock() is the same as the pts (you can probably never get this close but this is the idea).` Agreed except that that as I stated earlier the display pts should match the GetClock() value - and that is most certainly NOT the present value.
+
+`The rendermanager uses CDVDClock::GetAbsoluteClock() for timing, when dvdplayer pushes out a frame it has to convert the pts from a value from CDVDClock::GetClock() into a value from CDVDClock::GetAbsoluteClock().`  Actually rendermanager really uses WaitAbsoluteClock() but I know what you mean.
+
+`Since CDVDClock::GetAbsoluteClock() is also clock derived from g_VideoReferenceClock and also with an offset, all you have to do to convert a pts into a presenttime is add the offset between g_VideoReferenceClock and CDVDClock::GetClock() and subtract the offset between g_VideoReferenceClock and CDVDClock::GetAbsoluteClock().`  I know they are offsets but currently rendermanager does not do that - it knows nothing about GetClock -> g_VideoReferenceClock conversion - you are suggesting introducing that which is not a problem- but was not clear from how you described.  More importantly though you are moving the timing of the sleep calculation until you get to the Wait condition - which is the crux of it (ie avoids the need for any of the sleep calculations in OutputPicture - which I for one would be happy to see the back of because currently it is a mess).  You are basically going in the direction I alluded to.  Give rendermanager the pts and playspeed and let it work out the correct sleep/wait time, and add a rendermanager function for DVDPlayerVideo to query the current display pts (and interpolated pts too).  This is precisely what I am working on right now with FernetMenta.
+
+`Regarding the rest of your code changes though, I'm the one who has to support this part of XBMC for years to come, I never commit anything until I have a very good understanding of what I'm doing, and I can prove to myself that what I have done works correct.`
+
+I would not expect anything less and just hope that some of my ideas or not quickly dismissed due to my inability to explain them - because believe it or not I feel I have thoroughly analysed this part of xbmc.
+",2011-07-04T15:59:56Z,2011-07-04T15:59:56Z
+454366,0,"crashes on OSX as well with (AbortableWait(m_loadPic,10) == WAIT_SIGNALED) """,2011-06-29 08:01:24,amet,xbmc,xbmc,acdc0dd4d967ebd6f24453db0eefff809ac57abf,amet,144941,"crashes on OSX as well with (AbortableWait(m_loadPic,10) == WAIT_SIGNALED) 
+",2011-06-29T20:01:24Z,2011-06-29T20:01:24Z
+448807,2,"eh what???? WaitMSec should return true when this is set.. this commit looks totally broken.""",2011-06-26 07:55:55,elupus,xbmc,xbmc,5495bf571d81d41a55007961a0080e5950de7157,elupus,482976,"eh what???? WaitMSec should return true when this is set.. this commit looks totally broken.
+",2011-06-26T19:55:55Z,2011-06-26T19:55:55Z
+448813,1,"so nevermind.. this commit looks right, it's the original code that looks totally fishy""",2011-06-26 07:59:19,elupus,xbmc,xbmc,5495bf571d81d41a55007961a0080e5950de7157,elupus,482976,"so nevermind.. this commit looks right, it's the original code that looks totally fishy
+",2011-06-26T19:59:19Z,2011-06-26T19:59:19Z
+447841,0,"OK. I'm still compiling under windows.""",2011-06-25 04:01:40,jimfcarroll,xbmc,xbmc,0ddbb64049ab724b4156440407b15cb52ee97db4,jimfcarroll,372696,"OK. I'm still compiling under windows.
+",2011-06-25T16:01:40Z,2011-06-25T16:01:40Z
+378161,0,"I solfed it this way : https://github.com/huceke/xbmc/commit/374b0aef4d95242ba7da38299f45ee4609dc2168""",2011-05-10 18:02:05,huceke,xbmc,xbmc,ca84e5b440ace0357409f53d904c9d26fa507ae6,huceke,549196,"I solfed it this way : https://github.com/huceke/xbmc/commit/374b0aef4d95242ba7da38299f45ee4609dc2168
+",2011-05-11T06:02:05Z,2011-05-11T06:02:05Z
+385586,1,"At the very least, can we agree to make this an option? Imo it was going to be one of the biggest selling points of Eden: a unified library. It addresses the annoying problem of unscraped movies, and allows my gf to find things that weren't automatically a""",2011-05-16 05:12:06,theuni,xbmc,xbmc,b59ea5bb998d576b129ac39a2b14ab520fc2c2a6,theuni,417043,"At the very least, can we agree to make this an option? Imo it was going to be one of the biggest selling points of Eden: a unified library. It addresses the annoying problem of unscraped movies, and allows my gf to find things that weren't automatically added to the library without me having to mutter as i switch to files view...
+
+Joakim: I understand your ""that's what the library is for"" pov, but my argument is that many users don't understand the distinction.
+",2011-05-16T17:12:06Z,2011-05-16T17:12:06Z
+264494,0,"Yea I think it was pretty much any asf on a nonseekable source (so you should be able to just always return -1 on a seek to reproduce). Was a damn long time ago now thou, so i'm not 100% sure anymore.""",2011-02-08 03:39:52,elupus,xbmc,xbmc,7605bca09a4648e2042acb737a16c22f5f77aca4,elupus,482976,"Yea I think it was pretty much any asf on a nonseekable source (so you should be able to just always return -1 on a seek to reproduce). Was a damn long time ago now thou, so i'm not 100% sure anymore.
+",2011-02-08T14:39:52Z,2011-02-08T14:39:52Z
+268277,0,"I'll simply restore the patches for now, then, until I'll get some sample which they break.""",2011-02-11 03:43:17,anssih,xbmc,xbmc,7605bca09a4648e2042acb737a16c22f5f77aca4,anssih,509357,"I'll simply restore the patches for now, then, until I'll get some sample which they break.
+",2011-02-11T14:43:17Z,2011-02-11T14:43:17Z
+262151,0,"It is needed for LATM AAC. It can be removed once we update ffmpeg, but I'm waiting for some Windows developer to test it. (https://github.com/xbmc/xbmc/pull/18)""",2011-02-05 08:29:25,anssih,xbmc,xbmc,2da82ffeb3819f5c9cd838e996bf7f2a64531e1e,anssih,509357,"It is needed for LATM AAC. It can be removed once we update ffmpeg, but I'm waiting for some Windows developer to test it. (https://github.com/xbmc/xbmc/pull/18)
+",2011-02-05T19:29:25Z,2011-02-05T23:15:18Z
+1573131,0,"maybe your problem is fixed with 13cc171bcb7d515fdd50de34d8655e0c54ed39ac as well.""",2012-07-12 04:34:37,wsoltys,xbmc,xbmc,0137f13bc1d67c77f0faf7302fb5fc41ec55cb45,wsoltys,487357,"maybe your problem is fixed with 13cc171bcb7d515fdd50de34d8655e0c54ed39ac as well.
+",2012-07-12T16:34:37Z,2012-07-12T16:34:37Z
+2365625,0,"This should be fixed now:  https://github.com/xbmc/xbmc/commit/d446c0a01f3460c1726c61e43c649188b981350a""",2012-12-29 04:11:47,benkohler,xbmc,xbmc,b9dc6f73f5db2e55793e295746119283bed3892d,benkohler,2581799,"This should be fixed now:
+
+https://github.com/xbmc/xbmc/commit/d446c0a01f3460c1726c61e43c649188b981350a
+",2012-12-29T15:11:47Z,2012-12-29T15:11:47Z
+1550612,1,"Thanks for the error message. Should be fixed now. """,2012-07-06 20:03:53,gyunaev,xbmc,xbmc,2e89e8f52ac06776a6d7481c109375390d442b83,gyunaev,544700,"Thanks for the error message. Should be fixed now. 
+",2012-07-07T08:03:53Z,2012-07-07T08:03:53Z
+3824927,2,"Obviously I forgot about an xcode update :-( Sorry for that. @Memphiz or @davilla: any chance you could do that for me (and for a beer)?""",2013-08-08 19:38:26,Montellese,xbmc,xbmc,902559939a92f0ea59bf60301df83ef205de2fbf,Montellese,75864,"Obviously I forgot about an xcode update :-( Sorry for that.
+@Memphiz or @davilla: any chance you could do that for me (and for a beer)?
+",2013-08-09T07:38:26Z,2013-08-09T07:38:38Z
+3790480,2,"oops. bad rebase. truly sorry. will fix it. update: correction pushed.""",2013-08-05 05:55:26,Voyager1,xbmc,xbmc,381600adf4d71ea33f40f79989b5a81f32179650,Voyager1,549958,"oops. bad rebase. truly sorry. will fix it.
+update: correction pushed.
+",2013-08-05T17:55:26Z,2013-08-05T18:06:25Z
+3036886,2,"Ah crap - sorry I thought original_listitem_url was only used for UPnP & plugins, will fix this afternoon""",2013-04-17 20:49:00,alcoheca,xbmc,xbmc,ba7a58ccc16cd1a22124ab8f286aa0374ba928b8,alcoheca,546879,"Ah crap - sorry I thought original_listitem_url was only used for UPnP & plugins, will fix this afternoon
+",2013-04-18T08:49:00Z,2013-04-18T08:49:00Z
+2987296,2,"I've opened a pr here: #2588. I'm really sorry!""",2013-04-10 08:49:14,ace20022,xbmc,xbmc,e575a7f0a47b5578b64b800d09910f260e9b0292,ace20022,2150851,"I've opened a pr here: #2588. I'm really sorry!
+",2013-04-10T20:49:14Z,2013-04-10T20:49:14Z
+3233001,2,"yes, very very odd but not impossible and I'm not risking a release to find out.""",2013-05-16 18:53:45,davilla,xbmc,xbmc,92e8bc4a4361d730abac9ad3080cd6923e9d551a,davilla,419526,"yes, very very odd but not impossible and I'm not risking a release to find out.
+",2013-05-17T06:53:45Z,2013-05-17T06:53:45Z
+2522790,2,"Is there some way to configure this (keybindings perhaps)? I find it super annoying that XBMC steals my native volume up/down buttons.""",2013-01-29 10:09:42,peol,xbmc,xbmc,2a072834f38bed0bae98df829c15e1aa48e42f2e,peol,83221,"Is there some way to configure this (keybindings perhaps)? I find it super annoying that XBMC steals my native volume up/down buttons.
+",2013-01-29T21:09:42Z,2013-01-29T21:09:42Z
+2272976,2,"My apologies - stupid new mouse caused me to hit the wrong button :-(""",2012-12-07 08:03:17,Voyager1,xbmc,xbmc,2047a9d5c3674fec9e5aa6616c46ee1dd98fcfdd,Voyager1,549958,"My apologies - stupid new mouse caused me to hit the wrong button :-(
+",2012-12-07T19:03:17Z,2012-12-07T19:03:17Z
+2260856,2,"Obviously.. Crap..""",2012-12-05 12:04:11,elupus,xbmc,xbmc,bfc1c80c5a56a90830b1b928e804f74180f6ea70,elupus,482976,"Obviously.. Crap..
+",2012-12-05T23:04:11Z,2012-12-05T23:04:11Z
+2028572,2,"ok guys - will revert - sorry for the inconvenience. Any idea when 1646 is being merged?""",2012-10-20 23:20:59,Voyager1,xbmc,xbmc,8fcf730a01b66e07f914fecd5238eb2aaeb562cb,Voyager1,549958,"ok guys - will revert - sorry for the inconvenience. Any idea when 1646 is being merged?
+",2012-10-21T11:20:59Z,2012-10-21T11:20:59Z
+2027620,2,"I understand. In that case, we would need to have a gui setting to hide/show 1-movie sets. IMO, to most users it won't make much sense having their sets list polluted with those...""",2012-10-20 08:59:40,Voyager1,xbmc,xbmc,d2455c3f64d583cc065362162f784da63bd0e38d,Voyager1,549958,"I understand. In that case, we would need to have a gui setting to hide/show 1-movie sets. IMO, to most users it won't make much sense having their sets list polluted with those...
+",2012-10-20T20:59:40Z,2012-10-20T20:59:40Z
+1991331,2,"Crap.""",2012-10-13 07:09:16,bobo1on1,xbmc,xbmc,b23adb3a74ffcecbc18f240d9cd22628a5c3b95a,bobo1on1,544313,"Crap.
+",2012-10-13T19:09:16Z,2012-10-13T19:09:16Z
+1998500,2,"I have no way to test. I do not have the XBMC dev environment setup. I have tried in the past, but could never get the dependencies correct to compile... Sorry :(  Im trying again now...""",2012-10-15 07:42:31,wileecoyotejr,xbmc,xbmc,217efbc6480dc77b596a5414528390b1f8aac124,wileecoyotejr,2318678,"I have no way to test. I do not have the XBMC dev environment setup. I have tried in the past, but could never get the dependencies correct to compile... Sorry :(
+
+Im trying again now...
+",2012-10-15T19:42:31Z,2012-10-15T19:48:10Z
+1603104,2,"I don't mind the increase. I'm not really sure a define is much help. It's a very magic number anyway. """,2012-07-18 21:44:41,elupus,xbmc,xbmc,c01cae1ca42e16beb102229a57ccf1638ec4add5,elupus,482976,"I don't mind the increase. I'm not really sure a define is much help. It's a very magic number anyway. 
+",2012-07-19T09:44:41Z,2012-07-19T09:44:41Z
+1213921,2,"Crap. The reaction delay should be easy enough to solve. The artifact issue is weird. Will look at it again.""",2012-04-15 18:09:30,elupus,xbmc,xbmc,4f2e1686eafa6528fcd58326ba619f8253bb6663,elupus,482976,"Crap. The reaction delay should be easy enough to solve. The artifact issue
+is weird. Will look at it again.
+",2012-04-16T06:09:30Z,2012-04-16T06:09:30Z
+1189268,2,"Ah yes that is weird. Silly c&p error. I'll correct it.""",2012-04-09 07:20:40,arnova,xbmc,xbmc,5fa180dc82cd36961e360fcfc6e59fb5bf519e97,arnova,544531,"Ah yes that is weird. Silly c&p error. I'll correct it.
+",2012-04-09T19:20:40Z,2012-04-09T19:20:40Z
+1164403,2,"Unfortunately, this didn't fix this my crash :-( Crash is due to the CFRelease(m_fmt_desc); but m_fmt_desc is not NULL. I have a video to reproduce.""",2012-04-02 09:36:31,beenje,xbmc,xbmc,786e3f92c4c829d3214d4adef6db8c9b1534889e,beenje,425499,"Unfortunately, this didn't fix this my crash :-(
+Crash is due to the CFRelease(m_fmt_desc); but m_fmt_desc is not NULL.
+I have a video to reproduce.
+",2012-04-02T21:36:31Z,2012-04-02T21:36:31Z
+951839,2,"crap """,2012-02-09 14:02:48,davilla,xbmc,xbmc,f0aadd360c17fb501bbe10fb245ded1c9f59a0a6,davilla,419526,"crap
+",2012-02-10T01:02:48Z,2012-02-10T01:02:48Z
+802982,2,"Yeah should have happened with the revert of the other stuff. Ideally the whole revert could have been done in a single commit :-/""",2011-12-17 00:07:28,Montellese,xbmc,xbmc,5684e8ef15bc5a4ef2c407a4dafb33684e4afb95,Montellese,75864,"Yeah should have happened with the revert of the other stuff. Ideally the whole revert could have been done in a single commit :-/
+",2011-12-17T11:07:28Z,2011-12-17T11:07:28Z
+684732,2,"On osx/ios/atv2, when enable the override option it works during playback. But when i stop playing the movie it crashs. Its not obvious to me why it crashs so i can't suggest a fix here :(. It doesn't crash when override is disabled.  Here is the stack t""",2011-10-30 23:52:28,Memphiz,xbmc,xbmc,44de5e97b3229fe2bd79eb218b656d27e7bb9ef2,Memphiz,701326,"On osx/ios/atv2, when enable the override option it works during playback. But when i stop playing the movie it crashs. Its not obvious to me why it crashs so i can't suggest a fix here :(. It doesn't crash when override is disabled.
+
+Here is the stack trace:
+
+http://pastebin.com/4xegTJBZ
+
+And the log:
+
+http://pastebin.com/qtSVAJz3
+
+This is a compiled master ... 
+",2011-10-31T10:52:28Z,2011-10-31T10:52:28Z
+566788,2,"I'm very sorry, you're right. I did the make but forgot the make install.""",2011-09-02 07:04:11,georgehenze,xbmc,xbmc,cfc20f6585a023fa3823798ae63b9fd8e20eeac4,georgehenze,1022663,"I'm very sorry, you're right. I did the make but forgot the make install.
+",2011-09-02T19:04:11Z,2011-09-02T19:04:11Z
+544375,2,"sorry ...  i somehow thought it wasn't used anymore. And what is scary about it - i grepped for """"patch"""" in the Makefile and didn't find it ... so ... nvm - i must have misstyped the grep ;)""",2011-08-22 02:56:26,Memphiz,xbmc,xbmc,38f16ca9d55eae5e528032b153b622d723cf5f13,Memphiz,701326,"sorry ...  i somehow thought it wasn't used anymore. And what is scary about it - i grepped for ""patch"" in the Makefile and didn't find it ... so ... nvm - i must have misstyped the grep ;)
+",2011-08-22T14:56:26Z,2011-08-22T14:56:26Z
+473839,2,"unfortunately this commit breaks regular title-based scraping. I guess m_nfoReader is not initialized. When I comment this out it goes back to normal... """,2011-07-12 10:09:41,Voyager1,xbmc,xbmc,0f3fe6f50ea74f81c21de61bd11ce219538e8368,Voyager1,549958,"unfortunately this commit breaks regular title-based scraping. I guess m_nfoReader is not initialized. When I comment this out it goes back to normal... 
+",2011-07-12T22:09:41Z,2011-07-12T22:09:41Z
+448809,2,"This whole commit looks totally wrong.""",2011-06-26 07:56:37,elupus,xbmc,xbmc,5495bf571d81d41a55007961a0080e5950de7157,elupus,482976,"This whole commit looks totally wrong.
+",2011-06-26T19:56:37Z,2011-06-26T19:56:37Z
+448811,2,"But looking at the original code it looks weird too..""",2011-06-26 07:57:54,elupus,xbmc,xbmc,5495bf571d81d41a55007961a0080e5950de7157,elupus,482976,"But looking at the original code it looks weird too..
+",2011-06-26T19:57:54Z,2011-06-26T19:57:54Z
+443295,2,"also libavfilter/vsrc_buffer.h header is not copied by ffmpeg install script so the file is not present with external ffmpeg. AND av_vsrc_buffer_add is not present on all ffmpeg version so you can't use it :(""",2011-06-22 04:03:43,Fneufneu,xbmc,xbmc,ad392e9fbf169611b22630065fa078a3db055cf6,Fneufneu,572709,"also libavfilter/vsrc_buffer.h header is not copied by ffmpeg install script
+so the file is not present with external ffmpeg.
+AND av_vsrc_buffer_add is not present on all ffmpeg version so you can't use it :(
+",2011-06-22T16:03:43Z,2011-06-22T16:03:43Z
+444523,2,"I'm investigating the problem and seems like I already have a fix to the first part of the issue. Working on second part, will report soon. EDIT: hm, seems fixing the automatic deinterlacer is somewhat more difficult... :(""",2011-06-22 21:45:18,a11599,xbmc,xbmc,ad392e9fbf169611b22630065fa078a3db055cf6,a11599,690966,"I'm investigating the problem and seems like I already have a fix to the first part of the issue. Working on second part, will report soon.
+EDIT: hm, seems fixing the automatic deinterlacer is somewhat more difficult... :(
+",2011-06-23T09:45:18Z,2011-06-23T10:02:13Z
+422698,2,"sorry for that""",2011-06-09 02:16:21,Fneufneu,xbmc,xbmc,331ab90edc4fd53ea19568d127645e81b5be1287,Fneufneu,572709,"sorry for that
+",2011-06-09T14:16:21Z,2011-06-09T14:16:21Z
+405055,2,"I guess :\  to be honest I have no idea I just noticed one day I had a 5 channel (4.1) count one that had no image so I just added all the possible combinations I got from here http://en.wikipedia.org/wiki/Surround_sound#Standard_speaker_channels I have no""",2011-05-28 21:35:25,JezzX,xbmc,xbmc,c1182793d196887ad1c6f554fcbfee7c9d716a1d,JezzX,487701,"I guess :\  to be honest I have no idea I just noticed one day I had a 5 channel (4.1) count one that had no image so I just added all the possible combinations I got from here http://en.wikipedia.org/wiki/Surround_sound#Standard_speaker_channels I have no idea if we support them or not but I figured the channel count would output it if the video had it. so best to just play it safe 
+",2011-05-29T09:35:25Z,2011-05-29T09:38:54Z
+384890,2,"K, I get it now :(  Will fix tonight , sorry """,2011-05-15 18:42:57,amet,xbmc,xbmc,1a49cb4bfd82c3c03d9b9c7d8a601542d3237a42,amet,144941,"K, I get it now :(
+
+Will fix tonight , sorry 
+",2011-05-16T06:42:57Z,2011-05-16T06:42:57Z
+248368,2,"... yes, I won the first gitwtf award :(""",2011-01-22 16:04:35,opdenkamp,xbmc,xbmc,4e98a514c6a2975ec234fe19fe058e7e74bcfb7d,opdenkamp,441806,"... yes, I won the first gitwtf award :(
+",2011-01-23T03:04:35Z,2011-01-23T03:04:35Z
+234527,2,"To bad for Turkish users. It supposed to scan for folder names but I made a mistake and translate scan for file names :( But now corrected.""",2011-01-07 03:18:46,queeup,xbmc,xbmc,1b278720659ea752ab3f7dc8c61e328b0593d339,queeup,87835,"To bad for Turkish users. It supposed to scan for folder names but I made a mistake and translate scan for file names :( But now corrected.
+",2011-01-07T14:18:46Z,2011-01-07T14:18:46Z
+1810056,2,"@opdenkamp Hi Lars, I'm afraid that you forgot to upload the file to the server. If this is automated and just takes some time, I apologize.""",2012-09-04 20:49:16,ace20022,xbmc,xbmc,19793b2d0f720b9473356b8814d4c75bd33c421f,ace20022,2150851,"@opdenkamp Hi Lars, I'm afraid that you forgot to upload the file to the server. If this is automated and just takes some time, I apologize.
+",2012-09-05T08:49:16Z,2012-09-05T08:49:16Z
+4053383,0,"Causes a compilation error here  ``` RBP.cpp: In member function 'unsigned char* CRBP::CaptureDisplay(int, int, int*, bool, bool)': RBP.cpp:103:14: error: 'DISPMANX_SNAPSHOT_NO_RGB' was not declared in this scope RBP.cpp:103:39: error: 'DISPMANX_SNAPS""",2013-09-09 20:49:49,Koenkk,xbmc,xbmc,3b7bf8d2a2594c0be464466a7f6382fc2726a54f,Koenkk,2892853,"Causes a compilation error here
+
+```
+RBP.cpp: In member function 'unsigned char* CRBP::CaptureDisplay(int, int, int*, bool, bool)':
+RBP.cpp:103:14: error: 'DISPMANX_SNAPSHOT_NO_RGB' was not declared in this scope
+RBP.cpp:103:39: error: 'DISPMANX_SNAPSHOT_FILL' was not declared in this scope
+RBP.cpp:105:14: error: 'DISPMANX_SNAPSHOT_SWAP_RED_BLUE' was not declared in this scope
+RBP.cpp:107:14: error: 'DISPMANX_SNAPSHOT_PACK' was not declared in this scope
+make[1]: *** [RBP.o] Error 1
+make: *** [xbmc/linux/linux.a] Error 2
+```
+
+Full compile log: https://github.com/xbianonpi/xbian-package-xbmc/blob/bf6bdb4602ca2bde58a4c5f60b431fd716c686be/content/tmp/compile.log
+",2013-09-10T08:49:49Z,2013-09-10T08:49:49Z
+4235990,2,"Argh.. annoying. Suppose we must blacklist ATI here then. Can we get driver version somehow and blacklist 13.04 and older?""",2013-10-02 07:26:29,elupus,xbmc,xbmc,e168f22c0d572617faa05445100cb7809d6f142b,elupus,482976,"Argh.. annoying. Suppose we must blacklist ATI here then. Can we get driver version somehow and blacklist 13.04 and older?
+",2013-10-02T19:26:29Z,2013-10-02T19:26:29Z
+3662070,1,"No problem. Just see this page: http://forum.xbmc.org/showthread.php?tid=141158 I see you already signed up on Transifex. I added you as a coordinator of the Dutch translation team.  Cheers, Attila """,2013-07-17 20:01:33,alanwww1,xbmc,xbmc,ed2390f0823e6ec673884c72f0f93ff86adf285d,alanwww1,547720,"No problem. Just see this page: http://forum.xbmc.org/showthread.php?tid=141158
+I see you already signed up on Transifex. I added you as a coordinator of the Dutch translation team.
+
+Cheers,
+Attila
+",2013-07-18T08:01:33Z,2013-07-18T08:01:33Z
+3541318,0,"In that case the problem was probably related to the fact that the windows (osd or fullscreen) still are getting a chance of handling the action. My first guess was that it was due to the unconditional delegation to player, now it looks as if it's because """,2013-07-01 07:23:40,Voyager1,xbmc,xbmc,c275bf382876b592d935ebfde5f196283f00762a,Voyager1,549958,"In that case the problem was probably related to the fact that the windows (osd or fullscreen) still are getting a chance of handling the action. My first guess was that it was due to the unconditional delegation to player, now it looks as if it's because the windows in casu still go through their remaining OnAction code. 
+That being said, this has exposed another problem, which you obviously fixed.
+",2013-07-01T19:23:40Z,2013-07-01T19:23:40Z
+3353217,2,"Just imagine how embarrassing it is for the guy that reviewed it who signed it off!""",2013-06-04 08:42:07,jmarshallnz,xbmc,xbmc,77c15c4dda8490d43648b7e095f9614858fd94aa,jmarshallnz,406571,"Just imagine how embarrassing it is for the guy that reviewed it who signed it off!
+",2013-06-04T20:42:07Z,2013-06-04T20:42:07Z
+3338116,0,"No. We start from next in queue. Look further up. Then search from last decoded until we hit next in queue. So we should never reselect current due to timestamps.""",2013-06-02 19:48:21,elupus,xbmc,xbmc,cb67010e9bd93953ff88da44213fca7bc73433f6,elupus,482976,"No. We start from next in queue. Look further up. Then search from last
+decoded until we hit next in queue. So we should never reselect current due
+to timestamps.
+",2013-06-03T07:48:21Z,2013-06-03T07:48:21Z
+3725936,0,"yes, we should consider moving unbind/StartDecode into ReleaseBuffer and control the state in RenderManager.""",2013-07-26 02:46:26,FernetMenta,xbmc,xbmc,cb67010e9bd93953ff88da44213fca7bc73433f6,FernetMenta,576009,"yes, we should consider moving unbind/StartDecode into ReleaseBuffer and control the state in RenderManager.
+",2013-07-26T14:46:26Z,2013-07-26T14:46:26Z
+3835950,0,"Looks a bit hacky but I can't think of a cleaner solution right now so feel free to inject.""",2013-08-11 09:48:10,Montellese,xbmc,xbmc,34d346dc7a54b06b4973724f99d8a49690547ae1,Montellese,75864,"Looks a bit hacky but I can't think of a cleaner solution right now so feel free to inject.
+",2013-08-11T21:48:10Z,2013-08-11T21:48:10Z
+3242934,0,"unsigned int"""" in order to get rid of the sign-compare warnings in line 240 and 242.""",2013-05-18 20:55:47,vdrfan,xbmc,xbmc,4c2ef4bf9eac673853cb5a712dc67fc140ed2a2e,mkortstiege,475281,"""unsigned int"" in order to get rid of the sign-compare warnings in line 240 and 242.
+",2013-05-19T08:55:47Z,2013-05-19T08:55:47Z
+3574001,2,"This totally broke uses where a song doesn't have an album assigned or has an empty album (when not using musicBrainz). Was this EVER tested with something else than musicBrainz? And who signed off on this? This MusicBrainz merge really broke too much shit""",2013-07-05 04:52:00,arnova,xbmc,xbmc,6297c69926a11ff39158a9272cb2dabab8db27d2,arnova,544531,"This totally broke uses where a song doesn't have an album assigned or has an empty album (when not using musicBrainz). Was this EVER tested with something else than musicBrainz? And who signed off on this? This MusicBrainz merge really broke too much shit...
+",2013-07-05T16:52:00Z,2013-07-05T16:52:00Z
+3054344,2,"Nevermind, totally misread the change. Sorry. </github_spam>""",2013-04-20 22:01:23,vdrfan,xbmc,xbmc,273b064cfed7f6347966fb4aaabc572c1017ddea,mkortstiege,475281,"Nevermind, totally misread the change. Sorry. </github_spam>
+",2013-04-21T10:01:23Z,2013-04-21T10:01:23Z
+2979039,1,"Good catch. When deleting the configured auto login profile this returns NULL and XBMC is no more. I will add a check when deleting the profile and set m_autoLoginProfile to -1 when auto login profile is deleted. I will also add a check in GetAutoLoginPr""",2013-04-09 09:53:44,leechguy,xbmc,xbmc,eab6f80c1e73979124f631d4abcb7938ca489b5c,leechguy,671891,"Good catch. When deleting the configured auto login profile this returns NULL and XBMC is no more.
+I will add a check when deleting the profile and set m_autoLoginProfile to -1 when auto login profile is deleted.
+I will also add a check in GetAutoLoginProfileId() and have it return -1 in case the m_autoLoginProfile is no longer valid.
+",2013-04-09T21:53:44Z,2013-04-09T21:53:44Z
+2978027,2,"hack, hack. Why is this information useful to the user?""",2013-04-09 08:00:04,jmarshallnz,xbmc,xbmc,eab6f80c1e73979124f631d4abcb7938ca489b5c,jmarshallnz,406571,"hack, hack. Why is this information useful to the user?
+",2013-04-09T20:00:04Z,2013-04-09T20:00:04Z
+2960297,0,"@jmarshallnz - unfortunately this doesn't do any good to the rendering. The confluence home screen comes up almost empty. http://img703.imageshack.us/img703/8836/screenshot000f.png  I had to revert this to make it OK again.""",2013-04-06 18:19:40,Voyager1,xbmc,xbmc,30e2b006c108cfc495183e2b0b78391c9144193f,Voyager1,549958,"@jmarshallnz - unfortunately this doesn't do any good to the rendering. The confluence home screen comes up almost empty. http://img703.imageshack.us/img703/8836/screenshot000f.png
+
+I had to revert this to make it OK again.
+",2013-04-07T06:19:40Z,2013-04-07T06:19:40Z
+2504845,0,"dwParam1 is unsigned, the code will always set three stop bools false?""",2013-01-25 15:01:30,ulion,xbmc,xbmc,c79c5d5ba71155d7bb18c7bf0d99f695534de8c1,ulion,175133,"dwParam1 is unsigned, the code will always set three stop bools false?
+",2013-01-26T02:01:30Z,2013-01-26T02:01:30Z
+2315730,2,"Yeah it should... External player is a hack. We are not really adding to much special casing for it.  But it aught to have kicked it off to external player. Could you post a log?""",2012-12-16 08:22:24,elupus,xbmc,xbmc,4f8302575f63ec37e5b98254586129c8b91b9039,elupus,482976,"Yeah it should... External player is a hack. We are not really adding to
+much special casing for it.
+
+But it aught to have kicked it off to external player. Could you post a
+log?
+",2012-12-16T19:22:24Z,2012-12-16T19:22:24Z
+1931477,1,"This one can really spam log when playing wav files....not that anyone should ;)""",2012-10-01 12:41:25,DDDamian,xbmc,xbmc,15e3b528176d78d7fbc52a4f0286fd047ca6def0,DDDamian,1334703,"This one can really spam log when playing wav files....not that anyone should ;)
+",2012-10-02T00:41:25Z,2012-10-02T00:41:25Z
+1933889,0,"@DDDamian, I reverted these but moved the entire chunk to LOGDEBUG as I see no reason to spam xbmc.log with this info in release mode where logging is turned down to a dull roar.""",2012-10-02 01:34:12,davilla,xbmc,xbmc,eadf49da06b3060c1e5c579506d5c691ba52c389,davilla,419526,"@DDDamian, I reverted these but moved the entire chunk to LOGDEBUG as I see no reason to spam xbmc.log with this info in release mode where logging is turned down to a dull roar.
+",2012-10-02T13:34:12Z,2012-10-02T13:34:12Z
+1912069,0,"sinkLock should be held while querying m_encoder as it could be swapped out from under you.""",2012-09-26 15:47:03,gnif,xbmc,xbmc,a3aef739a90682c5f5703401d7d7c574650ce020,gnif,351151,"sinkLock should be held while querying m_encoder as it could be swapped out from under you.
+",2012-09-27T03:47:03Z,2012-09-27T03:47:03Z
+1882377,1,"I have never seen seg-faults tbh. But i also do not run from launchd of course. The signing thing is fixed now at least as it seems ;)""",2012-09-20 03:07:28,Memphiz,xbmc,xbmc,c31aca24e63b1b70a6e207f360f134f460cbe2d7,Memphiz,701326,"I have never seen seg-faults tbh. But i also do not run from launchd of course. The signing thing is fixed now at least as it seems ;)
+",2012-09-20T15:07:28Z,2012-09-20T15:07:28Z
+1828284,0,"https://github.com/xbmc/xbmc/blob/83112d01a9c65fcef2d97dcc85380aa60cf7f1c1/xbmc/guilib/Texture.cpp#L228 was ment how it is. The omx jpeg decoder was developed for and on the PI. Until we did not test it on other plattforms it is bound to the PI.""",2012-09-09 06:53:02,huceke,xbmc,xbmc,83112d01a9c65fcef2d97dcc85380aa60cf7f1c1,huceke,549196,"https://github.com/xbmc/xbmc/blob/83112d01a9c65fcef2d97dcc85380aa60cf7f1c1/xbmc/guilib/Texture.cpp#L228 was ment how it is.
+The omx jpeg decoder was developed for and on the PI. Until we did not test it on other plattforms it is bound to the PI.
+",2012-09-09T18:53:02Z,2012-09-09T18:53:02Z
+1685302,0,"When it crashs in that else. See if what is used here unsigned int mixSamples = std::min(ss->sampleCount, samples); (i mean - which value is smaller). Also does it crash due to writing to buffer or due to reading sample_buffer?""",2012-08-07 19:19:08,Memphiz,xbmc,xbmc,963def3288cb485d6aba6b8331ce63f08a4e7afa,Memphiz,701326,"When it crashs in that else. See if what is used here unsigned int mixSamples = std::min(ss->sampleCount, samples); (i mean - which value is smaller). Also does it crash due to writing to buffer or due to reading sample_buffer?
+",2012-08-08T07:19:08Z,2012-08-08T07:19:08Z
+1351684,0,"On Sat, May 19, 2012 at 9:11 PM, Martin van Beurden <reply@reply.github.com> wrote: > eh why? It's not shared, the fileitem is created and destroyed in PAPlayer and values assigned through CFileItem's assignment operator, it's the only pointer that ever""",2012-05-19 09:41:18,elupus,xbmc,xbmc,261fc93597041490c9c4b0e7541ee9e9d0b1432e,elupus,482976,"On Sat, May 19, 2012 at 9:11 PM, Martin van Beurden
+reply@reply.github.com
+wrote:
+
+> eh why? It's not shared, the fileitem is created and destroyed in PAPlayer and values assigned through CFileItem's assignment operator, it's the only pointer that ever points to this object. The only reasons I made it a pointer instead of a regular member is to not pull in FileItem.h in PAPlayer.h
+
+I'm pretty sure PAPlayer.h already pulls in FileItem.h, then again
+that may have changed with AE being merged.
+
+The reason wasn't for it being shared, it was to avoid the requirement
+to remember to delete it whenever it's set and/or paplayer being
+deleted.
+",2012-05-19T21:41:18Z,2012-05-19T21:41:18Z
+1299920,0,"I have uploaded the libgcrypt-1.4.5.tar.bz2 to our mirrors already, we can look at all those once the restructure is done""",2012-05-07 00:26:18,amet,xbmc,xbmc,44cbad1ecbed70a45c0e622745aa829d2c52d663,amet,144941,"I have uploaded the libgcrypt-1.4.5.tar.bz2 to our mirrors already, we can look at all those once the restructure is done
+",2012-05-07T12:26:18Z,2012-05-07T12:26:18Z
+1279311,0,"sourceforge link? didn't we pull everything onto our mirrors for depends?""",2012-05-01 07:51:24,Memphiz,xbmc,xbmc,c707e67e0616d35a9252aed6d26ad39c37600cd6,Memphiz,701326,"sourceforge link? didn't we pull everything onto our mirrors for depends?
+",2012-05-01T19:51:24Z,2012-05-01T19:51:24Z
+1136859,2,"Whoops.. That ain't good though. We can't really drop support for lucid yet.  We could have used sha routines in ffmpeg instead. Might be more complicated I suppose. On Mar 27, 2012 12:40 PM, """"Arne Morten Kvarving"""" < reply@reply.github.com> wrote:  > for s""",2012-03-26 22:43:19,elupus,xbmc,xbmc,4d4eac0b4043c99d9794871139527f6d8f441a08,elupus,482976,"Whoops.. That ain't good though. We can't really drop support for lucid
+yet.
+
+We could have used sha routines in ffmpeg instead. Might be more
+complicated I suppose.
+On Mar 27, 2012 12:40 PM, ""Arne Morten Kvarving"" <
+reply@reply.github.com>
+wrote:
+
+> for somebody with a slightly more sharpened eye... ;P
+> 
+> you need libboost 1.42+. lucid won't cut it.
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/xbmc/xbmc/commit/4d4eac0b4043c99d9794871139527f6d8f441a08#commitcomment-1136848
+",2012-03-27T10:43:19Z,2012-03-27T10:43:19Z
+825204,0,"Did you mean to include the iso9660:// part for all systems?  Prior to this it was only for non-Windows.  Previously:  ``` GetDiskUniqueId: Trying to retrieve ID for path D:\VIDEO_TS CMediaManager::HashDVD - Adding file content for dvd file: VIDEO_TS""",2011-12-28 12:08:55,ScudLee,xbmc,xbmc,ee8b61c8687ad6a2c0c58c476b69d1b58364d43c,ScudLee,1206207,"Did you mean to include the iso9660:// part for all systems?  Prior to this it was only for non-Windows.
+
+Previously:
+
+```
+GetDiskUniqueId: Trying to retrieve ID for path D:\VIDEO_TS
+CMediaManager::HashDVD - Adding file content for dvd file: VIDEO_TS.IFO
+...
+CMediaManager::HashDVD - Adding file content for dvd file: VTS_11_0.IFO
+GetDiskUniqueId: Got ID removable://MONTE_CRISTO_VOL3_94b96961 for DVD disk
+```
+
+Currently:
+
+```
+GetDiskUniqueId: Trying to retrieve ID for path iso9660://VIDEO_TS
+CMediaManager::HashDVD - Adding file content for dvd file: VIDEO_TS.IFO
+...
+CMediaManager::HashDVD - Adding file content for dvd file: VTS_11_0.IFO
+GetDiskUniqueId: Got ID removable://_c9344d08 for DVD disk
+```
+
+(Same disk both times)
+
+Looks like CMediaManager::GetDiskLabel doesn't like what now gets passed to it (on Windows).  Plus the hash is different (obviously).
+",2011-12-28T23:08:55Z,2011-12-28T23:08:55Z
+665217,0,"@neoflex - the new changes will render the requirement to have an empty database useless, as you will need to give the xmbc db credentials sufficient access to create new databases.  @Zxurian - custom DB names are being deprecated. as it stands now, ever""",2011-10-20 10:18:34,firnsy,xbmc,xbmc,5ecc52506b8d068b11cf5a28341e2c7fde727be6,firnsy,420034,"@neoflex - the new changes will render the requirement to have an empty database useless, as you will need to give the xmbc db credentials sufficient access to create new databases.
+
+@Zxurian - custom DB names are being deprecated. as it stands now, everytime XBMC is booted, it's goint to attempt to connect to the expected name/version first before finally testing a custom name (if supplied) and then perform the upgrade to the new convention. so in theory it will only attempt large number of connection attempts until the upgrade has succeded, which should be one time only.
+",2011-10-20T22:18:34Z,2011-10-20T22:18:34Z
+567669,2,"Hmm.. yup that file ffmpeg decoded one frame, but the fps is part of the header so it's actually valid.. crud. i wonder how to resolve that""",2011-09-02 22:46:22,elupus,xbmc,xbmc,fb9df697cbd0d3ce95b4d0fd067db51e5f1b4ebb,elupus,482976,"Hmm.. yup that file ffmpeg decoded one frame, but the fps is part of the header so it's actually valid.. crud. i wonder how to resolve that
+",2011-09-03T10:46:22Z,2011-09-03T10:46:22Z
+725125,0,"Just figured out what happened. We do a (time_t)(milliseconds / 1000) in the pthread code. Where time_t could be a 32bit signed int. The value there just won't fit.  There aught to be an assert somewhere about too large values being passed down.""",2011-11-16 05:49:12,elupus,xbmc,xbmc,a51927c31fc3e30d11f25c052a28a710e951dbdf,elupus,482976,"Just figured out what happened. We do a (time_t)(milliseconds / 1000) in the pthread code. Where time_t could be a 32bit signed int. The value there just won't fit.
+
+There aught to be an assert somewhere about too large values being passed down.
+",2011-11-16T16:49:12Z,2011-11-16T16:49:22Z
+459407,0,"Ah, okey. I just went with what mpc-hc does in CopyScalingMatrix: http://mpc-hc.svn.sourceforge.net/viewvc/mpc-hc/trunk/src/filters/transform/MPCVideoDec/FfmpegContext.c?revision=3123&view=markup  They have some work arounds there as well that might be w""",2011-07-03 09:03:26,elupus,xbmc,xbmc,6345c791826dea18afd9ede362d002298b5aee3e,elupus,482976,"Ah, okey. I just went with what mpc-hc does in CopyScalingMatrix: http://mpc-hc.svn.sourceforge.net/viewvc/mpc-hc/trunk/src/filters/transform/MPCVideoDec/FfmpegContext.c?revision=3123&view=markup
+
+They have some work arounds there as well that might be worth handling.
+
+But if you can verify that uvd2 cards don't need this change we'll change it.
+",2011-07-03T21:03:26Z,2011-07-03T21:03:26Z
+460426,0,"Just tested the commit. As expected, it breaks playback on Mobility Radeon 5145 (~4570, UVD2). However it does fix playback for both the 3450 and 3850 which to me clearly indicates that the patch must be activated for UVD/UVD+ (L4.1 limited) decoder cards.""",2011-07-04 05:27:33,a11599,xbmc,xbmc,6345c791826dea18afd9ede362d002298b5aee3e,a11599,690966,"Just tested the commit. As expected, it breaks playback on Mobility Radeon 5145 (~4570, UVD2). However it does fix playback for both the 3450 and 3850 which to me clearly indicates that the patch must be activated for UVD/UVD+ (L4.1 limited) decoder cards. I think changing the check as I suggested in the first comment will be a good solution.
+",2011-07-04T17:27:33Z,2011-07-04T17:27:33Z
+447660,2,"Since I really don't understand this cryptic lines I just post the error output for you to review: ``` 2>C:\Development\xbmc\xbmc\utils/GlobalsHandling.h(184): warning C4346: 'xbmcutil::GlobalsSingleton<T>::?$Deleter@V?$shared_ptr@$RX@BAAB@@boost@@' : depe""",2011-06-24 22:45:38,wsoltys,xbmc,xbmc,cf8165c9df024e0a9d5ef7e981300f382467c15a,wsoltys,487357,"Since I really don't understand this cryptic lines I just post the error output for you to review:
+
+```
+2>C:\Development\xbmc\xbmc\utils/GlobalsHandling.h(184): warning C4346: 'xbmcutil::GlobalsSingleton<T>::?$Deleter@V?$shared_ptr@$RX@BAAB@@boost@@' : dependent name is not a type
+2>          prefix with 'typename' to indicate a type
+2>C:\Development\xbmc\xbmc\utils/GlobalsHandling.h(184): error C2143: syntax error : missing ';' before 'xbmcutil::GlobalsSingleton<T>::instance'
+2>C:\Development\xbmc\xbmc\utils/GlobalsHandling.h(184): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+2>C:\Development\xbmc\xbmc\utils/GlobalsHandling.h(184): error C2936: 'xbmcutil::GlobalsSingleton<T>::Deleter<boost::shared_ptr<X>>' : template-class-id redefined as a global data variable
+2>C:\Development\xbmc\xbmc\utils/GlobalsHandling.h(184): error C2888: 'GlobalsSingleton<T>::?$Deleter@V?$shared_ptr@$RX@BAAB@@boost@@ Deleter<boost::shared_ptr<X> >' : symbol cannot be defined within namespace 'xbmcutil'
+2>C:\Development\xbmc\xbmc\utils/GlobalsHandling.h(184): fatal error C1903: unable to recover from previous error(s); stopping compilation
+```
+",2011-06-25T10:45:38Z,2011-06-25T10:45:38Z
+444601,0,"Yep, I cannot fix auto from XBMC as the picture flags will (obviously) report the video as progressive after decode stage, so I give up on that. The fix on the other part of the problem works however fine. Will now check how to handle the automatic scaler """,2011-06-22 23:18:42,a11599,xbmc,xbmc,ad392e9fbf169611b22630065fa078a3db055cf6,a11599,690966,"Yep, I cannot fix auto from XBMC as the picture flags will (obviously) report the video as progressive after decode stage, so I give up on that. The fix on the other part of the problem works however fine. Will now check how to handle the automatic scaler algorithm selection issue.
+
+EDIT: Found a fix to all issues, including automatic deinterlace method. Sent as a pull req.
+",2011-06-23T11:18:42Z,2011-06-23T13:32:24Z
+441853,0,"It's ALSO for display. Although I doubt the practical use of your case, especially considering what this fixes (copying from URL encoded VFS's), reverting maybe a little drastic. I think a far better fix is simply adding a check performing an IsInternetStr""",2011-06-21 09:16:58,arnova,xbmc,xbmc,15e04f81f78aa535d2c0d59845d643761b3f8783,arnova,544531,"It's ALSO for display. Although I doubt the practical use of your case, especially considering what this fixes (copying from URL encoded VFS's), reverting maybe a little drastic. I think a far better fix is simply adding a check performing an IsInternetStream() on the source filename.
+",2011-06-21T21:16:58Z,2011-06-21T21:16:58Z
+442371,0,"The reason we need to decode is when one has an eg. http source on the left in the filemanger and a local drive on the right files like """"01 - track.mp3"""" will stored on the http source as """"01%20-%20track.mp3"""" and literally(!) copied to the local drive. The """,2011-06-21 17:11:18,arnova,xbmc,xbmc,15e04f81f78aa535d2c0d59845d643761b3f8783,arnova,544531,"The reason we need to decode is when one has an eg. http source on the left in the filemanger and a local drive on the right files like ""01 - track.mp3"" will stored on the http source as ""01%20-%20track.mp3"" and literally(!) copied to the local drive. The fact that the target maybe an URL encoded VFS too, is no problem since this is handled by our VFS. Furthermore any of those VFS's are streaming and/or don't support file writing of any kind. 
+
+Of course this can be reverted but this obviously doesn't fix the issue nor does yelling ""just revert"". I'd prefer a more constructive solution.
+",2011-06-22T05:11:18Z,2011-06-22T05:11:18Z
+442376,0,"The first thing is if you URLDecode you need only URLDecode the filename, not the entire thing, right?  After all, the rest of the path comes from a filesystem that is NOT to be URLDecode'd.  The second is whether it should be done at all.  As elupus point""",2011-06-21 17:19:37,jmarshallnz,xbmc,xbmc,15e04f81f78aa535d2c0d59845d643761b3f8783,jmarshallnz,406571,"The first thing is if you URLDecode you need only URLDecode the filename,
+not the entire thing, right?  After all, the rest of the path comes from a
+filesystem that is NOT to be URLDecode'd.
+
+The second is whether it should be done at all.  As elupus points out, you
+miss the case where the file is 01%20-%20track.mp3 and it's NOT url encoded.
+
+It would be better to decode only if it makes sense to do so - some sort of
+""copying from a source that's always URL encoded to a source that is never
+url encoded"" would be the only case you need do anything.
+
+On Wed, Jun 22, 2011 at 5:11 PM, arnova <
+reply@reply.github.com>wrote:
+
+> The reason we need to decode is when one has an eg. http source on the left
+> in the filemanger and a local drive on the right files like ""01 - track.mp3""
+> will stored on the http source as ""01%20-%20track.mp3"" and literally(!)
+> copied to the local drive. The fact that the target maybe an URL encoded VFS
+> too, is no problem since this is handled by our VFS. Furthermore any of
+> those VFS's are streaming and/or don't support file writing of any kind.
+> 
+> Of course this can be reverted but this obviously doesn't fix the issue nor
+> does yelling ""just revert"". I'd prefer a more constructive solution.
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/xbmc/xbmc/commit/15e04f81f78aa535d2c0d59845d643761b3f8783#commitcomment-442371
+",2011-06-22T05:19:37Z,2011-06-22T05:19:37Z
+443418,0,"Is something like this: https://sourceforge.net/apps/trac/xbmc4xbox/changeset/30905/trunk acceptable?""",2011-06-22 05:01:04,arnova,xbmc,xbmc,15e04f81f78aa535d2c0d59845d643761b3f8783,arnova,544531,"Is something like this: https://sourceforge.net/apps/trac/xbmc4xbox/changeset/30905/trunk acceptable?
+",2011-06-22T17:01:04Z,2011-06-22T17:01:04Z
+444819,0,"Having GetFileName() return an urldecoded name for internet streams seem valid..""",2011-06-23 01:49:22,elupus,xbmc,xbmc,15e04f81f78aa535d2c0d59845d643761b3f8783,elupus,482976,"Having GetFileName() return an urldecoded name for internet streams seem valid..
+",2011-06-23T13:49:22Z,2011-06-23T13:49:22Z
+444897,0,"@cptspiff: Yeah this would be the best future solution although this can't be easily/quickly be implemented. @elupus: Do you mean we should move the URLDecode() call + URL check to URIUtils::GetFileName() instead to make it more generic?""",2011-06-23 02:30:42,arnova,xbmc,xbmc,15e04f81f78aa535d2c0d59845d643761b3f8783,arnova,544531,"@cptspiff: Yeah this would be the best future solution although this can't be easily/quickly be implemented.
+@elupus: Do you mean we should move the URLDecode() call + URL check to URIUtils::GetFileName() instead to make it more generic?
+",2011-06-23T14:30:42Z,2011-06-23T14:30:42Z
+446037,0,"I think the reason why we don't have ::Parse() URLDecode is that it could cause problems when manipulating the CURL filename member and then re-using the CURL object. It would be better then to put this in URIUtils::GetFileName(), I guess.  Since I didn'""",2011-06-23 18:14:01,arnova,xbmc,xbmc,15e04f81f78aa535d2c0d59845d643761b3f8783,arnova,544531,"I think the reason why we don't have ::Parse() URLDecode is that it could cause problems when manipulating the CURL filename member and then re-using the CURL object. It would be better then to put this in URIUtils::GetFileName(), I guess.
+
+Since I didn't think such a minor fix would introduce this much fuss, I'll revert the whole thing. But since we've been talking about moving to CURL's for all our filenames for ages now and we haven't done this yet I doubt it will happen in the near future including a fix for this issue.
+",2011-06-24T06:14:01Z,2011-06-24T06:14:01Z
+412741,1,"Another warning: """"warning: comparison between signed and unsigned integer expressions"""" ;)""",2011-06-02 19:18:45,vdrfan,xbmc,xbmc,5db18b13993b91f0d18ba96af6069836b234f549,mkortstiege,475281,"Another warning: ""warning: comparison between signed and unsigned integer expressions"" ;)
+",2011-06-03T07:18:45Z,2011-06-03T07:18:45Z
+269294,0,"That would be nice, but more complex. We can't detect mid-stream sample rate changes without calling the decoder (unless the container informs us of that, which e.g. mpegts doesn't do), which we currently don't do at all when passthrough in use. And if t""",2011-02-12 05:22:19,anssih,xbmc,xbmc,167845919082602a8eb26408e935ffe65b816011,anssih,509357,"That would be nice, but more complex.
+We can't detect mid-stream sample rate changes without calling the decoder (unless the container informs us of that, which e.g. mpegts doesn't do), which we currently don't do at all when passthrough in use.
+And if the sample rate changes to a passthrough-compatible one, we don't (with the current code) want to start passthrough as the chances of it switching back to an incompatible one are high and we wouldn't detect it anymore.
+
+However, AudioEngine can detect sample rate changes during passthrough, so this can be revisited then :)
+",2011-02-12T16:22:19Z,2011-02-12T16:22:19Z
+1541716,0,"Wouldn't it be better to make the image width and height unsigned instead of the cast ?""",2012-07-05 00:55:28,huceke,xbmc,xbmc,60b0903f6ee3c832b2ef2ea44f40175eb251d741,huceke,549196,"Wouldn't it be better to make the image width and height unsigned instead of the cast ?
+",2012-07-05T12:55:28Z,2012-07-05T12:55:28Z
+3241458,1,"The problem is not to go from UPnP to JSON via those ids :)  The problem is how from a JSON object containing an id and a path browse the corresponding item in UPnP. So that the UPnP streaming server add this to the hash table and then allow streaming.""",2013-05-18 03:07:16,Tolriq,xbmc,xbmc,1220d8c4a93ebe1b797fe6a4a6f7370e500bb500,Tolriq,932609,"The problem is not to go from UPnP to JSON via those ids :)
+
+The problem is how from a JSON object containing an id and a path browse the corresponding item in UPnP.
+So that the UPnP streaming server add this to the hash table and then allow streaming.
+
+For doing that the only efficient way to avoid a full search (not completely supported in Xbmc) is to browse the media for MetaData on the corresponding path.
+
+Paths being those I described earlier.
+There was already discussion about that never ended in the UPnP thread in GSOC 2012 :)
+
+If I refactor as suggested by Montellese will the PR be merged ? This solved the problem and leave everybody happy.
+",2013-05-18T15:07:16Z,2013-05-18T15:07:16Z
+1931468,1,"@gnif - see my """"i'm gonna regret it"""" post in the internal forum thread: http://forum.xbmc.org/showthread.php?tid=141354  I do support davilla's quest on log spam reduction, but obviously don't want to remove what's necessary :)""",2012-10-01 12:38:10,DDDamian,xbmc,xbmc,eadf49da06b3060c1e5c579506d5c691ba52c389,DDDamian,1334703,"@gnif - see my ""i'm gonna regret it"" post in the internal forum thread: http://forum.xbmc.org/showthread.php?tid=141354
+
+I do support davilla's quest on log spam reduction, but obviously don't want to remove what's necessary :)
+",2012-10-02T00:38:10Z,2012-10-02T00:38:10Z
+1844691,1,"@MartijnKaijser Lolz - reduced the log spam a bit for you too ;) Was feeling left out not breaking anything during merge :P""",2012-09-12 06:53:45,DDDamian,xbmc,xbmc,f765ec6906812330dbe8aaa052f34bfb42e9272c,DDDamian,1334703,"@MartijnKaijser Lolz - reduced the log spam a bit for you too ;) Was feeling left out not breaking anything during merge :P
+",2012-09-12T18:53:45Z,2012-09-12T18:53:45Z
+267606,1,"Please don't forget to update pydoc for new added listitems or etc. Later its gona be pain :)""",2011-02-10 11:49:15,queeup,xbmc,xbmc,2c1b416df16684594a5e8fd98a13a00bc37977aa,queeup,87835,"Please don't forget to update pydoc for new added listitems or etc. Later its gona be pain :)
+",2011-02-10T22:49:15Z,2011-02-10T22:49:15Z
+1819984,2,"Agh.  That was a dumb mistake.  Thanks for fixing that up.  I'll go back through and audit my other uninitialized member changes to make sure I didn't make another similar mistake.""",2012-09-06 10:39:59,kylhill,xbmc,xbmc,85e6727874ae1814d749f68969022b723195b679,kylhill,549761,"Agh.  That was a dumb mistake.  Thanks for fixing that up.
+
+I'll go back through and audit my other uninitialized member changes to make sure I didn't make another similar mistake.
+",2012-09-06T22:39:59Z,2012-09-06T22:39:59Z
+818951,2,"IMO the entire path substitution is a utter hack. I've only looked at it cause amet nagged so hard. Issue @ http://trac.xbmc.org/ticket/11952""",2011-12-23 12:34:17,vdrfan,xbmc,xbmc,023607e247c0074d88464a39eca643897550cb70,mkortstiege,475281,"IMO the entire path substitution is a utter hack. I've only looked at it cause amet nagged so hard. Issue @ http://trac.xbmc.org/ticket/11952
+",2011-12-23T23:34:17Z,2011-12-23T23:34:56Z

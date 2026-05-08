@@ -1,0 +1,132 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+2366410,0,"There are a bunch of tab characters here instead of spaces which ruins the formatting of the file. Would you be able to fix this?""",2012-12-10 06:25:30,alanmcgovern,mono,mono,,https://github.com/mono/mono/pull/482#discussion_r2366410,2012-12-10T17:25:30Z,2012-12-16T09:20:25Z,alanmcgovern,MEMBER,mcs/class/WindowsBase/System.IO.Packaging/PackUriParser.cs,,68.0,,,1,"@@ -64,35 +64,37 @@ protected override string GetComponents(Uri uri, UriComponents components, UriFo
+                     builder.Length == 0)
+                     start++;
+ 
+-                builder.Append(s, start, end - start);
++				if (start > 0) builder.Append(s, start, end - start);
+             }","There are a bunch of tab characters here instead of spaces which ruins the formatting of the file. Would you be able to fix this?
+",9b2d039654e05be4a69d5e7d982d85c1b2d3d04e
+2368881,0,"space before (""",2012-12-10 09:03:34,alexrp,mono,mono,,https://github.com/mono/mono/pull/519#discussion_r2368881,2012-12-10T20:03:34Z,2012-12-10T21:39:12Z,alexrp,CONTRIBUTOR,mcs/class/corlib/Test/System.Threading/ExecutionContextTest.cs,,,,,1,"@@ -60,6 +71,27 @@ public void TearDown ()
+ 		}
+ 
+ 		[Test]
++		public void CaptureCallContext ()
++		{
++			var value = new CallContextValue(true);","space before (
+",5c2e8d62de25743d132c76685e06ca4e76c879a2
+3231741,0,"I wrote an application that printed out the headers/cookies that it received from a request, and made sure that it acted similarly in .Net Also ran all the unit tests in System.Net to make sure it didn't introduce regressions.  I was able to compile an""",2013-03-04 09:36:07,yurigorokhov,mono,mono,,https://github.com/mono/mono/pull/582#discussion_r3231741,2013-03-04T20:36:07Z,2013-04-19T17:20:21Z,yurigorokhov,NONE,mcs/class/System/System.Net/HttpListenerRequest.cs,,290.0,,,12,"@@ -287,16 +287,20 @@ internal void AddHeader (string header)
+ 							if (current != null) {
+ 								cookies.Add (current);
+ 							}
+-							current = new Cookie ();
+-							int idx = str.IndexOf ('=');
+-							if (idx > 0) {
+-								current.Name = str.Substring (0, idx).Trim ();
+-								current.Value =  str.Substring (idx + 1).Trim ();
+-							} else {
+-								current.Name = str.Trim ();
+-								current.Value = String.Empty;
++							try {","I wrote an application that printed out the headers/cookies that it received from a request, and made sure that it acted similarly in .Net
+Also ran all the unit tests in System.Net to make sure it didn't introduce regressions.
+
+I was able to compile and run from the libraries, but not debug them in a debugger, not sure how to set that up.
+",7aa5f1a135be0dd60665a013e18d1d1c81bc7cd9
+2366422,2,"The indentation is also weird for the [Category] attributes and some of the new tests""",2012-12-10 06:26:09,alanmcgovern,mono,mono,,https://github.com/mono/mono/pull/482#discussion_r2366422,2012-12-10T17:26:09Z,2012-12-16T09:20:25Z,alanmcgovern,MEMBER,mcs/class/WindowsBase/Test/System.IO.Packaging/PackUriHelperTests.cs,,108.0,,,1,"@@ -97,6 +98,13 @@ public void CreateTest ()
+ 			                                       new Uri (""/main.html"", UriKind.Relative), ""#frag"").ToString (), ""#3"");
+         }
+ 
++	[Test]
++	public void CreateTest2()
++	{
++		Uri uri = PackUriHelper.Create(new Uri(""http://www.test.com/pack1.pkg""));
++		Assert.AreEqual(""pack://pack:,,http:%2C%2Cwww.test.com%2Cpack1.pkg,/"", PackUriHelper.Create(uri).ToString());
++	}
++
+         [Test]","The indentation is also weird for the [Category] attributes and some of the new tests
+",9b2d039654e05be4a69d5e7d982d85c1b2d3d04e
+342967,0,"Yes, this is true for the exisiting code. However, I can't see why the existing code used case insensitive comparison. I don't think that this is necessary.""",2012-01-11 00:15:10,QuickJack,mono,mono,,https://github.com/mono/mono/pull/214#discussion_r342967,2012-01-11T11:15:10Z,2012-01-11T11:15:10Z,QuickJack,CONTRIBUTOR,mcs/class/System.Web/System.Web.Configuration_2.0/WebConfigurationHost.cs,,507.0,,,28,"@@ -503,8 +503,8 @@ public virtual void WriteCompleted (string streamName, bool success, object writ
+ 			// FileSystemWatcher monitor might have already delivered the
+ 			// notification. If the stream has been open using OpenStreamForWrite then
+ 			// we're safe, though.
+-			string rootConfigPath = GetWebConfigFileName (HttpRuntime.AppDomainAppPath);
+-			if (String.Compare (streamName, rootConfigPath, StringComparison.OrdinalIgnoreCase) == 0)
++
++			if (!IsAboveApplication (streamName))","Yes, this is true for the exisiting code. However, I can't see why the existing code used case insensitive comparison. I don't think that this is necessary.
+",cd2c570c5543963d987f51080218715407c5d4b9
+3230243,1,"Miguel,  Thanks for the feedback. I can certainly look into it more, although especially for cookies it may be wise to always let the application handle bad cookies, since there are so many of them (bad cookies) floating out there. When mono kills the r""",2013-03-04 08:18:16,yurigorokhov,mono,mono,,https://github.com/mono/mono/pull/582#discussion_r3230243,2013-03-04T19:18:16Z,2013-04-19T17:20:21Z,yurigorokhov,NONE,mcs/class/System/System.Net/HttpListenerRequest.cs,,290.0,,,12,"@@ -287,16 +287,20 @@ internal void AddHeader (string header)
+ 							if (current != null) {
+ 								cookies.Add (current);
+ 							}
+-							current = new Cookie ();
+-							int idx = str.IndexOf ('=');
+-							if (idx > 0) {
+-								current.Name = str.Substring (0, idx).Trim ();
+-								current.Value =  str.Substring (idx + 1).Trim ();
+-							} else {
+-								current.Name = str.Trim ();
+-								current.Value = String.Empty;
++							try {","Miguel,
+
+Thanks for the feedback. I can certainly look into it more, although especially for cookies it may be wise to always let the application handle bad cookies, since there are so many of them (bad cookies) floating out there. When mono kills the request there is not much the app can do. Btw the cookie in question here is not according to spec, so theoretically mono SHOULD deem it invalid. But in the real world.. this causes problems.
+
+Is there a page that explains how to set up a valid development environment for these library classes so that I can actually step through the code in a debugger? I wasn't able to fine one.
+
+Thanks for the speedy response!
+",7aa5f1a135be0dd60665a013e18d1d1c81bc7cd9
+4742969,0,"Use consistent {, } coding, according to Mono coding guidelines """,2013-06-17 20:04:08,marek-safar,mono,mono,,https://github.com/mono/mono/pull/665#discussion_r4742969,2013-06-18T08:04:08Z,2013-07-08T08:44:36Z,marek-safar,MEMBER,mcs/class/System.Core/System/TimeZoneInfo.TransitionTime.cs,,,,,1,"@@ -216,7 +252,50 @@ void IDeserializationCallback.OnDeserialization (object sender)
+ 			public void OnDeserialization (object sender)
+ #endif
+ 			{
+-				throw new NotImplementedException ();
++				try {
++					TimeZoneInfo.TransitionTime.Validate (timeOfDay, month, week, day, dayOfWeek, isFixedDateRule);
++				} catch (ArgumentException ex) {
++					throw new SerializationException (""invalid serialization data"", (Exception) ex);
++				}
++			}
++
++			private static void Validate (DateTime timeOfDay, int month,int week, int day, DayOfWeek dayOfWeek, bool isFixedDateRule)
++			{
++				if (timeOfDay.Year != 1 || timeOfDay.Month != 1 || timeOfDay.Day != 1)
++					throw new ArgumentException (""timeOfDay parameter has a non-default date component"");
++
++				if (timeOfDay.Kind != DateTimeKind.Unspecified)
++					throw new ArgumentException (""timeOfDay parameter Kind's property is not DateTimeKind.Unspecified"");
++
++				if (timeOfDay.Ticks % TimeSpan.TicksPerMillisecond != 0)
++					throw new ArgumentException (""timeOfDay parameter does not represent a whole number of milliseconds"");
++
++				if (day < 1 || day > 31)","Use consistent {, } coding, according to Mono coding guidelines 
+",a4edd897b59a92fff533f71c13a87ae414b67e65
+3846411,0,"When I decoded the Serialized objects created by mono and .NET one of the key differences was the use of Collections.List by .NET and Collections.IList by mono and the other was the use of the variable name items by .NET and list by mono. Does mono hav""",2013-04-17 15:18:05,nealef,mono,mono,,https://github.com/mono/mono/pull/613#discussion_r3846411,2013-04-18T03:18:05Z,2013-04-18T03:18:05Z,nealef,CONTRIBUTOR,mcs/class/corlib/System.Collections.ObjectModel/Collection.cs,,68.0,,,19,"@@ -61,21 +62,21 @@ public Collection ()
+ 			List <T> l = new List <T> ();
+ 			IList l2 = l as IList;
+ 			syncRoot = l2.SyncRoot;
+-			list = l;
++			items = l;
+ 		}
+ 
+-		public Collection (IList <T> list)
++		public Collection (IList <T> items)","When I decoded the Serialized objects created by mono and .NET one of the
+key differences was the use of Collections.List by .NET and
+Collections.IList by mono and the other was the use of the variable name
+items by .NET and list by mono. Does mono have Collections.List and does it
+use items, if so why does the mono serialization end up with Ilist?
+
+Mono decode: http://pastebin.com/55t8f2JS
+.NET decode: http://pastebin.com/3K86yzhs
+
+On 4/17/13 10:36 PM, ""Marek Safar"" notifications@github.com wrote:
+
+> In mcs/class/corlib/System.Collections.ObjectModel/Collection.cs:
+> 
+> > >    }
+> > > -  public Collection (IList <T> list)
+> > > -  public Collection (IList <T> items)
+> > >   This is wrong the parameter name was correct
+> 
+> ‹
+> Reply to this email directly or view it on GitHub
+> https://github.com/mono/mono/pull/613/files#r3846098 .
+",66c4520fa2e7890b3ccf26f3999c5bc94dd19e27

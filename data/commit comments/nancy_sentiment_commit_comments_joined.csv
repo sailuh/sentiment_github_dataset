@@ -1,0 +1,17 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1120023,1,"hahaha :)""",2012-03-22 06:36:11,jugglingnutcase,NancyFx,Nancy,55a941a869a436656b00ecd77fb375e82e15ff77,jrsconfitto,238079,"hahaha :)
+",2012-03-22T17:36:11Z,2012-03-22T17:36:11Z
+267111,2,"Interesting... god damn .NET.  Oh well, ok I guess I'll write some more failing tests for those cases and see what else we can do.""",2011-02-10 05:21:06,chrisnicola,NancyFx,Nancy,477be000549dcc92850db1c0ac50ed07cc441c59,chrisnicola,156449,"Interesting... god damn .NET.  Oh well, ok I guess I'll write some more failing tests for those cases and see what else we can do.
+",2011-02-10T16:21:06Z,2011-02-10T16:21:06Z
+3707884,1,"Ok. So its done? :)""",2013-07-24 04:50:41,luisrudge,NancyFx,Nancy,39cb0b5615d0acd581814d91231345b53680eb83,luisrudge,941075,"Ok. So its done? :)
+",2013-07-24T16:50:41Z,2013-07-24T16:50:41Z
+3707908,1,"Ish. The implementation should be done. We still have some tests to clean up + make sure we haven't removed any core functionality in the rewrite. The more that help out testing it, the quicker this will happen :smile: """,2013-07-24 04:54:07,thecodejunkie,NancyFx,Nancy,39cb0b5615d0acd581814d91231345b53680eb83,thecodejunkie,50543,"Ish. The implementation should be done. We still have some tests to clean up + make sure we haven't removed any core functionality in the rewrite. The more that help out testing it, the quicker this will happen :smile: 
+",2013-07-24T16:54:07Z,2013-07-24T16:54:07Z
+2756882,1,"Knock yourself out :-) Even something that's replaced later that does the job would be better than nothing :)""",2013-03-06 21:20:26,grumpydev,NancyFx,Nancy,c8d331a8723347736310bc7f694e061be15c9d13,grumpydev,527013,"Knock yourself out :-) Even something that's replaced later that does the job would be better than nothing :)
+",2013-03-07T08:20:26Z,2013-03-07T08:20:26Z
+2793120,1,"Ignore me. Next time I'll keep researching before I comment. :)""",2013-03-12 15:46:17,aaronlerch,NancyFx,Nancy,c8d331a8723347736310bc7f694e061be15c9d13,aaronlerch,69980,"Ignore me. Next time I'll keep researching before I comment. :)
+",2013-03-13T02:46:17Z,2013-03-13T02:46:17Z
+2607764,1,"I agree that it should be immutable! If you can conjure up something in the next hours then it might make it into 0.16 =)""",2013-02-12 05:53:09,thecodejunkie,NancyFx,Nancy,8d7210f29a95e00913cc6285faf95def22900956,thecodejunkie,50543,"I agree that it should be immutable! If you can conjure up something in the next hours then it might make it into 0.16 =)
+",2013-02-12T16:53:09Z,2013-02-12T16:53:09Z
+221997,0,"Injection should go through the constructor for dependencies that the class *requires* in order to function, only *optional* dependencies should use property injection. Is this the case here?""",2010-12-20 02:29:38,GraemeF,NancyFx,Nancy,e08dbc78e155b26d2e139581209138fa369e8b7b,GraemeF,80714,"Injection should go through the constructor for dependencies that the class _requires_ in order to function, only _optional_ dependencies should use property injection. Is this the case here?
+",2010-12-20T13:29:38Z,2010-12-20T13:29:38Z

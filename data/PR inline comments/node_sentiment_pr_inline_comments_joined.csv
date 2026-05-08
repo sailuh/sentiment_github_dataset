@@ -1,0 +1,1718 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+280922,2,"<double post :( >""",2011-12-08 08:48:09,ry,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2038#discussion_r280922,2011-12-08T19:48:09Z,2012-02-01T08:08:56Z,ry,NONE,lib/child_process.js,,,,,1,"@@ -101,7 +101,7 @@ function setupChannel(target, channel) {
+         var message = JSON.parse(json);
+ 
+         target.emit('message', message, recvHandle);
+-        start = i+1;","linting
+",1e4b165b4627ca98c29539030e39650a66a61388
+43857,2,"Ahhh yes. Brain fail, sorry!""",2011-06-12 20:33:37,pquerna,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1162#discussion_r43857,2011-06-13T08:33:37Z,2011-07-07T16:07:38Z,pquerna,NONE,src/node_crypto.h,,45.0,,,1,"@@ -38,6 +38,12 @@
+ #include <node_buffer.h>
+ #endif
+ 
++// TLS-PSK support requires OpenSSL v1.0.0 or later
++#if OPENSSL_VERSION_NUMBER >= 0x10000000L
++#define OPENSSL_PSK_SUPPORT
++#endif","This should be changed slightly, because it is possible to compile out PSK:
+`#if OPENSSL_VERSION_NUMBER >= 0x10000000L
+#ifndef OPENSSL_NO_PSK
+#define OPENSSL_PSK_SUPPORT
+#endif
+#endif
+`
+",01869152d7bd9db59dc1adb539577796d87c3874
+306793,1,"Good catch""",2011-12-20 08:50:50,AndreasMadsen,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2388#discussion_r306793,2011-12-20T19:50:50Z,2011-12-31T12:28:03Z,AndreasMadsen,MEMBER,lib/cluster.js,,,,,1,"@@ -90,155 +115,391 @@ function startMaster() {
+   workerArgs = process.argv.slice(2);
+ 
+   process.on('uncaughtException', function(e) {
+-    // Quickly try to kill all the workers.
+-    // TODO: be session leader - will cause auto SIGHUP to the children.
+-    eachWorker(function(worker) {
+-      debug('kill worker ' + worker.pid);
+-      worker.kill();
+-    });
+-
+     console.error('Exception in cluster master process: ' +
+         e.message + '\n' + e.stack);
++
++    quickDestroyCluster();
+     process.exit(1);
+   });
+ }
+ 
++// Check if a message is internal only
++function isInternalMessage(wrap) {
++  return isObject(wrap) && wrap._internal === true;
++}
+ 
+-function handleWorkerMessage(worker, message) {
+-  // This can only be called from the master.
+-  assert(cluster.isMaster);
++// Create a internal message object
++function internalMessage(message) {
++  return {
++    _wrapper: true,
++    _internal: true,
++    content: message
++  };
++}
+ 
+-  debug('recv ' + JSON.stringify(message));
+-
+-  switch (message.cmd) {
+-    case 'online':
+-      debug('Worker ' + worker.pid + ' online');
+-      worker.online = true;
+-      break;
+-
+-    case 'queryServer':
+-      var key = message.address + ':' +
+-                message.port + ':' +
+-                message.addressType;
+-      var response = { _queryId: message._queryId };
+-
+-      if (!(key in servers)) {
+-        // Create a new server.
+-        debug('create new server ' + key);
+-        servers[key] = net._createServerHandle(message.address,
+-                                               message.port,
+-                                               message.addressType);
+-      }
+-      worker.send(response, servers[key]);
+-      break;
+-
+-    default:
+-      // Ignore.
+-      break;
+-  }
++// Check if a message is a wrapper
++function isMessageWrapper(wrap) {
++  return (isObject(wrap) && wrap.hasOwnProperty('_wrapper'));
+ }
+ 
++//Handle callback messges
++function handleCallback(outMessage, outHandle, inWrap, inHandle, worker) {
+ 
+-function eachWorker(cb) {
+-  // This can only be called from the master.
+-  assert(cluster.isMaster);
++  //Create out wrap object
++  var outWrap = {
++    content: outMessage,
++    _wrapper: true,
++    _internal: inWrap._internal, //will be undefined if not set
++    _queryEcho: inWrap._requestEcho //will be undefined if not set
++  };
+ 
+-  for (var id in workers) {
+-    if (workers[id]) {
+-      cb(workers[id]);
+-    }
++  //Call callback if a query echo is received
++  if (inWrap.hasOwnProperty('_queryEcho')) {
++    queryCallbacks[inWrap._queryEcho](inWrap.content, inHandle);
++    delete queryCallbacks[inWrap._queryEcho];
++  }
++
++  //Send if outWrap do contain something useful
++  if (!(outWrap.content === undefined && outWrap._queryEcho === undefined)) {
++    worker.send(outWrap, outHandle);
+   }
+ }
+ 
++// Handle messages from both master and workers
++var messageHandingObject = {};
++function handleMessage(inWrap, inHandle, worker) {
+ 
+-cluster.fork = function(env) {
+-  // This can only be called from the master.
+-  assert(cluster.isMaster);
++  var message = inWrap.content;
+ 
+-  // Lazily start the master process stuff.
+-  startMaster();
++  var respondUsed = false;
++  var respond = function(outMessage, outHandler) {
++    respondUsed = true;
++    handleCallback(outMessage, outHandler, inWrap, inHandle, worker);
++  };
+ 
+-  var id = ++ids;
++  //Run handler if it exist
++  if (isObject(message) && messageHandingObject[message.cmd]) {
++    messageHandingObject[message.cmd](message, worker, respond);
++  }
+ 
+-  //Create env object
+-  var envCopy = extendObject({}, process.env);
+-  envCopy['NODE_WORKER_ID'] = id;
+-  if (isObject(env)) {
+-    envCopy = extendObject(envCopy, env);
++  //Send respond if it wasn't done
++  if (respondUsed === false) {
++    respond();
+   }
++}
+ 
+-  //fork worker
+-  var worker = fork(workerFilename, workerArgs, {
+-    'env': envCopy
+-  });
++//Messages to the master will be handled using this methods
++if (cluster.isMaster) {
+ 
+-  workers[id] = worker;
++  //Handle online messages from workers
++  messageHandingObject.online = function(message, worker) {
++    worker.state = 'online';
++    debug('Worker ' + worker.process.pid + ' online');
++    worker.emit('online', worker);
++    cluster.emit('online', worker);
++  };
+ 
+-  worker.on('message', function(message) {
+-    handleWorkerMessage(worker, message);
+-  });
++  //Handle queryServer messages form workers
++  messageHandingObject.queryServer = function(message, worker, send) {
++
++    //This sequence of infomation is unique to the connection but not the worker
++    var args = [message.address, message.port, message.addressType];
++    var key = args.join(':');
++    var handler;
++
++    if (serverHandlers.hasOwnProperty(key)) {
++      handler = serverHandlers[key];
++    } else {
++      handler = serverHandlers[key] = net._createServerHandle.apply(net, args);
++    }
++
++    //echo callback with the fd handler associated with it
++    send({}, handler);
++  };
++
++  //Handle listening messages from workers
++  messageHandingObject.listening = function(message, worker) {
++
++    worker.state = 'listening';
++
++    //Emit listining, now that we know the worker is listning
++    worker.emit('listening', worker, {
++      address: message.address,
++      port: message.port,
++      addressType: message.addressType
++    });
++    cluster.emit('listening', worker, {
++      address: message.address,
++      port: message.port,
++      addressType: message.addressType
++    });
++  };
++
++  //Handle suicide messages from workers
++  messageHandingObject.suicide = function(message, worker) {
++    worker.suicide = true;
++  };
+ 
+-  worker.on('exit', function() {
+-    debug('worker id=' + id + ' died');
+-    delete workers[id];
+-    cluster.emit('death', worker);
++}
++
++//Messages to a worker will be handled using this methods
++else if (cluster.isWorker) {
++
++  //TODO: the disconnect step will use this
++}
++
++function toDecInt(value) {
++  value = parseInt(value, 10);
++  return isNaN(value) ? null : value;
++}
++
++// Create a worker object, there works both for master and worker
++function Worker(env) {
++  if (!(this instanceof Worker)) return new Worker();
++
++  var self = this;
++
++  //Assign uniqueID, default null
++  Object.defineProperty(this, 'uniqueID', {
++    value: cluster.isMaster ? ++ids : toDecInt(process.env.NODE_UNIQUE_ID),
++    enumerable: true
+   });
+ 
+-  return worker;
+-};
++  //Assign state
++  this.state = 'none';
+ 
++  //Create or get process
++  if (cluster.isMaster) {
+ 
+-// Internal function. Called from src/node.js when worker process starts.
+-cluster._startWorker = function() {
+-  assert(cluster.isWorker);
+-  workerId = parseInt(process.env.NODE_WORKER_ID, 10);
+-
+-  queryMaster({ cmd: 'online' });
+-
+-  // Make callbacks from queryMaster()
+-  process.on('message', function(msg, handle) {
+-    debug('recv ' + JSON.stringify(msg));
+-    if (msg._queryId && msg._queryId in queryCallbacks) {
+-      var cb = queryCallbacks[msg._queryId];
+-      if (typeof cb == 'function') {
+-        cb(msg, handle);
+-      }
+-      delete queryCallbacks[msg._queryId];
++    //Create env object
++    //first: copy and add uniqueID
++    var envCopy = extendObject({}, process.env);
++    envCopy['NODE_UNIQUE_ID'] = this.uniqueID;
++    //second: extend envCopy with the env argument
++    if (isObject(env)) {
++      envCopy = extendObject(envCopy, env);
++    }
++
++    //fork worker
++    this.process = fork(workerFilename, workerArgs, {
++      'env': envCopy
++    });
++
++  } else {
++    this.process = process;
++  }
++
++  if (cluster.isMaster) {
++    //Save worker in the cluster.workers array
++    cluster.workers[this.uniqueID] = this;
++
++    //Emit a fork event, on next tick
++    //There is no worker.fork event since this has no real purpose
++    process.nextTick(function() {
++      cluster.emit('fork', self);
++    });
++  }
++
++  //Handle message
++  this.process.on('message', function(wrap, handle) {
++    debug('recived: ', wrap);
++
++    //If this is an internal message handle it and ignore the rest
++    if (isInternalMessage(wrap)) {
++      handleMessage(wrap, handle, self);
++      return undefined;
++    }
++
++    //Handle callback
++    handleCallback(undefined, undefined, wrap, handle, self);
++
++    if (wrap.content !== undefined) {
++      //Emit message
++      self.emit('message', wrap.content, self);
+     }
+   });
++
++  //Handle exit
++  self.process.on('exit', function() {
++    debug('worker id=' + self.uniqueID + ' died');
++
++    //Prepear worker to die and emit events
++    prepearDeath(self, 'dead', 'death');
++  });
++
++}
++util.inherits(Worker, EventEmitter);
++cluster.Worker = Worker;
++
++function prepearDeath(worker, state, eventName) {
++
++  //set state to disconnect
++  worker.state = state;
++
++  //Make suicide a boolean
++  worker.suicide = !!worker.suicide;
++
++  //Remove from workers in the master
++  if (cluster.isMaster) {
++    delete cluster.workers[worker.uniqueID];
++  }
++
++  //Emit events
++  worker.emit(eventName, worker);
++  cluster.emit(eventName, worker);
++}
++
++//Send message to worker or master
++Worker.prototype.send = function(/*message, handler, callback*/) {
++
++  //Exist callback
++  var callback = arguments[arguments.length - 1];
++  if (typeof callback !== 'function') {
++    callback = undefined;
++  }
++
++  //Get message and handler and contain it in a args array
++  var slice = Array.prototype.slice;
++  var sliceTo = callback ? arguments.length - 1 : arguments.length;
++  var args = slice.call(arguments, 0, sliceTo);
++
++  var wrap = args[0];
++  if (!isMessageWrapper(wrap)) {
++    wrap = {
++      content: wrap,
++      _wrapper: true
++    };
++  }
++
++  // Store callback for later
++  if (callback) {
++    wrap._requestEcho = this.uniqueID + ':' + (++queryIds);
++    queryCallbacks[wrap._requestEcho] = callback;
++  }
++
++  //Save wrap
++  args[0] = wrap;
++
++  // Send message
++  if (this.process._channel !== null) {
++    this.process.send.apply(this.process, args);
++  }
+ };
+ 
+ 
+-function queryMaster(msg, cb) {
+-  assert(cluster.isWorker);
++function closeWorkerChannel(worker, callback) {
++  worker.process._channel.close();
++  worker.process._channel = null;
++  process.nextTick(callback);
++}
+ 
+-  debug('send ' + JSON.stringify(msg));
++//Sync function to quickly kill worker
++function quickDestroyWorker(worker) {
++  worker.suicide = true;
++  worker.process.kill();
++}
+ 
+-  // Grab some random queryId
+-  msg._queryId = (++queryIds);
+-  msg._workerId = workerId;
++// Kill the worker without restarting
++Worker.prototype.destroy = function() {
++  var self = this;
+ 
+-  // Store callback for later. Callback called in _startWorker.
+-  if (cb) {
+-    queryCallbacks[msg._queryId] = cb;
++  this.suicide = true;
++
++  if (cluster.isMaster) {
++    //Stop channel
++    //this way the worker won't need to propagate suicide state to master
++    closeWorkerChannel(this, function() {
++      //Then kill worker
++      self.process.kill();
++    });
++
++  } else {
++    //Channel is open
++    if (this.process._channel !== null) {
++
++      //Inform master that is is suicide and then kill
++      this.send(internalMessage({cmd: 'suicide'}), function() {
++        //Stop continuously channel check
++        if (keepChecking) clearInterval(keepChecking);","Good catch
+",8450aba1df422c7556f2a68d25f184f3b5ce53ed
+169076,1,"Not really, just a few billion times faster. :)""",2011-10-13 01:26:32,KenanSulayman,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1804#discussion_r169076,2011-10-13T13:26:32Z,2011-10-13T13:26:32Z,19h,NONE,lib/buffer.js,,997.0,,,12,"@@ -988,13 +988,13 @@ Buffer.prototype.writeInt8 = function(value, offset, noAssert) {
+     assert.ok(offset < buffer.length,
+         'Trying to write beyond buffer length');
+ 
+-    verifsint(value, 0x7f, -0xf0);
++    verifsint(value, 127, -240);
+   }
+ 
+   if (value >= 0) {
+     buffer.writeUInt8(value, offset, noAssert);
+   } else {
+-    buffer.writeUInt8(0xff + value + 1, offset, noAssert);
++    buffer.writeUInt8(255 + value + 1, offset, noAssert);","Not really, just a few billion times faster. :)
+",c8cbf3eee4b7ccaf5730aab41387ce6bdc08fe0e
+174854,1,"haha this is some hella-awkward misunderstanding of operator precedence, yay parens """,2011-10-17 10:00:30,visionmedia,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1804#discussion_r174854,2011-10-17T22:00:30Z,2011-10-17T22:00:30Z,tj,NONE,lib/fs.js,,565.0,,,25,"@@ -563,8 +562,7 @@ function writeAll(fd, buffer, offset, length, callback) {
+ 
+ fs.writeFile = function(path, data, encoding_, callback) {
+   var encoding = (typeof(encoding_) == 'string' ? encoding_ : 'utf8');
+-  var callback_ = arguments[arguments.length - 1];
+-  var callback = (typeof(callback_) == 'function' ? callback_ : null);
++  callback = (typeof(callback) == 'function' ? callback : null);","haha this is some hella-awkward misunderstanding of operator precedence, yay parens 
+",c8cbf3eee4b7ccaf5730aab41387ce6bdc08fe0e
+687853,1,"It's quite surprising that this even compiled on newer versions of OS X. Compilers and linkers are way too lenient these days. :-)  EDIT: Right, this file is excluded from the build, that's why.""",2012-04-16 00:19:51,bnoordhuis,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/3115#discussion_r687853,2012-04-16T12:19:51Z,2012-04-16T12:23:48Z,bnoordhuis,MEMBER,src/platform_darwin_proctitle.cc,,44.0,,,9,"@@ -36,8 +36,13 @@
+   #include <err.h>
+ #endif
+ 
++#include ""node.h""
++#include ""platform.h""
++
+ namespace node {
+ 
++extern char * process_title;","It's quite surprising that this even compiled on newer versions of OS X. Compilers and linkers are way too lenient these days. :-)
+
+EDIT: Right, this file is excluded from the build, that's why.
+",8e7770f38bc5559d070b8f35b3c063b42c24bb8d
+521043,0,"That's not right, `X509_STORE_add_cert()` takes ownership of the certificate.""",2012-03-05 12:47:15,bnoordhuis,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2861#discussion_r521043,2012-03-05T23:47:15Z,2012-05-13T19:39:44Z,bnoordhuis,MEMBER,src/node_crypto.cc,,,,,1,"@@ -575,6 +577,114 @@ int SSL_CTX_use_certificate_chain(SSL_CTX *ctx, BIO *in) {
+   return False();
+ }
+ 
++//Takes .pfx or .p12 and password in string or buffer format 
++Handle<Value> SecureContext::LoadPKCS12(const Arguments& args) {
++  HandleScope scope;
++
++  PKCS12 * p12 = NULL;
++  EVP_PKEY * pkey = NULL;
++  X509 * cert = NULL;
++  BIO * in = NULL;
++  STACK_OF(X509) *extraCerts = NULL;
++
++  bool ret = false;
++  char *pass = NULL;
++
++  SecureContext *sc = ObjectWrap::Unwrap<SecureContext>(args.Holder());
++
++  if (args.Length() < 1) {
++    return ThrowException(Exception::TypeError(
++          String::New(""Bad parameter"")));
++  }
++
++  in = LoadBIO(args[0]);
++  if (in == NULL) {
++    return ThrowException(Exception::Error(
++          String::New(""Unable to Load Bio"")));
++  }
++
++  if (args.Length() >= 2) {
++    ASSERT_IS_STRING_OR_BUFFER(args[1]);
++
++    int passlen = DecodeBytes(args[1], BINARY);
++
++    if (passlen < 0) {
++      return ThrowException(Exception::TypeError(
++            String::New(""Bad password"")));
++    }
++    pass = new char[passlen + 1];
++    int pass_written = DecodeWrite(pass, passlen, args[1], BINARY);
++
++    assert(pass_written == passlen);
++
++    pass[passlen] = '\0';
++  }
++
++  if (d2i_PKCS12_bio(in, &p12)) {
++
++    if (PKCS12_parse(p12, pass, &pkey, &cert, &extraCerts)) {
++
++      //set cert
++      if (SSL_CTX_use_certificate(sc->ctx_, cert)) {
++
++        //set key
++        if (SSL_CTX_use_PrivateKey(sc->ctx_, pkey)) {
++          bool newCAStore = false;
++          if (!sc->ca_store_) {
++            sc->ca_store_ = X509_STORE_new();
++            newCAStore = true;
++          }
++
++          //set extra certs
++          while (true) {
++            X509 *x509 = sk_X509_pop(extraCerts);
++            
++            if (!x509) break;
++
++            X509_STORE_add_cert(sc->ca_store_, x509);
++
++            SSL_CTX_add_client_CA(sc->ctx_, x509);
++
++            X509_free(x509);","That's not right, `X509_STORE_add_cert()` takes ownership of the certificate.
+",876618671ef5149e4a78039e8044f8e23dff4a16
+467218,0,"> Never mind; I can't send you a personal message - no email address with Github?  I do actually but now that you mention it... I haven't received a PM in ages.  > 1.) We stick with the solution above. We document that setting the honorCipherOrder option """,2012-02-20 02:11:39,bnoordhuis,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2732#discussion_r467218,2012-02-20T13:11:39Z,2012-02-20T13:33:23Z,bnoordhuis,MEMBER,lib/tls.js,,,,,1,"@@ -952,6 +953,13 @@ Server.prototype.setOptions = function(options) {
+   if (options.crl) this.crl = options.crl;
+   if (options.ciphers) this.ciphers = options.ciphers;
+   if (options.secureProtocol) this.secureProtocol = options.secureProtocol;
++  if (options.honorCipherOrder) {
++    if (options.secureOptions) {
++      options.secureOptions |= constants.SSL_OP_CIPHER_SERVER_PREFERENCE;
++    } else {
++      options.secureOptions = constants.SSL_OP_CIPHER_SERVER_PREFERENCE;","> Never mind; I can't send you a personal message - no email address with Github?
+
+I do actually but now that you mention it... I haven't received a PM in ages.
+
+> 1.) We stick with the solution above. We document that setting the honorCipherOrder option is identical to setting the SSL_OP_CIPHER_SERVER_PREFERENCE on secureOptions.
+
+I can live with that but use this instead:
+
+``` javascript
+var secureOptions = options.secureOptions || 0;
+if (options.honorCipherOrder) secureOptions |= constants.SSL_OP_CIPHER_SERVER_PREFERENCE;
+if (secureOptions) this.secureOptions = secureOptions;
+```
+
+It's kind of silly to set `this.secureOptions` conditionally but let's do it anyway for the sake of backwards compatibility.
+",1a9e7bd6b4075828b285d6ccece54ef79d779d4f
+335306,1,"No problem, thanks for your review!""",2012-01-08 06:11:44,koichik,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2487#discussion_r335306,2012-01-08T17:11:44Z,2012-01-08T17:11:44Z,koichik,NONE,lib/net.js,,96.0,,,36,"@@ -65,17 +65,47 @@ exports.createServer = function() {
+ };
+ 
+ 
+-exports.connect = exports.createConnection = function(port /* [host], [cb] */) {
+-  var s;
++// Target API:
++//
++// var s = net.connect({port: 80, host: 'google.com'}, function() {
++//   ...
++// });
++//
++// There are various forms:
++//
++// connect(options, [cb])
++// connect(port, [host], [cb])
++// connect(path, [cb]);
++//
++exports.connect = exports.createConnection = function() {
++  var args = normalizeConnectArgs(arguments);
++  var s = new Socket(args[0]);
++  return Socket.prototype.connect.apply(s, args);
++};
+ 
+-  if (isPipeName(port)) {
+-    s = new Socket({ handle: createPipe() });
++// Returns an array [options] or [options, cb]
++// It is the same as the argument of Socket.prototype.connect().
++function normalizeConnectArgs(args) {
++  var options = {};
++
++  if (typeof args[0] === 'object') {
++    // connect(options, [cb])
++    options = args[0];
++  } else if (isPipeName(args[0])) {
++    // connect(path, [cb]);
++    options.path = args[0];","No problem, thanks for your review!
+",54137fd1044f8c85c453bd72b78659d5f1106f1b
+306813,2,"what will workerID do? worker.uniqueID looks weird""",2011-12-20 09:01:42,visionmedia,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2388#discussion_r306813,2011-12-20T20:01:42Z,2011-12-31T12:28:03Z,tj,NONE,doc/api/cluster.markdown,,141.0,,,125,"@@ -34,66 +32,201 @@ Running node will now share port 8000 between the workers:
+     Worker 2438 online
+     Worker 2437 online
+ 
+-The difference between `cluster.fork()` and `child_process.fork()` is simply
+-that cluster allows TCP servers to be shared between workers. `cluster.fork`
+-is implemented on top of `child_process.fork`. The message passing API that
+-is available with `child_process.fork` is available with `cluster` as well.
+-As an example, here is a cluster which keeps count of the number of requests
+-in the master process via message passing:
++
++### cluster.isMaster
++
++This boolean flag is true if the process is a master. This is determined
++by the `process.env.NODE_UNIQUE_ID`. If `process.env.NODE_UNIQUE_ID` is
++undefined `isMaster` is `true`.
++
++### cluster.isWorker
++
++This boolean flag is true if the process is a worker forked from a master.
++If the `process.env.NODE_UNIQUE_ID` is set to a value different efined
++`isWorker` is `true`.
++
++### Event: 'fork'
++
++When a new worker is forked the cluster module will emit a 'fork' event.
++This can be used to log worker activity, and create you own timeout.
++
++    var timeouts = [];
++    var errorMsg = function () {
++        console.error(""Something must be wrong with the connection ..."");
++    });
++
++    cluster.on('fork', function (worker) {
++        timeouts[worker.uniqueID] = setTimeout(errorMsg, 2000);
++    });
++    cluster.on('listening', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++    });
++    cluster.on('death', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++        errorMsg();
++    });
++
++### Event: 'online'
++
++After forking a new worker, the worker should respond with a online message.
++When the master receives a online message it will emit such event.
++The difference between 'fork' and 'online' is that fork is emitted when the
++master tries to fork a worker, and 'online' is emitted when the worker is being
++executed.
++
++    cluster.on('online', function (worker) {
++        console.log(""Yay, the worker responded after it was forked"");
++    });
++
++### Event: 'listening'
++
++When calling `listen()` from a worker, a 'listening' event is automatically assigned
++to the server instance. When the server is listening a message is send to the master
++where the 'listening' event is emitted.
++
++    cluster.on('listening', function (worker) {
++        console.log(""We are now connected"");
++    });
++
++### Event: 'death'
++
++When any of the workers die the cluster module will emit the 'death' event.
++This can be used to restart the worker by calling `fork()` again.
++
++    cluster.on('death', function(worker) {
++      console.log('worker ' + worker.pid + ' died. restart...');
++      cluster.fork();
++    });
++
++### cluster.fork([env])
++
++Spawn a new worker process. This can only be called from the master process.
++The function takes an optional `env` object. The properties in this object
++will be added to the process environment in the worker.
++
++### cluster.eachWorker(callback)
++
++This method will go through all workers and call a given function.
++
++    //Say hi to all workers
++    cluster.eachWorker(function (worker) {
++        worker.send(""say hi"");
++    });
++
++## Worker
++
++This object contains all public information and method about a worker. In the master
++it can be obtainedusing `cluster.workers` or `cluster.eachWorker`. In a worker
++it can be obtained ained using `cluster.worker`.
++
++### Worker.uniqueID
++
++Each new worker is given its own unique id, this id i stored in the `uniqueID`.
++","what will workerID do? worker.uniqueID looks weird
+",8450aba1df422c7556f2a68d25f184f3b5ce53ed
+268333,0,"you need the try/catch because decodeURIComponent will throw on some failures that the fallback can handle""",2011-12-02 16:47:01,bluesmoon,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2248#discussion_r268333,2011-12-03T03:47:01Z,2011-12-03T08:35:01Z,bluesmoon,NONE,lib/querystring.js,,176.0,,,1,"@@ -170,9 +170,17 @@ QueryString.parse = QueryString.decode = function(qs, sep, eq) {
+   }
+ 
+   qs.split(sep).forEach(function(kvp) {
+-    var x = kvp.split(eq);
+-    var k = QueryString.unescape(x[0], true);
+-    var v = QueryString.unescape(x.slice(1).join(eq), true);
++    var x = kvp.split(eq), k, v, useQS=false;
++    try {
++      if (kvp.match(/\+/)) {
++        throw ""has +"";","you need the try/catch because decodeURIComponent will throw on some
+failures that the fallback can handle
+",e5bd527cee5e2e81f3ec97661839fd4c92f845ba
+169039,1,"Don't forget: V8 is smarter than us all :P""",2011-10-13 01:10:14,aikar,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1804#discussion_r169039,2011-10-13T13:10:14Z,2011-10-13T13:10:14Z,aikar,NONE,lib/buffer.js,,997.0,,,12,"@@ -988,13 +988,13 @@ Buffer.prototype.writeInt8 = function(value, offset, noAssert) {
+     assert.ok(offset < buffer.length,
+         'Trying to write beyond buffer length');
+ 
+-    verifsint(value, 0x7f, -0xf0);
++    verifsint(value, 127, -240);
+   }
+ 
+   if (value >= 0) {
+     buffer.writeUInt8(value, offset, noAssert);
+   } else {
+-    buffer.writeUInt8(0xff + value + 1, offset, noAssert);
++    buffer.writeUInt8(255 + value + 1, offset, noAssert);","Don't forget: V8 is smarter than us all :P
+",c8cbf3eee4b7ccaf5730aab41387ce6bdc08fe0e
+124149,0,"If you want to set absolutes on this, and document guarantees, which will likely be there for the lifetime of Node.js, feel free to ignore or fix the patch.""",2011-09-13 14:51:32,baudehlo,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1701#discussion_r124149,2011-09-14T02:51:32Z,2011-09-14T02:51:32Z,baudehlo,NONE,doc/api/timers.markdown,,11.0,,,6,"@@ -6,6 +6,11 @@ To schedule execution of a one-time `callback` after `delay` milliseconds. Retur
+ `timeoutId` for possible use with `clearTimeout()`. Optionally you can
+ also pass arguments to the callback.
+ 
++It is important to note that your callback will probably not be called in exactly
++`delay` milliseconds - Node.js makes no guarantees about the exact timing of when
++the callback will fire, nor of the ordering things will fire in. The callback will","If you want to set absolutes on this, and document guarantees, which will likely be there for the lifetime of Node.js, feel free to ignore or fix the patch.
+",0358720d6f6c76bbd21df5035bd19eade8463adb
+82263,1,"I actually like it quite a bit. Im just trying to be conservative.""",2011-08-03 15:14:22,hij1nx,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1450#discussion_r82263,2011-08-04T03:14:22Z,2011-08-04T23:44:40Z,heapwolf,NONE,doc/api/events.markdown,,124.0,,,1,"@@ -1,59 +1,96 @@
+ ## Events
+ 
+-Many objects in Node emit events: a `net.Server` emits an event each time
+-a peer connects to it, a `fs.readStream` emits an event when the file is
+-opened. All objects which emit events are instances of `events.EventEmitter`.
+-You can access this module by doing: `require(""events"");`
++Many objects in Node emit events: a `net.Server` emits an event each time a peer connects to it, a `fs.readStream` emits an event when the file is opened. All objects which emit events are instances of `events.EventEmitter`. You can access this module by doing: `require(""events"");`
+ 
+-Typically, event names are represented by a camel-cased string, however,
+-there aren't any strict restrictions on that, as any string will be accepted.
++Typically, event names are represented by a camel-cased string, however, there aren't any strict restrictions on that, as any string will be accepted.
+ 
+-Functions can then be attached to objects, to be executed when an event
+-is emitted. These functions are called _listeners_.
++Functions can then be attached to objects, to be executed when an event is emitted. These functions are called _listeners_.
+ 
+ 
++**Namespaces** with **Wildcards**
++To use namespaces/wildcards, pass the `wildcard` option into the EventEmitter constructor. When namespaces/wildcards are enabled, events can either be strings (`foo.bar`) separated by a delimiter or arrays (`['foo', 'bar']`). The delimiter is also configurable as a  constructor option.
++
++An event name passed to any event emitter method can contain a wild card (the `*` character). If the event name is a string, a wildcard may appear as `foo.*`. If the event name is an array, the wildcard may appear as `['foo', '*']`.
++
++If either of the above described events were passed to the `on` method, subsequent emits such as the following would be observed...
++
++
++   emitter.emit(['foo.bazz']);
++   emitter.emit(['foo', 'bar']);
++
++
++When emitting or listening for an event that contains a wildcard, the name of the actual event is available by accessing `this.event` from within the callback.
++
+ ### events.EventEmitter
+ 
+ To access the EventEmitter class, `require('events').EventEmitter`.
+ 
+-When an `EventEmitter` instance experiences an error, the typical action is
+-to emit an `'error'` event.  Error events are treated as a special case in node.
+-If there is no listener for it, then the default action is to print a stack
+-trace and exit the program.
++When an `EventEmitter` instance experiences an error, the typical action is to emit an `'error'` event.  Error events are treated as a special case in node. If there is no listener for it, then the default action is to print a stack trace and exit the program.
+ 
+-All EventEmitters emit the event `'newListener'` when new listeners are
+-added.
++All EventEmitters emit the event `'newListener'` when new listeners are added.
+ 
+ #### emitter.addListener(event, listener)
+ #### emitter.on(event, listener)
+ 
+ Adds a listener to the end of the listeners array for the specified event.
+ 
++
+     server.on('connection', function (stream) {
+       console.log('someone connected!');
+     });
+ 
++
++#### emitter.onAny(listener)
++
++Adds a listener that will be fired when any event is emitted.
++
++    function f(value) { 
++      console.log('This event will be listened to exactly four times.');
++    };
++
++    server.onAny(f);
++
++
++#### emitter.unAny(listener)
++
++Removes the listener that will be fired when any event is emitted.
++
++
++    server.unAny(f);
++
++
+ #### emitter.once(event, listener)
+ 
+-Adds a **one time** listener for the event. The listener is
+-invoked only the first time the event is fired, after which
+-it is removed.
++Adds a **one time** listener for the event. The listener is invoked only the first time the event is fired, after which it is removed.
+ 
+-    server.once('connection', function (stream) {
+-      console.log('Ah, we have our first user!');
++
++    server.once('connection', function (value) {
++      console.log('Ah, we have our first value!');
++    });
++
++
++#### emitter.many(event, timesToListen, listener)
++
++Adds a listener that will execute **n times** for the event before being removed. The listener is invoked only the first time the event is fired, after which it is removed.
++
++
++    server.many('connection', 4, function (value) {","I actually like it quite a bit. Im just trying to be conservative.
+",1cfd6c6ff7358a27c09d11c47b339383972fc337
+570503,0,"Sure, `CC.strip().split()` would be fine. Change it to that and I can merge. Have you signed the CLA?""",2012-03-16 11:38:29,TooTallNate,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2949#discussion_r570503,2012-03-16T22:38:29Z,2012-03-16T22:42:33Z,TooTallNate,NONE,configure,,,,,1,"@@ -149,7 +149,7 @@ def pkg_config(pkg):
+ def host_arch_cc():
+   """"""Host architecture check using the CC command.""""""
+ 
+-  p = subprocess.Popen([CC, '-dM', '-E', '-'],
++  p = subprocess.Popen(CC.split(' ') + ['-dM', '-E', '-'],","Sure, `CC.strip().split()` would be fine. Change it to that and I can merge. Have you signed the CLA?
+",37e09bc4438aec5d526c24b4f7707e42db93a92d
+306817,0,"When using `autoFork` workers will be assigned a `workerID` from 0 to `cpus().length`, and the reuse this when the respawning.""",2011-12-20 09:03:08,AndreasMadsen,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2388#discussion_r306817,2011-12-20T20:03:08Z,2011-12-31T12:28:03Z,AndreasMadsen,MEMBER,doc/api/cluster.markdown,,141.0,,,125,"@@ -34,66 +32,201 @@ Running node will now share port 8000 between the workers:
+     Worker 2438 online
+     Worker 2437 online
+ 
+-The difference between `cluster.fork()` and `child_process.fork()` is simply
+-that cluster allows TCP servers to be shared between workers. `cluster.fork`
+-is implemented on top of `child_process.fork`. The message passing API that
+-is available with `child_process.fork` is available with `cluster` as well.
+-As an example, here is a cluster which keeps count of the number of requests
+-in the master process via message passing:
++
++### cluster.isMaster
++
++This boolean flag is true if the process is a master. This is determined
++by the `process.env.NODE_UNIQUE_ID`. If `process.env.NODE_UNIQUE_ID` is
++undefined `isMaster` is `true`.
++
++### cluster.isWorker
++
++This boolean flag is true if the process is a worker forked from a master.
++If the `process.env.NODE_UNIQUE_ID` is set to a value different efined
++`isWorker` is `true`.
++
++### Event: 'fork'
++
++When a new worker is forked the cluster module will emit a 'fork' event.
++This can be used to log worker activity, and create you own timeout.
++
++    var timeouts = [];
++    var errorMsg = function () {
++        console.error(""Something must be wrong with the connection ..."");
++    });
++
++    cluster.on('fork', function (worker) {
++        timeouts[worker.uniqueID] = setTimeout(errorMsg, 2000);
++    });
++    cluster.on('listening', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++    });
++    cluster.on('death', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++        errorMsg();
++    });
++
++### Event: 'online'
++
++After forking a new worker, the worker should respond with a online message.
++When the master receives a online message it will emit such event.
++The difference between 'fork' and 'online' is that fork is emitted when the
++master tries to fork a worker, and 'online' is emitted when the worker is being
++executed.
++
++    cluster.on('online', function (worker) {
++        console.log(""Yay, the worker responded after it was forked"");
++    });
++
++### Event: 'listening'
++
++When calling `listen()` from a worker, a 'listening' event is automatically assigned
++to the server instance. When the server is listening a message is send to the master
++where the 'listening' event is emitted.
++
++    cluster.on('listening', function (worker) {
++        console.log(""We are now connected"");
++    });
++
++### Event: 'death'
++
++When any of the workers die the cluster module will emit the 'death' event.
++This can be used to restart the worker by calling `fork()` again.
++
++    cluster.on('death', function(worker) {
++      console.log('worker ' + worker.pid + ' died. restart...');
++      cluster.fork();
++    });
++
++### cluster.fork([env])
++
++Spawn a new worker process. This can only be called from the master process.
++The function takes an optional `env` object. The properties in this object
++will be added to the process environment in the worker.
++
++### cluster.eachWorker(callback)
++
++This method will go through all workers and call a given function.
++
++    //Say hi to all workers
++    cluster.eachWorker(function (worker) {
++        worker.send(""say hi"");
++    });
++
++## Worker
++
++This object contains all public information and method about a worker. In the master
++it can be obtainedusing `cluster.workers` or `cluster.eachWorker`. In a worker
++it can be obtained ained using `cluster.worker`.
++
++### Worker.uniqueID
++
++Each new worker is given its own unique id, this id i stored in the `uniqueID`.
++","When using `autoFork` workers will be assigned a `workerID` from 0 to `cpus().length`, and the reuse this when the respawning.
+",8450aba1df422c7556f2a68d25f184f3b5ce53ed
+78328,0,"btw, one thing this doesn't deal with very well are certificates with many subjectAltNames.... hrm.""",2011-07-30 02:55:22,pquerna,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1426#discussion_r78328,2011-07-30T14:55:22Z,2011-08-08T10:32:02Z,pquerna,NONE,doc/api/tls.markdown,,181.0,,,69,"@@ -150,6 +171,11 @@ Stops the server from accepting new connections. This function is
+ asynchronous, the server is finally closed when the server emits a `'close'`
+ event.
+ 
++#### server.addContext(hostname, credentials)","btw, one thing this doesn't deal with very well are certificates with many subjectAltNames.... hrm.
+",86b99ec0a08f13623b0084f32b067b881a7dff9f
+504690,0,"Don't free `pkey` and `cert` here if `PKCS12_parse()` returned an error. That function allocates memory for the key and the certificate and updates the pointers in the argument list. On error, it frees the memory but doesn't set the pointers to NULL. You'""",2012-02-29 12:42:17,bnoordhuis,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2847#discussion_r504690,2012-02-29T23:42:17Z,2012-03-02T14:42:36Z,bnoordhuis,MEMBER,src/node_crypto.cc,,,,,1,"@@ -575,6 +577,131 @@ int SSL_CTX_use_certificate_chain(SSL_CTX *ctx, BIO *in) {
+   return False();
+ }
+ 
++//Takes .pfx or .p12 and password in string or buffer format 
++Handle<Value> SecureContext::LoadPKCS12(const Arguments& args) {
++  HandleScope scope;
++
++  PKCS12 * p12 = NULL;
++  EVP_PKEY * pkey = NULL;
++  X509 * cert = NULL;
++  STACK_OF(X509) * ca = NULL;
++  BIO * bio_in = NULL;
++
++  bool ret = true;
++  char *pass = """";
++  bool passAllocated = false;
++
++  SecureContext *sc = ObjectWrap::Unwrap<SecureContext>(args.Holder());
++
++  if (args.Length() < 1) {
++      return ThrowException(Exception::TypeError(
++                  String::New(""Bad parameter"")));
++  }
++
++  if (args.Length() >= 2) {
++    ASSERT_IS_STRING_OR_BUFFER(args[1]);
++
++    int passlen = DecodeBytes(args[1], BINARY);
++
++    if (passlen < 0) {
++      return ThrowException(Exception::TypeError(
++                          String::New(""Bad password"")));
++    }
++    pass = new char[passlen];
++    passAllocated = true;
++    int pass_written = DecodeWrite(pass, passlen, args[1], BINARY);
++
++    assert(pass_written == passlen);
++  }
++
++  bio_in = LoadBIO(args[0]);
++  if (bio_in == NULL) {
++    ret = false;
++    goto cleanup;
++  }
++    
++  if (d2i_PKCS12_bio(bio_in, &p12)) {
++
++    if (PKCS12_parse(p12, pass, &pkey, &cert, &ca)) {
++
++      BIO *bio_out = BIO_new(BIO_s_mem());
++      if (bio_out == NULL) {
++        ret = false;
++        goto cleanup;
++      }
++
++      if (PEM_write_bio_X509(bio_out, cert)) {
++
++        if (!SSL_CTX_use_certificate_chain(sc->ctx_, bio_out)) {
++            ret = false;
++            BIO_free(bio_out);
++            goto cleanup;
++        }
++      }
++      BIO_free(bio_out);
++
++      bio_out = BIO_new(BIO_s_mem());
++      if (bio_out == NULL) {
++        ret = false;
++        goto cleanup;
++      }
++            
++      if (PEM_write_bio_PrivateKey(bio_out, pkey, NULL, NULL, 0, 0, NULL)) {
++        SSL_CTX_use_PrivateKey(sc->ctx_, pkey);
++        EVP_PKEY_free(pkey);
++      }
++      BIO_free(bio_out);
++
++      bool newCAStore = false;
++
++      if (sc->ca_store_ == NULL) {
++          sc->ca_store_ = X509_STORE_new();
++          newCAStore = true;
++      }
++
++      while (true) {
++        X509* aCA = sk_X509_pop(ca);
++        if (!aCA) break;
++                
++        X509_STORE_add_cert(sc->ca_store_, aCA);
++        SSL_CTX_add_client_CA(sc->ctx_, aCA);
++
++        X509_free(aCA);
++      }
++
++      if (ca) {
++          sk_X509_free(ca);
++      } 
++
++      if (newCAStore) {
++          SSL_CTX_set_cert_store(sc->ctx_, sc->ca_store_);
++      }
++
++      PKCS12_free(p12);
++    }
++  }
++
++  cleanup:
++
++  if (bio_in) {
++    BIO_free(bio_in);
++  }
++    
++  if (pkey) {
++    EVP_PKEY_free(pkey);
++  }","Don't free `pkey` and `cert` here if `PKCS12_parse()` returned an error. That function allocates memory for the key and the certificate and updates the pointers in the argument list. On error, it frees the memory but doesn't set the pointers to NULL. You'd be double-freeing them here.
+",a6f3bc22fad5d9b37ad7651ce82b4d644254223f
+330911,0,"rsa, passing NaN values as input parameters will definitely cause issues with any geometry functions. Just because they expect them to be valid. RandomMovementGenerator<Creature>::_setRandomLocation() is the last function in call stack which triggered call""",2012-01-05 09:18:36,ry,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2470#discussion_r330911,2012-01-05T20:18:36Z,2012-01-18T07:03:42Z,ry,NONE,test/simple/test-cluster-master-error.js,,,,,1,"@@ -0,0 +1,146 @@
++// Copyright Joyent, Inc. and other Node contributors.
++//
++// Permission is hereby granted, free of charge, to any person obtaining a
++// copy of this software and associated documentation files (the
++// ""Software""), to deal in the Software without restriction, including
++// without limitation the rights to use, copy, modify, merge, publish,
++// distribute, sublicense, and/or sell copies of the Software, and to permit
++// persons to whom the Software is furnished to do so, subject to the
++// following conditions:
++//
++// The above copyright notice and this permission notice shall be included
++// in all copies or substantial portions of the Software.
++//
++// THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS
++// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
++// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
++// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
++// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
++// USE OR OTHER DEALINGS IN THE SOFTWARE.
++
++
++var common = require('../common');
++var assert = require('assert');
++var cluster = require('cluster');
++
++// Cluster setup
++if (cluster.isWorker) {
++  var http = require('http');
++  http.Server(function() {
++
++  }).listen(common.PORT, '127.0.0.1');
++
++} else if (process.argv[2] === 'cluster') {
++
++  var totalWorkers = 2;
++
++  // Send PID to testcase process
++  var forkNum = 0;
++  cluster.on('fork', function forkEvent(worker) {
++
++    // Send PID
++    process.send({
++      cmd: 'worker',
++      workerPID: worker.process.pid
++    });
++
++    // Stop listening when done
++    if (++forkNum === totalWorkers) {
++      cluster.removeListener('fork', forkEvent);
++    }
++  });
++
++  // Throw accidently error when all workers are listening
++  var listeningNum = 0;
++  cluster.on('listening', function listeningEvent() {
++
++    // When all workers are listening
++    if (++listeningNum === totalWorkers) {
++      // Stop listening
++      cluster.removeListener('listening', listeningEvent);
++
++      // throw accidently error
++      process.nextTick(function() {
++        throw 'accidently error';
++      });
++    }
++
++  });
++
++  // Startup a basic cluster
++  cluster.fork();
++  cluster.fork();
++}
++
++// This is the testcase
++else {
++
++  var fork = require('child_process').fork;
++
++  var isAlive = function(pid) {
++    try {
++      //this will throw an error if the process is dead
++      process.kill(pid, 0);
++
++      return true;
++    } catch (e) {
++      return false;
++    }
++  };
++
++  var existMaster = false;
++  var existWorker = false;
++
++  // List all workers
++  var workers = [];
++
++  // Spawn a cluster process
++  var master = fork(process.argv[1], ['cluster'], {silent: true});
++
++  // relay output using only stdout
++  master.stdout.on('data', function(data) {
++    data.toString().split('\n').forEach(function(text) {
++      console.log('stdout: ' + text);
++    });
++  });
++
++  master.stderr.on('data', function(data) {
++    data.toString().split('\n').forEach(function(text) {
++      console.log('stderr: ' + text);
++    });
++  });","if the master is silent - shouldn't it not be outputting stuff to stdout and stderr?
+",9ebfab5a00126d13a1d87cdff1b1849ccd2dff50
+456211,0,"FreeBSD can't distribute strong encryption code internationally (out of the US). I wonder if this is tied to that issue: http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/crypt.html Or another more likely issue is that OpenSSL makes it clear in th""",2012-02-15 19:32:04,EhevuTov,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2182#discussion_r456211,2012-02-16T06:32:04Z,2012-02-16T06:54:06Z,EhevuTov,NONE,deps/openssl/openssl.gyp,,20.0,,,7,"@@ -14,6 +14,10 @@
+         'OPENSSL_THREADS',
+         'PURIFY',
+         '_REENTRANT',
++        'OPENSSL_NO_RC5',
++        'OPENSSL_NO_IDEA',
++        'OPENSSL_NO_CAMELLIA',
++        'OPENSSL_NO_MDC2',","FreeBSD can't distribute strong encryption code internationally (out of the US). I wonder if this is tied to that issue: http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/crypt.html Or another more likely issue is that OpenSSL makes it clear in their FAQ and in the README that you might not want to distribute with such encryption methods that are actually licensed and owned by others, making it illegal to use without permission.
+
+In other words: a real world legal issue. In FreeBSD, we solve such a problem by letting the user define what encryption to use in a /etc/ config file after FreeBSD has been distributed.
+",c00a19738b2627cf7e51f6fd9e51c67355e749ee
+175051,0,"pull a _why and make everything as cryptic as possible, that's what good programmers do. job security ftw""",2011-10-17 11:12:29,visionmedia,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1903#discussion_r175051,2011-10-17T23:12:29Z,2011-10-17T23:12:29Z,tj,NONE,lib/path.js,,172.0,,,11,"@@ -168,12 +168,8 @@ if (isWindows) {
+       return !!p;
+     }), !isAbsolute).join('\\');
+ 
+-    if (!tail && !isAbsolute) {
+-      tail = '.';
+-    }
+-    if (tail && trailingSlash) {
+-      tail += '\\';
+-    }
++    (!tail && !isAbsolute) && (tail = '.');
++    (tail && trailingSlash) && (tail += '\\');","pull a _why and make everything as cryptic as possible, that's what good programmers do. job security ftw
+",f1823dd3e38fdcadb0cc2e93a46712f9a78d15b3
+43851,2,"Speaking purely as a consumer of this API, not having a unified behavoir between PSK and certificates for the error handling of a failed to authenticate connection is kinda a bummer.  Is there a better way to unify them so the same code that checked autho""",2011-06-12 20:19:56,pquerna,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1162#discussion_r43851,2011-06-13T08:19:56Z,2011-07-07T16:07:38Z,pquerna,NONE,doc/api/tls.markdown,,77.0,,,76,"@@ -26,29 +26,56 @@ Alternatively you can send the CSR to a Certificate Authority for signing.
+ (TODO: docs on creating a CA, for now interested users should just look at
+ `test/fixtures/keys/Makefile` in the Node source code)
+ 
++If node is compiled with OpenSSL v1.0.0 or later then TLS-PSK (RFC 4279) support is
++available as an alternative to normal certificate-based authentication. PSK uses
++a pre-shared key instead of certificates to authenticate a TLS connection, providing
++mutual authentication (normal cert-based TLS is usually only one-way authentication).
++PSK and certificate auth are not mutually exclusive; one server can accommodate both,
++with the variety used determined by the normal cipher negotiation step.
++Note that PSK is only a good choice where means exist to securely share a key with
++every connecting machine, so it does not replace PKI for the majority of TLS uses.
+ 
+ ### s = tls.connect(port, [host], [options], callback)
+ 
+ Creates a new client connection to the given `port` and `host`. (If `host`
+ defaults to `localhost`.) `options` should be an object which specifies
+ 
+-  - `key`: A string or `Buffer` containing the private key of the server in
+-    PEM format. (Required)
++  - `key`: A string or `Buffer` containing the client's private key in PEM format.
+ 
+-  - `cert`: A string or `Buffer` containing the certificate key of the server in
+-    PEM format.
++  - `cert`: A string or `Buffer` containing the client's certificate in PEM format.
+ 
+   - `ca`: An array of strings or `Buffer`s of trusted certificates. If this is
+     omitted several well known ""root"" CAs will be used, like VeriSign.
+     These are used to authorize connections.
+ 
++  - `pskIdentity`: A string containing the TLS-PSK identity to use when connecting.
++
++  - `pskKey`: A `Buffer` containing the binary pre-shared key corresponding
++    to the `pskIdentity`.
++
++  - `pskCallback`: A callback that may be provided if you wish to select the identity
++    and key based on the ""hint"" provided by the server. The callback receives the hint
++    as its sole argument and must return an object with `pskIdentity` and `pskKey`
++    attributes as described above. This option is ignored if `pskIdentity` and `pskKey`
++    are provided outright.
++
++  - `ciphers`: An OpenSSL-style cipher priority list (eg `RC4-SHA:AES128-SHA:AES256-SHA`).
++    Optional, but note that the cipher negotiation between client and server determines
++    how the TLS handshake will proceed; for PSK both client and server must be configured
++    to use PSK ciphers. For ease of use, if PSK identity options are provided but `ciphers`
++    is not, it will be configured with a default set of PSK ciphers.
++
+ `tls.connect()` returns a cleartext `CryptoStream` object.
+ 
+-After the TLS/SSL handshake the `callback` is called. The `callback` will be
+-called no matter if the server's certificate was authorized or not. It is up
+-to the user to test `s.authorized` to see if the server certificate was
+-signed by one of the specified CAs. If `s.authorized === false` then the error
+-can be found in `s.authorizationError`.
++After the TLS/SSL handshake the `callback` is called. If using normal certificate-based
++TLS, The `callback` will be called even if the server's certificate was not authorized.
++It is up to the user to test `s.authorized` to see if the server certificate was signed
++by one of the specified CAs. If `s.authorized === false` then the error can be found in
++`s.authorizationError`. If using PSK, the handshake will only complete if the pre-shared
++keys match; `s.authorized` will be `true` and `s.pskIdentity` will be clientss identity
++string. If the keys do not match then the handshake will fail. The callback will not be
++called but the cleartext stream will emit an `error` event.
++","Speaking purely as a consumer of this API, not having a unified behavoir between PSK and certificates for the error handling of a failed to authenticate connection is kinda a bummer.
+
+Is there a better way to unify them so the same code that checked authorized === false would be re-used?
+",01869152d7bd9db59dc1adb539577796d87c3874
+267055,1,"In fact I apply the cppling onto it, and I made some corrections. Only following the google cpplint :) rules.  http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Casting#Casting  """,2011-12-02 06:39:01,migounette,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2240#discussion_r267055,2011-12-02T17:39:01Z,2011-12-02T17:39:01Z,migounette,NONE,src/platform_win32.cc,,167.0,,,16,"@@ -164,7 +164,7 @@ static inline char* _getProcessTitle() {
+     return NULL;
+   }
+ 
+-  title = (char *) malloc(length);
++  title = reinterpret_cast<char *>(malloc(length));","In fact I apply the cppling onto it, and I made some corrections.
+Only following the google cpplint :) rules.
+
+http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml?showone=Casting#Casting
+",01599358da579fd027084ffd6b0f3c31aa99687d
+175108,2,"I'm sorry. Really discussing like that about 5, respectively 2, lines of code? I can restore it, if you *really* want to.""",2011-10-17 11:30:37,KenanSulayman,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1903#discussion_r175108,2011-10-17T23:30:37Z,2011-10-17T23:30:52Z,19h,NONE,lib/path.js,,172.0,,,11,"@@ -168,12 +168,8 @@ if (isWindows) {
+       return !!p;
+     }), !isAbsolute).join('\\');
+ 
+-    if (!tail && !isAbsolute) {
+-      tail = '.';
+-    }
+-    if (tail && trailingSlash) {
+-      tail += '\\';
+-    }
++    (!tail && !isAbsolute) && (tail = '.');
++    (tail && trailingSlash) && (tail += '\\');","I'm sorry. Really discussing like that about 5, respectively 2, lines of code? I can restore it, if you _really_ want to.
+",f1823dd3e38fdcadb0cc2e93a46712f9a78d15b3
+77897,0,"Btw, this still needs to be configured properly... So at lines below we can use c.authorized property to test if SNI was successfull""",2011-07-29 04:55:12,indutny,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1411#discussion_r77897,2011-07-29T16:55:12Z,2011-07-29T18:18:40Z,indutny,MEMBER,test/simple/test-tls-sni-server-client.js,,41.0,,,41,"@@ -0,0 +1,112 @@
++// Copyright Joyent, Inc. and other Node contributors.
++//
++// Permission is hereby granted, free of charge, to any person obtaining a
++// copy of this software and associated documentation files (the
++// ""Software""), to deal in the Software without restriction, including
++// without limitation the rights to use, copy, modify, merge, publish,
++// distribute, sublicense, and/or sell copies of the Software, and to permit
++// persons to whom the Software is furnished to do so, subject to the
++// following conditions:
++//
++// The above copyright notice and this permission notice shall be included
++// in all copies or substantial portions of the Software.
++//
++// THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS
++// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
++// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
++// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
++// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
++// USE OR OTHER DEALINGS IN THE SOFTWARE.
++
++if (!process.features.tls_sni) {
++  console.error(""Skipping because node compiled without OpenSSL or "" +
++                ""with old OpenSSL version."");
++  process.exit(0);
++}
++
++var common = require('../common'),
++    assert = require('assert'),
++    fs = require('fs'),
++    tls = require('tls');
++
++function filenamePEM(n) {
++  return require('path').join(common.fixturesDir, 'keys', n + "".pem"");
++}
++
++function loadPEM(n) {
++  return fs.readFileSync(filenamePEM(n));
++}
++
++var serverOptions = {","Btw, this still needs to be configured properly... So at lines below we can use c.authorized property to test if SNI was successfull
+",cd4a5312b9fa7e90adf9b16e90ad781007a816fa
+489492,0,"Preferably use `-fPIC` instead of `-mimpure-text`. The latter is a linker hack that makes position-dependent code work in a shared object.""",2012-02-26 06:20:13,bnoordhuis,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2829#discussion_r489492,2012-02-26T17:20:13Z,2012-02-26T18:03:29Z,bnoordhuis,MEMBER,tools/addon.gypi,,,,,1,"@@ -16,6 +16,9 @@
+       [ 'OS==""win""', {
+         'libraries': [ '-l<(node_root_dir)/$(Configuration)/node.lib' ],
+       }],
++      [ 'OS==""solaris""', {
++        'ldflags': [ '-shared', '-mimpure-text' ],","Preferably use `-fPIC` instead of `-mimpure-text`. The latter is a linker hack that makes position-dependent code work in a shared object.
+",8f141581fe471095d8debbfd6d1541f0b0d67483
+306959,1,"oh, well wtf haha yeah it's fine as-is then minus eachWorker""",2011-12-20 09:44:10,visionmedia,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2388#discussion_r306959,2011-12-20T20:44:10Z,2011-12-31T12:28:03Z,tj,NONE,doc/api/cluster.markdown,,124.0,,,1,"@@ -34,66 +32,201 @@ Running node will now share port 8000 between the workers:
+     Worker 2438 online
+     Worker 2437 online
+ 
+-The difference between `cluster.fork()` and `child_process.fork()` is simply
+-that cluster allows TCP servers to be shared between workers. `cluster.fork`
+-is implemented on top of `child_process.fork`. The message passing API that
+-is available with `child_process.fork` is available with `cluster` as well.
+-As an example, here is a cluster which keeps count of the number of requests
+-in the master process via message passing:
++
++### cluster.isMaster
++
++This boolean flag is true if the process is a master. This is determined
++by the `process.env.NODE_UNIQUE_ID`. If `process.env.NODE_UNIQUE_ID` is
++undefined `isMaster` is `true`.
++
++### cluster.isWorker
++
++This boolean flag is true if the process is a worker forked from a master.
++If the `process.env.NODE_UNIQUE_ID` is set to a value different efined
++`isWorker` is `true`.
++
++### Event: 'fork'
++
++When a new worker is forked the cluster module will emit a 'fork' event.
++This can be used to log worker activity, and create you own timeout.
++
++    var timeouts = [];
++    var errorMsg = function () {
++        console.error(""Something must be wrong with the connection ..."");
++    });
++
++    cluster.on('fork', function (worker) {
++        timeouts[worker.uniqueID] = setTimeout(errorMsg, 2000);
++    });
++    cluster.on('listening', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++    });
++    cluster.on('death', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++        errorMsg();
++    });
++
++### Event: 'online'
++
++After forking a new worker, the worker should respond with a online message.
++When the master receives a online message it will emit such event.
++The difference between 'fork' and 'online' is that fork is emitted when the
++master tries to fork a worker, and 'online' is emitted when the worker is being
++executed.
++
++    cluster.on('online', function (worker) {
++        console.log(""Yay, the worker responded after it was forked"");
++    });
++
++### Event: 'listening'
++
++When calling `listen()` from a worker, a 'listening' event is automatically assigned
++to the server instance. When the server is listening a message is send to the master
++where the 'listening' event is emitted.
++
++    cluster.on('listening', function (worker) {
++        console.log(""We are now connected"");
++    });
++
++### Event: 'death'
++
++When any of the workers die the cluster module will emit the 'death' event.
++This can be used to restart the worker by calling `fork()` again.
++
++    cluster.on('death', function(worker) {
++      console.log('worker ' + worker.pid + ' died. restart...');
++      cluster.fork();
++    });
++
++### cluster.fork([env])
++
++Spawn a new worker process. This can only be called from the master process.
++The function takes an optional `env` object. The properties in this object
++will be added to the process environment in the worker.
++
++### cluster.eachWorker(callback)
++","oh, well wtf haha yeah it's fine as-is then minus eachWorker
+",8450aba1df422c7556f2a68d25f184f3b5ce53ed
+405123,1,"Ah ok, missed that. Mind just automatically goes there when I see that :)""",2012-01-31 16:38:38,TooTallNate,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2248#discussion_r405123,2012-02-01T03:38:38Z,2012-02-01T03:38:38Z,TooTallNate,NONE,lib/querystring.js,,176.0,,,1,"@@ -170,9 +170,17 @@ QueryString.parse = QueryString.decode = function(qs, sep, eq) {
+   }
+ 
+   qs.split(sep).forEach(function(kvp) {
+-    var x = kvp.split(eq);
+-    var k = QueryString.unescape(x[0], true);
+-    var v = QueryString.unescape(x.slice(1).join(eq), true);
++    var x = kvp.split(eq), k, v, useQS=false;
++    try {
++      if (kvp.match(/\+/)) {
++        throw ""has +"";","Ah ok, missed that. Mind just automatically goes there when I see that :)
+",e5bd527cee5e2e81f3ec97661839fd4c92f845ba
+168319,2,"again, another style violation for no gain.""",2011-10-12 15:23:43,aikar,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1804#discussion_r168319,2011-10-13T03:23:43Z,2011-10-13T03:23:43Z,aikar,NONE,lib/buffer_ieee754.js,,73.0,,,47,"@@ -75,42 +69,17 @@ exports.writeIEEE754 = function(buffer, value, offset, isBE, mLen, nBytes) {
+ 
+   value = Math.abs(value);
+ 
+-  if (isNaN(value) || value === Infinity) {
+-    m = isNaN(value) ? 1 : 0;
+-    e = eMax;
+-  } else {
++  if (isNaN(value) || value === Infinity) m = isNaN(value) ? 1 : 0, e = eMax;
++  else {","again, another style violation for no gain.
+",c8cbf3eee4b7ccaf5730aab41387ce6bdc08fe0e
+43849,0,"This statement seems moderately misleading considering node.js does support client certificates?  I understand what is trying to be stated, maybe it just needs a different wording about the most common use cases.""",2011-06-12 20:15:59,pquerna,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1162#discussion_r43849,2011-06-13T08:15:59Z,2011-07-07T16:07:38Z,pquerna,NONE,doc/api/tls.markdown,,,,,1,"@@ -26,29 +26,56 @@ Alternatively you can send the CSR to a Certificate Authority for signing.
+ (TODO: docs on creating a CA, for now interested users should just look at
+ `test/fixtures/keys/Makefile` in the Node source code)
+ 
++If node is compiled with OpenSSL v1.0.0 or later then TLS-PSK (RFC 4279) support is
++available as an alternative to normal certificate-based authentication. PSK uses
++a pre-shared key instead of certificates to authenticate a TLS connection, providing
++mutual authentication (normal cert-based TLS is usually only one-way authentication).","This statement seems moderately misleading considering node.js does support client certificates?  I understand what is trying to be stated, maybe it just needs a different wording about the most common use cases.
+",01869152d7bd9db59dc1adb539577796d87c3874
+616891,1,"Thanks Ben. Just corrected the splitted line to one line.  You can LGTM the 2 commits in this pull request.  Cheers,  -- Mike   On Wed, Mar 28, 2012 at 07:54, Ben Noordhuis < reply@reply.github.com > wrote:  > > @@ -446,6 +456,8 @@ class TypedArray { > > """,2012-03-28 06:32:55,mikeseven,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/3021#discussion_r616891,2012-03-28T18:32:55Z,2012-03-28T18:32:55Z,mikeseven,NONE,src/v8_typed_array.cc,,,,,1,"@@ -446,6 +456,8 @@ class TypedArray {
+ 
+ class Int8Array : public TypedArray<1, v8::kExternalByteArray> { };
+ class Uint8Array : public TypedArray<1, v8::kExternalUnsignedByteArray> { };
++class Uint8ClampedArray : public TypedArray<1,
++v8::kExternalPixelArray> { };","Thanks Ben.
+Just corrected the splitted line to one line.
+
+You can LGTM the 2 commits in this pull request.
+
+Cheers,
+
+-- Mike
+
+On Wed, Mar 28, 2012 at 07:54, Ben Noordhuis <
+reply@reply.github.com
+
+> wrote:
+> 
+> > @@ -446,6 +456,8 @@ class TypedArray {
+> > 
+> >  class Int8Array : public TypedArray<1, v8::kExternalByteArray> { };
+> >  class Uint8Array : public TypedArray<1, v8::kExternalUnsignedByteArray>
+> > { };
+> > +class Uint8ClampedArray : public TypedArray<1,
+> > +v8::kExternalPixelArray> { };
+> 
+> This fits on one line.
+> 
+> Otherwise LGTM.
+> 
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> https://github.com/joyent/node/pull/3021/files#r615392
+",f3427634bb42f3ade3d43165a50f4bdc7315b050
+489498,1,"Agreed. It is rather silly to set it conditionally. Anyway, should be good to go. Thanks for the suggestions.""",2012-02-26 06:30:53,bminer,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2732#discussion_r489498,2012-02-26T17:30:53Z,2012-02-26T17:30:53Z,bminer,NONE,lib/tls.js,,,,,1,"@@ -952,6 +953,13 @@ Server.prototype.setOptions = function(options) {
+   if (options.crl) this.crl = options.crl;
+   if (options.ciphers) this.ciphers = options.ciphers;
+   if (options.secureProtocol) this.secureProtocol = options.secureProtocol;
++  if (options.honorCipherOrder) {
++    if (options.secureOptions) {
++      options.secureOptions |= constants.SSL_OP_CIPHER_SERVER_PREFERENCE;
++    } else {
++      options.secureOptions = constants.SSL_OP_CIPHER_SERVER_PREFERENCE;","Agreed. It is rather silly to set it conditionally. Anyway, should be good to go. Thanks for the suggestions.
+",1a9e7bd6b4075828b285d6ccece54ef79d779d4f
+411087,1,"Going to leave this place now but will be back online soon ;) I usually go by DiogoSnows Thanks a lot!""",2012-02-02 06:35:11,DiogoNeves,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2669#discussion_r411087,2012-02-02T17:35:11Z,2012-02-02T17:35:11Z,DiogoNeves,NONE,src/node_file.cc,,120.0,,,11,"@@ -110,10 +110,23 @@ static void After(uv_fs_t *req) {
+     if (!req->path) {
+       argv[0] = UVException(req->errorno);
+     } else {
++
++      // If new_path is defined and errorno == ENOENT, check which one doesn't exist
++      // and use the appropriate path
++      // This is used by rename, link and symlink
++      char* path = req->path;
++      if (req->new_path && req->errorno == UV_ENOENT) {
++        uv_fs_t stat_req;
++        if (uv_fs_stat(Loop(), &stat_req, req->path, NULL) == 0) {","Going to leave this place now but will be back online soon ;) I usually go by DiogoSnows
+Thanks a lot!
+",b9f9f4f49e92c85f399427d9fc02af4d6332a6ab
+392752,2,"the use of === for these doesn't make sense, consistent or not it's not worth a pull-request for pointless stuff like that""",2012-01-27 07:07:24,visionmedia,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2625#discussion_r392752,2012-01-27T18:07:24Z,2012-01-27T18:35:05Z,tj,NONE,lib/http.js,,357.0,,,5,"@@ -354,7 +354,7 @@ IncomingMessage.prototype._addHeaderLine = function(field, value) {
+ 
+ 
+     default:
+-      if (field.slice(0, 2) == 'x-') {
++      if (field.slice(0, 2) === 'x-') {","the use of === for these doesn't make sense, consistent or not it's not worth a pull-request for pointless stuff like that
+",7921aa73147556c121c1ba8e5ef6a88c8ac511c4
+306728,0,"workers are assigned to the `cluster.worker` by there uniqueID, this makes them very easy to find again. If we change this to an array people will get a lot of `undefined` values in there for loop. Also i don't like to have method like `.push()` that indi""",2011-12-20 08:27:12,AndreasMadsen,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/2388#discussion_r306728,2011-12-20T19:27:12Z,2011-12-31T12:28:02Z,AndreasMadsen,MEMBER,doc/api/cluster.markdown,,124.0,,,1,"@@ -34,66 +32,201 @@ Running node will now share port 8000 between the workers:
+     Worker 2438 online
+     Worker 2437 online
+ 
+-The difference between `cluster.fork()` and `child_process.fork()` is simply
+-that cluster allows TCP servers to be shared between workers. `cluster.fork`
+-is implemented on top of `child_process.fork`. The message passing API that
+-is available with `child_process.fork` is available with `cluster` as well.
+-As an example, here is a cluster which keeps count of the number of requests
+-in the master process via message passing:
++
++### cluster.isMaster
++
++This boolean flag is true if the process is a master. This is determined
++by the `process.env.NODE_UNIQUE_ID`. If `process.env.NODE_UNIQUE_ID` is
++undefined `isMaster` is `true`.
++
++### cluster.isWorker
++
++This boolean flag is true if the process is a worker forked from a master.
++If the `process.env.NODE_UNIQUE_ID` is set to a value different efined
++`isWorker` is `true`.
++
++### Event: 'fork'
++
++When a new worker is forked the cluster module will emit a 'fork' event.
++This can be used to log worker activity, and create you own timeout.
++
++    var timeouts = [];
++    var errorMsg = function () {
++        console.error(""Something must be wrong with the connection ..."");
++    });
++
++    cluster.on('fork', function (worker) {
++        timeouts[worker.uniqueID] = setTimeout(errorMsg, 2000);
++    });
++    cluster.on('listening', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++    });
++    cluster.on('death', function (worker) {
++        clearTimeout(timeouts[worker.uniqueID]);
++        errorMsg();
++    });
++
++### Event: 'online'
++
++After forking a new worker, the worker should respond with a online message.
++When the master receives a online message it will emit such event.
++The difference between 'fork' and 'online' is that fork is emitted when the
++master tries to fork a worker, and 'online' is emitted when the worker is being
++executed.
++
++    cluster.on('online', function (worker) {
++        console.log(""Yay, the worker responded after it was forked"");
++    });
++
++### Event: 'listening'
++
++When calling `listen()` from a worker, a 'listening' event is automatically assigned
++to the server instance. When the server is listening a message is send to the master
++where the 'listening' event is emitted.
++
++    cluster.on('listening', function (worker) {
++        console.log(""We are now connected"");
++    });
++
++### Event: 'death'
++
++When any of the workers die the cluster module will emit the 'death' event.
++This can be used to restart the worker by calling `fork()` again.
++
++    cluster.on('death', function(worker) {
++      console.log('worker ' + worker.pid + ' died. restart...');
++      cluster.fork();
++    });
++
++### cluster.fork([env])
++
++Spawn a new worker process. This can only be called from the master process.
++The function takes an optional `env` object. The properties in this object
++will be added to the process environment in the worker.
++
++### cluster.eachWorker(callback)
++","workers are assigned to the `cluster.worker` by there uniqueID, this makes them very easy to find again. If we change this to an array people will get a lot of `undefined` values in there for loop. Also i don't like to have method like `.push()` that indicate someting there it very wrong. 
+",8450aba1df422c7556f2a68d25f184f3b5ce53ed
+82261,1,"true, though once could just be the same as `.max(1)` as a bit of extra sugar. just throwing ideas out there while we're at it :D""",2011-08-03 15:12:20,visionmedia,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/1450#discussion_r82261,2011-08-04T03:12:20Z,2011-08-04T23:44:40Z,tj,NONE,doc/api/events.markdown,,124.0,,,1,"@@ -1,59 +1,96 @@
+ ## Events
+ 
+-Many objects in Node emit events: a `net.Server` emits an event each time
+-a peer connects to it, a `fs.readStream` emits an event when the file is
+-opened. All objects which emit events are instances of `events.EventEmitter`.
+-You can access this module by doing: `require(""events"");`
++Many objects in Node emit events: a `net.Server` emits an event each time a peer connects to it, a `fs.readStream` emits an event when the file is opened. All objects which emit events are instances of `events.EventEmitter`. You can access this module by doing: `require(""events"");`
+ 
+-Typically, event names are represented by a camel-cased string, however,
+-there aren't any strict restrictions on that, as any string will be accepted.
++Typically, event names are represented by a camel-cased string, however, there aren't any strict restrictions on that, as any string will be accepted.
+ 
+-Functions can then be attached to objects, to be executed when an event
+-is emitted. These functions are called _listeners_.
++Functions can then be attached to objects, to be executed when an event is emitted. These functions are called _listeners_.
+ 
+ 
++**Namespaces** with **Wildcards**
++To use namespaces/wildcards, pass the `wildcard` option into the EventEmitter constructor. When namespaces/wildcards are enabled, events can either be strings (`foo.bar`) separated by a delimiter or arrays (`['foo', 'bar']`). The delimiter is also configurable as a  constructor option.
++
++An event name passed to any event emitter method can contain a wild card (the `*` character). If the event name is a string, a wildcard may appear as `foo.*`. If the event name is an array, the wildcard may appear as `['foo', '*']`.
++
++If either of the above described events were passed to the `on` method, subsequent emits such as the following would be observed...
++
++
++   emitter.emit(['foo.bazz']);
++   emitter.emit(['foo', 'bar']);
++
++
++When emitting or listening for an event that contains a wildcard, the name of the actual event is available by accessing `this.event` from within the callback.
++
+ ### events.EventEmitter
+ 
+ To access the EventEmitter class, `require('events').EventEmitter`.
+ 
+-When an `EventEmitter` instance experiences an error, the typical action is
+-to emit an `'error'` event.  Error events are treated as a special case in node.
+-If there is no listener for it, then the default action is to print a stack
+-trace and exit the program.
++When an `EventEmitter` instance experiences an error, the typical action is to emit an `'error'` event.  Error events are treated as a special case in node. If there is no listener for it, then the default action is to print a stack trace and exit the program.
+ 
+-All EventEmitters emit the event `'newListener'` when new listeners are
+-added.
++All EventEmitters emit the event `'newListener'` when new listeners are added.
+ 
+ #### emitter.addListener(event, listener)
+ #### emitter.on(event, listener)
+ 
+ Adds a listener to the end of the listeners array for the specified event.
+ 
++
+     server.on('connection', function (stream) {
+       console.log('someone connected!');
+     });
+ 
++
++#### emitter.onAny(listener)
++
++Adds a listener that will be fired when any event is emitted.
++
++    function f(value) { 
++      console.log('This event will be listened to exactly four times.');
++    };
++
++    server.onAny(f);
++
++
++#### emitter.unAny(listener)
++
++Removes the listener that will be fired when any event is emitted.
++
++
++    server.unAny(f);
++
++
+ #### emitter.once(event, listener)
+ 
+-Adds a **one time** listener for the event. The listener is
+-invoked only the first time the event is fired, after which
+-it is removed.
++Adds a **one time** listener for the event. The listener is invoked only the first time the event is fired, after which it is removed.
+ 
+-    server.once('connection', function (stream) {
+-      console.log('Ah, we have our first user!');
++
++    server.once('connection', function (value) {
++      console.log('Ah, we have our first value!');
++    });
++
++
++#### emitter.many(event, timesToListen, listener)
++
++Adds a listener that will execute **n times** for the event before being removed. The listener is invoked only the first time the event is fired, after which it is removed.
++
++
++    server.many('connection', 4, function (value) {","true, though once could just be the same as `.max(1)` as a bit of extra sugar. just throwing ideas out there while we're at it :D
+",1cfd6c6ff7358a27c09d11c47b339383972fc337
+14894,0,"Shouldn't that be `favicon.ico` instead of  `/favicon.ico`?""",2011-04-02 00:45:19,3rd-Eden,joyent,node,,https://github.com/nodejs/node-v0.x-archive/pull/795#discussion_r14894,2011-04-02T12:45:19Z,2011-04-02T12:45:19Z,3rd-Eden,NONE,doc/template.html,,6.0,,,5,"@@ -2,6 +2,8 @@
+ <html>
+ <head>
+   <title>{{section}}Node.js Manual &amp; Documentation</title>
++  <link type=""image/x-icon"" rel=""icon"" href=""/favicon.ico"" />
++  <link type=""image/x-icon"" rel=""shortcut icon"" href=""/favicon.ico"" />","Shouldn't that be `favicon.ico` instead of  `/favicon.ico`?
+",bb393c66a9353f3bf070923d2fb0ae55820a4e23

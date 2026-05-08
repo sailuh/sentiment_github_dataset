@@ -1,0 +1,14 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2920505,2,"I see, that is why I encountered weird things like: I edit http_parser.c, the node-gyp did compile what I edited, but it does NOT use it :(. So yes I am guessing it links to the """"old"""" internal node.js http_parser.  Ok, how to statically link my add-on to""",2013-04-01 04:28:47,felix-halim,joyent,http-parser,0938fe599f7e3e4405880216ea445d634a974375,felix-halim,1087268,"I see, that is why I encountered weird things like: I edit http_parser.c, the node-gyp did compile what I edited, but it does NOT use it :(. So yes I am guessing it links to the ""old"" internal node.js http_parser.
+
+Ok, how to statically link my add-on to the newest version that I cloned?
+What should I write in the binding.gyp? Definitely my current binding.gyp is not correct?:
+
+https://github.com/felix-halim/http-parser-bug
+
+Thanks!
+",2013-04-01T16:28:47Z,2013-04-01T16:28:47Z
+487563,1,"nah it's a none-node related C project, thanks I'll check it out!""",2011-07-20 06:18:32,visionmedia,joyent,http-parser,53adfacad1c16ec7da7de4a0aee03c2d70f19618,tj,25254,"nah it's a none-node related C project, thanks I'll check it out!
+",2011-07-20T18:18:32Z,2011-07-20T18:18:32Z
+35944,1,"Happy to see you going by hand, but the Ragel parser had the advantage of the graphical Dot state machine output. Are you maintaing a similar FSM for this version, and if so, would you please copy the .Dot file into the repository? Thanks! """,2009-11-21 07:54:59,erichocean,joyent,http-parser,433202d825fa34de5e42f810bb984ece05a36d20,erichocean,11814,"Happy to see you going by hand, but the Ragel parser had the advantage of the graphical Dot state machine output. Are you maintaing a similar FSM for this version, and if so, would you please copy the .Dot file into the repository? Thanks! 
+",2009-11-21T18:54:59Z,2009-11-21T18:54:59Z

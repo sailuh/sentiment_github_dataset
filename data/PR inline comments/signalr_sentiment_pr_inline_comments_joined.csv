@@ -1,0 +1,1831 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+4229126,2,"If we make it static it'll make unit testing it ugly.  I'll have to add unused Resolve overrides to take in min/max Version numbers.  Still want it static?""",2013-05-14 18:20:09,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/2029#discussion_r4229126,2013-05-15T06:20:09Z,2013-05-15T19:04:53Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Core/PersistentConnection.cs,,31.0,,,4,"@@ -28,11 +28,12 @@ public abstract class PersistentConnection
+     {
+         private const string WebSocketsTransportName = ""webSockets"";
+         private static readonly char[] SplitChars = new[] { ':' };
++        private static readonly ProtocolResolver _protocolResolver = new ProtocolResolver();","If we make it static it'll make unit testing it ugly.  I'll have to add unused Resolve overrides to take in min/max Version numbers.
+
+Still want it static?
+",56a5e4e5544a12caaedfb01bbcbd4638fece7a55
+3930758,1,"I obviously meant this :smile: """,2013-04-23 16:52:49,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1938#discussion_r3930758,2013-04-24T04:52:49Z,2013-04-24T04:52:49Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.SqlServer/DependencyResolverExtensions.cs,,37.0,,,7,"@@ -34,9 +34,8 @@ public static IDependencyResolver UseSqlServer(this IDependencyResolver resolver
+                 throw new ArgumentNullException(""resolver"");
+             }
+ 
+-            // TODO: Can this be Lazy<T> initialized again now?
+-            var bus = new SqlMessageBus(resolver, configuration);
+-            resolver.Register(typeof(IMessageBus), () => bus);
++            var bus = new Lazy<SqlMessageBus>(() => new SqlMessageBus(resolver, configuration));","I obviously meant this :smile: 
+",2caa83e41589258c3d9dcf50808a35f751350cfe
+3921282,1,"True true :)""",2013-04-23 05:50:16,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1936#discussion_r3921282,2013-04-23T17:50:16Z,2013-04-23T18:45:36Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.ServiceBus/ServiceBusConnection.cs,,65.0,,,43,"@@ -54,33 +58,45 @@ public ServiceBusConnection(ServiceBusScaleoutConfiguration configuration)
+                 {
+                     try
+                     {
++                        _trace.TraceInformation(""Creating a new topic {0} in the service bus..."", topicName);
++
+                         _namespaceManager.CreateTopic(topicName);
++
++                        _trace.TraceInformation(""Creation of a new topic {0} in the service bus completed successfully."", topicName);","True true :)
+",04bcb093bfeb03a239460713801d3565260b9330
+3111953,2,"100% bug, shocked it wasn't caught before""",2013-02-21 19:02:48,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1558#discussion_r3111953,2013-02-22T06:02:48Z,2013-02-22T22:27:38Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.common.js,,110.0,,,33,"@@ -87,19 +87,28 @@
+         },
+ 
+         addQs: function (url, connection) {
++            var appender = url.indexOf(""?"") !== -1 ? ""&"" : ""?"",
++                firstChar;
++            
+             if (!connection.qs) {
+                 return url;
+             }
+ 
+             if (typeof (connection.qs) === ""object"") {
+-                return url + ""&"" + $.param(connection.qs);
++                return url + appender + $.param(connection.qs);
+             }
+ 
+             if (typeof (connection.qs) === ""string"") {
+-                return url + ""&"" + connection.qs;
++                firstChar = connection.qs.charAt(0);
++
++                if (firstChar === ""?"" || firstChar === ""&"") {
++                    appender = """";
++                }
++
++                return url + appender + connection.qs;","100% bug, shocked it wasn't caught before
+",70027b66a0dc5a3cfc4ebdead687b9bf5d9fde55
+3021456,0,"Do we need this?""",2013-02-14 11:20:31,halter73,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1516#discussion_r3021456,2013-02-14T22:20:31Z,2013-02-15T00:44:28Z,halter73,MEMBER,tests/Microsoft.AspNet.SignalR.Client.JS.Tests/Tests/FunctionalTests/Transports/All/HubConnectionFacts.js,,55.0,,,1,"@@ -16,5 +16,52 @@ testUtilities.runWithAllTransports(function (transport) {
+         return function () {
+             connection.stop();
+         };
+-    });    
++    });
++
++    QUnit.asyncTimeoutTest(transport + "": connection.id and connection.token have new value after stop and start."", testUtilities.defaultTestTimeout * 2, function (end, assert) {
++        var connection = testUtilities.createHubConnection(),
++            echoHub = connection.createHubProxies().echoHub,
++            run,
++            oldConnectionID,
++            oldConnectionToken;
++
++        run = function (echo, connection) {
++            var deferred = $.Deferred();
++
++            echoHub.client.echo = function (value) {
++                assert.equal(value, echo, ""Successfuly received message "" + echo);
++                deferred.resolve();
++            };
++
++            connection.start({ transport: transport }).done(function () {
++                echoHub.server.echoCallback(echo).done(function () {
++                    assert.ok(true, ""Successfuly called server method"");
++                });
++            }).fail(function (reason) {
++                assert.ok(false, ""Failed to initiate signalr connection"");
++                end();
++            });
++
++            return deferred.promise();
++        };
++
++        run(""hello"", connection).done(function () {
++            oldConnectionID = connection.id;
++            oldConnectionToken = connection.token;
++
++            connection.stop();
++            setTimeout(function () {","Do we need this?
+",0bfeaf4cc03c5b6fd549f5327789c71ec23381e2
+2086258,0,"What's this?""",2012-11-09 07:11:43,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/929#discussion_r2086258,2012-11-09T18:11:43Z,2012-11-09T18:11:43Z,davidfowl,MEMBER,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Scripts/jquery.signalR.js,,1743.0,,,220,"@@ -1678,9 +1739,24 @@
+ 
+             callbacks[callbackId.toString()] = { scope: self, method: callback };
+             callbackId += 1;
++
++            if (!$.isPlainObject(self.state)) {","What's this?
+",1fb996c991304516ed8e6b6835d5d502aa73dc4c
+615728,1,"Now this is beautiful LINQ :smile:""",2012-03-28 03:43:15,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r615728,2012-03-28T15:43:15Z,2012-03-29T00:42:05Z,davidfowl,MEMBER,SignalR/Hubs/HubDispatcher.cs,,147.0,,,99,"@@ -150,17 +143,11 @@ protected override Task OnDisconnectAsync(string connectionId)
+ 
+         private Task ExecuteHubEventAsync<T>(string connectionId, Func<T, Task> action) where T : class
+         {
+-            var operations = new List<Task>();
+-
+-            foreach (Type type in GetHubsImplementingInterface(typeof(T)))
+-            {
+-                T instance = CreateHub(type, connectionId) as T;
+-                if (instance != null)
+-                {
+-                    // Collect all the asyc operations
+-                    operations.Add(action(instance) ?? TaskAsyncHelper.Empty);
+-                }
+-            }
++            var operations = GetHubsImplementingInterface(typeof(T))","Now this is beautiful LINQ :smile:
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d
+2541813,0,"I'm pretty sure it's the line endings.""",2013-01-03 07:33:15,halter73,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1222#discussion_r2541813,2013-01-03T18:33:15Z,2013-01-05T01:16:34Z,halter73,MEMBER,src/Microsoft.AspNet.SignalR.Core/Resources.resx,,,,,1,"@@ -1,168 +1,171 @@
+-﻿<?xml version=""1.0"" encoding=""utf-8""?>","I'm pretty sure it's the line endings.
+",3b69e77802f3803290a8f5f32d67adea292b9122
+4560992,1,"Really... :smile: """,2013-06-05 16:13:31,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/2121#discussion_r4560992,2013-06-06T04:13:31Z,2013-06-06T18:54:49Z,davidfowl,MEMBER,tests/Microsoft.AspNet.SignalR.Tests/CursorFacts.cs,,294.0,,,289,"@@ -156,89 +156,152 @@ public void GetCursorsThrowsGivenDuplicates()
+             //    new Cursor(""\u03A3\u03B9\u03B3\u03BD\u03B1\u03BB\u03A1"", 0),
+             //    new Cursor(@""\foo|1,4,\|\\\,"", 0),
+             //};
+-            //var serializedCursors = Cursor.MakeCursor(cursors);
++            //var serializedCursors = Cursor.MakeCursor(cursors, prefix: ""d-"");
+ 
+-            var serializedCursors = @""\\foo\|1\,4\,\\\|\\\\\\\,,A|\\foo\|1\,4\,\\\|\\\\\\\,,0|\\foo\|1\,4\,\\\|\\\\\\\,,FFFFFFFFFFFFFFFF|,0|,0|""
++            var serializedCursors = @""d-\\foo\|1\,4\,\\\|\\\\\\\,,A|\\foo\|1\,4\,\\\|\\\\\\\,,0|\\foo\|1\,4\,\\\|\\\\\\\,,FFFFFFFFFFFFFFFF|,0|,0|""
+                                   + @""only non dup,0|,64|ΣιγναλΡ,FFFFFFFFFFFFFFFF|ΣιγναλΡ,FFFFFFFFFFFFFFFF|ΣιγναλΡ,0|\\foo\|1\,4\,\\\|\\\\\\\,,0"";
+ 
+-            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursors));
++            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursors, prefix: ""d-""));
+         }
+ 
+         [Theory]
+-        [InlineData(@""|"")]
+-        [InlineData(@""A|A2|"")]
+-        [InlineData(@""||"")]
+-        [InlineData(@""||,"")]
+-        [InlineData(@""|,|"")]
+-        [InlineData(@"",||"")]
+-        [InlineData(@"",,|"")]
+-        [InlineData(@"",|,"")]
+-        [InlineData(@"",,|"")]
+-        [InlineData(@""A|"")]
+-        [InlineData(@""A||"")]
+-        [InlineData(@""A||,"")]
+-        [InlineData(@""A|,|"")]
+-        [InlineData(@""A,||"")]
+-        [InlineData(@""A,,|"")]
+-        [InlineData(@""A,|,"")]
+-        [InlineData(@""A,,|"")]
+-        [InlineData(@""A|A2"")]
+-        [InlineData(@""A|A"")]
+-        [InlineData(@""A|A2,"")]
+-        [InlineData(@""A|A2|"")]
+-        [InlineData(@"""")]
+-        [InlineData(@"",|,"")]
+-        [InlineData(@""test"")]
+-        [InlineData(@""test,"")]
+-        [InlineData(@""test,A|"")]
+-        [InlineData(@""test,A|,"")]
+-        [InlineData(@""test,,,,,,,,,,,,"")]
+-        [InlineData(@""test,test2,,,,test3,A"")]
+-        [InlineData(@""test,test2,test,A"")]
+-        [InlineData(@""test,A|"")]
+-        [InlineData(@""test,A|random text"")]
+-        [InlineData(@""test,A|test,B"")]
+-        [InlineData(@"",A|,B"")]
+-        [InlineData(@""\test,A"")]
+-        public void FuzzedCursors(string serializedCursor)
++        [InlineData(@"""", """")]
++        [InlineData(@"""", ""d-"")]
++        [InlineData(@"""", ""s-"")]
++        [InlineData(@""d-|"", ""d-"")]
++        [InlineData(@""s-|"", ""s-"")]
++        [InlineData(@""d-A|A2|"", ""d-"")]
++        [InlineData(@""s-A|A2|"", ""s-"")]
++        [InlineData(@""d-||"", ""d-"")]
++        [InlineData(@""s-||"", ""s-"")]
++        [InlineData(@""d-||,"", ""d-"")]
++        [InlineData(@""s-||,"", ""s-"")]
++        [InlineData(@""d-|,|"", ""d-"")]
++        [InlineData(@""s-|,|"", ""s-"")]
++        [InlineData(@""d-,||"", ""d-"")]
++        [InlineData(@""s-,||"", ""s-"")]
++        [InlineData(@""d-,,|"", ""d-"")]
++        [InlineData(@""s-,,|"", ""s-"")]
++        [InlineData(@""d-,|,"", ""d-"")]
++        [InlineData(@""s-,|,"", ""s-"")]
++        [InlineData(@""d-,,|"", ""d-"")]
++        [InlineData(@""s-,,|"", ""s-"")]
++        [InlineData(@""d-A|"", ""d-"")]
++        [InlineData(@""s-A|"", ""s-"")]
++        [InlineData(@""d-A||"", ""d-"")]
++        [InlineData(@""s-A||"", ""s-"")]
++        [InlineData(@""d-A||,"", ""d-"")]
++        [InlineData(@""s-A||,"", ""s-"")]
++        [InlineData(@""d-A|,|"", ""d-"")]
++        [InlineData(@""s-A|,|"", ""s-"")]
++        [InlineData(@""d-A,||"", ""d-"")]
++        [InlineData(@""s-A,||"", ""s-"")]
++        [InlineData(@""d-A,,|"", ""d-"")]
++        [InlineData(@""s-A,,|"", ""s-"")]
++        [InlineData(@""d-A,|,"", ""d-"")]
++        [InlineData(@""s-A,|,"", ""s-"")]
++        [InlineData(@""d-A,,|"", ""d-"")]
++        [InlineData(@""s-A,,|"", ""s-"")]
++        [InlineData(@""d-A|A2"", ""d-"")]
++        [InlineData(@""s-A|A2"", ""s-"")]
++        [InlineData(@""d-A|A"", ""d-"")]
++        [InlineData(@""s-A|A"", ""s-"")]
++        [InlineData(@""d-A|A2,"", ""d-"")]
++        [InlineData(@""s-A|A2,"", ""s-"")]
++        [InlineData(@""d-A|A2|"", ""d-"")]
++        [InlineData(@""s-A|A2|"", ""s-"")]
++        [InlineData(@""d-"", ""d-"")]
++        [InlineData(@""s-"", ""s-"")]
++        [InlineData(@""d-,|,"", ""d-"")]
++        [InlineData(@""s-,|,"", ""s-"")]
++        [InlineData(@""d-test"", ""d-"")]
++        [InlineData(@""s-test"", ""s-"")]
++        [InlineData(@""d-test,"", ""d-"")]
++        [InlineData(@""s-test,"", ""s-"")]
++        [InlineData(@""d-test,A|"", ""d-"")]
++        [InlineData(@""s-test,A|"", ""s-"")]
++        [InlineData(@""d-test,A|,"", ""d-"")]
++        [InlineData(@""s-test,A|,"", ""s-"")]
++        [InlineData(@""d-test,,,,,,,,,,,,"", ""d-"")]
++        [InlineData(@""s-test,,,,,,,,,,,,"", ""s-"")]
++        [InlineData(@""d-test,test2,,,,test3,A"", ""d-"")]
++        [InlineData(@""s-test,test2,,,,test3,A"", ""s-"")]
++        [InlineData(@""d-test,test2,test,A"", ""d-"")]
++        [InlineData(@""s-test,test2,test,A"", ""s-"")]
++        [InlineData(@""d-test,A|"", ""d-"")]
++        [InlineData(@""s-test,A|"", ""s-"")]
++        [InlineData(@""d-test,A|random text"", ""d-"")]
++        [InlineData(@""s-test,A|random text"", ""s-"")]
++        [InlineData(@""d-test,A|test,B"", ""d-"")]
++        [InlineData(@""s-test,A|test,B"", ""s-"")]
++        [InlineData(@""d-,A|,B"", ""d-"")]
++        [InlineData(@""s-,A|,B"", ""s-"")]
++        [InlineData(@""d-\test,A"", ""d-"")]
++        [InlineData(@""s-\test,A"", ""s-"")]
++        public void FuzzedCursors(string serializedCursor, string prefix)
+         {
+-            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursor));
++            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursor, prefix));
+         }
+ 
+         [Theory]
+-        [InlineData(@""A,|"")]
+-        [InlineData(@""A,|,"")]
+-        [InlineData(@""test,"")]
+-        [InlineData(@""test,A|test2"")]
+-        [InlineData(@""test,A|test2,"")]
+-        [InlineData(@""test,A|test"")]
+-        [InlineData(@""test,A|test,"")]
+-        [InlineData(@""test,A|test,|"")]
+-        public void CursorsWithoutIds(string serializedCursor)
++        [InlineData(@""d-A,|"", ""d-"")]
++        [InlineData(@""s-A,|"", ""s-"")]
++        [InlineData(@""d-A,|,"", ""d-"")]
++        [InlineData(@""s-A,|,"", ""s-"")]
++        [InlineData(@""d-test,"", ""d-"")]
++        [InlineData(@""s-test,"", ""s-"")]
++        [InlineData(@""d-test,A|test2"", ""d-"")]
++        [InlineData(@""s-test,A|test2"", ""s-"")]
++        [InlineData(@""d-test,A|test2,"", ""d-"")]
++        [InlineData(@""s-test,A|test2,"", ""s-"")]
++        [InlineData(@""d-test,A|test"", ""d-"")]
++        [InlineData(@""s-test,A|test"", ""s-"")]
++        [InlineData(@""d-test,A|test,"", ""d-"")]
++        [InlineData(@""s-test,A|test,"", ""s-"")]
++        [InlineData(@""d-test,A|test,|"", ""d-"")]
++        [InlineData(@""s-test,A|test,|"", ""s-"")]
++        public void CursorsWithoutIds(string serializedCursor, string prefix)
+         {
+-            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursor));
++            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursor, prefix));
+         }
+ 
+         [Theory]
+-        [InlineData(@""A,|"")]
+-        [InlineData(@""test,\10"")]
+-        [InlineData(@""test,G"")]
+-        [InlineData(@""test,123ABCQDE"")]
+-        [InlineData(@""test,123ABC\u03A3DE"")]
+-        [InlineData(@""test,123ABC\,DE"")]
+-        [InlineData(@""test,123ABC\\DE"")]
+-        [InlineData(@""test,123ABC\|DE"")]
+-        [InlineData(@""test,123ABC///////|DE"")]
+-        public void CursorWithInvalidCharactersInIds(string serializedCursor)
++        [InlineData(@""d-A,|"", ""d-"")]
++        [InlineData(@""s-A,|"", ""s-"")]
++        [InlineData(@""d-test,\10"", ""d-"")]
++        [InlineData(@""s-test,\10"", ""s-"")]
++        [InlineData(@""d-test,G"", ""d-"")]
++        [InlineData(@""s-test,G"", ""s-"")]
++        [InlineData(@""d-test,123ABCQDE"", ""d-"")]
++        [InlineData(@""s-test,123ABCQDE"", ""s-"")]
++        [InlineData(@""d-test,123ABC\u03A3DE"", ""d-"")]
++        [InlineData(@""s-test,123ABC\u03A3DE"", ""s-"")]
++        [InlineData(@""d-test,123ABC\,DE"", ""d-"")]
++        [InlineData(@""s-test,123ABC\,DE"", ""s-"")]
++        [InlineData(@""d-test,123ABC\\DE"", ""d-"")]
++        [InlineData(@""s-test,123ABC\\DE"", ""s-"")]
++        [InlineData(@""d-test,123ABC\|DE"", ""d-"")]
++        [InlineData(@""s-test,123ABC\|DE"", ""s-"")]
++        [InlineData(@""d-test,123ABC///////|DE"", ""d-"")]
++        [InlineData(@""s-test,123ABC///////|DE"", ""s-"")]
++        public void CursorWithInvalidCharactersInIds(string serializedCursor, string prefix)
+         {
+-            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursor));
++            Assert.Throws<FormatException>(() => Cursor.GetCursors(serializedCursor, prefix));
+         }
+ 
+-        private static unsafe string MakeCursor(IList<Cursor> cursors)
++        [Theory]
++        [InlineData(@""d-A,|"", @""tB\c3\ , ,s0\-"")]
++        [InlineData(@""A[αiu3s FF\0A,"", @""A[αiu3s FF\0A, "")]","Really... :smile: 
+",cc833e522b0242d39f3a6dfee818434318831c31
+4086465,1,"oh boy, <3 github diffs lol""",2013-05-04 20:17:00,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1988#discussion_r4086465,2013-05-05T08:17:00Z,2013-05-05T10:02:07Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Core/Transports/HttpRequestLifeTime.cs,,45.0,,,23,"@@ -38,7 +40,9 @@ public void Complete(Exception error)
+         {
+             _trace.TraceEvent(TraceEventType.Verbose, 0, ""DrainWrites("" + _connectionId + "")"");
+ 
+-            var context = new LifetimeContext(_lifetimeTcs, error);
++            var context = new LifetimeContext(_transport, _lifetimeTcs, error);
++
++            _transport.ApplyState(TransportConnectionStates.QueueDrained);","oh boy, <3 github diffs lol
+",ae5eacd7e12fbed9680e0981d9d20023b63d48ae
+3949929,0,"It is interesting this reference does not include version , culture and public key token. Any reason?""",2013-04-24 12:54:37,hongmeig,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1945#discussion_r3949929,2013-04-25T00:54:37Z,2013-04-29T19:34:37Z,hongmeig,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Client.Silverlight.Sample/Microsoft.AspNet.SignalR.Client.Silverlight.Sample.csproj,,71.0,,,25,"@@ -61,6 +64,25 @@
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include=""mscorlib"" />
++    <Reference Include=""System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>..\..\packages\Microsoft.Net.Http.2.1.3-beta\lib\portable-net40+sl4+win8+wp71\System.Net.Http.dll</HintPath>
++    </Reference>
++    <Reference Include=""System.Net.Http.Extensions"">","It is interesting this reference does not include version , culture and public key token. Any reason?
+",f0a2ae84f7096c60977a89d8ea3be7e191938a0e
+3557551,0,"Makes sense also since it's only used once.""",2013-03-27 07:57:21,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1754#discussion_r3557551,2013-03-27T18:57:21Z,2013-03-28T00:24:04Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.common.js,,,,,1,"@@ -7,6 +7,7 @@
+     ""use strict"";
+ 
+     var signalR = $.signalR,
++        signalRPrivate = $.signalR._,","Makes sense also since it's only used once.
+",6137b5504f5be9a0aa613b84c852a6e87c2b22c4
+3111980,0,"$.param encodes the characters which is why this didn't show up in our unit tests, i'll add a condition to our tests that verifies that strings are also encoded.""",2013-02-21 19:08:56,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1558#discussion_r3111980,2013-02-22T06:08:56Z,2013-02-22T22:27:38Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.common.js,,110.0,,,33,"@@ -87,19 +87,28 @@
+         },
+ 
+         addQs: function (url, connection) {
++            var appender = url.indexOf(""?"") !== -1 ? ""&"" : ""?"",
++                firstChar;
++            
+             if (!connection.qs) {
+                 return url;
+             }
+ 
+             if (typeof (connection.qs) === ""object"") {
+-                return url + ""&"" + $.param(connection.qs);
++                return url + appender + $.param(connection.qs);
+             }
+ 
+             if (typeof (connection.qs) === ""string"") {
+-                return url + ""&"" + connection.qs;
++                firstChar = connection.qs.charAt(0);
++
++                if (firstChar === ""?"" || firstChar === ""&"") {
++                    appender = """";
++                }
++
++                return url + appender + connection.qs;","$.param encodes the characters which is why this didn't show up in our unit tests, i'll add a condition to our tests that verifies that strings are also encoded.
+",70027b66a0dc5a3cfc4ebdead687b9bf5d9fde55
+3022625,1,"Will potentially do this in the future in another pull request.  Good idea though =]""",2013-02-14 12:55:22,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1516#discussion_r3022625,2013-02-14T23:55:22Z,2013-02-15T00:44:28Z,NTaylorMullen,CONTRIBUTOR,tests/Microsoft.AspNet.SignalR.Client.JS.Tests/Tests/FunctionalTests/Hubs/HubGroupFacts.js,,92.0,,,92,"@@ -0,0 +1,103 @@
++﻿QUnit.module(""Hub Group Facts"");
++
++testUtilities.runWithAllTransports(function (transport) {
++    QUnit.asyncTimeoutTest(transport + "": Hub can send and receive messages from groups."", testUtilities.defaultTestTimeout, function (end, assert, testName) {
++        var connection = testUtilities.createHubConnection(testName),
++            groupChat = connection.createHubProxies().groupChat;
++
++        groupChat.client.send = function (value) {
++            assert.ok(value === ""hello"", ""Successfully received message from group"");
++            end();
++        };
++
++        connection.start({ transport: transport }).done(function () {
++            assert.ok(true, ""Connected"");
++
++            groupChat.server.join(""group++1"").done(function () {
++                assert.ok(true, ""Successful call to join group"");
++
++                groupChat.server.send(""group++1"", ""hello"");
++            });
++        }).fail(function (reason) {
++            assert.ok(false, ""Failed to initiate SignalR connection"");
++            end();
++        });
++
++        // Cleanup
++        return function () {
++            connection.stop();
++        };
++    });
++
++    QUnit.asyncTimeoutTest(transport + "": Hub Rejoin Group after reconnect."", testUtilities.defaultTestTimeout * 2, function (end, assert, testName) {
++        var connection = testUtilities.createHubConnection(testName),
++            groupChat = connection.createHubProxies().groupChat,
++            readyToEnd = false,
++            tryReconnect;
++
++        // LongPolling does not support ""lostConnection"" so we have to trigger reconnect in a different fashion
++        if (transport !== ""longPolling"") {
++            tryReconnect = function () {
++                connection.transport.lostConnection(connection);
++            };
++        }
++        else {
++            tryReconnect = function () {
++                // Verify that the polling connection is instantiated before trying to abort it. We want
++                // to cause the transport to error so it must be instantiated first.
++                if (connection.pollXhr.readyState !== 1) {
++                    setTimeout(tryReconnect, 200);
++                }
++                else {
++                    // Passing ""foo"" forces the longPolling's ajax connection to error and pass ""foo"" as the 
++                    // reason, the default error (empty) is ""abort"" which we handle as do not attempt to 
++                    // reconnect. So by passing foo we mimic the behavior of an unintended error occurring, 
++                    // forcing the transport into reconnecting.
++                    connection.pollXhr.abort(""foo"");
++                }
++            };
++        }
++
++        groupChat.client.send = function (value) {
++            if (readyToEnd) {
++                assert.ok(value === ""hello"", ""Successful received message from group after reconnected"");
++                end();
++            }
++        };
++
++        connection.reconnected(function () {
++            assert.ok(true, ""Successfuly raised reconnected event "");
++
++            readyToEnd = true;
++            groupChat.server.send(""group++1"", ""hello"").done(function () {
++                assert.ok(true, ""Successful send to group"");
++            });
++        });
++
++        connection.start({ transport: transport }).done(function () {
++            assert.ok(true, ""Connected"");
++
++            groupChat.server.join(""group++1"").done(function () {
++                assert.ok(true, ""Successful call to join group"");
++
++                // We must get a value back from the server in order to instantiate our message ID so longPolling is able to reconnect.
++                groupChat.server.send(""group++1"", ""foo"").done(function () {
++                    setTimeout(function () {
++                        tryReconnect();
++                    }, 200);
++                });
++            });
++
++        }).fail(function (reason) {
++            assert.ok(false, ""Failed to initiate SignalR connection"");
++            end();","Will potentially do this in the future in another pull request.  Good idea though =]
+",0bfeaf4cc03c5b6fd549f5327789c71ec23381e2
+4106682,0,"Run this test also for persistent connections""",2013-05-06 16:45:13,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1996#discussion_r4106682,2013-05-07T04:45:13Z,2013-05-07T05:29:05Z,NTaylorMullen,CONTRIBUTOR,tests/Microsoft.AspNet.SignalR.Client.JS.Tests/Tests/FunctionalTests/Core/JsonFacts.js,,5.0,,,5,"@@ -0,0 +1,30 @@
++﻿QUnit.module(""Core - connection.json Facts"");
++
++(function ($, window) {
++    testUtilities.runWithAllTransports(function (transport) {
++        QUnit.asyncTimeoutTest(transport + "" transport uses custom JSON object."", testUtilities.defaultTestTimeout, function (end, assert, testName) {","Run this test also for persistent connections
+",d59943b015384eb10a2800417f977e409d3f7175
+4099562,0,"We use named parameters when passing null or any boolean values.""",2013-05-06 07:17:52,abnanda1,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1991#discussion_r4099562,2013-05-06T19:17:52Z,2013-05-07T23:08:10Z,abnanda1,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Client.Android.Sample/TextViewWriter.cs,,,,,1,"@@ -0,0 +1,58 @@
++using System;
++using System.IO;
++using System.Threading;
++using Android.Widget;
++
++namespace Microsoft.AspNet.SignalR.Client.Android.Sample
++{
++	public class TextViewWriter : TextWriter
++	{
++		SynchronizationContext _context;
++		TextView _textView;
++		
++		public TextViewWriter (SynchronizationContext context, TextView textView)
++		{
++			_context = context;
++			_textView = textView;
++		}
++		
++		public override void WriteLine (string value)
++		{
++			_context.Post(delegate
++			{
++				_textView.Text = _textView.Text + value + Environment.NewLine;
++			}, null);","We use named parameters when passing null or any boolean values.
+",2aeeafcbac11fd0d2ca005ee61bbce22bbc92f3f
+4099634,0,"same as above""",2013-05-06 07:20:52,abnanda1,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1991#discussion_r4099634,2013-05-06T19:20:52Z,2013-05-07T23:08:10Z,abnanda1,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Client.iOS.Sample/TextViewWriter.cs,,,,,1,"@@ -0,0 +1,58 @@
++using System;
++using System.IO;
++using System.Threading;
++using MonoTouch.UIKit;
++
++namespace Microsoft.AspNet.SignalR.Client.iOS.Sample
++{
++	public class TextViewWriter : TextWriter
++	{
++		SynchronizationContext _context;","same as above
+",2aeeafcbac11fd0d2ca005ee61bbce22bbc92f3f
+3929981,2,"I can't remember why this is lazy. Seems like a waste. """,2013-04-23 14:23:52,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1938#discussion_r3929981,2013-04-24T02:23:52Z,2013-04-24T04:44:56Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Core/Messaging/ScaleoutMessageBus.cs,,34.0,,,20,"@@ -31,7 +32,15 @@ protected ScaleoutMessageBus(IDependencyResolver resolver, ScaleoutConfiguration
+ 
+             var traceManager = resolver.Resolve<ITraceManager>();
+             _trace = traceManager[""SignalR."" + typeof(ScaleoutMessageBus).Name];
+-            _streamManager = new Lazy<ScaleoutStreamManager>(() => new ScaleoutStreamManager(Send, OnReceivedCore, StreamCount, _trace));","I can't remember why this is lazy. Seems like a waste. 
+",2caa83e41589258c3d9dcf50808a35f751350cfe
+3921230,0,"Do we need to have this one?   If we throw we'll know that the topic was not created successfully.""",2013-04-23 05:47:55,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1936#discussion_r3921230,2013-04-23T17:47:55Z,2013-04-23T18:45:36Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.ServiceBus/ServiceBusConnection.cs,,65.0,,,43,"@@ -54,33 +58,45 @@ public ServiceBusConnection(ServiceBusScaleoutConfiguration configuration)
+                 {
+                     try
+                     {
++                        _trace.TraceInformation(""Creating a new topic {0} in the service bus..."", topicName);
++
+                         _namespaceManager.CreateTopic(topicName);
++
++                        _trace.TraceInformation(""Creation of a new topic {0} in the service bus completed successfully."", topicName);","Do we need to have this one?   If we throw we'll know that the topic was not created successfully.
+",04bcb093bfeb03a239460713801d3565260b9330
+3845059,2,"weird formatting. Remove the spaces before and after the parenthesis""",2013-04-17 12:28:08,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1895#discussion_r3845059,2013-04-18T00:28:08Z,2013-04-18T05:48:27Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Core/Hubs/HubDispatcher.cs,,,,,1,"@@ -231,10 +232,20 @@ public override Task ProcessRequest(HostContext context)
+             // Trim any trailing slashes
+             string normalized = context.Request.Url.LocalPath.TrimEnd('/');
+ 
++            int suffixLength = -1;
+             if (normalized.EndsWith(HubsSuffix, StringComparison.OrdinalIgnoreCase))
+             {
+-                // Generate the proper hub url
+-                string hubUrl = normalized.Substring(0, normalized.Length - HubsSuffix.Length);
++                suffixLength = HubsSuffix.Length;
++            }
++            else if (normalized.EndsWith(JsSuffix, StringComparison.OrdinalIgnoreCase))
++            {
++                suffixLength = JsSuffix.Length;
++            }
++
++            if ( suffixLength != -1 )","weird formatting. Remove the spaces before and after the parenthesis
+",5f4723c5150981f53ed20ae54ce61adf389ef4f2
+3802765,0,"Also implement this type of wording for the rest of the li additions""",2013-04-15 09:53:13,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1872#discussion_r3802765,2013-04-15T21:53:13Z,2013-04-19T19:51:05Z,NTaylorMullen,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Hubs/HubClientsAPIs/HubClientsAPIs.js,,,,,1,"@@ -0,0 +1,173 @@
++﻿
++
++$(function () {
++    ""use strict"";
++                
++    var myHub = $.connection.hubClientsAPIs;
++    $.connection.hub.logging = true;
++
++    myHub.client.displayMessage = function (value) {                    
++        $(""<li/>"").html(""["" + new Date().toTimeString() + ""]: "" + value).appendTo($(""#messages""));
++    }
++                
++    var start = function () {
++                    
++        $.connection.hub.start({ transport: activeTransport, jsonp: isJsonp })
++            .done(function () {
++                            
++                $(""<li/>"").html(""started transport: "" + $.connection.hub.transport.name + "" "" + $.connection.hub.id)
++                    .appendTo($(""#messages""));
++               
++                $(""#stopStart"")
++                           .prop(""disabled"", false)
++                           .find(""span"")
++                               .text(""Stop Connection"")
++                               .end()
++                           .find(""i"")
++                               .removeClass(""icon-play"")
++                               .addClass(""icon-stop"");
++
++            });
++    };
++    start();
++                
++    $.connection.hub.stateChanged(function (change) {
++
++        var oldState = null,
++            newState = null;
++        for (var p in $.signalR.connectionState) {
++            if ($.signalR.connectionState[p] === change.oldState) {
++                oldState = p;
++            }
++
++            if ($.signalR.connectionState[p] === change.newState) {
++                newState = p;
++            }
++        }
++
++        $(""<li/>"").html(""["" + new Date().toTimeString() + ""]: "" + oldState + "" => "" + newState + "" ""  + $.connection.hub.id )
++                    .appendTo($(""#messages""));                    
++    });
++
++    $.connection.hub.reconnected(function () {
++        $(""<li/>"").css(""background-color"", ""green"")
++                    .css(""color"", ""white"")
++                    .html(""["" + new Date().toTimeString() + ""]: Connection re-established"")
++                    .appendTo($(""#messages""));
++        $(""<li/>"").html(""reconnected transport: "" + $.connection.hub.transport.name + "" "" + $.connection.hub.id)
++                    .appendTo($(""#messages""));
++    });
++
++    $.connection.hub.error(function (err) {
++        $(""<li/>"").html(""Error occurred: "" + err )
++                    .appendTo($(""#messages""));
++    });
++                                
++    $.connection.hub.connectionSlow(function () {
++        $(""<li/>"").html(""["" + new Date().toTimeString() + ""]: Connection Slow"")
++                    .appendTo($(""#messages""));
++    });
++
++    $('#join-group').click(function () {
++        var connectionIdToJoin = $.connection.hub.id;
++
++        if ($(""#connection"").val())
++            var connectionIdToJoin = $(""#connection"").val();
++
++        myHub.server.joinGroup(connectionIdToJoin, $(""#group"").val()).done(function (value1) {
++            $(""<li/>"").html(""success at join group: "" + value1)
++            .appendTo($(""#messages""));
++        }).fail(function (e) {
++            $(""<li/>"").html(""failed at join group: "" + e)","Also implement this type of wording for the rest of the li additions
+",ea4a905eec9fdb944c29ca9595ff92d782b09b93
+3544694,1,"Cool. Looks good.""",2013-03-26 16:28:54,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1755#discussion_r3544694,2013-03-27T03:28:54Z,2013-03-27T03:30:28Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Client/HeartBeatMonitor.cs,,138.0,,,43,"@@ -119,13 +127,18 @@ protected virtual void Dispose(bool disposing)
+         {
+             if (disposing)
+             {
+-#if !NETFX_CORE
+                 if (_timer != null)
+                 {
++#if !NETFX_CORE
++                
+                     _timer.Dispose();
+                     _timer = null;
+-                }
++#else
++                    _timer.Cancel();
++                    _timer = null;","Cool. Looks good.
+",0edb131ea023df4a94b6dc851acb5bf10a54bb6b
+2952334,0,"Changed it.""",2013-02-08 15:22:37,abnanda1,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1502#discussion_r2952334,2013-02-09T02:22:37Z,2013-02-14T01:48:19Z,abnanda1,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client/Transports/ServerSentEventsTransport.cs,,,,,1,"@@ -115,17 +127,20 @@ private void Reconnect(IConnection connection, string data, CancellationToken di
+                     IResponse response = task.Result;
+                     Stream stream = response.GetResponseStream();
+ 
+-                    var eventSource = new EventSourceStreamReader(stream);
++                    _eventSource = new EventSourceStreamReader(stream);
++
+                     bool retry = true;
+ 
++                    //What exactly is happenieng here?
+                     var esCancellationRegistration = disconnectToken.SafeRegister(es =>
+                     {
+                         retry = false;
+                         es.Close();
+-                    }, eventSource);
++                    }, _eventSource);
+ 
+-                    eventSource.Opened = () =>
++                    _eventSource.Opened = () =>
+                     {
++                        //if we are reconnecting - we do not need to worry about the callback being invoked","Changed it.
+",c5cf35bf4a16f8eb5635e030c90f277ff7cfab34
+2352807,1,"That's what I meant by slightly changed =)""",2012-12-07 08:54:16,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1096#discussion_r2352807,2012-12-07T19:54:16Z,2012-12-07T20:26:47Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.longPolling.js,,,,,1,"@@ -19,139 +19,141 @@
+ 
+         reconnectDelay: 3000,
+ 
++        init: function (connection, onComplete) {
++            /// <summary>Pings the server to ensure availability</summary>
++            /// <param name=""connection"" type=""signalr"">Connection associated with the server ping</param>
++            /// <param name=""onComplete"" type=""Function"">Callback to call once initialization has completed</param>
++
++            var that = this,
++                pingLoop,
++                pingFail = function (reason) {
++                    if (isDisconnecting(connection) === false) {
++                        connection.log(""SignalR: Server ping failed because '"" + reason + ""', re-trying ping."");
++                        window.setTimeout(pingLoop, that.reconnectDelay);
++                    }
++                };
++            
++            pingLoop = function () {
++                transportLogic.pingServer(connection, that.name).done(onComplete).fail(pingFail);
++            };
++
++            pingLoop();
++        },        
++
+         start: function (connection, onSuccess, onFailed) {
+             /// <summary>Starts the long polling connection</summary>
+             /// <param name=""connection"" type=""signalR"">The SignalR connection to start</param>
+-            var that = this,
+-                initialConnectFired = false;
++            var that = this;
+ 
+             if (connection.pollXhr) {
+                 connection.log(""Polling xhr requests already exists, aborting."");
+                 connection.stop();
+             }
+ 
+-            connection.messageId = null;
+-
+-            window.setTimeout(function () {
+-                (function poll(instance, raiseReconnect) {
+-                    var messageId = instance.messageId,
+-                        connect = (messageId === null),
+-                        reconnecting = !connect,
+-                        url = transportLogic.getUrl(instance, that.name, reconnecting, raiseReconnect),
+-                        reconnectTimeOut = null,
+-                        reconnectFired = false,
+-                        triggerReconnected = function () {
+-                            // Fire the reconnect event if it hasn't been fired as yet
+-                            if (reconnectFired === false) {
+-                                connection.log(""Raising the reconnect event"");
+-
+-                                if (changeState(connection,
+-                                                signalR.connectionState.reconnecting,
+-                                                signalR.connectionState.connected) === true) {
+-
+-                                    $(instance).triggerHandler(events.onReconnect);
+-                                    reconnectFired = true;
+-                                }
+-                            }
+-                        };
++            that.init(connection, function () {
++                connection.messageId = null;
+ 
+-                    if (reconnecting === true && raiseReconnect === true &&
+-                        !transportLogic.ensureReconnectingState(connection)) {
+-                        return;
+-                    }
++                window.setTimeout(function () {
++                    (function poll(instance, raiseReconnect) {
++                        var messageId = instance.messageId,
++                            connect = (messageId === null),
++                            reconnecting = !connect,
++                            url = transportLogic.getUrl(instance, that.name, reconnecting, raiseReconnect),
++                            reconnectTimeOut = null,
++                            reconnectFired = false,
++                            triggerReconnected = function () {
++                                // Fire the reconnect event if it hasn't been fired as yet
++                                if (reconnectFired === false) {
++                                    connection.log(""Raising the reconnect event"");
++
++                                    if (changeState(connection,
++                                                    signalR.connectionState.reconnecting,
++                                                    signalR.connectionState.connected) === true) {
++
++                                        $(instance).triggerHandler(events.onReconnect);
++                                        reconnectFired = true;
++                                    }
++                                }
++                            };
+ 
+-                    connection.log(""Attempting to connect to '"" + url + ""' using longPolling."");
+-                    instance.pollXhr = $.ajax({
+-                        url: url,
+-                        global: false,
+-                        cache: false,
+-                        type: ""GET"",
+-                        dataType: connection.ajaxDataType,
+-                        success: function (minData) {
+-                            var delay = 0,
+-                                timedOutReceived = false,
+-                                data;
+-
+-                            if (minData) {
+-                                data = transportLogic.maximizePersistentResponse(minData);
+-                            }
++                        if (reconnecting === true && raiseReconnect === true &&
++                            !transportLogic.ensureReconnectingState(connection)) {
++                            return;
++                        }
+ 
+-                            if (initialConnectFired === false) {
+-                                onSuccess();
+-                                initialConnectFired = true;
+-                            }
++                        connection.log(""Attempting to connect to '"" + url + ""' using longPolling."");
++                        instance.pollXhr = $.ajax({
++                            url: url,
++                            global: false,
++                            cache: false,
++                            type: ""GET"",
++                            dataType: connection.ajaxDataType,
++                            success: function (minData) {
++                                var delay = 0,
++                                    timedOutReceived = false,
++                                    data;
++
++                                if (minData) {
++                                    data = transportLogic.maximizePersistentResponse(minData);
++                                }
+ 
+-                            if (raiseReconnect === true) {
+-                                triggerReconnected();
+-                            }
++                                if (raiseReconnect === true) {
++                                    triggerReconnected();
++                                }
+ 
+-                            transportLogic.processMessages(instance, minData);
+-                            if (data &&
+-                                $.type(data.LongPollDelay) === ""number"") {
+-                                delay = data.LongPollDelay;
+-                            }
++                                transportLogic.processMessages(instance, minData);
++                                if (data &&
++                                    $.type(data.LongPollDelay) === ""number"") {
++                                    delay = data.LongPollDelay;
++                                }
+ 
+-                            if (data && data.TimedOut) {
+-                                timedOutReceived = data.TimedOut;
+-                            }
++                                if (data && data.TimedOut) {
++                                    timedOutReceived = data.TimedOut;
++                                }
+ 
+-                            if (data && data.Disconnect) {
+-                                return;
+-                            }
++                                if (data && data.Disconnect) {
++                                    return;
++                                }
+ 
+-                            if (isDisconnecting(instance) === true) {
+-                                return;
+-                            }
++                                if (isDisconnecting(instance) === true) {
++                                    return;
++                                }
+ 
+-                            if (delay > 0) {
+-                                window.setTimeout(function () {
++                                if (delay > 0) {
++                                    window.setTimeout(function () {
++                                        poll(instance, timedOutReceived);
++                                    }, delay);
++                                } else {
+                                     poll(instance, timedOutReceived);
+-                                }, delay);
+-                            } else {
+-                                poll(instance, timedOutReceived);
+-                            }
+-                        },
+-
+-                        error: function (data, textStatus) {
+-                            if (textStatus === ""abort"") {
+-                                connection.log(""Aborted xhr requst."");
+-                                return;
+-                            }
+-
+-                            if (connection.state !== signalR.connectionState.reconnecting) {
+-                                connection.log(""An error occurred using longPolling. Status = "" + textStatus + "". "" + data.responseText);
+-                                $(instance).triggerHandler(events.onError, [data.responseText]);
+-                            }
+-
+-                            // If the request failed then we clear the timeout so that the
+-                            // reconnect event doesn't get fired
+-                            window.clearTimeout(reconnectTimeOut);
++                                }
++                            },
+ 
+-                            window.setTimeout(function () {
+-                                if (isDisconnecting(instance) === false) {
+-                                    poll(instance, true);
++                            error: function (data, textStatus) {
++                                if (textStatus === ""abort"") {
++                                    connection.log(""Aborted xhr requst."");
++                                    return;
+                                 }
+-                            }, connection.reconnectDelay);
+-                        }
+-                    });
+ 
+-                    if (raiseReconnect === true) {
+-                        reconnectTimeOut = window.setTimeout(triggerReconnected, that.reconnectDelay);
+-                    }
++                                if (connection.state !== signalR.connectionState.reconnecting) {
++                                    connection.log(""An error occurred using longPolling. Status = "" + textStatus + "". "" + data.responseText);
++                                    $(instance).triggerHandler(events.onError, [data.responseText]);
++                                }
+ 
+-                }(connection));
++                                that.init(instance, function () {
++                                    poll(instance, true);
++                                });
++                            }
++                        });
+ 
+-                // Now connected
+-                // There's no good way know when the long poll has actually started so
+-                // we assume it only takes around 150ms (max) to start the connection
+-                window.setTimeout(function () {
+-                    if (initialConnectFired === false) {
+-                        onSuccess();
+-                        initialConnectFired = true;
+-                    }
+-                }, 150);
++                        if (raiseReconnect === true) {
++                            reconnectTimeOut = window.setTimeout(triggerReconnected, that.reconnectDelay);","That's what I meant by slightly changed =)
+",e10e38e3e8dee0e5c41c4742d06786fecd4a6e97
+2331136,1,"I changed it after re-looking over it =)""",2012-12-05 18:26:14,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1087#discussion_r2331136,2012-12-06T05:26:14Z,2012-12-06T05:26:14Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Core/PersistentConnection.cs,,297.0,,,17,"@@ -288,6 +292,11 @@ protected virtual Task OnDisconnectAsync(IRequest request, string connectionId)
+             return TaskAsyncHelper.Empty;
+         }
+ 
++        private Task ProcessPingRequest(HostContext context)
++        {
++            return context.Response.EndAsync(""pong"");","I changed it after re-looking over it =)
+",c080fca7b9abdb2acd6574d3ecd5c73fefbf6ef6
+613087,2,"Second. It's weird, as I'm sure I've already fixed this file. WIll double check.""",2012-03-27 14:51:57,pszmyd,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r613087,2012-03-28T02:51:57Z,2012-03-29T00:42:04Z,pszmyd,CONTRIBUTOR,SignalR/Hubs/Lookup/IHubManager.cs,,,,,1,"@@ -0,0 +1,56 @@
++﻿namespace SignalR.Hubs.Lookup
++{
++    using System;","Second. It's weird, as I'm sure I've already fixed this file. WIll double check.
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d
+616814,2,"Generally speaking - yes. The method provider has to remember to put it there (or some custom equivalent). I'm also not sure if that's the best idea, but... What if I'd like to always have all the parameters strings, or more general - if a parameter is o""",2012-03-28 06:22:38,pszmyd,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r616814,2012-03-28T18:22:38Z,2012-03-29T00:42:06Z,pszmyd,CONTRIBUTOR,SignalR/Hubs/Lookup/Descriptors/MethodDescriptor.cs,,35.0,,,35,"@@ -0,0 +1,38 @@
++﻿using System;
++using System.Collections.Generic;
++
++namespace SignalR.Hubs.Lookup.Descriptors
++{
++    /// <summary>
++    /// Holds information about a single hub method.
++    /// </summary>
++    public class MethodDescriptor
++    {
++        /// <summary>
++        /// Name of this method.
++        /// </summary>
++        public virtual string Name { get; set; }
++
++        /// <summary>
++        /// The return type of this method.
++        /// </summary>
++        public virtual Type ReturnType { get; set; }
++
++        /// <summary>
++        /// Hub descriptor object, target to his method.
++        /// </summary>
++        public virtual HubDescriptor Hub { get; set; }
++
++        /// <summary>
++        /// Available method parameters.
++        /// </summary>
++        public virtual IList<ParameterDescriptor> Parameters { get; set; }
++
++        /// <summary>
++        /// Method invocation delegate.
++        /// Takes a target hub and an array of invocation arguments as it's arguments.
++        /// </summary>
++        public virtual Func<IHub, object[], object> Invoker { get; set; }","Generally speaking - yes. The method provider has to remember to put it there (or some custom equivalent). I'm also not sure if that's the best idea, but...
+What if I'd like to always have all the parameters strings, or more general - if a parameter is of different type than the exact JSON equivalent? Eg. client passes JSON date-time object, but the method expects `object` or `string`? What would the output of a call to `JsonConvert.DeserializeObject(jsonDateString, typeof(string/object))` be then?
+
+Would the deserializer try to deserialize to the closest .NET equivalent first and then try to do cast, `Convert.ChangeType` etc., or would it simply fail? I'm just not sure how the `JsonConvert.DeserializeObject` method exactly behaves, so I left the decision about the deserialization logic to the method provider itself. 
+
+If you're sure it won't be a problem, I'd happily add call to `Adjust` by default.
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d
+3824432,0,"Add new line before this to separate variable declarations.  Makes looking at it less confusing.""",2013-04-16 12:30:54,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1872#discussion_r3824432,2013-04-17T00:30:54Z,2013-04-19T19:51:05Z,NTaylorMullen,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Hubs/HubClientsAPIs/HubClientsAPIs.js,,,,,1,"@@ -0,0 +1,158 @@
++﻿/// <reference path=""../../Scripts/jquery-1.8.2.js"" />
++$(function () {
++    ""use strict"";
++
++    var clientsAPIsHub = $.connection.hubClientsAPIs,
++        messages = $(""#messages""),
++        stopStartBtn = $(""#stopStart""),
++        start;
++    $.connection.hub.logging = true;","Add new line before this to separate variable declarations.  Makes looking at it less confusing.
+",ea4a905eec9fdb944c29ca9595ff92d782b09b93
+3499522,1,"Never mind. That check would be redundant :)""",2013-03-22 13:14:07,halter73,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1738#discussion_r3499522,2013-03-23T00:14:07Z,2013-03-25T22:28:49Z,halter73,MEMBER,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Scripts/jquery.signalR.js,,1352.0,,,21,"@@ -1333,7 +1333,57 @@
+     var signalR = $.signalR,
+         events = $.signalR.events,
+         changeState = $.signalR.changeState,
+-        transportLogic = signalR.transports._logic;
++        transportLogic = signalR.transports._logic,
++        // Used to prevent infinite loading icon spins in older versions of ie
++        // We build this object inside a closure so we don't polute the rest of   
++        // the foreverFrame transport with unnecessary functions/utilities.
++        loadPreventer = (function () {
++            var iframeTrashIntervalId = null,
++                trashInterval = 3000,
++                attachedTo = null,
++                ieVersion = (function () {
++                    var version,
++                        matches;
++
++                    if (window.navigator.appName === 'Microsoft Internet Explorer') {
++                        // Check if the user agent has the pattern ""MSIE (one or more numbers).(one or more numbers)"";
++                        matches = /MSIE ([0-9]+\.[0-9]+)/.exec(window.navigator.userAgent);
++
++                        if (matches) {","Never mind. That check would be redundant :)
+",a5b6d82dc49cb2d9d34c617745aa7efd9c7b10f7
+3445687,1,"So funny, i thought the exact same thing. Doesn't really matter, its' cached anyway. I can change if you really feel strongly about it :)""",2013-03-19 18:44:15,DamianEdwards,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1720#discussion_r3445687,2013-03-20T05:44:15Z,2013-03-20T05:47:11Z,DamianEdwards,MEMBER,src/Microsoft.AspNet.SignalR.Core/Hubs/DefaultJavaScriptProxyGenerator.cs,,,,,1,"@@ -81,7 +81,7 @@ private static string GenerateProxy(IHubManager hubManager, IJavaScriptMinifier
+ 
+             script = script.Replace(""/*hubs*/"", hubs.ToString());
+ 
+-            javaScriptMinifier.Minify(script);
++            script = javaScriptMinifier.Minify(script);","So funny, i thought the exact same thing. Doesn't really matter, its' cached anyway. I can change if you really feel strongly about it :)
+",292bcc72a2bfeed2a6dc7f8e03848f0e994ab28c
+3111941,1,"Good call, it wasn't encoded before, looking into why...""",2013-02-21 19:01:31,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1558#discussion_r3111941,2013-02-22T06:01:31Z,2013-02-22T22:27:38Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.common.js,,110.0,,,33,"@@ -87,19 +87,28 @@
+         },
+ 
+         addQs: function (url, connection) {
++            var appender = url.indexOf(""?"") !== -1 ? ""&"" : ""?"",
++                firstChar;
++            
+             if (!connection.qs) {
+                 return url;
+             }
+ 
+             if (typeof (connection.qs) === ""object"") {
+-                return url + ""&"" + $.param(connection.qs);
++                return url + appender + $.param(connection.qs);
+             }
+ 
+             if (typeof (connection.qs) === ""string"") {
+-                return url + ""&"" + connection.qs;
++                firstChar = connection.qs.charAt(0);
++
++                if (firstChar === ""?"" || firstChar === ""&"") {
++                    appender = """";
++                }
++
++                return url + appender + connection.qs;","Good call, it wasn't encoded before, looking into why...
+",70027b66a0dc5a3cfc4ebdead687b9bf5d9fde55
+1896396,1,"Glad you fixed it""",2012-10-19 13:07:54,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/826#discussion_r1896396,2012-10-20T01:07:54Z,2012-10-20T07:33:18Z,davidfowl,MEMBER,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Scripts/jquery.signalR.js,,376.0,,,25,"@@ -364,18 +363,13 @@
+         },
+ 
+         starting: function (callback) {
+-            /// <summary>Adds a callback that will be invoked before the connection is started</summary>
+-            /// <param name=""callback"" type=""Function"">A callback function to execute when the connection is starting</param>
++            /// <summary>Adds a callback that will be invoked before anything is sent over the connection</summary>
++            /// <param name=""callback"" type=""Function"">A callback function to execute before each time data is sent on the connection</param>
+             /// <returns type=""signalR"" />
+-            var connection = this,
+-                $connection = $(connection);
+-
+-            $connection.bind(events.onStarting, function (e, data) {
++            var connection = this;
++            $(connection).bind(events.onStarting, function (e, data) {
+                 callback.call(connection);
+-                // Unbind immediately, we don't want to call this callback again
+-                $connection.unbind(events.onStarting);","Glad you fixed it
+",cb5c72f4392ebd3b1df5614da8701a1b050d047c
+613061,0,"It works the same as before (although changed linq query to methods chain, but that's cosmetic thing). After centralizing all the reflection-related things I had to change things a bit. This method operates on a collection of ActionDescriptors, instead of""",2012-03-27 14:44:01,pszmyd,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r613061,2012-03-28T02:44:01Z,2012-03-29T00:42:04Z,pszmyd,CONTRIBUTOR,SignalR/Hubs/DefaultJavaScriptProxyGenerator.cs,,,,,1,"@@ -102,33 +105,31 @@ private void GenerateType(string serviceUrl, StringBuilder sb, Type type)
+                 {
+                     sb.Append("","").AppendLine();
+                 }
+-                GenerateMethod(serviceUrl, sb, type, method);
++                this.GenerateMethod(sb, method);
+                 first = false;
+             }
+             sb.AppendLine();
+             sb.Append(""        }"");
+         }
+ 
+-        protected virtual string GetHubName(Type type)
++        protected virtual string GetHubName(HubDescriptor descriptor)
+         {
+-            return ReflectionHelper.GetAttributeValue<HubNameAttribute, string>(type, a => a.HubName) ?? Json.CamelCase(type.Name);
++            return Json.CamelCase(descriptor.Name);
+         }
+ 
+-        protected virtual IEnumerable<MethodInfo> GetMethods(Type type)
++        private IEnumerable<ActionDescriptor> GetMethods(HubDescriptor descriptor)
+         {
+-            // Pick the overload with the minimum number of arguments
+-            return from method in ReflectionHelper.GetExportedHubMethods(type)
+-                   group method by method.Name into overloads
+-                   let oload = (from overload in overloads
+-                                   orderby overload.GetParameters().Length
+-                                   select overload).FirstOrDefault()
+-                   select oload;
++           return _manager.GetHubActions(descriptor.Name)
++                .GroupBy(d => d.Name, ","It works the same as before (although changed linq query to methods chain, but that's cosmetic thing). After centralizing all the reflection-related things I had to change things a bit. This method operates on a collection of ActionDescriptors, instead of raw MethodInfos - that's the only difference.
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d
+556438,2,"Wow this formatting is horrible. Fix it.""",2012-03-13 23:13:52,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/249#discussion_r556438,2012-03-14T10:13:52Z,2012-03-14T10:13:52Z,davidfowl,MEMBER,SignalR/Hosting/RequestCookieCollection.cs,,51.0,,,15,"@@ -48,17 +48,10 @@ IEnumerator IEnumerable.GetEnumerator()
+ 
+         private void EnsureCookies()
+         {
+-            if (_cookies == null)
+-            {
+-                if (_cookieSource != null)
+-                {
+-                    _cookies = new List<Cookie>(_cookieSource);
+-                }
+-                else
+-                {
+-                    _cookieSource = new List<Cookie>();
+-                }
+-            }
++    		if (_cookies != null)","Wow this formatting is horrible. Fix it.
+",2bc5cf142fae3d7cc87b642f4f639e0484011292
+4425396,0,"Btw the catch(Exception ex) will throw up in code analysis.""",2013-05-28 11:42:38,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/2094#discussion_r4425396,2013-05-28T23:42:38Z,2013-05-28T23:42:38Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.ServiceBus/ServiceBusMessageBus.cs,,51.0,,,42,"@@ -33,23 +36,59 @@ public ServiceBusMessageBus(IDependencyResolver resolver, ServiceBusScaleoutConf
+ 
+             // Retrieve the trace manager
+             var traceManager = resolver.Resolve<ITraceManager>();
+-            TraceSource trace = traceManager[""SignalR."" + typeof(ServiceBusMessageBus).Name];
++            _trace = traceManager[""SignalR."" + typeof(ServiceBusMessageBus).Name];
+ 
+-            _connection = new ServiceBusConnection(configuration, trace);
++            _connection = new ServiceBusConnection(configuration, _trace);
+ 
+             _topics = Enumerable.Range(0, configuration.TopicCount)
+                                 .Select(topicIndex => SignalRTopicPrefix + ""_"" + configuration.TopicPrefix + ""_"" + topicIndex)
+                                 .ToArray();
+ 
+-            _subscription = _connection.Subscribe(_topics, OnMessage, OnError);
++            SubscribeWithRetry(configuration.TopicCount);
++        }
++
++        private void SubscribeWithRetry(int topicCount)
++        {","Btw the catch(Exception ex) will throw up in code analysis.
+",1f207eb982f33713309b0c4dcca2485200912248
+4088081,1,"because i'm a boss  That was a mishap from a previous iteration of the method :)""",2013-05-05 12:49:59,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1984#discussion_r4088081,2013-05-06T00:49:59Z,2013-05-13T18:18:32Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client/Transports/TransportHelper.cs,,,,,1,"@@ -172,19 +178,14 @@ public static void ProcessResponse(IConnection connection, string response, out
+                 var messages = result[""M""] as JArray;
+                 if (messages != null)
+                 {
++                    connection.MessageId = (string)result[""C""];
++
+                     foreach (JToken message in messages)
+                     {
+-                        try
+-                        {
+-                            connection.OnReceived(message);
+-                        }
+-                        catch (Exception ex)
+-                        {
+-                            connection.OnError(ex);
+-                        }
++                        connection.OnReceived(message);
+                     }
+ 
+-                    connection.MessageId = (string)result[""C""];
++                    TryInitialize(response, onInitialized);","because i'm a boss
+
+That was a mishap from a previous iteration of the method :)
+",5e552de0b5a5b577958e81c08b67686ea89d169f
+3921273,1,"Tho it makes the trace look nice :smile: . Keep this one.""",2013-04-23 05:49:34,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1936#discussion_r3921273,2013-04-23T17:49:34Z,2013-04-23T18:45:36Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.ServiceBus/ServiceBusConnection.cs,,65.0,,,43,"@@ -54,33 +58,45 @@ public ServiceBusConnection(ServiceBusScaleoutConfiguration configuration)
+                 {
+                     try
+                     {
++                        _trace.TraceInformation(""Creating a new topic {0} in the service bus..."", topicName);
++
+                         _namespaceManager.CreateTopic(topicName);
++
++                        _trace.TraceInformation(""Creation of a new topic {0} in the service bus completed successfully."", topicName);","Tho it makes the trace look nice :smile: . Keep this one.
+",04bcb093bfeb03a239460713801d3565260b9330
+3823506,0,"declare sendMessageCountHandler up to pas undefined and then declare it here""",2013-04-16 11:26:03,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1872#discussion_r3823506,2013-04-16T23:26:03Z,2013-04-19T19:51:05Z,NTaylorMullen,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Hubs/MessagesLoops/MessagesLoops.js,,,,,1,"@@ -0,0 +1,131 @@
++﻿/// <reference path=""../../Scripts/jquery-1.8.2.js"" />
++$(function () {
++    ""use strict"";
++    var myHub = $.connection.messagesLoops;
++    $.connection.hub.logging = true;
++
++    var preValures = [],
++        missiedMessageCount = 0,
++        dupMessageCount = 0;
++
++    myHub.client.displayMessagesCount = function (value, connectionId) {
++        var firstReceive = true,
++            preValureItem;
++
++        for (var preValure in preValures) {
++            if (preValures[preValure].connectionId === connectionId) {
++                firstReceive = false;
++                preValureItem = preValures[preValure];
++            }
++        }
++
++        if (firstReceive === true) {
++            preValures.push({ ""connectionId"": connectionId, ""preValure"": value });
++            $(""#message"").append(""<label id="" + connectionId + "">"" + "" </label>"");
++        }
++
++        if (firstReceive === false) {
++            if (value !== (preValureItem.preValure + 1)) {
++                if (value === preValureItem.preValure) {
++                    $(""<li/>"").css(""background-color"", ""yellow"")
++                    .css(""color"", ""black"")
++                    .html(""Duplicated message in messages loops: pre value: "" + preValureItem.preValure + "" current value: "" + value + "" from connectionId: "" + connectionId)
++                    .appendTo($(""#messages""));
++
++                    dupMessageCount++;
++                }
++                else {
++                    $(""<li/>"").css(""background-color"", ""red"")
++                            .css(""color"", ""white"")
++                            .html(""Missing message in messages loops: pre value: "" + preValureItem.preValure + "" current value: "" + value + "" from connectionId: "" + connectionId)
++                            .appendTo($(""#messages""));
++
++                    missiedMessageCount += value - (preValureItem.preValure + 1);
++                }
++                $(""#missedMessagesCount"").text(""Duplicated messages count: "" + dupMessageCount + "", missing messages count: "" + missiedMessageCount);
++            }
++
++            preValureItem.preValure = value;
++        }
++
++        $(""#"" + connectionId).text(""Messages loops "" + value + "" from connectionId: "" + connectionId);
++    }
++
++    var sendMessageCountHandler = function (value, connectionId) {","declare sendMessageCountHandler up to pas undefined and then declare it here
+",ea4a905eec9fdb944c29ca9595ff92d782b09b93
+3094913,0,"Can you just do  ```javascript var appender = url.length > 0 && url[url.length - 1] == '?' : '&' : '?'; ```""",2013-02-20 21:26:08,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1558#discussion_r3094913,2013-02-21T08:26:08Z,2013-02-22T22:27:38Z,davidfowl,MEMBER,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Scripts/jquery.signalR.js,,,,,1,"@@ -738,19 +741,21 @@
+         },
+ 
+         addQs: function (url, connection) {
++            var appender = url.match(/\?.+=/) ? ""&"" : ""?"";","Can you just do
+
+``` javascript
+var appender = url.length > 0 && url[url.length - 1] == '?' : '&' : '?';
+```
+",70027b66a0dc5a3cfc4ebdead687b9bf5d9fde55
+2777632,0,"Is it ever possible to have a principle that is not authenticated but does have a name? e.g. when using an anonymous user identification module? (User has a name but wasn't actually authenticated by anybody). Even in that case, does it matter?""",2013-01-25 06:50:13,DamianEdwards,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1416#discussion_r2777632,2013-01-25T17:50:13Z,2013-01-25T17:50:13Z,DamianEdwards,MEMBER,src/Microsoft.AspNet.SignalR.Core/PersistentConnection.cs,,456.0,,,99,"@@ -431,6 +451,15 @@ private Task ProcessNegotiationRequest(HostContext context)
+             return context.Response.End(JsonSerializer.Stringify(payload));
+         }
+ 
++        private static string GetUserIdentity(HostContext context)
++        {
++            if (context.Request.User != null && context.Request.User.Identity.IsAuthenticated)","Is it ever possible to have a principle that is not authenticated but does have a name? e.g. when using an anonymous user identification module? (User has a name but wasn't actually authenticated by anybody). Even in that case, does it matter?
+",f41abf4a17c91e3f18b5fc8cbdff9c0d3297645a
+2790805,0,"How would you prefer it to be implemented?""",2013-01-28 00:13:52,bjarteskogoy,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1412#discussion_r2790805,2013-01-28T11:13:52Z,2013-02-20T08:51:00Z,bjarteskogoy,NONE,src/Microsoft.AspNet.SignalR.Client/IConnection.cs,,,,,1,"@@ -37,5 +38,8 @@ public interface IConnection
+         void OnReconnecting();
+         void OnReconnected();
+         void PrepareRequest(IRequest request);
++
++        JsonSerializer JsonSerializer { get; set; }
++        string JsonSerializeObject(object value);","How would you prefer it to be implemented?
+",6a32ab13a1cc0fb28ebd9811622ae7e47a09d056
+666774,2,"Seems unclean. Is this because we're abusing the default HubManager for all scenarios?""",2012-04-10 05:49:52,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/302#discussion_r666774,2012-04-10T17:49:52Z,2012-04-10T17:49:52Z,davidfowl,MEMBER,SignalR/Hubs/DefaultHubActivator.cs,,16.0,,,4,"@@ -13,6 +13,11 @@ public DefaultHubActivator(IDependencyResolver resolver)
+ 
+         public IHub Create(HubDescriptor descriptor)
+         {
++            if(descriptor.Type == null)","Seems unclean. Is this because we're abusing the default HubManager for all scenarios?
+",47de324acf455b7769cfb5f78af4ea8af79f9165
+567048,1,"I agree. Will test and verify that it still works later.   But what's the best way to proceed? accept this and another pull request, or reject this and another complete pull request?""",2012-03-15 21:48:09,MatsKarlsson,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/254#discussion_r567048,2012-03-16T08:48:09Z,2012-03-18T20:40:29Z,MatsKarlsson,CONTRIBUTOR,SignalR.Hosting.AspNet.Samples/Scripts/jquery.signalR.js,,,,,1,"@@ -79,12 +79,12 @@
+                     transport: ""auto""
+                 },
+                 initialize,
+-                promise = $.Deferred();
++                deferred = $.Deferred();
+ 
+             if (connection.transport) {
+                 // Already started, just return
+-                promise.resolve(connection);
+-                return promise;
++                deferred.resolve(connection);
++                return deferred;","I agree. Will test and verify that it still works later. 
+
+But what's the best way to proceed? accept this and another pull request, or reject this and another complete pull request?
+",866a4212fa26b60dbd795fc0c31b61b8a11aa526
+2491336,2,"Would HeartbeatsPerKeepAlive be too wordy of a name? I'm worried that people will assume that KeepAlive represents a time span in seconds without reading the docs.  Also, is there any reason we shouldn't just make this a uint autoprop instead of doing a""",2012-12-21 07:26:02,halter73,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1192#discussion_r2491336,2012-12-21T18:26:02Z,2012-12-25T23:25:12Z,halter73,MEMBER,src/Microsoft.AspNet.SignalR.Core/Configuration/DefaultConfigurationManager.cs,,37.0,,,31,"@@ -27,10 +30,25 @@ public TimeSpan DisconnectTimeout
+             set;
+         }
+ 
+-        public TimeSpan? KeepAlive
++        /// <summary>
++        /// Indicates how many Heartbeats to wait before triggering keep alive.  To convert this
++        /// value to a time span simply multiply it by the HeartbeatInterval.
++        /// </summary>
++        public int KeepAlive","Would HeartbeatsPerKeepAlive be too wordy of a name? I'm worried that people will assume that KeepAlive represents a time span in seconds without reading the docs.
+
+Also, is there any reason we shouldn't just make this a uint autoprop instead of doing a runtime check to make sure it isn't set to a negative value?
+",9c6a1a3e919b861f81cef0c2eaf03ba1827881cb
+4424871,2,"Also, I'm not sure how I feel about this being within the ServiceBusMessageBus class, feels more like a ServiceBusConnection function.  However it is this way in other scaleout providers :(""",2013-05-28 11:05:39,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/2094#discussion_r4424871,2013-05-28T23:05:39Z,2013-05-28T23:41:38Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.ServiceBus/ServiceBusMessageBus.cs,,50.0,,,41,"@@ -33,23 +36,59 @@ public ServiceBusMessageBus(IDependencyResolver resolver, ServiceBusScaleoutConf
+ 
+             // Retrieve the trace manager
+             var traceManager = resolver.Resolve<ITraceManager>();
+-            TraceSource trace = traceManager[""SignalR."" + typeof(ServiceBusMessageBus).Name];
++            _trace = traceManager[""SignalR."" + typeof(ServiceBusMessageBus).Name];
+ 
+-            _connection = new ServiceBusConnection(configuration, trace);
++            _connection = new ServiceBusConnection(configuration, _trace);
+ 
+             _topics = Enumerable.Range(0, configuration.TopicCount)
+                                 .Select(topicIndex => SignalRTopicPrefix + ""_"" + configuration.TopicPrefix + ""_"" + topicIndex)
+                                 .ToArray();
+ 
+-            _subscription = _connection.Subscribe(_topics, OnMessage, OnError);
++            SubscribeWithRetry(configuration.TopicCount);
++        }
++
++        private void SubscribeWithRetry(int topicCount)","Also, I'm not sure how I feel about this being within the ServiceBusMessageBus class, feels more like a ServiceBusConnection function.  However it is this way in other scaleout providers :(
+",1f207eb982f33713309b0c4dcca2485200912248
+4206021,1,"Just do it for yours for now, it'll set a good example =)""",2013-05-13 12:29:50,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/2015#discussion_r4206021,2013-05-14T00:29:50Z,2013-05-14T00:29:50Z,NTaylorMullen,CONTRIBUTOR,tests/Microsoft.AspNet.SignalR.FunctionalTests/Client/KeepAliveFacts.cs,,123.0,,,12,"@@ -112,5 +112,36 @@ public void OnConnectionSlowTest(HostType hostType, TransportType transportType)
+                 }
+             }
+         }
++
++        [Theory]
++        [InlineData(HostType.IISExpress, TransportType.LongPolling)]
++        public void OnConnectionSlowDoesntFireForLongPollingTest(HostType hostType, TransportType transportType)
++        {
++            using (var host = CreateHost(hostType, transportType))
++            {
++                // Arrange
++                var mre = new ManualResetEventSlim(false);","Just do it for yours for now, it'll set a good example =)
+",e8b04c78b5288f65ffdf8cfc95384a60e3b3bfa7
+4086620,0,"There's a way better way we have to assert order. See OrderedCountdown.""",2013-05-04 22:15:05,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1984#discussion_r4086620,2013-05-05T10:15:05Z,2013-05-13T18:18:32Z,davidfowl,MEMBER,tests/Microsoft.AspNet.SignalR.FunctionalTests/Client/HubProxyFacts.cs,,59.0,,,1,"@@ -19,6 +21,120 @@ public class HubProxyFacts : HostedTest
+         [InlineData(HostType.IISExpress, TransportType.Websockets)]
+         [InlineData(HostType.IISExpress, TransportType.ServerSentEvents)]
+         [InlineData(HostType.IISExpress, TransportType.LongPolling)]
++        public void InitMessageReceivedPriorToStartCompletion(HostType hostType, TransportType transportType)
++        {
++            using (var host = CreateHost(hostType, transportType))
++            {
++                host.Initialize();
++
++                HubConnection hubConnection = CreateHubConnection(host);
++                // Does nothing on OnConnected so we shouldn't get any user generated messages
++                IHubProxy proxy = hubConnection.CreateHubProxy(""EchoHub"");
++
++                using (hubConnection)
++                {
++                    Assert.True(String.IsNullOrEmpty(hubConnection.MessageId));
++
++                    hubConnection.Start(host.Transport).Wait();
++
++                    // If we have an init message that means we got a message prior to start
++                    Assert.False(String.IsNullOrEmpty(hubConnection.MessageId));
++                }
++            }
++        }
++
++        [Theory]
++        [InlineData(HostType.Memory, TransportType.ServerSentEvents)]
++        [InlineData(HostType.Memory, TransportType.LongPolling)]
++        [InlineData(HostType.IISExpress, TransportType.Websockets)]
++        [InlineData(HostType.IISExpress, TransportType.ServerSentEvents)]
++        [InlineData(HostType.IISExpress, TransportType.LongPolling)]
++        public void TransportsBufferMessagesCorrectly(HostType hostType, TransportType transportType)
++        {
++            using (var host = CreateHost(hostType, transportType))
++            {
++                host.Initialize();
++
++                HubConnection hubConnection = CreateHubConnection(host);
++                IHubProxy proxy = hubConnection.CreateHubProxy(""OnConnectedBufferHub"");
++                int bufferMeCalls = 0;","There's a way better way we have to assert order. See OrderedCountdown.
+",5e552de0b5a5b577958e81c08b67686ea89d169f
+2939055,1,"Good thing he has Git Extensions. So easy to remove ;-)""",2013-02-07 20:13:39,halter73,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1502#discussion_r2939055,2013-02-08T07:13:39Z,2013-02-14T01:48:19Z,halter73,MEMBER,src/Microsoft.AspNet.SignalR.Client/Microsoft.AspNet.SignalR.Client.csproj,,,,,1,"@@ -127,6 +129,7 @@
+   <Import Project=""..\Common\Microsoft.AspNet.SignalR.targets"" />
+   <Import Project=""$(MSBuildToolsPath)\Microsoft.CSharp.targets"" />
+   <Import Project=""$(SolutionDir).nuget\NuGet.targets"" />
++  <Import Project=""$(SolutionDir)\.nuget\nuget.targets"" />","Good thing he has Git Extensions. So easy to remove ;-)
+",c5cf35bf4a16f8eb5635e030c90f277ff7cfab34
+2473671,1,"Some comments in here would be awesome""",2012-12-19 16:07:59,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1174#discussion_r2473671,2012-12-20T03:07:59Z,2012-12-20T04:16:54Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.core.js,,80.0,,,1,"@@ -73,22 +73,28 @@
+ 
+         configureStopReconnectingTimeout = function (connection) {
+             var stopReconnectingTimeout,
++                onReconnectTimeout;
++
++            if (!connection._.configuredStopReconnectingTimeout) {","Some comments in here would be awesome
+",b76e86d428afef0e5dd1d7d4c28ef9b742f4d452
+2473894,1,"Just pushed update with a comment detailing that section =)""",2012-12-19 17:01:51,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1174#discussion_r2473894,2012-12-20T04:01:51Z,2012-12-20T04:16:54Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.core.js,,80.0,,,1,"@@ -73,22 +73,28 @@
+ 
+         configureStopReconnectingTimeout = function (connection) {
+             var stopReconnectingTimeout,
++                onReconnectTimeout;
++
++            if (!connection._.configuredStopReconnectingTimeout) {","Just pushed update with a comment detailing that section =)
+",b76e86d428afef0e5dd1d7d4c28ef9b742f4d452
+2060660,0,"Not uppercase though...""",2012-11-07 09:28:52,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/929#discussion_r2060660,2012-11-07T20:28:52Z,2012-11-09T01:44:44Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.common.js,,,,,1,"@@ -162,10 +168,19 @@
+                     this.updateKeepAlive(connection);
+                 }
+ 
+-                if (!data) {
++                if (!minData) {
+                     return;
+                 }
+ 
++                data = {","Not uppercase though...
+",1fb996c991304516ed8e6b6835d5d502aa73dc4c
+2080368,2,"This spacing looks weird.""",2012-11-08 20:57:08,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/929#discussion_r2080368,2012-11-09T07:57:08Z,2012-11-09T07:57:08Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Core/Connection.cs,,256.0,,,31,"@@ -245,15 +245,16 @@ private void ProcessCommand(Command command)
+ 
+         private void PopulateResponseState(PersistentResponse response)
+         {
+-            // Set the groups on the outgoing transport data
+-            if (_groups.Count > 0)
+-            {
+-                if (response.TransportData == null)
+-                {
+-                    response.TransportData = new Dictionary<string, object>();
+-                }
++            var groupDiff = _groups.GetDiff();
+ 
+-                response.TransportData[""Groups""] = _groups.GetSnapshot();","This spacing looks weird.
+",1fb996c991304516ed8e6b6835d5d502aa73dc4c
+650338,0,"Maybe add a helper for creating this callback logic on the Json class.  Json.CreateJsonPCallback """,2012-04-05 02:32:02,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/294#discussion_r650338,2012-04-05T14:32:02Z,2012-04-05T15:52:19Z,davidfowl,MEMBER,SignalR/PersistentConnection.cs,,,,,1,"@@ -202,15 +203,33 @@ public Task RemoveFromGroup(string connectionId, string groupName)
+ 
+         private Task ProcessNegotiationRequest(HostContext context)
+         {
+-            context.Response.ContentType = Json.MimeType;
+-            return context.Response.EndAsync(_jsonSerializer.Stringify(new
++            var payload = new
+             {
+                 Url = context.Request.Url.LocalPath.Replace(""/negotiate"", """"),
+                 ConnectionId = _connectionIdFactory.CreateConnectionId(context.Request, context.User),
+                 TryWebSockets = context.SupportsWebSockets(),
+                 WebSocketServerUrl = context.WebSocketServerUrl(),
+                 ProtocolVersion = ""1.0""
+-            }));
++            };
++
++            if (!String.IsNullOrEmpty(context.Request.QueryString[""callback""]))
++            {
++                return ProcessJsonpNegotiationRequest(context, payload);
++            }
++
++            context.Response.ContentType = Json.MimeType;
++            return context.Response.EndAsync(_jsonSerializer.Stringify(payload));
++        }
++
++        private Task ProcessJsonpNegotiationRequest(HostContext context, object payload)
++        {
++            context.Response.ContentType = Json.JsonpMimeType;
++
++            var sb = new StringBuilder();
++            sb.AppendFormat(""{0}("", context.Request.QueryString[""callback""])","Maybe add a helper for creating this callback logic on the Json class.
+
+Json.CreateJsonPCallback
+",91731afd12eeebb471c52c1ac175a343bc3f8f81
+617948,2,"Don't like it, either. Ok, we'd better stay with deserializing parameters before passing to the `Invoker` - it's much cleaner. But I'd get rid of static extension methods in favor of something like. `IParameterResolver` interface + implementation, that'd """,2012-03-28 09:29:18,pszmyd,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r617948,2012-03-28T21:29:18Z,2012-03-29T00:42:06Z,pszmyd,CONTRIBUTOR,SignalR/Hubs/Lookup/Descriptors/MethodDescriptor.cs,,35.0,,,35,"@@ -0,0 +1,38 @@
++﻿using System;
++using System.Collections.Generic;
++
++namespace SignalR.Hubs.Lookup.Descriptors
++{
++    /// <summary>
++    /// Holds information about a single hub method.
++    /// </summary>
++    public class MethodDescriptor
++    {
++        /// <summary>
++        /// Name of this method.
++        /// </summary>
++        public virtual string Name { get; set; }
++
++        /// <summary>
++        /// The return type of this method.
++        /// </summary>
++        public virtual Type ReturnType { get; set; }
++
++        /// <summary>
++        /// Hub descriptor object, target to his method.
++        /// </summary>
++        public virtual HubDescriptor Hub { get; set; }
++
++        /// <summary>
++        /// Available method parameters.
++        /// </summary>
++        public virtual IList<ParameterDescriptor> Parameters { get; set; }
++
++        /// <summary>
++        /// Method invocation delegate.
++        /// Takes a target hub and an array of invocation arguments as it's arguments.
++        /// </summary>
++        public virtual Func<IHub, object[], object> Invoker { get; set; }","Don't like it, either. Ok, we'd better stay with deserializing parameters before passing to the `Invoker` - it's much cleaner. But I'd get rid of static extension methods in favor of something like. `IParameterResolver` interface + implementation, that'd do the same. Much easier to override, if needed.
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d
+4204303,0,"Setting it to null will disable KeepAlive. Set it to some other value.""",2013-05-13 10:26:24,abnanda1,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/2015#discussion_r4204303,2013-05-13T22:26:24Z,2013-05-13T22:44:22Z,abnanda1,CONTRIBUTOR,tests/Microsoft.AspNet.SignalR.FunctionalTests/Client/KeepAliveFacts.cs,,,,,1,"@@ -112,5 +112,36 @@ public void OnConnectionSlowTest(HostType hostType, TransportType transportType)
+                 }
+             }
+         }
++
++        [Theory]
++        [InlineData(HostType.IISExpress, TransportType.LongPolling)]
++        public void OnConnectionSlowDoesntFireForLongPollingTest(HostType hostType, TransportType transportType)
++        {
++            using (var host = CreateHost(hostType, transportType))
++            {
++                // Arrange
++                var mre = new ManualResetEventSlim(false);
++                host.Initialize(keepAlive: null);","Setting it to null will disable KeepAlive. Set it to some other value.
+",e8b04c78b5288f65ffdf8cfc95384a60e3b3bfa7
+4086621,1,"Finally""",2013-05-04 22:15:28,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1984#discussion_r4086621,2013-05-05T10:15:28Z,2013-05-13T18:18:32Z,davidfowl,MEMBER,tests/Microsoft.AspNet.SignalR.Client.JS.Tests/Tests/FunctionalTests/Transports/LongPolling/LPReconnectFacts.js,,266.0,,,31,"@@ -263,7 +251,6 @@ QUnit.asyncTimeoutTest(""Does not reconnect infinitely if ping succeeds"", testUti
+ 
+     // Cleanup
+     return function () {
+-        $.signalR.transports._logic.pingServer = savedPingServer;","Finally
+",5e552de0b5a5b577958e81c08b67686ea89d169f
+3986877,0,"the default name should be changed to something more intuitive""",2013-04-26 10:38:36,abnanda1,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1951#discussion_r3986877,2013-04-26T22:38:36Z,2013-04-26T23:36:06Z,abnanda1,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Hubs/MessageLoops/MessageLoops.js,,9.0,,,5,"@@ -5,6 +5,12 @@ $(function () {
+         messages = $(""#messages""),
+         startMessageLoopsBtn = $(""#startMessageLoops""),
+         stopStartBtn = $(""#stopStart""),
++        //default groupName
++        groupName = ""group++1"",","the default name should be changed to something more intuitive
+",a509342dfa145177cc83bd18ddfb1fba6fa76301
+3994593,0,"Method wasn't being called earlier but that's no longer the case so removed it.""",2013-04-28 19:50:26,abnanda1,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1945#discussion_r3994593,2013-04-29T07:50:26Z,2013-04-29T19:34:37Z,abnanda1,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client/Infrastructure/StreamExtensions.cs,,,,,1,"@@ -30,6 +30,7 @@ public static Task WriteAsync(this Stream stream, byte[] buffer)
+         }
+ 
+ #if !(NETFX_CORE || NET45)
++        [SuppressMessage(""Microsoft.Performance"", ""CA1811:No upstream protected or public callers"", Justification = ""Keeping the method for future use"")]","Method wasn't being called earlier but that's no longer the case so removed it.
+",f0a2ae84f7096c60977a89d8ea3be7e191938a0e
+3982533,0,"I see, instead of having a seperate closed flag just clear the timeout here in addition to in stop.  Lastly do it inside the if(this === connection.socket) conditional""",2013-04-26 06:37:10,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1922#discussion_r3982533,2013-04-26T18:37:10Z,2013-04-30T18:37:11Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.webSockets.js,,,,,1,"@@ -63,6 +65,7 @@
+                     // Only handle a socket close if the close is from the current socket.
+                     // Sometimes on disconnect the server will push down an onclose event
+                     // to an expired socket.
++                    closed = true;","I see, instead of having a seperate closed flag just clear the timeout here in addition to in stop.  Lastly do it inside the if(this === connection.socket) conditional
+",7ee6f924ede697600475b7e82c35ae892829884f
+3865158,0,"Remove and sort""",2013-04-18 10:51:17,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1872#discussion_r3865158,2013-04-18T22:51:17Z,2013-04-19T19:51:05Z,NTaylorMullen,CONTRIBUTOR,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Hubs/HubClientsAPIs/Default.aspx.cs,,,,,1,"@@ -0,0 +1,17 @@
++﻿using System;
++using System.Collections.Generic;","Remove and sort
+",ea4a905eec9fdb944c29ca9595ff92d782b09b93
+3545201,1,"OMG, the C# compiler was able to figure out the generic type parameter? Color me impressed for once. :)""",2013-03-26 18:02:23,halter73,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1756#discussion_r3545201,2013-03-27T05:02:23Z,2013-03-27T23:53:51Z,halter73,MEMBER,src/Microsoft.AspNet.SignalR.Client/CustomHeaderDictionary.cs,,,,,1,"@@ -0,0 +1,119 @@
++﻿using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++
++namespace Microsoft.AspNet.SignalR.Client
++{
++    public class CustomHeaderDictionary : IDictionary<string, string>
++    {
++        private IDictionary<string, string> _dictionary = new Dictionary<string, string>();
++        private IConnection _conn;
++
++        public CustomHeaderDictionary(IConnection connection)
++        {
++            _conn = connection;
++        }
++
++        public void Add(string key, string value)
++        {
++            if (_conn.State == ConnectionState.Disconnected)
++            {
++                _dictionary[key] = value;
++            }
++            else
++            {
++                throw new InvalidOperationException(Resources.Error_HeadersCanOnlyBeSetWhenDisconnected);
++            }
++        }
++
++        public bool ContainsKey(string key)
++        {
++            return _dictionary.ContainsKey(key);
++        }
++
++        public ICollection<string> Keys
++        {
++            get { return _dictionary.Keys; }
++        }
++
++        public bool Remove(string key)
++        {
++            return _dictionary.Remove(key);
++        }
++
++        public bool TryGetValue(string key, out string value)
++        {
++            return _dictionary.TryGetValue(key, out value);
++        }
++
++        public ICollection<string> Values
++        {
++            get { return _dictionary.Values; }
++        }
++
++        public string this[string key]
++        {
++            get
++            {
++                return _dictionary[key];
++            }
++            set
++            {
++                if (_conn.State == ConnectionState.Disconnected)
++                {
++                    _dictionary.Add(key, value);
++                }
++                else
++                {
++                    throw new InvalidOperationException(Resources.Error_HeadersCanOnlyBeSetWhenDisconnected);
++                }
++            }
++        }
++
++        public void Add(KeyValuePair<string, string> item)
++        {
++            _dictionary.Add(item);
++        }
++
++        public void Clear()
++        {
++            _dictionary.Clear();
++        }
++
++        public bool Contains(KeyValuePair<string, string> item)
++        {
++            return _dictionary.Contains(item);
++        }
++
++        public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
++        {
++            _dictionary.CopyTo(array, arrayIndex);
++        }
++
++        public int Count
++        {
++            get { return _dictionary.Count; }
++        }
++
++        public bool IsReadOnly
++        {
++            get { return _dictionary.IsReadOnly; }
++        }
++
++        public bool Remove(KeyValuePair<string, string> item)
++        {
++            return _dictionary.Remove(item);
++        }
++
++        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
++        {
++            return _dictionary.GetEnumerator();","OMG, the C# compiler was able to figure out the generic type parameter? Color me impressed for once. :)
+",1bd507fb89d2520dffe40c3646475ee87ef8de6b
+3348538,1,"What happens if the task completes just before the if runs? We'll never runs the continuation :smile: """,2013-03-12 18:03:03,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1683#discussion_r3348538,2013-03-13T05:03:03Z,2013-03-16T02:24:15Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Core/TaskAsyncHelper.cs,,,,,1,"@@ -186,16 +186,26 @@ public static Task ContinueWithNotComplete(this Task task, Action action)
+             {
+                 action();
+             }
+-            else
++            else if (!task.IsCompleted)","What happens if the task completes just before the if runs? We'll never runs the continuation :smile: 
+",5f7790504734c51c93dd4fa21bddbda998a60832
+3042365,2,"Sleeping is a weird variable name what about receivingMessages or ignoringMessages""",2013-02-17 11:18:55,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1538#discussion_r3042365,2013-02-17T22:18:55Z,2013-02-21T05:38:12Z,davidfowl,MEMBER,tests/Microsoft.AspNet.SignalR.Client.JS.Tests/NetworkMock/jquery.network.mock.ajax.js,,,,,1,"@@ -0,0 +1,87 @@
++﻿// Ajax network mock
++(function ($, window) {
++    var savedAjax = $.ajax,
++        network = $.network,
++		ajaxData = {},
++		ajaxIds = 0,
++        sleeping = false,
++        fail = function (data, soft) {
++            // We must close the request prior to calling error so that we can pass our own
++            // reason for failing the request.
++            sleeping = true;
++            data.Request.abort();
++            sleeping = false;","Sleeping is a weird variable name what about receivingMessages or ignoringMessages
+",ec730e3e12beb76e86da8deb588e66a625cee178
+3053393,1,"Hahaha what was i thinking""",2013-02-18 09:36:34,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1538#discussion_r3053393,2013-02-18T20:36:34Z,2013-02-21T05:38:12Z,NTaylorMullen,CONTRIBUTOR,tests/Microsoft.AspNet.SignalR.Client.JS.Tests/NetworkMock/jquery.network.mock.eventsource.js,,,,,1,"@@ -0,0 +1,66 @@
++﻿// Event Source network mock
++(function ($, window) {
++    var enabled = !!window.EventSource,
++        savedEventSource = enabled ? EventSource : {},
++        network = $.network,
++        eventSourceData = {},
++        eventSourceIds = 0,
++        ignoringMessages = false;
++
++    if (enabled) {
++        function CustomEventSource(url, eventSourceInit) {
++            var es = new savedEventSource(url, eventSourceInit),
++                that = this,
++                id = eventSourceIds++;
++
++            that._events = {};
++
++            that.addEventListener = function (name, event) {
++                var fn = function () {
++                    if (!ignoringMessages) {
++                        return event.apply(this, arguments);
++                    }
++                };
++
++                that._events[name] = fn;
++                es.addEventListener(name, fn);
++            };
++
++            that.close = function () {
++                that._events = null;
++                delete eventSourceData[id];
++                return es.close();
++            };
++
++            eventSourceData[id] = that;
++        };
++
++        EventSource = CustomEventSource;
++    }
++
++    network.eventsource = {
++        disconnect: function (soft) {
++            /// <summary>Disconnects the network so javascript transport methods are unable to communicate with a server.</summary>
++            /// <param name=""soft"" type=""Boolean"">Whether the disconnect should be soft.  A soft disconnect indicates that transport methods are not notified of disconnect.</param>
++            if (!soft) {
++                for (var key in eventSourceData) {
++                    var data = eventSourceData[key];
++
++                    data._events[""error""].call(data, savedEventSource.CLOSED);","Hahaha what was i thinking
+",ec730e3e12beb76e86da8deb588e66a625cee178
+2939134,1,"lol just refreshed page for me and I'm seeing all the comments on the comments, I think GitHub needs to be more Real time! =)""",2013-02-07 20:27:20,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1502#discussion_r2939134,2013-02-08T07:27:20Z,2013-02-14T01:48:19Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client/IConnection.cs,,,,,1,"@@ -1,18 +1,19 @@
+ ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.md in the project root for license information.
+ 
++using Microsoft.AspNet.SignalR.Client.Http;","lol just refreshed page for me and I'm seeing all the comments on the comments, I think GitHub needs to be more Real time! =)
+",c5cf35bf4a16f8eb5635e030c90f277ff7cfab34
+2921550,1,"Sweet didn't even notice :smile: """,2013-02-06 16:30:06,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1412#discussion_r2921550,2013-02-07T03:30:06Z,2013-02-20T08:51:00Z,davidfowl,MEMBER,src/Microsoft.AspNet.SignalR.Client/ConnectionExtensions.cs,,40.0,,,17,"@@ -31,6 +35,39 @@ public static T GetValue<T>(this IConnection connection, string key)
+             return default(T);
+         }
+ 
++        [SuppressMessage(""Microsoft.Usage"", ""CA2202:Do not dispose objects multiple times"", Justification = ""jsonWriter will not dispose the stringWriter"")]
++        public static string JsonSerializeObject(this IConnection connection, object value)
++        {","Sweet didn't even notice :smile: 
+",6a32ab13a1cc0fb28ebd9811622ae7e47a09d056
+1207149,1,"There, I fixed the two cleanup-issues :) Sorry about the sloppyness!""",2012-07-20 04:59:08,yngvebn,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/549#discussion_r1207149,2012-07-20T16:59:08Z,2012-07-20T16:59:08Z,yngvebn,NONE,SignalR/Hubs/Lookup/ReflectedMethodDescriptorProvider.cs,,90.0,,,1,"@@ -70,6 +74,25 @@ public IEnumerable<MethodDescriptor> GetMethods(HubDescriptor hub)
+                               StringComparer.OrdinalIgnoreCase);
+         }
+ 
++        private IEnumerable<MethodInvocationFilterAttribute> JoinMethodInvocationFilterAttributes(IEnumerable<MethodInvocationFilterAttribute> globalFilters, IEnumerable<MethodInvocationFilterAttribute> localFilters)
++        {
++            var localFilterList = localFilters.ToList();
++            var globalFilterList = globalFilters.ToList();
++
++            // return all global filters if they dont exist in local filters
++            foreach (var filter in globalFilterList.Where(c => !localFilterList.Contains(c)))
++                yield return filter;
++
++            // return the local filters
++            foreach (var filter in localFilterList)
++                yield return filter;","There, I fixed the two cleanup-issues :) Sorry about the sloppyness!
+",4cc656650e7fa213dca2d975eebe72f9adca5ab8
+668079,1,"Exactly that :)""",2012-04-10 10:02:51,pszmyd,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/302#discussion_r668079,2012-04-10T22:02:51Z,2012-04-10T22:02:51Z,pszmyd,CONTRIBUTOR,SignalR/Hubs/DefaultHubActivator.cs,,16.0,,,4,"@@ -13,6 +13,11 @@ public DefaultHubActivator(IDependencyResolver resolver)
+ 
+         public IHub Create(HubDescriptor descriptor)
+         {
++            if(descriptor.Type == null)","Exactly that :)
+",47de324acf455b7769cfb5f78af4ea8af79f9165
+613019,0,"How does this work if I map this route to a different url?""",2012-03-27 14:29:40,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r613019,2012-03-28T02:29:40Z,2012-03-29T00:42:03Z,davidfowl,MEMBER,SignalR.Hosting.AspNet/AspNetBootstrapper.cs,,,,,1,"@@ -22,6 +25,9 @@ public static void Initialize()
+                     if (!_initialized)
+                     {
+                         RouteTable.Routes.MapHubs(""~/signalr"");
++                        
++                        var locator = new Lazy<IAssemblyLocator>(() => new AspNetAssemblyLocator());","How does this work if I map this route to a different url?
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d
+613162,1,"`MethodDescriptor` I like. Make it so!""",2012-03-27 15:18:46,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r613162,2012-03-28T03:18:46Z,2012-03-29T00:42:05Z,davidfowl,MEMBER,SignalR/Hubs/Lookup/Descriptors/ActionDescriptor.cs,,,,,1,"@@ -0,0 +1,38 @@
++﻿using System;
++using System.Collections.Generic;
++
++namespace SignalR.Hubs.Lookup.Descriptors
++{
++    /// <summary>
++    /// Holds information about a single hub action.
++    /// </summary>
++    public class ActionDescriptor","`MethodDescriptor` I like. Make it so!
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d
+4229074,1,"lol that would work wouldn't it? :+1: """,2013-05-14 18:12:10,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/2029#discussion_r4229074,2013-05-15T06:12:10Z,2013-05-15T19:04:53Z,NTaylorMullen,CONTRIBUTOR,tests/Microsoft.AspNet.SignalR.Tests/Client/ConnectionFacts.cs,,28.0,,,1,"@@ -16,6 +17,29 @@ namespace Microsoft.AspNet.SignalR.Tests
+     public class ConnectionFacts : IDisposable
+     {
+         [Fact]
++        public void NegotiatePassesClientProtocol()
++        {
++            var connection = new Client.Connection(""http://test"");
++            var mre = new ManualResetEventSlim();
++
++            try
++            {","lol that would work wouldn't it? :+1: 
+",56a5e4e5544a12caaedfb01bbcbd4638fece7a55
+4106604,0,"Do we need to check for undefined or null result here? we do pretty much everywhere else""",2013-05-06 16:30:39,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1996#discussion_r4106604,2013-05-07T04:30:39Z,2013-05-07T05:29:05Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.common.js,,82.0,,,6,"@@ -78,7 +78,9 @@
+                 contentType: connection.contentType,
+                 data: {},
+                 dataType: connection.ajaxDataType,
+-                success: function (data) {
++                success: function (result) {
++                    var data = connection._parseResponse(result);","Do we need to check for undefined or null result here? we do pretty much everywhere else
+",d59943b015384eb10a2800417f977e409d3f7175
+4088084,1,"yup, good catch""",2013-05-05 12:51:56,NTaylorMullen,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1984#discussion_r4088084,2013-05-06T00:51:56Z,2013-05-13T18:18:32Z,NTaylorMullen,CONTRIBUTOR,src/Microsoft.AspNet.SignalR.Client/Transports/ServerSentEventsTransport.cs,,,,,1,"@@ -158,7 +154,7 @@ private void Reconnect(IConnection connection, string data, CancellationToken di
+ 
+                             bool timedOut;
+                             bool disconnected;
+-                            TransportHelper.ProcessResponse(connection, sseEvent.Data, out timedOut, out disconnected);
++                            TransportHelper.ProcessResponse(connection, sseEvent.Data, out timedOut, out disconnected, initializeCallback);","yup, good catch
+",5e552de0b5a5b577958e81c08b67686ea89d169f
+3647447,0,"Shouldn't it take which claim to authorize?""",2013-04-03 11:43:31,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1804#discussion_r3647447,2013-04-03T23:43:31Z,2013-04-04T00:00:28Z,davidfowl,MEMBER,samples/Microsoft.AspNet.SignalR.Hosting.AspNet.Samples/Hubs/Auth/HeaderAuthHub.cs,,5.0,,,5,"@@ -0,0 +1,13 @@
++﻿using System.Threading.Tasks;
++
++namespace Microsoft.AspNet.SignalR.Samples.Hubs.Auth
++{
++    [AuthorizeClaims]","Shouldn't it take which claim to authorize?
+",bc222fc3d2f4002a5cb70d0ab6497301c3a24660
+3564780,1,"I want to reach a consensus on this, but I agree with you Taylor. += FTW!""",2013-03-27 17:13:15,halter73,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/1767#discussion_r3564780,2013-03-28T04:13:15Z,2013-03-28T04:32:51Z,halter73,MEMBER,src/Microsoft.AspNet.SignalR.Client.JS/jquery.signalR.transports.common.js,,,,,1,"@@ -138,7 +138,11 @@
+             } else {
+                 if (appendReconnectUrl) {
+                     url = url + ""/reconnect"";
++                } else {
++                    // A silent reconnect should only ever occur with the longPolling transport
++                    url = url + ""/poll"";","I want to reach a consensus on this, but I agree with you Taylor. += FTW!
+",604fde730d82327017119380666b2f6566fe3b16
+617961,1,"Sure, though I'm sure we'll only ever have one hehe.""",2012-03-28 09:31:56,davidfowl,SignalR,SignalR,,https://github.com/SignalR/SignalR/pull/276#discussion_r617961,2012-03-28T21:31:56Z,2012-03-29T00:42:06Z,davidfowl,MEMBER,SignalR/Hubs/Lookup/Descriptors/MethodDescriptor.cs,,35.0,,,35,"@@ -0,0 +1,38 @@
++﻿using System;
++using System.Collections.Generic;
++
++namespace SignalR.Hubs.Lookup.Descriptors
++{
++    /// <summary>
++    /// Holds information about a single hub method.
++    /// </summary>
++    public class MethodDescriptor
++    {
++        /// <summary>
++        /// Name of this method.
++        /// </summary>
++        public virtual string Name { get; set; }
++
++        /// <summary>
++        /// The return type of this method.
++        /// </summary>
++        public virtual Type ReturnType { get; set; }
++
++        /// <summary>
++        /// Hub descriptor object, target to his method.
++        /// </summary>
++        public virtual HubDescriptor Hub { get; set; }
++
++        /// <summary>
++        /// Available method parameters.
++        /// </summary>
++        public virtual IList<ParameterDescriptor> Parameters { get; set; }
++
++        /// <summary>
++        /// Method invocation delegate.
++        /// Takes a target hub and an array of invocation arguments as it's arguments.
++        /// </summary>
++        public virtual Func<IHub, object[], object> Invoker { get; set; }","Sure, though I'm sure we'll only ever have one hehe.
+",7c4597b6dd877fb6e4f13f54bfc3eb5ef667595d

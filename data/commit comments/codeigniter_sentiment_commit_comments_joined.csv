@@ -1,0 +1,51 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2633060,0,"The ltrim() is only taking care of a possible misconfigurated extension from the config file. What if someone overrode the class and provided their own `_log_ext` as a class property. Shouldn't ltrim() apply to that as well? I guess my point is... either c""",2013-02-15 09:46:53,TheDigitalOrchard,EllisLab,CodeIgniter,73abf95a507879d3893d933cc769e11275dbad75,TheDigitalOrchard,3195423,"The ltrim() is only taking care of a possible misconfigurated extension from the config file. What if someone overrode the class and provided their own `_log_ext` as a class property. Shouldn't ltrim() apply to that as well? I guess my point is... either cover all bases equally or not at all. Inconsistencies in behavior lead to confusion and complexity over time.
+",2013-02-15T20:46:53Z,2013-02-15T20:46:53Z
+1466660,0,"Because a hidden input field is still affected by positioning rules, like another element would appear with `visibility: hidden;` being set.""",2012-06-16 03:46:48,narfbg,EllisLab,CodeIgniter,3c32a11549d31cac470b92f995add25d7fdeff50,narfbg,1058011,"Because a hidden input field is still affected by positioning rules, like another element would appear with `visibility: hidden;` being set.
+",2012-06-16T15:46:48Z,2012-06-16T15:46:48Z
+1453218,2,"Well, damn ...  Quote from the `str_replace()` manual: >If search and replace are arrays, then str_replace() takes a value from each array and uses them to search and replace on subject. If replace has fewer values than search, then an empty string is used""",2012-06-13 02:49:13,narfbg,EllisLab,CodeIgniter,10cbdf091b3cdbc72847dad28a1dce03a92119b6,narfbg,1058011,"Well, damn ...
+
+Quote from the `str_replace()` manual:
+
+> If search and replace are arrays, then str_replace() takes a value from each array and uses them to search and replace on subject. If replace has fewer values than search, then an empty string is used for the rest of replacement values. If search is an array and replace is a string, then this replacement string is used for every value of search. **The converse would not make sense, though.**
+> 
+> If search or replace are arrays, their elements are processed first to last. 
+
+It makes perfect sense to me AND apparently it works. I'll fix that notice in a bit and rant about it on PHP's bug tracker.
+",2012-06-13T14:49:13Z,2012-06-13T14:49:13Z
+1188221,0,"It is, but it also returns a result set. See the `optimize_table()` and `optimize_database()` logic.""",2012-04-09 02:46:05,narfbg,EllisLab,CodeIgniter,b457a4001ce2380e97f36b0a983b477c3e31de69,narfbg,1058011,"It is, but it also returns a result set. See the `optimize_table()` and `optimize_database()` logic.
+",2012-04-09T14:46:05Z,2012-04-09T14:46:05Z
+884881,2,"Wow, could have probably come across a little friendlier there, Phil!""",2012-01-19 18:38:24,wub,EllisLab,CodeIgniter,7bb95dff569f465ad8887404c2f9d5304a2ff5b3,wub,427410,"Wow, could have probably come across a little friendlier there, Phil!
+",2012-01-20T05:38:24Z,2012-01-20T05:38:24Z
+782506,2,"Horrible wording :thumbsdown:""",2011-12-09 05:45:12,ericbarnes,EllisLab,CodeIgniter,cde712ce354dcfd69f9c5e2b56ef7d6f1206d11a,ericlbarnes,116662,"Horrible wording :thumbsdown:
+",2011-12-09T16:45:12Z,2011-12-09T16:45:12Z
+854558,2,"I'm very sorry to hear you spent so long stuck on this, but it IS in the upgrade guide.""",2012-01-10 08:56:55,philsturgeon,EllisLab,CodeIgniter,50671cf8d67c805692fec49eda33d21227a21ec2,philsturgeon,67381,"I'm very sorry to hear you spent so long stuck on this, but it IS in the upgrade guide.
+",2012-01-10T19:56:55Z,2012-01-10T19:56:55Z
+1455743,2,"Oh, crap ... thanks for noting that.  Edit: https://github.com/EllisLab/CodeIgniter/commit/a8262ba2fe0e11302b8d81e1afba71d4f96cd6d7""",2012-06-13 12:16:31,narfbg,EllisLab,CodeIgniter,d461934184d95b0cfb2feec93f27b621ef72a5c2,narfbg,1058011,"Oh, crap ... thanks for noting that.
+
+Edit: https://github.com/EllisLab/CodeIgniter/commit/a8262ba2fe0e11302b8d81e1afba71d4f96cd6d7
+",2012-06-14T00:16:31Z,2012-06-14T00:17:34Z
+1407886,2,"Yeah - I'm just trying to kill stylistic bugs. I'm reverting some of the changes as I find them. What's annoying is the test suites run fine on my laptop but are failing in Travis""",2012-06-02 06:18:50,alexbilbie,EllisLab,CodeIgniter,40bd2a7fb2fb98a10c4e3758897a595ae78ab5f8,alexbilbie,77991,"Yeah - I'm just trying to kill stylistic bugs. I'm reverting some of the changes as I find them. What's annoying is the test suites run fine on my laptop but are failing in Travis
+",2012-06-02T18:18:50Z,2012-06-02T18:18:50Z
+3929844,2,"Seriously, stop commenting on commits for no serious reason - you're spamming all of these people: https://github.com/EllisLab?tab=members""",2013-08-22 22:23:37,narfbg,EllisLab,CodeIgniter,49890a95da8438910b6f6b8da43ec5e5cd10f53c,narfbg,1058011,"Seriously, stop commenting on commits for no serious reason - you're spamming all of these people: https://github.com/EllisLab?tab=members
+",2013-08-23T10:23:37Z,2013-08-23T10:23:37Z
+3933220,2,"I wasn't aware that expressing an opinion on committed code based on information from the PHP manual in an open source project was """"spamming"""" everyone. I also wasn't aware that it notified every single collaborator, so cram your elitist attitude and have s""",2013-08-23 06:33:35,cryode,EllisLab,CodeIgniter,49890a95da8438910b6f6b8da43ec5e5cd10f53c,AkenRoberts,563886,"I wasn't aware that expressing an opinion on committed code based on information from the PHP manual in an open source project was ""spamming"" everyone. I also wasn't aware that it notified every single collaborator, so cram your elitist attitude and have some respect.
+",2013-08-23T18:33:35Z,2013-08-23T18:33:35Z
+2081978,1,"Nice!  Simple and powerful.  You went for a slightly different approach than I did.  I _was_ thinking QUERY_STRING should always be decoded first, so we would accept something like  index.php?controller/method%3fparam=value  But I prefer your code he""",2012-10-31 05:59:24,sourcejedi,EllisLab,CodeIgniter,9dd2dbb8b9a3edecddcb3907b65a402fd1ae71b4,sourcejedi,14057,"Nice!  Simple and powerful.
+
+You went for a slightly different approach than I did.  I _was_ thinking QUERY_STRING should always be decoded first, so we would accept something like
+
+index.php?controller/method%3fparam=value
+
+But I prefer your code here - so I looked at RFC3986, and I think your approach is actually fine.
+",2012-10-31T16:59:24Z,2012-10-31T16:59:24Z
+1953896,0,"Invalid doc reference:  user_guide_src/source/changelog.rst:209: WARNING: unknown document: libraries/encrypt  Should be <libraries/encryption>""",2012-10-05 05:30:59,dchill42,EllisLab,CodeIgniter,824b4f220ca3dadc8f0945c665a7d7f8105a5dc4,dchill42,630484,"Invalid doc reference:
+
+user_guide_src/source/changelog.rst:209: WARNING: unknown document: libraries/encrypt
+
+Should be <libraries/encryption>
+",2012-10-05T17:30:59Z,2012-10-05T17:30:59Z
+1344999,1,"Everything else has been converted to single quotes, this one had been overlooked. Nothing groundbreaking I know but in the interest of consistency and keeping PHP CodeSniffer happy I fixed it.""",2012-05-17 08:08:38,alexbilbie,EllisLab,CodeIgniter,1ef19196e32d081bd5db1a7f87599acea0ecac6e,alexbilbie,77991,"Everything else has been converted to single quotes, this one had been overlooked. Nothing groundbreaking I know but in the interest of consistency and keeping PHP CodeSniffer happy I fixed it.
+",2012-05-17T20:08:38Z,2012-05-17T20:08:38Z
+546637,0,"I agree with you except for the use of the word """"all"""", wiredesignz.  I'm saying that a blanket statement should not be applied to method signatures just because of what files they live in.  Care and thought should go into the decision based on each method'""",2011-08-23 00:54:59,derekjones,EllisLab,CodeIgniter,6adfe636980da3a7b25e5b87ed8bcd1d008a1243,derekjones,763613,"I agree with you except for the use of the word ""all"", wiredesignz.  I'm saying that a blanket statement should not be applied to method signatures just because of what files they live in.  Care and thought should go into the decision based on each method's functionality, design, and potential future use, not just putting protected on everything because another developer might desire a different implementation.
+",2011-08-23T12:54:59Z,2011-08-23T12:54:59Z

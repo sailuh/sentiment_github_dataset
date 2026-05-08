@@ -1,0 +1,7 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+407097,2,"something went wrong in this commit  i already have a fork and I'm not sure exactly how to deal with branches well enough to try and fix it :(""",2011-05-30 15:18:55,lgordon,hbons,SparkleShare,21181c34e4ee98d4b53bbdc5efa73c9188987154,lgordon,649880,"something went wrong in this commit
+
+i already have a fork and I'm not sure exactly how to deal with branches well enough to try and fix it :(
+",2011-05-31T03:18:55Z,2011-05-31T03:18:55Z
+408166,2,"I guess my comment was vague, I was sleepy. There seemed to be some compile, errors. I'm at work now I'll post them when I get back home.""",2011-05-31 05:34:20,lgordon,hbons,SparkleShare,21181c34e4ee98d4b53bbdc5efa73c9188987154,lgordon,649880,"I guess my comment was vague, I was sleepy. There seemed to be some compile, errors. I'm at work now I'll post them when I get back home.
+",2011-05-31T17:34:20Z,2011-05-31T17:34:20Z

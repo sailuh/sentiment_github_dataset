@@ -1,0 +1,30 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+6075918,0,"There is also a method called `ObjectSpace.memsize_of_all(String)` which is probably more efficient if we're just looking for totals.  I'm not sure which Ruby VMs support memsize_of, it doesn't appear to be documented.""",2013-08-29 11:03:21,nathany,SamSaffron,MiniProfiler,,https://github.com/SamSaffron/MiniProfiler/pull/189#discussion_r6075918,2013-08-29T23:03:21Z,2013-08-29T23:30:28Z,nathany,NONE,Ruby/lib/mini_profiler/gc_profiler.rb,,14,,,20,"@@ -1,40 +1,52 @@
++require 'objspace'
++
+ class Rack::MiniProfiler::GCProfiler
+-  
++
++  ObjectStats = Struct.new(:objects, :bytes)
++
+   def object_space_stats
+     stats = {}
+     ids = Set.new
+-    i=0
+     ObjectSpace.each_object { |o|
+       begin
+-        i = stats[o.class] || 0
+-        i += 1
+-        stats[o.class] = i
+-        ids << o.object_id if Integer === o.object_id 
++        stats[o.class] ||= ObjectStats.new(0,0)
++        stats[o.class].objects += 1
++        stats[o.class].bytes += ObjectSpace.memsize_of(o)","There is also a method called `ObjectSpace.memsize_of_all(String)` which is probably more efficient if we're just looking for totals.
+
+I'm not sure which Ruby VMs support memsize_of, it doesn't appear to be documented.
+",78b7a5eeeb15c6d820bf2779a7e2c90b4a14a53a
+6080150,1,"yeah I like the idea of detecting leaks""",2013-08-29 18:24:40,SamSaffron,SamSaffron,MiniProfiler,,https://github.com/SamSaffron/MiniProfiler/pull/189#discussion_r6080150,2013-08-30T06:24:40Z,2013-08-30T06:24:40Z,SamSaffron,OWNER,Ruby/lib/mini_profiler/gc_profiler.rb,,83,,,81,"@@ -70,38 +81,36 @@ def profile_gc(app,env)
+       b = app.call(env)[2]
+       b.close if b.respond_to? :close
+       stat_after = object_space_stats","yeah I like the idea of detecting leaks
+",78b7a5eeeb15c6d820bf2779a7e2c90b4a14a53a

@@ -1,0 +1,28 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+538792,0,"From running coverity, line 373:  mAuthDialogListener.onComplete(data.getExtras());  android.content.Intent.getExtras(...) may return null [checked 0 of 1 uses]""",2011-08-18 02:55:06,23054467,facebook,facebook-android-sdk,a1fb45ababf40c7fc5936317479ccabc9cd3bbd4,23054467,988847,"From running coverity, line 373:
+
+mAuthDialogListener.onComplete(data.getExtras());
+
+android.content.Intent.getExtras(...) may return null [checked 0 of 1 uses]
+",2011-08-18T14:55:06Z,2011-08-18T14:55:06Z
+2681670,0,"Why has ENABLE_LOG been removed?  This was needed in a couple of issues. For example: http://stackoverflow.com/questions/13049346/android-facebook-login-doesnt-work """,2013-02-23 16:43:01,paskster,facebook,facebook-android-sdk,30d9ebd42074dbfbb2d102f2ccfaa96e0ef8c490,paskster,352656,"Why has ENABLE_LOG been removed? 
+This was needed in a couple of issues. For example:
+http://stackoverflow.com/questions/13049346/android-facebook-login-doesnt-work
+",2013-02-24T03:43:01Z,2013-02-24T03:43:01Z
+222235,0,"on signing and creating key hash lot of times according to instructions given, i am getting same invalid_key error for 100s of times. I did everything to debug but no success.""",2010-12-20 07:13:06,om252345,facebook,facebook-android-sdk,e23764f7541561c9208bff2875d312d2e3f1c81e,om252345,530885,"on signing and creating key hash lot of times according to instructions given, i am getting same invalid_key error for 100s of times.
+I did everything to debug but no success.
+",2010-12-20T18:13:06Z,2010-12-20T18:13:06Z
+538808,0,"From running coverity, line 185:     for (Signature signature : packageInfo.signatures) {  android.os.Bundle.getByteArray(...) dereferenced while null""",2011-08-18 03:00:15,23054467,facebook,facebook-android-sdk,b18714b71b3ee49a90f3209441f03e455cca1577,23054467,988847,"From running coverity, line 185:
+
+   for (Signature signature : packageInfo.signatures) {
+
+android.os.Bundle.getByteArray(...) dereferenced while null
+",2011-08-18T15:00:15Z,2011-08-18T15:00:15Z
+77515,0,"for the cookie on websites, we use """"fbs_{app_id}"""", the idea being that only instances bound to the same app id should share data""",2010-05-10 10:48:08,daaku,facebook,facebook-android-sdk,301afe59f9215a3845577c1402adfbfed356f774,daaku,593,"for the cookie on websites, we use ""fbs_{app_id}"", the idea being that only instances bound to the same app id should share data
+",2010-05-10T22:48:08Z,2010-05-10T22:48:08Z
+78048,0,"we should remove authorize() and just have login() with an optional set of permissions. in most cases apps will want to tos the user and request permissions in one shot.""",2010-05-11 07:31:30,yariv,facebook,facebook-android-sdk,301afe59f9215a3845577c1402adfbfed356f774,yariv,12111,"we should remove authorize() and just have login() with an optional set of permissions. in most cases apps will want to tos the user and request permissions in one shot.
+",2010-05-11T19:31:30Z,2010-05-11T19:31:30Z
+78175,0,"After meddling with this for a while, it doesn't seem like it will work: the URI builder URI-encodes the parameters, which includes the access_token.  Since the access_token contains special characters (e.g. '|', '%') this breaks the requests.  It doesn't """,2010-05-11 11:51:52,soneff,facebook,facebook-android-sdk,301afe59f9215a3845577c1402adfbfed356f774,soneff,272598,"After meddling with this for a while, it doesn't seem like it will work: the URI builder URI-encodes the parameters, which includes the access_token.  Since the access_token contains special characters (e.g. '|', '%') this breaks the requests.  It doesn't seem that I can tell the URI builder to stop doing the URI encoding, so I will just leave this as string operations for now.
+",2010-05-11T23:51:52Z,2010-05-11T23:51:52Z
+78022,1,"how about """"Login with Facebook""""? :)""",2010-05-11 06:59:16,yariv,facebook,facebook-android-sdk,301afe59f9215a3845577c1402adfbfed356f774,yariv,12111,"how about ""Login with Facebook""? :)
+",2010-05-11T18:59:16Z,2010-05-11T18:59:16Z

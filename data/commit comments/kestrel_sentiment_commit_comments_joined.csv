@@ -1,0 +1,3 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+8041,2,"I'm sorry, I just don't care about your kind that much.""",2008-11-16 16:37:47,ELLIOTTCABLE,robey,kestrel,74a4660c227f759a85b9cf2f821ade8bf03f0d72,ELLIOTTCABLE,200,"I'm sorry, I just don't care about your kind that much.
+",2008-11-17T03:37:47Z,2008-11-17T03:37:47Z

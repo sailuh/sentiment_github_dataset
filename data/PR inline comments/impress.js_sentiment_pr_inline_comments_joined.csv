@@ -1,0 +1,54 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+335017,1,"Why change indenting everywhere?  Anyway nice new feature!""",2012-01-07 15:09:55,Pezmc,bartaz,impress.js,,https://github.com/impress/impress.js/pull/34#discussion_r335017,2012-01-08T02:09:55Z,2012-01-08T22:04:17Z,Pezmc,NONE,js/impress.js,,,,,1,"@@ -138,60 +168,85 @@
+         perspective: ""1000px""
+     });
+     css(canvas, props);
+-    
++
+     var current = {
+-        translate: { x: 0, y: 0, z: 0 },
+-        rotate:    { x: 0, y: 0, z: 0 },
+-        scale:     { x: 1, y: 1, z: 1 }
++        translate: {
++            x: 0, 
++            y: 0, 
++            z: 0
++        },
++        rotate:    {
++            x: 0, 
++            y: 0, 
++            z: 0
++        },
++        scale:     {
++            x: 1, 
++            y: 1, 
++            z: 1
++        }
+     };
+ 
+     steps.forEach(function ( el, idx ) {
+         var data = el.dataset,
+-            step = {
+-                translate: {
+-                    x: data.x || 0,
+-                    y: data.y || 0,
+-                    z: data.z || 0
+-                },
+-                rotate: {
+-                    x: data.rotateX || 0,
+-                    y: data.rotateY || 0,
+-                    z: data.rotateZ || data.rotate || 0
+-                },
+-                scale: {
+-                    x: data.scaleX || data.scale || 1,
+-                    y: data.scaleY || data.scale || 1,
+-                    z: data.scaleZ || 1
+-                }
+-            };
+-        
++        step = {
++            translate: {
++                x: data.x || 0,","Why change indenting everywhere?
+
+Anyway nice new feature!
+",8e82782499996c374125ab15c7eead7632413b6e

@@ -1,0 +1,232 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,path,position,line,created_at_kaiaulu,updated_at
+4029918,1,"I owe you a beer. Or two.""",2013-09-05 18:54:59,samueljohn,mxcl,homebrew,a098f46e10d2b7c0d3c5063cc393a08f7cf6b12a,samueljohn,725299,"I owe you a beer. Or two.
+",,,,2013-09-06T06:54:59Z,2013-09-06T06:54:59Z
+3544024,0,"Nope""",2013-07-01 13:29:52,jacknagel,mxcl,homebrew,34af5fcbcce120497930f8f1346ad83fad05098a,jacknagel,568243,"Nope
+",,,,2013-07-02T01:29:52Z,2013-07-02T01:29:52Z
+3468862,0,"You can still `brew versions svn` and follow the description to use the older formula version that also provides the older svn.""",2013-06-20 03:56:32,samueljohn,mxcl,homebrew,ffb3e01f3ce6b17f82d52f267202e46bfa1570d2,samueljohn,725299,"You can still `brew versions svn` and follow the description to use the older formula version that also provides the older svn.
+",,,,2013-06-20T15:56:32Z,2013-06-20T15:56:32Z
+3060756,0,"That's not 'broken', that's ack 2 working as expect. Report it upstream.""",2013-04-22 05:05:12,mikemcquaid,mxcl,homebrew,fe35cf5e5ac45b2b6475bb9822f95a4baeb9bd07,MikeMcQuaid,125011,"That's not 'broken', that's ack 2 working as expect. Report it upstream.
+",,,,2013-04-22T17:05:12Z,2013-04-22T17:05:12Z
+2854244,1,"anyways now I am testing `brew install mapnik --with-cairo` :-)""",2013-03-21 06:03:14,samueljohn,mxcl,homebrew,a20fb1b0fdab7d202b0f0e10a06e5391f597bc6a,samueljohn,725299,"anyways now I am testing `brew install mapnik --with-cairo` :-)
+",Library/Formula/mapnik.rb,69.0,66.0,2013-03-21T17:03:14Z,2013-03-21T17:03:14Z
+1193686,0,"That's true - though not with the new syntax.  (Also, Erlang and Imagemagick are detecting versions wrong right now, will have to fix.)""",2012-04-10 05:06:00,mistydemeo,mxcl,homebrew,570e603923d6de652b2a771a9ddee19666af463f,mistydemeo,780485,"That's true - though not with the new syntax.
+
+(Also, Erlang and Imagemagick are detecting versions wrong right now, will have to fix.)
+",Library/Formula/erlang.rb,45.0,33.0,2012-04-10T17:06:00Z,2012-04-10T17:06:00Z
+651023,1,"I'd fix it myself, but I'm on my way out the door.""",2011-10-13 14:08:35,jacknagel,mxcl,homebrew,358ff1ea2f94e56018cd7b90f9b73365fdc35c36,jacknagel,568243,"I'd fix it myself, but I'm on my way out the door.
+",,,,2011-10-14T02:08:35Z,2011-10-14T02:08:35Z
+610284,2,"Dangit. I was on another branch where the history looked clean and didn't realize it when I pushed master.""",2011-09-25 06:37:05,Sharpie,mxcl,homebrew,692ff26040ce2c829dad10fc1d0b3bc4e687cf5f,Sharpie,54181,"Dangit. I was on another branch where the history looked clean and didn't realize it when I pushed master.
+",,,,2011-09-25T18:37:05Z,2011-09-25T18:37:05Z
+4030144,2,":-( The trouble was mostly - I think - because I fucked up the commit and not the `PythonInstalled` requirement itself. I know quite a few people that use PyQt (or PySide) and the python support Homebrew provides. I am sorry this troubles you.""",2013-09-05 19:30:30,samueljohn,mxcl,homebrew,fd03aa527d1a4a44f202a9841b6b4e05ee6065b6,samueljohn,725299,":-(
+The trouble was mostly - I think - because I fucked up the commit and not the `PythonInstalled` requirement itself. I know quite a few people that use PyQt (or PySide) and the python support Homebrew provides. I am sorry this troubles you.
+",,,,2013-09-06T07:30:30Z,2013-09-06T07:30:30Z
+3913614,2,"sorry. I fucked up because I had used `git versions python` and wanted to reproduce an older issue with 2.7.3""",2013-08-21 06:23:31,samueljohn,mxcl,homebrew,1c13eadc714b16efadcbdd5a73a0b2cec7333cab,samueljohn,725299,"sorry. I fucked up because I had used `git versions python` and wanted to reproduce an older issue with 2.7.3
+",,,,2013-08-21T18:23:31Z,2013-08-21T18:23:31Z
+3468923,2,"Ah ... sorry. Okay :/""",2013-06-20 04:00:16,samueljohn,mxcl,homebrew,ffb3e01f3ce6b17f82d52f267202e46bfa1570d2,samueljohn,725299,"Ah ... sorry. Okay :/
+",,,,2013-06-20T16:00:16Z,2013-06-20T16:00:16Z
+2420557,2,"Reverted, sorry.""",2013-01-11 02:12:54,mikemcquaid,mxcl,homebrew,1d8f01d8af394a7501f5bf3a1e51796c1a7548a1,MikeMcQuaid,125011,"Reverted, sorry.
+",,,,2013-01-11T13:12:54Z,2013-01-11T13:12:54Z
+2410673,2,"Yeah, seems so. Something else weird then. I'll revisit later.""",2013-01-09 13:11:46,adamv,mxcl,homebrew,67e8b5e215812a0582d8a7ab1853cd27ded737b7,adamv,3566,"Yeah, seems so. Something else weird then. I'll revisit later.
+",,,,2013-01-10T00:11:46Z,2013-01-10T00:11:46Z
+2125100,2,"Sorry, I'm an idiot and can't copy/paste correctly.""",2012-11-08 11:24:27,jacknagel,mxcl,homebrew,781bd000d0b933ca991eaf6c7f7e232603c26c72,jacknagel,568243,"Sorry, I'm an idiot and can't copy/paste correctly.
+",,,,2012-11-08T22:24:27Z,2012-11-08T22:24:27Z
+1835110,2,"Coming from a Gentoo background, that seems pretty crazy that homebrew won't abort when a dep fails...""",2012-09-10 17:07:17,zx2c4,mxcl,homebrew,66b45aed5140781f6c6338492fe47eb77e6025ec,zx2c4,10643,"Coming from a Gentoo background, that seems pretty crazy that homebrew won't abort when a dep fails...
+",Library/Formula/pass.rb,16.0,16.0,2012-09-11T05:07:17Z,2012-09-11T05:07:17Z
+1765592,2,"Really you shouldn't relink it after, because they install the same binaries. Suggesting it is a bad idea!""",2012-08-25 08:37:05,mistydemeo,mxcl,homebrew,188b1596a65e1c8b1180f5691ce31eadb266871c,mistydemeo,780485,"Really you shouldn't relink it after, because they install the same binaries. Suggesting it is a bad idea!
+",Library/Homebrew/formula.rb,10.0,656.0,2012-08-25T20:37:05Z,2012-08-25T20:37:05Z
+1586769,2,"build fails for me :(  http://pastebin.com/NDCQ2zSq""",2012-07-16 02:55:15,whoisjake,mxcl,homebrew,f08622f13dc287338be3741101ad0865a693c98d,whoisjake,2079,"build fails for me :(
+
+http://pastebin.com/NDCQ2zSq
+",,,,2012-07-16T14:55:15Z,2012-07-16T14:55:15Z
+1258843,2,"Sorry :(""",2012-04-25 11:51:10,mikemcquaid,mxcl,homebrew,df43a1d1120c3c355a461caffdd8a207edfc69d0,MikeMcQuaid,125011,"Sorry :(
+",,,,2012-04-25T23:51:10Z,2012-04-25T23:51:10Z
+762347,2,"The weird part is that `patch -v` returns 2.5.8 on both Lion and Snow Leopard...""",2011-12-01 10:26:28,Sharpie,mxcl,homebrew,7cbfb0523bb3eb724a2d8fe52c8939c741ba8ff8,Sharpie,54181,"The weird part is that `patch -v` returns 2.5.8 on both Lion and Snow Leopard...
+",,,,2011-12-01T21:26:28Z,2011-12-01T21:26:28Z
+550589,2,"Proof that redundant comments are both stupid and a maintenance burden. LIke seriously, who added that comment? The code is perfectly clear.""",2011-08-24 12:23:04,mxcl,mxcl,homebrew,fff60b5e5ec99882e0ea976de20fb3e72fab2cfe,mxcl,58962,"Proof that redundant comments are both stupid and a maintenance burden. LIke seriously, who added that comment? The code is perfectly clear.
+",,,,2011-08-25T00:23:04Z,2011-08-25T00:23:04Z
+550597,2,"I'm usually in the """"moar comments!"""" camp. But yeah, WTF.""",2011-08-24 12:27:04,Sharpie,mxcl,homebrew,fff60b5e5ec99882e0ea976de20fb3e72fab2cfe,Sharpie,54181,"I'm usually in the ""moar comments!"" camp. But yeah, WTF.
+",,,,2011-08-25T00:27:04Z,2011-08-25T00:27:04Z
+276756,2,"Adamv is a stickler for consistency so I fear we cannot change it now.""",2011-02-19 01:04:10,mxcl,mxcl,homebrew,61675e70de50619da9deb2c40fa9816b02cac5d3,mxcl,58962,"Adamv is a stickler for consistency so I fear we cannot change it now.
+",,,,2011-02-19T12:04:10Z,2011-02-19T12:04:10Z
+781101,2,"This just feels weird, putting in the """"build number - 1"""". I dunno.""",2011-12-08 18:31:52,adamv,mxcl,homebrew,8f95b3e9ff70e3a93f8856f7b05f562a48501fee,adamv,3566,"This just feels weird, putting in the ""build number - 1"". I dunno.
+",,,,2011-12-09T05:31:52Z,2011-12-09T05:31:52Z
+781137,2,"> This just feels weird, putting in the """"build number - 1"""". I dunno.  Yeah. I always felt weird about that too. Seems to me that the build number should be the minimum version required, not one less than the minimum version.""",2011-12-08 19:07:27,Sharpie,mxcl,homebrew,8f95b3e9ff70e3a93f8856f7b05f562a48501fee,Sharpie,54181,"> This just feels weird, putting in the ""build number - 1"". I dunno.
+
+Yeah. I always felt weird about that too. Seems to me that the build number should be the minimum version required, not one less than the minimum version.
+",,,,2011-12-09T06:07:27Z,2011-12-09T06:07:27Z
+598837,2,"Yes, my bad I didn't review it properly.""",2011-09-19 15:30:47,mxcl,mxcl,homebrew,335383549eb8cca5b47100bd5e89213b597a1899,mxcl,58962,"Yes, my bad I didn't review it properly.
+",,,,2011-09-20T03:30:47Z,2011-09-20T03:30:47Z
+517152,2,"Interesting. In which case, it's glib's configure that sucks.""",2011-08-06 06:46:53,mxcl,mxcl,homebrew,9fa2a4a38e411c1271c8d3b4ddc1c5f722473d51,mxcl,58962,"Interesting. In which case, it's glib's configure that sucks.
+",Library/Formula/glib.rb,20.0,18.0,2011-08-06T18:46:53Z,2011-08-06T18:46:53Z
+2138073,0,"    s""""cpuCombined must be between [0.0 - 1.0], was [$x]""""""",2012-11-12 02:27:53,samueljohn,mxcl,homebrew,1fc68c62d801e01016ef710bec6d0185a8f3ae6e,samueljohn,725299,"@mxcl the first `dels` in this line, is supposed to be `dups`?
+",Library/ENV/4.3/cc,9.0,173.0,2012-11-12T13:27:53Z,2012-11-12T13:27:53Z
+4139362,1,"You mean erlang, right :)  This is why we need people to remove the SHA-1 blocks and on bottle updates for now until I fix the revision increment issue. Also probably want to remove them manually otherwise so the new bottles don't immediately 404. Still",2013-09-19 18:59:03,mikemcquaid,mxcl,homebrew,092d8a86176ffd0adf908774c0ceb624edb1f3fe,MikeMcQuaid,125011,"You mean erlang, right :)
+
+This is why we need people to remove the SHA-1 blocks and on bottle updates for now until I fix the revision increment issue. Also probably want to remove them manually otherwise so the new bottles don't immediately 404. Still, nice work on the new bottle :)
+",,,,2013-09-20T06:59:03Z,2013-09-20T06:59:03Z
+3912216,0,"Don't forget PyPy.""",2013-08-21 04:13:24,adamv,mxcl,homebrew,cdf08aa79bd21fcd7b4a5d0d9b435671de477637,adamv,3566,"Don't forget PyPy.
+",,,,2013-08-21T16:13:24Z,2013-08-21T16:13:24Z
+3819517,2,"You said in the issue you were just going to fix using `install_name_tool`. I already dislike that we build `debug-and-release` in the prefix but it's OK to have that sort of hack as an option but it's nasty to do this for all builds.""",2013-08-08 05:14:19,mikemcquaid,mxcl,homebrew,9b5f26f358d0f21323ca2eeb5399b73651c347aa,MikeMcQuaid,125011,"You said in the issue you were just going to fix using `install_name_tool`. I already dislike that we build `debug-and-release` in the prefix but it's OK to have that sort of hack as an option but it's nasty to do this for all builds.
+",,,,2013-08-08T17:14:19Z,2013-08-08T17:14:19Z
+3758549,0,"Basically we need to sniff stdin and if there are bytes available to be read, pass `-` when invoking `clang -E`.""",2013-07-31 04:04:33,jacknagel,mxcl,homebrew,aca99ae0d735aad3cd2a5472b0b2eb31f879d8e8,jacknagel,568243,"Basically we need to sniff stdin and if there are bytes available to be read, pass `-` when invoking `clang -E`.
+",,,,2013-07-31T16:04:33Z,2013-07-31T16:04:33Z
+3728464,0,"But subversion is not Qt, it does not take hours to compile, it takes 56 seconds on my Macbook Pro (i7, 2012). Maybe several minutes on older hardware.  Also, only Admins seem to have the right to create and upload bottles to http://sourceforge.net/proje""",2013-07-26 08:31:45,clemensg,mxcl,homebrew,4daa911a64112a3e93e5b90a0a88fa751f647cba,clemensg,201310,"But subversion is not Qt, it does not take hours to compile, it takes 56 seconds on my Macbook Pro (i7, 2012). Maybe several minutes on older hardware.
+
+Also, only Admins seem to have the right to create and upload bottles to http://sourceforge.net/projects/machomebrew/files/Bottles/
+Who is responsible for bottles?
+",,,,2013-07-26T20:31:45Z,2013-07-26T20:32:14Z
+3765088,0,"brew install little-cms2 is throwing error """"SHA1 mismatch"""":  <pre> ==> Downloading http://downloads.sourceforge.net/project/lcms/lcms/2.5/lcms2-2.5.tar.gz ######################################################################## 100.0% Error: SHA1 mism""",2013-07-31 21:36:29,tamuri,mxcl,homebrew,dd45adf22483c5557d4f422fd40f2ebd8a7e1b7f,tamuri,360002,"brew install little-cms2 is throwing error ""SHA1 mismatch"":
+
+<pre>
+==> Downloading http://downloads.sourceforge.net/project/lcms/lcms/2.5/lcms2-2.5.tar.gz
+######################################################################## 100.0%
+Error: SHA1 mismatch
+Expected: bab3470471fc7756c5fbe71be9a3c7d677d2ee7b
+Actual: dc2ca966a857dd22d29f98632b7fa76f16abda1e
+</pre>
+",,,,2013-08-01T09:36:29Z,2013-08-01T09:36:58Z
+3699156,2,"I see that `ykpers` has been in this repo longer than this one. Why did you choose that name over this one? It's totally cryptic. I see the linux packages are split: debian uses `yubikey-personalization` and fedora uses `ykpers`. Seems crazy to me to perpe""",2013-07-23 06:57:28,xaviershay,mxcl,homebrew,4d5a56d24122275ae81a71d6860c1c9e0f4cc6e1,xaviershay,1714,"I see that `ykpers` has been in this repo longer than this one. Why did you choose that name over this one? It's totally cryptic. I see the linux packages are split: debian uses `yubikey-personalization` and fedora uses `ykpers`. Seems crazy to me to perpetuate cryptic names.
+",,,,2013-07-23T18:57:28Z,2013-07-23T18:57:28Z
+3353234,0,"make it more clear: If a formula spam defines a 'without-foo' option another formula can `depends_on 'spam' => 'with-foo'` and it works as expected. Similar to how `build.with? 'foo'` did it already. I know that what you suggest is something different, tho""",2013-06-04 08:44:15,samueljohn,mxcl,homebrew,2d15b1ae6efcd1751fc5a9e0f9667ed1bba8582f,samueljohn,725299,"make it more clear: If a formula spam defines a 'without-foo' option another formula can `depends_on 'spam' => 'with-foo'` and it works as expected. Similar to how `build.with? 'foo'` did it already. I know that what you suggest is something different, though.
+",,,,2013-06-04T20:44:15Z,2013-06-04T20:44:15Z
+3347008,0,"Should I write an `audit` test for these kind of mistakes?""",2013-06-03 18:57:19,samueljohn,mxcl,homebrew,a9b6929a69cece04dc29642ffa190eb9e7d32109,samueljohn,725299,"Should I write an `audit` test for these kind of mistakes?
+",,,,2013-06-04T06:57:19Z,2013-06-04T06:57:19Z
+3565705,0,"@adamv @asparagui Any objections to making this version `2.1.6`?   @adamv I'm thinking of making an audit rule to get rid of `v` prefixes in versions to change the bottle filename format slightly to add regex parsing of the version.""",2013-07-03 22:35:27,mikemcquaid,mxcl,homebrew,53c3d71c3a3ebd62bf333e10a851c6b89f04a9fd,MikeMcQuaid,125011,"@adamv @asparagui Any objections to making this version `2.1.6`? 
+
+@adamv I'm thinking of making an audit rule to get rid of `v` prefixes in versions to change the bottle filename format slightly to add regex parsing of the version.
+",,,,2013-07-04T10:35:27Z,2013-07-04T10:35:27Z
+2461579,0,"@nickdesaulniers It prevents nss from being automatically symlinked into /usr/local/bin, yes. You can find its sandboxed prefix by doing `brew --prefix nss`, or you can use `brew link nss` to link it manually.""",2013-01-18 08:07:54,mistydemeo,mxcl,homebrew,b9712631d29bf8df30077f51d50864c858a03dfd,mistydemeo,780485,"@nickdesaulniers It prevents nss from being automatically symlinked into /usr/local/bin, yes. You can find its sandboxed prefix by doing `brew --prefix nss`, or you can use `brew link nss` to link it manually.
+",,,,2013-01-18T19:07:54Z,2013-01-18T19:07:54Z
+2424631,0,@adamv I notice you cleaned this up -- I had actually copied the string interpolated version from existing Formula...  If this is the preferred way would this be worth adding to brew audit ( I want to poke around in there for separate reasons anyway...),2013-01-11 17:19:03,yourabi,mxcl,homebrew,9565e09f444b2f7b0249285489566a74b6d44920,yourabi,4807,"@adamv I notice you cleaned this up -- I had actually copied the string interpolated version from existing Formula...
+
+If this is the preferred way would this be worth adding to brew audit ( I want to poke around in there for separate reasons anyway...)
+",Library/Formula/aws-elasticbeanstalk.rb,15.0,15.0,2013-01-12T04:19:03Z,2013-01-12T04:19:03Z
+2461833,0,"But don't do `brew link nss` or things that link to openssl will fail.""",2013-01-18 08:43:58,adamv,mxcl,homebrew,b9712631d29bf8df30077f51d50864c858a03dfd,adamv,3566,"But don't do `brew link nss` or things that link to openssl will fail.
+",,,,2013-01-18T19:43:58Z,2013-01-18T19:43:58Z
+2029101,0,"Sorry but this breaks the build. The SHA1 is incorrect.  From the mosh mailing list: > mosh 1.2.3 has been released. > > The source code is at: > https://github.com/downloads/keithw/mosh/mosh-1.2.3.tar.gz > > SHA-1: 3bbcc560a5968806681465d83758d5c""",2012-10-21 05:59:53,sessyargc,mxcl,homebrew,8b26224cd0181ae04a3052f011342cdf2c9223ce,sessyargc,1316824,"Sorry but this breaks the build.
+The SHA1 is incorrect.
+
+From the mosh mailing list:
+
+> mosh 1.2.3 has been released.
+> 
+> The source code is at:
+> https://github.com/downloads/keithw/mosh/mosh-1.2.3.tar.gz
+> 
+> SHA-1: 3bbcc560a5968806681465d83758d5c3abee9607
+> SHA-256: 93f09fda77e57f05485a61f3ac679bf9f3f359a9b0b93c216ddd53cd124a768f
+
+My brew result:
+[crg@crg Formula  (master *)]$ brew install mobile-shell==> Downloading https://github.com/downloads/keithw/mosh/mosh-1.2.3.tar.gz
+###### ################################################################## 100.0%
+
+Error: SHA1 mismatch
+Expected: 2f95ae6f4610f1193250043e6c18496085ebfa0a
+Actual: 3bbcc560a5968806681465d83758d5c3abee9607
+Archive: /Library/Caches/Homebrew/mobile-shell-1.2.3.tar.gz
+(To retry an incomplete download, remove the file above.)
+",,,,2012-10-21T17:59:53Z,2012-10-21T17:59:53Z
+1826948,0,"Checksum doesn't match for me either: ``` ssimon@lagrange ~> brew fetch aws-sns-cli ==> Downloading http://sns-public-resources.s3.amazonaws.com/SimpleNotificationS ######################################################################## 100,0% Downloaded """,2012-09-08 10:10:44,urdh,mxcl,homebrew,72755a3275ea2be16bd531416f5bb21303f3a867,urdh,105257,"Checksum doesn't match for me either:
+
+```
+ssimon@lagrange ~> brew fetch aws-sns-cli
+==> Downloading http://sns-public-resources.s3.amazonaws.com/SimpleNotificationS
+######################################################################## 100,0%
+Downloaded to: /Library/Caches/Homebrew/aws-sns-cli-2012-03-27.zip
+MD5:  9084580a5201fbf3606dc7f274d95437
+SHA1: fcb6f651275b88f6225ed94f51568936ccba9e6d
+SHA256: a56a68f3de3c13a67c92d69d1896d79580b44322996cd153b3d9d2ca8fd771b3
+Warning: Formula reports different SHA1: b2cb8645887263c5550271be3b564e102c99943d
+```
+",,,,2012-09-08T22:10:44Z,2012-09-08T22:10:44Z
+1755808,0,"Should I add an audit check for use of md5?""",2012-08-23 01:51:11,adamv,mxcl,homebrew,544de35f2a53af998ad2b863fd6528d6ef4bb757,adamv,3566,"Should I add an audit check for use of md5?
+",,,,2012-08-23T13:51:11Z,2012-08-23T13:51:11Z
+1756416,0,"Eventually, but maybe not yet:  ``` $ git grep """"md5"""" -- Library/Formula | wc -l     1345 ```""",2012-08-23 03:36:02,jacknagel,mxcl,homebrew,544de35f2a53af998ad2b863fd6528d6ef4bb757,jacknagel,568243,"Eventually, but maybe not yet:
+
+```
+$ git grep ""md5"" -- Library/Formula | wc -l
+    1345
+```
+",,,,2012-08-23T15:36:02Z,2012-08-23T15:36:02Z
+1548158,0,"Did you intend to only whitelist the AbstractDownloadStrategy class? Pondering replacing with  ```ruby when Class then @strategy ```""",2012-07-06 04:29:10,mistydemeo,mxcl,homebrew,078cfc51586bc834418a86c423ec419935c4d302,mistydemeo,780485,"Did you intend to only whitelist the AbstractDownloadStrategy class? Pondering replacing with
+
+``` ruby
+when Class then @strategy
+```
+",Library/Homebrew/download_strategy.rb,34.0,573.0,2012-07-06T16:29:10Z,2012-07-06T16:29:10Z
+1290333,0,"`brew audit` uses this to audit patch URLs, which is broken now.""",2012-05-03 12:44:08,jacknagel,mxcl,homebrew,93f2244cf8ff6285c310354d1ade866cf3ef7d37,jacknagel,568243,"`brew audit` uses this to audit patch URLs, which is broken now.
+",Library/Homebrew/patches.rb,45.0,44.0,2012-05-04T00:44:08Z,2012-05-04T00:44:08Z
+625415,0,"i don't know ruby, what does this syntax error mean ? Library/Formula/chkrootkit.rb:32: syntax error, unexpected $end, expecting kEND """,2011-10-02 09:03:12,dacresni,mxcl,homebrew,9a12bfc1a69c97e59b633da3b21812c44e6e6302,dacresni,1167,"i don't know ruby, what does this syntax error mean ? Library/Formula/chkrootkit.rb:32: syntax error, unexpected $end, expecting kEND
+",,,,2011-10-02T21:03:12Z,2011-10-02T21:03:12Z
+625486,0,"Error: /Users/dacresni/code/homebrew/Library/Formula/chkrootkit.rb:32: syntax error, unexpected $end, expecting kEND Please report this bug: https://github.com/mxcl/homebrew/wiki/checklist-before-filing-a-new-issue /Users/dacresni/code/homebrew/Library/Hom""",2011-10-02 10:14:20,dacresni,mxcl,homebrew,9a12bfc1a69c97e59b633da3b21812c44e6e6302,dacresni,1167,"Error: /Users/dacresni/code/homebrew/Library/Formula/chkrootkit.rb:32:
+syntax error, unexpected $end, expecting kEND Please report this bug:
+https://github.com/mxcl/homebrew/wiki/checklist-before-filing-a-new-issue
+/Users/dacresni/code/homebrew/Library/Homebrew/formula.rb:435:in `require'
+/Users/dacresni/code/homebrew/Library/Homebrew/formula.rb:435:in`factory'
+/Users/dacresni/code/homebrew/Library/Homebrew/extend/ARGV.rb:12:in
+`formulae'
+/Users/dacresni/code/homebrew/Library/Homebrew/extend/ARGV.rb:12:in`map'
+/Users/dacresni/code/homebrew/Library/Homebrew/extend/ARGV.rb:12:in
+`formulae'
+/Users/dacresni/code/homebrew/Library/Homebrew/cmd/install.rb:12:in
+`install' /usr/local/bin/brew:82:in `send' /usr/local/bin/brew:82  <error:
+/Users/dacresni/code/homebrew/Library/Formula/chkrootkit.rb:32: syntax
+error, unexpected $end, expecting kENDPlease report this bug:
+https://github.com/mxcl/homebrew/wiki/checklist-before-filing-a-new-issue/Users/dacresni/code/homebrew/Library/Homebrew/formula.rb:435:in
+`require'/Users/dacresni/code/homebrew/Library/Homebrew/formula.rb:435:in
+`factory'/Users/dacresni/code/homebrew/Library/Homebrew/extend/ARGV.rb:12:in
+`formulae'/Users/dacresni/code/homebrew/Library/Homebrew/extend/ARGV.rb:12:in
+`map'/Users/dacresni/code/homebrew/Library/Homebrew/extend/ARGV.rb:12:in
+`formulae'/Users/dacresni/code/homebrew/Library/Homebrew/cmd/install.rb:12:in
+`install'/usr/local/bin/brew:82:in`send'/usr/local/bin/brew:82>
+
+On Sun, Oct 2, 2011 at 4:27 PM, Jack Nagel <
+reply@reply.github.com>wrote:
+
+> Possibly an existing (local) `chkrootkit` that had merge conflicts.
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/mxcl/homebrew/commit/9a12bfc1a69c97e59b633da3b21812c44e6e6302#commitcomment-625440
+## 
+
+""lalalalala! it's not broken because I can use it""
+
+http://linux.slashdot.org/comments.pl?sid=194281&threshold=1&commentsort=0&mode=thread&cid=15927703
+",,,,2011-10-02T22:14:20Z,2011-10-02T22:14:20Z
+625440,0,"Possibly an existing (local) `chkrootkit.rb` that had merge conflicts.""",2011-10-02 09:27:41,jacknagel,mxcl,homebrew,9a12bfc1a69c97e59b633da3b21812c44e6e6302,jacknagel,568243,"Possibly an existing (local) `chkrootkit.rb` that had merge conflicts.
+",,,,2011-10-02T21:27:41Z,2011-10-02T21:27:51Z
+983553,0,"The md5 doesn't seem to be consistent. It changes each time it is downloaded. Is sourceforge the only download url?""",2012-02-19 17:02:53,rosborn,mxcl,homebrew,73ee43fe97d0b6e2813b981514ae29c45ecc186e,rosborn,92023,"The md5 doesn't seem to be consistent. It changes each time it is downloaded. Is sourceforge the only download url?
+",,,,2012-02-20T04:02:53Z,2012-02-20T04:05:20Z
+983561,0,"The MD5 is not wrong. Zsh 4.3.16 was released a few hours ago. Give it time to propagate onto the mirrors.""",2012-02-19 17:07:06,sorin-ionescu,mxcl,homebrew,73ee43fe97d0b6e2813b981514ae29c45ecc186e,sorin-ionescu,93816,"The MD5 is not wrong. Zsh 4.3.16 was released a few hours ago. Give it time to propagate onto the mirrors.
+",,,,2012-02-20T04:07:06Z,2012-02-20T04:07:06Z
+984950,0,"$ curl -sO http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.16/zsh-4.3.16.tar.gz $ md5 zsh-4.3.16.tar.gz  MD5 (zsh-4.3.16.tar.gz) = 4335dfe1c5e54e489f55ae1860ee2209  $ brew upgrade ==> Upgrading zsh ==> Downloading http://sourceforge.net/project""",2012-02-19 22:15:50,kare,mxcl,homebrew,73ee43fe97d0b6e2813b981514ae29c45ecc186e,kare,68578,"$ curl -sO http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.16/zsh-4.3.16.tar.gz
+$ md5 zsh-4.3.16.tar.gz 
+MD5 (zsh-4.3.16.tar.gz) = 4335dfe1c5e54e489f55ae1860ee2209
+
+$ brew upgrade
+==> Upgrading zsh
+==> Downloading http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.16/zsh-4.3.16.tar.gz
+###### ################################################################## 100,0%
+
+Error: MD5 mismatch
+Expected: 95fc26c6f163178484860d31de98ac13
+Got: c5413636ec585de1e1e89f22f3786b8f
+Archive: /Users/kare/Library/Caches/Homebrew/zsh-4.3.16.tar.gz
+(To retry an incomplete download, remove the file above.)
+$ md5 /Users/kare/Library/Caches/Homebrew/zsh-4.3.16.tar.gz
+MD5 (/Users/kare/Library/Caches/Homebrew/zsh-4.3.16.tar.gz) = c5413636ec585de1e1e89f22f3786b8f
+",,,,2012-02-20T09:15:50Z,2012-02-20T09:15:50Z
+598401,0,"Oh forget that it'll be a PITA to add all the mirror data to the download strategy. I'll do it a round about way.""",2011-09-19 09:49:38,mxcl,mxcl,homebrew,efcdbd691e672b8fa0f57540e1f687b07b7d84f8,mxcl,58962,"Oh forget that it'll be a PITA to add all the mirror data to the download strategy. I'll do it a round about way.
+",Library/Homebrew/formula.rb,26.0,566.0,2011-09-19T21:49:38Z,2011-09-19T21:49:38Z
+414879,2,"Less likely to be blocked by paranoid firewall configurations.""",2011-06-04 13:29:55,Sharpie,mxcl,homebrew,ba8a12bdcaf80f13ee8840f2a9989f24194939fa,Sharpie,54181,"Less likely to be blocked by paranoid firewall configurations.
+",,,,2011-06-05T01:29:55Z,2011-06-05T01:29:55Z
+985441,2,"MD5 issues here too :(""",2012-02-20 01:23:41,ggustafsson,mxcl,homebrew,73ee43fe97d0b6e2813b981514ae29c45ecc186e,ggustafsson,595501,"MD5 issues here too :(
+",,,,2012-02-20T12:23:41Z,2012-02-20T12:23:41Z
+1826880,2,"You mean the tools were written for a future version of the API? That's weird. Also, why do you expect that SHA1 if everytime I download the zip its checksum is fcb6f651275b88f6225ed94f51568936ccba9e6d?  I couldn't ever install these tools without manually""",2012-09-08 09:19:17,cassianoleal,mxcl,homebrew,72755a3275ea2be16bd531416f5bb21303f3a867,c10l,399431,"You mean the tools were written for a future version of the API? That's weird. Also, why do you expect that SHA1 if everytime I download the zip its checksum is fcb6f651275b88f6225ed94f51568936ccba9e6d?
+
+I couldn't ever install these tools without manually altering the SHA1.
+
+Are you sure about that checksum? Even though it sound unlikely, maybe Amazon distributes different zip files depending on region or some other criteria?
+",,,,2012-09-08T21:19:17Z,2012-09-08T21:19:17Z

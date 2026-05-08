@@ -1,0 +1,12 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+487154,1,"Yes, I agree. Thanks for pointing that out.  Changed in: https://github.com/harvesthq/chosen/commit/a3c9ea9a299bae93c5d7a4647cde6a307001b392""",2011-07-20 02:45:58,pfiller,harvesthq,chosen,7f6874bfd02e19a0f733fc753b47394f1ae4b5ca,pfiller,545995,"Yes, I agree. Thanks for pointing that out.
+
+Changed in:
+https://github.com/harvesthq/chosen/commit/a3c9ea9a299bae93c5d7a4647cde6a307001b392
+",2011-07-20T14:45:58Z,2011-07-20T14:45:58Z
+3628890,2,"Its already happening. Doesn`t works! :(""",2013-07-13 12:22:48,gporpino,harvesthq,chosen,b028f9e98adfb6235241d2d13773c265ef713321,oporpino,1083491,"Its already happening. Doesn`t works! :(
+",2013-07-14T00:22:48Z,2013-07-14T00:22:48Z
+493908,1,"Haha - I'm going to need to hire a proofreader for my commit messages.""",2011-07-24 09:42:09,pfiller,harvesthq,chosen,b3da848e6036b474b3714f6d25abf2151681898c,pfiller,545995,"Haha - I'm going to need to hire a proofreader for my commit messages.
+",2011-07-24T21:42:09Z,2011-07-24T21:42:09Z
+487872,1,"Nice! I'll check this out when I get home :)""",2011-07-20 09:02:42,bdickason,harvesthq,chosen,db9fd248895f7c517cb03a3928611ad015264a51,bdickason,202162,"Nice! I'll check this out when I get home :)
+",2011-07-20T21:02:42Z,2011-07-20T21:02:42Z

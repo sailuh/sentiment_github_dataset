@@ -1,0 +1,16 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1182869,1,":+1: I prefer this wrapping syntax now too. :)""",2012-04-06 08:50:27,robhudson,django-debug-toolbar,django-debug-toolbar,77d108a820590a5e5e04d9370e914ff8dbcf1ae1,robhudson,1106,":+1: I prefer this wrapping syntax now too. :)
+",2012-04-06T20:50:27Z,2012-04-06T20:50:27Z
+2577591,1,"Readme says Django>=1.2 — which is it? :)""",2013-02-07 00:54:05,gthb,django-debug-toolbar,django-debug-toolbar,971334eb38561d4721788e7d1b0fb9d7cab3bbf7,gthb,153580,"Readme says Django>=1.2 — which is it? :)
+",2013-02-07T11:54:05Z,2013-02-07T11:54:05Z
+1027712,1,"Gah, didn't notice that :)""",2012-02-29 08:26:05,dcramer,django-debug-toolbar,django-debug-toolbar,4d26b991c381b9316d6b9b033e43cdb7311738ab,dcramer,23610,"Gah, didn't notice that :)
+",2012-02-29T19:26:05Z,2012-02-29T19:26:05Z
+873620,1,"God I am awful at this :)""",2012-01-16 22:42:45,dcramer,django-debug-toolbar,django-debug-toolbar,270a38d4a8cfe0a911f03d27287d867decbf4e84,dcramer,23610,"God I am awful at this :)
+",2012-01-17T09:42:45Z,2012-01-17T09:42:45Z
+351581,1,"You're welcome. I was just about to remove this completely as I found that in fact it was already fixed. :) Cool you chose it instead!""",2011-04-20 19:09:23,thinred,django-debug-toolbar,django-debug-toolbar,700de5a514cebe2ad5b865401b05480fea469f39,thinred,502560,"You're welcome. I was just about to remove this completely as I found that in fact it was already fixed. :)
+Cool you chose it instead!
+",2011-04-21T07:09:23Z,2011-04-21T07:09:23Z
+43374,1,"Note: This also fixes another issue in the issues list. Thanks. :)""",2010-01-22 05:24:05,robhudson,django-debug-toolbar,django-debug-toolbar,83b312ea1a3990fb59d2e6e9b2e5c146889cc0b0,robhudson,1106,"Note: This also fixes another issue in the issues list. Thanks. :)
+",2010-01-22T16:24:05Z,2010-01-22T16:24:05Z
+2729204,1,":heart: """,2013-03-03 01:15:37,peritus,django-debug-toolbar,django-debug-toolbar,6ad6d3ada35ea86722b0be6a60c03f542bc1d80c,peritus,11022,":heart: 
+",2013-03-03T12:15:37Z,2013-03-03T12:15:37Z

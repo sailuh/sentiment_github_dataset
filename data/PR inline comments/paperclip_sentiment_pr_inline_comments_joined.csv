@@ -1,0 +1,147 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+485288,2,"sorry, i'm not at work anymore. can check 32bit earliest tomorrow. :-/""",2012-02-24 04:17:31,mike-burns,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/742#discussion_r485288,2012-02-24T15:17:31Z,2012-02-24T15:17:31Z,mike-burns,CONTRIBUTOR,lib/paperclip.rb,,102.0,,,4,"@@ -99,6 +99,7 @@ def run(cmd, arguments = """", local_options = {})
+       command_path = options[:command_path] || options[:image_magick_path]
+       Cocaine::CommandLine.path = ( Cocaine::CommandLine.path ? [Cocaine::CommandLine.path, command_path ].flatten : command_path )
+       local_options = local_options.merge(:logger => logger) if logging? && (options[:log_command] || local_options[:log_command])
++      local_options = local_options.merge(:swallow_stderr => options[:swallow_stderr]) if !local_options[:swallow_stderr] && !options[:swallow_stderr].nil?","This is a very long line with an `if` modifier, which is basically impossible to read. Can you split this down more?
+",58671ebfffe3b03177d9ad248737932441fe4016
+330960,2,"Yep, my bad, DonTomika =/""",2012-01-05 09:33:32,mike-burns,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/688#discussion_r330960,2012-01-05T20:33:32Z,2012-01-06T18:18:49Z,mike-burns,CONTRIBUTOR,lib/paperclip/attachment.rb,,,,,1,"@@ -420,18 +420,21 @@ def post_process(*style_args) #:nodoc:
+     end
+ 
+     def post_process_styles(*style_args) #:nodoc:
+-      styles.each do |name, style|
+-        begin
+-          if style_args.empty? || style_args.include?(name)
+-            raise RuntimeError.new(""Style #{name} has no processors defined."") if style.processors.blank?
+-            @queued_for_write[name] = style.processors.inject(@queued_for_write[:original]) do |file, processor|
+-              Paperclip.processor(processor).make(file, style.processor_options, self)
+-            end
+-          end
+-        rescue PaperclipError => e
+-          log(""An error was received while processing: #{e.inspect}"")
+-          (@errors[:processing] ||= []) << e.message if @options[:whiny]
++      post_process_style(:original, styles[:original]) if styles.include?(:original) && (style_args.empty? || style_args.include?(:original))
++      styles.reject{ |name, style| name == :original }.each do |name, style|
++        post_process_style(name, style) if style_args.empty? || style_args.include?(name)","The `style_args.empty? || style_args.include?(name)` conditional isn't very expressive. Can you move it into a separate, private method?
+",7db1aafa5af733015113f115e0b8b360e672b0e4
+997605,2,"@phene Ouch!  @mschulkind and @phene, I am very willing to break backward compatibility. @mschulkind nailed it when he said """"I fear there is code out there relying on this"""". Given that someone will complain, which users do we not want to complain? What ar""",2012-06-16 00:44:22,mike-burns,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/914#discussion_r997605,2012-06-16T12:44:22Z,2012-06-16T12:44:22Z,mike-burns,CONTRIBUTOR,test/attachment_test.rb,,1093.0,,,4,"@@ -1090,12 +1090,6 @@ def do_after_all; end
+       assert_equal now.to_i, @dummy.avatar.updated_at.to_i
+     end
+ 
+-    should ""return nil when reloaded and sent #avatar_updated_at"" do","@phene Ouch!
+
+@mschulkind and @phene, I am very willing to break backward compatibility. @mschulkind nailed it when he said ""I fear there is code out there relying on this"". Given that someone will complain, which users do we not want to complain? What are valid uses of `#reprocess!` that we want to make sure continue to work, and which should we toss? And of those valid uses, is there a better solution than `#reprocess!`?
+
+(While we do use Paperclip, we do not use all the features of it in every app. Not sure when I last used `#reprocess!`.)
+",29c35ed5fe679c3f983f17867c0998ad4e2167d0
+363284,0,"I considered it, but currently s3 only offers one encryption option so a bool was enough to get it done.  However I can see them adding other options in the future in which case passing a symbol that indicates type could make sense.  Lately I've been tryi""",2012-01-18 04:45:54,Sporky023,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/707#discussion_r363284,2012-01-18T15:45:54Z,2012-01-19T00:51:25Z,Sporky023,CONTRIBUTOR,lib/paperclip/storage/s3.rb,,,,,1,"@@ -281,6 +283,7 @@ def flush_writes #:nodoc:
+               :acl => acl
+             }
+             write_options[:metadata] = @s3_metadata unless @s3_metadata.empty?
++            write_options[:server_side_encryption] = :aes256 if @s3_encrypted","I considered it, but currently s3 only offers one encryption option so a bool was enough to get it done.  However I can see them adding other options in the future in which case passing a symbol that indicates type could make sense.  Lately I've been trying to not engineer things for anticipated requirements, but I might be too strict with this.
+
+What do you think, given that reasoning?
+",65e0338f3ed07ddf95958ce71265a0ba76e9c1c6
+300291,0,"Too late now but you didn't meant to return `nil` here. Perhaps it should have been `""""""""`?""",2011-12-16 08:49:42,mike-burns,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/676#discussion_r300291,2011-12-16T19:49:42Z,2011-12-16T19:49:42Z,mike-burns,CONTRIBUTOR,lib/paperclip/interpolations.rb,,159.0,,,12,"@@ -150,10 +150,13 @@ def hash attachment=nil, style_name=nil
+     # Returns the id of the instance in a split path form. e.g. returns
+     # 000/001/234 for an id of 1234.
+     def id_partition attachment, style_name
+-      if (id = attachment.instance.id).is_a?(Integer)
++      case id = attachment.instance.id
++      when Integer
+         (""%09d"" % id).scan(/\d{3}/).join(""/"")
+-      else
++      when String
+         id.scan(/.{3}/).first(3).join(""/"")
++      else
++        nil","Too late now but you didn't meant to return `nil` here. Perhaps it should have been `""""`?
+",ac822448489df3aa97ce896f3023d874ab36f12c
+1026318,0,"This line is missing in the latest version, causing `uploaded_file` always nil. Is this intended?""",2012-06-21 02:23:58,godfat,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/624#discussion_r1026318,2012-06-21T14:23:58Z,2012-06-21T14:23:58Z,godfat,NONE,lib/paperclip/attachment.rb,,98.0,,,5,"@@ -94,6 +94,8 @@ def assign uploaded_file
+         uploaded_filename = uploaded_file.original_filename
+         uploaded_file = uploaded_file.to_file(:original)
+         close_uploaded_file = uploaded_file.respond_to?(:close)
++      else
++        instance_write(:uploaded_file, uploaded_file) if uploaded_file","This line is missing in the latest version, causing `uploaded_file` always nil.
+Is this intended?
+",58a17e64240e730871249c513a8f0291a12e124a
+1893095,0,"Can you refactor this to only look for orientation when we need it? As it is now, it'll be parsing out orientation always.""",2012-10-19 06:09:56,djcp,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/1048#discussion_r1893095,2012-10-19T18:09:56Z,2012-10-20T02:46:30Z,djcp,CONTRIBUTOR,lib/paperclip/geometry.rb,,19.0,,,8,"@@ -13,14 +13,21 @@ def initialize width = nil, height = nil, modifier = nil
+ 
+     # Uses ImageMagick to determing the dimensions of a file, passed in as either a
+     # File or path.
++    # When auto_orient is set to true, it considers EXIF Orientation Tag to detect rotated image.
+     # NOTE: (race cond) Do not reassign the 'file' variable inside this method as it is likely to be
+     # a Tempfile object, which would be eligible for file deletion when no longer referenced.
+-    def self.from_file file
++    def self.from_file file, auto_orient = true","Can you refactor this to only look for orientation when we need it? As it is now, it'll be parsing out orientation always.
+",97d65827957544fecfb344db711c0ee45c319582
+365521,1,"Good point:  given that aws-sdk takes a type, paperclip should take a type.  [65e0338](https://github.com/Sporky023/paperclip/commit/65e0338f3ed07ddf95958ce71265a0ba76e9c1c6) changes the format to:     :s3_server_side_encryption => :aes256""",2012-01-18 13:54:08,Sporky023,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/707#discussion_r365521,2012-01-19T00:54:08Z,2012-01-19T00:55:04Z,Sporky023,CONTRIBUTOR,lib/paperclip/storage/s3.rb,,,,,1,"@@ -281,6 +283,7 @@ def flush_writes #:nodoc:
+               :acl => acl
+             }
+             write_options[:metadata] = @s3_metadata unless @s3_metadata.empty?
++            write_options[:server_side_encryption] = :aes256 if @s3_encrypted","Good point:  given that aws-sdk takes a type, paperclip should take a type.
+
+[65e0338](https://github.com/Sporky023/paperclip/commit/65e0338f3ed07ddf95958ce71265a0ba76e9c1c6) changes the format to:
+    :s3_server_side_encryption => :aes256
+",65e0338f3ed07ddf95958ce71265a0ba76e9c1c6
+1128155,0,"Hmm ... but on the second though, I think I'll make the `copy.avatar` to have a `@file` assigned to it first, and assert that `copy.avatar.file?` Then, I'd assign original.avatar to it, and `assert !copy.avatar.file?`""",2012-07-09 14:41:29,sikachu,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/950#discussion_r1128155,2012-07-10T02:41:29Z,2012-07-10T16:37:46Z,sikachu,CONTRIBUTOR,test/integration_test.rb,,674.0,,,1,"@@ -640,4 +640,21 @@ def s3_headers_for attachment, style
+       end
+     end
+   end
++
++  context ""Copying attachment between models"" do
++    setup do
++      rebuild_model
++      @file = File.new(fixture_file(""5k.png""), 'rb')
++    end
++
++    teardown { @file.close }
++
++    should ""should succeed when attachment is empty"" do
++      original = Dummy.create!
++      copy = Dummy.new
++      copy.avatar = original.avatar
++      copy.save
++      assert !copy.avatar.present?","Hmm ... but on the second though, I think I'll make the `copy.avatar` to have a `@file` assigned to it first, and assert that `copy.avatar.file?` Then, I'd assign original.avatar to it, and `assert !copy.avatar.file?`
+",493604ccfce7fcd997a25c5c2b509184979d6b3b
+997154,2,"I struggled a bit with this one, but I think it's reasonable to expect interpolation keys, in a path, to be separated by non-word characters.""",2012-06-15 12:46:12,phene,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/916#discussion_r997154,2012-06-16T00:46:12Z,2012-06-16T00:46:12Z,phene,CONTRIBUTOR,test/attachment_test.rb,,212.0,,,7,"@@ -208,8 +208,8 @@ class AttachmentTest < Test::Unit::TestCase
+ 
+     teardown { @file.close }
+ 
+-    should ""make sure that they are interpolated correctly"" do
+-      assert_equal ""1024.omg/1024-bbq/1024what/000/001/024.wtf"", @dummy.avatar.path
++    should ""make sure that they are interpolated correctly as long as non-word characters separate them"" do
++      assert_equal ""1024.omg/1024-bbq/:idwhat/000/001/024.wtf"", @dummy.avatar.path","I struggled a bit with this one, but I think it's reasonable to expect interpolation keys, in a path, to be separated by non-word characters.
+",5b6ef4791141297a6dd5de0b1195bf1a5962affe
+415860,0,"    assert Paperclip::AttachmentOptions.new({}).respond_to(:[])  Bonus, you get to use `(:[])`, which looks like a monkey.""",2012-02-03 10:46:59,mike-burns,thoughtbot,paperclip,,https://github.com/thoughtbot/paperclip/pull/729#discussion_r415860,2012-02-03T21:46:59Z,2012-02-03T22:08:26Z,mike-burns,CONTRIBUTOR,test/attachment_options_test.rb,,,,,1,"@@ -0,0 +1,45 @@
++require './test/helper'
++
++class AttachmentOptionsTest < Test::Unit::TestCase
++  should ""exist"" do
++    Paperclip::AttachmentOptions
++  end
++
++  should ""be a Hash"" do
++    attachment_options = Paperclip::AttachmentOptions.new({})
++    assert attachment_options.is_a?(Hash), ""attachment_options is not a Hash""
++  end
++
++  should ""add a default empty validations"" do
++    options = {:arbi => :trary}
++    expected = {:validations => []}.merge(options)
++    actual = Paperclip::AttachmentOptions.new(options).to_hash
++    assert_equal expected, actual
++  end
++
++  should ""not override validations if passed to initializer"" do
++    options = {:validations => ""something""}
++    attachment_options = Paperclip::AttachmentOptions.new(options)
++    assert_equal ""something"", attachment_options[:validations]
++  end
++
++  should ""respond to []"" do
++    Paperclip::AttachmentOptions.new({})[:foo]","```
+assert Paperclip::AttachmentOptions.new({}).respond_to(:[])
+```
+
+Bonus, you get to use `(:[])`, which looks like a monkey.
+",9eda1bbec7704f28f4c54a840de64c63adda43f9

@@ -1,0 +1,104 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+915555,1,"Haha, yeah, edit your own repo! ;)  So it looks like btn is a CSS class, which should go in a class attribute, not title, right?  On Mon, Jan 30, 2012 at 12:00 PM, Anil Dash <reply@reply.github.com> wrote: > Oh hah, I was just testing out editing that ther""",2012-01-30 09:20:32,ginatrapani,ginatrapani,ThinkUp,e01021ab1131536554b3479fc089c375be7efbe8,ginatrapani,60632,"Haha, yeah, edit your own repo! ;)
+
+So it looks like btn is a CSS class, which should go in a class
+attribute, not title, right?
+
+On Mon, Jan 30, 2012 at 12:00 PM, Anil Dash
+reply@reply.github.com
+wrote:
+
+> Oh hah, I was just testing out editing that there, didn't realize it was
+> actually sending it to you. It should be in both previous and next -- it
+> makes buttons, see ""Buttons"" under
+> http://twitter.github.com/bootstrap/#forms
+> 
+> On Monday, January 30, 2012, Gina Trapani wrote:
+> 
+> > What does the btn in the title do? And how come not in previous link?
+> > ---
+> > 
+> > Reply to this email directly or view it on GitHub:
+> > 
+> > https://github.com/ginatrapani/ThinkUp/commit/e01021ab1131536554b3479fc089c375be7efbe8#commitcomment-915313
+> ## 
+> ---
+> 
+> about: http://www.anildash.com/
+> im/twitter: anildash phone: +1 646 833-8659
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> https://github.com/ginatrapani/ThinkUp/commit/e01021ab1131536554b3479fc089c375be7efbe8#commitcomment-915463
+## 
+
+http://ginatrapani.org
+",2012-01-30T20:20:32Z,2012-01-30T20:20:32Z
+145341,0,"Won't he be notified of my comments here? He's the author of the commit after all.""",2010-09-11 11:14:23,gboudreau,ginatrapani,ThinkUp,1dafe0655ad8e9aaab1bddc7390327f020907eb7,gboudreau,370329,"Won't he be notified of my comments here? He's the author of the commit after all.
+",2010-09-11T23:14:23Z,2010-09-11T23:14:23Z
+131768,0,"Not really related to this particular commit, but why do you use DIRECTORY_SEPARATOR (even in it's shorter DS form)? It seems unnecessary, as using / will work on all OS, Windows included. I think your code would look better, and be easier to read, if you """,2010-08-19 14:09:20,gboudreau,ginatrapani,ThinkUp,18e55f605cf163b9f27ae9cbfb021b9f2197b828,gboudreau,370329,"Not really related to this particular commit, but why do you use DIRECTORY_SEPARATOR (even in it's shorter DS form)?
+It seems unnecessary, as using / will work on all OS, Windows included.
+I think your code would look better, and be easier to read, if you used / instead of the much heavier ' . DS . ' syntax....
+
+```
+'Smarty' => THINKUP_ROOT_PATH . 'extlib' . DS . 'Smarty-2.6.26' . DS .'libs' . DS . 'Smarty.class.php'
+```
+
+vs
+    'Smarty' => THINKUP_ROOT_PATH . 'extlib/Smarty-2.6.26/libs/Smarty.class.php'
+",2010-08-20T02:09:20Z,2010-08-20T02:09:20Z
+76240,0,"Mark: i just pushed my efforts for today""",2010-05-07 07:31:48,CVi,ginatrapani,ThinkUp,59c141f4e4795f4c1268b937206d8e8f5d3ed1d5,CVi,186745,"Mark: i just pushed my efforts for today
+",2010-05-07T19:31:48Z,2010-05-07T19:31:48Z
+592107,2,"Sorry, I didn't know to update this file :( I will make sure to do it next time.""",2011-09-15 08:43:21,randi2kewl,ginatrapani,ThinkUp,d692b59c007e28e9e95de270e130c7b3474c2ae1,randi2kewl,392859,"Sorry, I didn't know to update this file :( I will make sure to do it next time.
+",2011-09-15T20:43:21Z,2011-09-15T20:43:21Z
+211661,1,"Great, thanks so much, Gina!  Will push out an update with the last (?) tweaks shortly. I have a couple of questions/comments on your edits.  > TestOfTwitterCrawler: Removed explicit table truncation, FixtureBuilder::destroy does that for us  I was wo""",2010-12-07 04:32:02,amygdala,ginatrapani,ThinkUp,ff796555ed5ecbe94187fc0d19194b4a69b590a1,amygdala,115093,"Great, thanks so much, Gina!  Will push out an update with the last (?) tweaks shortly.
+I have a couple of questions/comments on your edits.
+
+> TestOfTwitterCrawler: Removed explicit table truncation, FixtureBuilder::destroy does that for us
+
+I was wondering about this.  The reason I added it was that the favorites content is not built explicitly via the FixtureBuilder, but was added via the crawler method.  So I wasn't sure whether it would get cleaned out between tests.
+
+> TwitterCrawler: Removed try/catch, the APIAccessor object should handle any parsing exceptions
+
+I am wondering if perhaps all public crawler methods (called from TwitterPlugin) should have try/catch clauses wrapping their activity, and return a status. That way if something unexpected goes wrong with one piece, the rest of the crawler run can continue. (we've obviated the need to deal with API-related errors, but there could be other issues).
+",2010-12-07T15:32:02Z,2010-12-07T15:32:02Z
+202171,1,"Great! No need to hold off, go ahead and work on this branch and we'll rebase later. Thanks Amy!""",2010-11-24 06:19:56,ginatrapani,ginatrapani,ThinkUp,01f02d9495ba716c485348a37c78d97549375411,ginatrapani,60632,"Great! No need to hold off, go ahead and work on this branch and we'll rebase later. Thanks Amy!
+",2010-11-24T17:19:56Z,2010-11-24T17:19:56Z
+592266,2,"I can start on that right now and make that the next push. I realized that I was trying to do it all at once and I need to break it up. Something that should have taken me a day ended up taking a month :(  This is the order of how I was thinking of doing""",2011-09-15 10:11:11,randi2kewl,ginatrapani,ThinkUp,d692b59c007e28e9e95de270e130c7b3474c2ae1,randi2kewl,392859,"I can start on that right now and make that the next push. I realized that I was trying to do it all at once and I need to break it up. Something that should have taken me a day ended up taking a month :(
+
+This is the order of how I was thinking of doing it in:
+1. Check for links that are X days from today's date first for all of the expansion classes (ie flckr.bitly, generics..etc) then use remaining number of links on num 3(maybe?).
+2. Click count rechecks(I have code written to pull X amount of links from the database, within Y number of days starting with the counter from the meta table, every Z number of hours to recheck for click counts. This is where I was getting stuck. Trying to pick apart existing code to figure out how it is populating the instance table.)
+3. Check if there is an expanded_url that is a bitly link that needs to be expanded. (For that t.co problem and recursive shortening, but I don't know where to put it? I was thinking it could create another row with the bitly link as the shortened link.)
+4. Check to see if it is an image (or video since a bunch of people were talking about wanting embedded video). Was thinking I could do a check if it ends in png, gif, jpg etc... I was going to see how or if you wanted to touch on the video stuff. That's further down the road though.
+
+Did I forget anything? Want me to change the order or remove something?
+",2011-09-15T22:11:11Z,2011-09-15T22:11:54Z
+235043,0,"The security listener factories are registered through the config because the way used here was not available in 2.0. But this means that each bundle providing an integration has to ask the end-user to register the factory, which is not very user-friendly""",2011-01-07 11:47:35,ginatrapani,ginatrapani,ThinkUp,24658205860a323987c416ab75207e3e0b82816a,ginatrapani,60632,"No, this is just a temporary setting to get through the installation process without a Smarty error. After this, the timezone is read from the config file.
+",2011-01-07T22:47:35Z,2011-01-07T22:47:35Z
+552993,0,"Hi Gina,  `oauth_access_token-client_id=12345-client_secret=dummy_secret-redirect_uri=http%3A%2F%2Fmytestserver%2Fmythinkup%2Faccount%2F%3Fp%3Dfacebook-state=testiferricous-csrf-token-code=thisisatestfauxcode`  The length of this file name is **testife""",2011-08-25 18:01:28,rgroves,ginatrapani,ThinkUp,fef901b9f5c998932757afb93c68d70054f23f58,rgroves,891249,"Hi Gina,
+
+`oauth_access_token-client_id=12345-client_secret=dummy_secret-redirect_uri=http%3A%2F%2Fmytestserver%2Fmythinkup%2Faccount%2F%3Fp%3Dfacebook-state=testiferricous-csrf-token-code=thisisatestfauxcode`
+
+The length of this file name is **testiferocious!** The path ends up too long on my Windows box and the file will not save. Is it possible to use a shorter name for that file?
+
+`error: git checkout-index: unable to create file webapp/plugins/facebook/tests/testdata/oauth_access_token-client_id
+Fp%3Dfacebook-state=testiferricous-csrf-token-code=thisisatestfauxcode (No such file or directory)`
+",2011-08-26T06:01:28Z,2011-08-26T06:01:28Z
+537180,0,"Gina, I was looking at this change because it triggered a merge conflict in my SiteStreams branch.  I think this might have a typo -- $pw is set, but $pwd is undefined and not set.  I'm guessing the line should use:       isOwnerAuthorized($username, $pw) """,2011-08-17 06:39:04,amygdala,ginatrapani,ThinkUp,20a2d88272f394d0f3fa9584ec463c8d83b7925f,amygdala,115093,"Gina, I was looking at this change because it triggered a merge conflict in my SiteStreams branch.  I think this might have a typo -- $pw is set, but $pwd is undefined and not set.  I'm guessing the line should use:
+
+```
+ isOwnerAuthorized($username, $pw)
+```
+
+instead?
+@AaronKalair , @ginatrapani
+",2011-08-17T18:39:04Z,2011-08-17T18:39:04Z
+537226,0,"There turns out to be one more issue here -- this deleted line defined $owner, which is used below.  So seems that it needs to remain.  It's used by       Session::completeLogin($owner)   @AaronKalair , @ginatrapani""",2011-08-17 06:54:56,amygdala,ginatrapani,ThinkUp,20a2d88272f394d0f3fa9584ec463c8d83b7925f,amygdala,115093,"There turns out to be one more issue here -- this deleted line defined $owner, which is used below.  So seems that it needs to remain.  It's used by 
+
+```
+Session::completeLogin($owner)
+```
+
+@AaronKalair , @ginatrapani
+",2011-08-17T18:54:56Z,2011-08-17T18:54:56Z

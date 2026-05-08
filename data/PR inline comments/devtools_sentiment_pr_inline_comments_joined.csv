@@ -1,0 +1,61 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+1307414,0,"I copied this function directly from the inside of `base::loadNamespace()` in R 2.15.1. I don't know if it's correct for other versions of R.""",2012-08-04 04:53:15,wch,hadley,devtools,,https://github.com/r-lib/devtools/pull/126#discussion_r1307414,2012-08-04T16:53:15Z,2012-08-10T23:26:41Z,wch,MEMBER,R/package-env.r,,,,,1,"@@ -89,3 +74,31 @@ clear_classes <- function(pkg = NULL) {
+ base_env <- function(pkg) {
+   new.env(parent = emptyenv())
+ }
++
++
++# Took this from base::loadNamespace()
++makeNamespace <- function(name, version = NULL, lib = NULL) {","I copied this function directly from the inside of `base::loadNamespace()` in R 2.15.1. I don't know if it's correct for other versions of R.
+",e2b105d8abd2373af184401507ff2537fae6080d
+1459143,2,"Using regular expressions to do this seems really inelegant, but I don't know a better way""",2012-08-24 16:11:38,hadley,hadley,devtools,,https://github.com/r-lib/devtools/pull/149#discussion_r1459143,2012-08-25T04:11:38Z,2012-08-25T04:11:38Z,hadley,MEMBER,R/decompress.r,,15.0,,,27,"@@ -1,23 +1,28 @@
+ decompress <- function(src, target = tempdir()) {
+-  filename <- basename(src)
+   
+-  if (grepl(""\\.zip$"", filename)) {
+-    expand <- unzip
+-    outdir <- function() {
+-      basename(as.character(expand(src, list = TRUE)$Name[1]))
+-    }
+-  } else if (grepl(""\\.(tar\\.gz|tgz)$"", filename)) {
+-    expand <- function(...) untar(..., compressed = ""gzip"")
+-    outdir <- function() expand(src, list = TRUE)[1]
+-  } else if (grepl(""\\.(tar\\.bz2|tbz)$"", filename)) {
+-    expand <- function(...) untar(..., compressed = ""bzip2"")
+-    outdir <- function() expand(src, list = TRUE)[1]
++  if (grepl(""\\.zip$"", src)) {
++    unzip(src, exdir = target)
++    outdir <- getdir(as.character(unzip(src, list = TRUE)$Name[1]))
++
++  } else if (grepl(""\\.(tar\\.gz|tgz)$"", src)) {
++    untar(src, exdir = target, compressed = ""gzip"")
++    outdir <- getdir(untar(src, compressed = ""gzip"", list = TRUE)[1])
++
++  } else if (grepl(""\\.(tar\\.bz2|tbz)$"", src)) {
++    untar(src, exdir = target, compressed = ""bzip2"")
++    outdir <- getdir(untar(src, compressed = ""bzip2"", list = TRUE)[1])
++
+   } else {","Using regular expressions to do this seems really inelegant, but I don't know a better way
+",92da6a5ed9d9ce904ad49ccf54898e7550a7dbe4
+1353561,0,"Should I also take out `@keywords internal`?""",2012-08-10 05:24:20,wch,hadley,devtools,,https://github.com/r-lib/devtools/pull/126#discussion_r1353561,2012-08-10T17:24:20Z,2012-08-10T23:26:42Z,wch,MEMBER,R/package-env.r,,,,,1,"@@ -69,18 +81,36 @@ clear_pkg_env <- function(pkg = NULL) {
+   }  
+ }
+ 
+-#' Generate name of package development environment
++#' Generate name of package namespace environment
++#' Contains all objects
++#' @keywords internal","Should I also take out `@keywords internal`?
+",e2b105d8abd2373af184401507ff2537fae6080d
+5279436,0,"For consistency with the rest of the code base, I'd suggest using:  ``` getRversion() >= '3.0.0' ```""",2013-07-18 09:11:42,wch,hadley,devtools,,https://github.com/r-lib/devtools/pull/331#discussion_r5279436,2013-07-18T21:11:42Z,2013-07-18T21:11:42Z,wch,MEMBER,R/source.r,,25.0,,,7,"@@ -21,9 +21,17 @@ source_one <- function(file, envir = parent.frame()) {
+   lines <- readLines(file, warn = FALSE)
+   srcfile <- srcfilecopy(file, lines, file.info(file)[1, ""mtime""],
+                          isFile = TRUE)
+-  exprs <- parse(text = lines, n = -1,
+-                 srcfile = srcfile, keep.source = TRUE)
+ 
++  if(R.version$major >= ""3""){","For consistency with the rest of the code base, I'd suggest using:
+
+```
+getRversion() >= '3.0.0'
+```
+",357178514c121332c18924ee28b2afcc518d81dd

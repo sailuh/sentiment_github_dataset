@@ -1,0 +1,38 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3384464,0,"Introducing git_config_level_t is a nice idea for type safety, however, this limits flexibility (and breaks some third-party code). E.g. TortoiseGit uses an extra level to maintain an extra config-file on top of the normal ones (compare https://github.com""",2013-06-08 17:10:32,csware,libgit2,libgit2,16adc9fade52b49e2bc13cb52407cc0025a93c8b,csware,428133,"Introducing git_config_level_t is a nice idea for type safety, however, this limits flexibility (and breaks some third-party code).
+E.g. TortoiseGit uses an extra level to maintain an extra config-file on top of the normal ones (compare https://github.com/TortoiseGit/TortoiseGit/commit/4d603ef8eec41c59077eff6046a79a32707e9404, https://github.com/TortoiseGit/TortoiseGit/blob/4d603ef8eec41c59077eff6046a79a32707e9404/src/TortoiseProc/ProjectProperties.cpp#L114). Now, this isn't possible any more w/o patching libgit2.
+@vmg
+",2013-06-09T05:10:32Z,2013-06-09T05:10:32Z
+632840,1,"i lol'd""",2011-10-05 08:26:03,vmg,libgit2,libgit2,c060854ed5b42b76eda40e290851a315dbbaea04,vmg,42793,"i lol'd
+",2011-10-05T20:26:03Z,2011-10-05T20:26:03Z
+438117,0,"No, it is not. It's low level, but not internal nor expected to disappear or change anytime soon.""",2011-06-19 07:16:55,vmg,libgit2,libgit2,37172582ec7ff9cb47c43c5d5b2334bf8c547569,vmg,42793,"No, it is not. It's low level, but not internal nor expected to disappear or change anytime soon.
+",2011-06-19T19:16:55Z,2011-06-19T19:16:55Z
+1303064,2,"This breaks php-git build :(""",2012-05-07 12:42:48,juzna,libgit2,libgit2,3fbcac89c47cb66ea193f66da6d93d1c36ed0f5e,juzna,227416,"This breaks php-git build :(
+",2012-05-08T00:42:48Z,2012-05-08T00:42:48Z
+2378208,2,"What the fuck. We ported this from a BSD...""",2013-01-03 03:00:14,vmg,libgit2,libgit2,0db4cd04ef263d473219152df996b1cb2c4f52aa,vmg,42793,"What the fuck. We ported this from a BSD...
+",2013-01-03T14:00:14Z,2013-01-03T14:00:14Z
+2378352,2,"What's doubly strange is I could swear I noticed this and fixed it. Is it possibly idling in a PR? Hmm...""",2013-01-03 03:34:22,arrbee,libgit2,libgit2,0db4cd04ef263d473219152df996b1cb2c4f52aa,arrbee,103350,"What's doubly strange is I could swear I noticed this and fixed it. Is it possibly idling in a PR? Hmm...
+",2013-01-03T14:34:22Z,2013-01-03T14:34:22Z
+1028634,2,"Sorry about the crappy docs for this. I've rewritten them and I'll push the change later today or tomorrow.""",2012-02-29 11:53:54,arrbee,libgit2,libgit2,450b40cab39c786bf67e7491755e7d0b3a4dc3ba,arrbee,103350,"Sorry about the crappy docs for this. I've rewritten them and I'll push the change later today or tomorrow.
+",2012-02-29T22:53:54Z,2012-02-29T22:53:54Z
+474785,2,"No need to cast void * to other pointer type. Just declare ksearch as const pointer too.  It seems the code contains a lot of mess with type casting. :(""",2011-07-12 22:36:38,kiryl,libgit2,libgit2,761aa2aa35d5427b8b22d342ef2116bc22252648,kiryl,588661,"No need to cast void \* to other pointer type. Just declare ksearch as const pointer too.
+
+It seems the code contains a lot of mess with type casting. :(
+",2011-07-13T10:36:38Z,2011-07-13T10:36:38Z
+474879,2,"So we can't put file larger than 4GiB in index? Sad.""",2011-07-12 23:56:47,kiryl,libgit2,libgit2,3dd26d1e36bec9753bee6c8a8f1311d7a0c47972,kiryl,588661,"So we can't put file larger than 4GiB in index? Sad.
+",2011-07-13T11:56:47Z,2011-07-13T11:56:47Z
+423368,2,"I have been noticed some weird behaviors under Windows, i don't know if that's your case. See #251.  To follow the whole API guidelines, that function has to return an expressive error, not just null (in case of error) or a path (in case of success). Tha""",2011-06-09 07:26:06,Romain-Geissler,libgit2,libgit2,fd0574e5ad4e2e5924ff0d0869da7d5846225d8b,Romain-Geissler,801960,"I have been noticed some weird behaviors under Windows, i don't know if that's your case. See #251.
+
+To follow the whole API guidelines, that function has to return an expressive error, not just null (in case of error) or a path (in case of success). That's how the whole lib works.
+The size does matter, as you can use ""."" as a start path, which isn't that long, and be returned a full path. Moreover, in case of .git file, you can be returned a path that has absolutely no link with the given start path.
+",2011-06-09T19:26:06Z,2011-06-09T19:26:30Z
+302005,2,"Ew, sometimes I forget that there are bindings for languages not written in C. :/  I'll fix this in the dev branch, thanks.""",2011-03-14 16:20:11,vmg,libgit2,libgit2,005718280712634486a097427212e652b0e29f36,vmg,42793,"Ew, sometimes I forget that there are bindings for languages not written in C. :/
+
+I'll fix this in the dev branch, thanks.
+",2011-03-15T03:20:11Z,2011-03-15T03:20:11Z
+475048,2,"It does harm! You hide `const` problem with this type cast. Type cast potentially hides a lot of problem types.  Typecast in C usually points to a hack or a bug. It's better to avoid type cast wherever it's possible. You're writing code for people, not for""",2011-07-13 02:08:11,kiryl,libgit2,libgit2,761aa2aa35d5427b8b22d342ef2116bc22252648,kiryl,588661,"It does harm! You hide `const` problem with this type cast. Type cast potentially hides a lot of problem types.
+
+Typecast in C usually points to a hack or a bug. It's better to avoid type cast wherever it's possible. You're writing code for people, not for compilers.
+
+And I still don't understand why do you want to build plan-C code with C++ compiler?
+",2011-07-13T14:08:11Z,2011-07-13T14:08:11Z

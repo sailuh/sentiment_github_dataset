@@ -1,0 +1,627 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3894703,0,"Reverted.""",2013-08-19 10:27:40,timmywil,jquery,jquery,f6e86c3ca4d527d5453a0b5b9591ef38b5d3c000,timmywil,192451,"Reverted.
+",2013-08-19T22:27:40Z,2013-08-19T22:27:40Z
+2290082,0,"These are the ones we currently hardcode in TestSwarm itself. After QUnit is done, TestSwarm's client script removes these elements before making a snapshot of the DOM to push to the results object in TestSwarm for this run.  I moved that logic to here, """,2012-12-11 07:52:55,Krinkle,jquery,jquery,cef044d82ec0d338b2b69756d3ba08692fb80ae4,Krinkle,156867,"These are the ones we currently hardcode in TestSwarm itself. After QUnit is done, TestSwarm's client script removes these elements before making a snapshot of the DOM to push to the results object in TestSwarm for this run.
+
+I moved that logic to here, to then remove that logic from TestSwarm. Feel free to update it (until it recently even `#main` was still listed here, from the-ages-ago-version of QUnit). For example, `#nothiddendiv` is now in `#qunit-fixture` and no longer needs to be explicitly cleaned up.
+",2012-12-11T18:52:55Z,2012-12-11T18:52:55Z
+2255250,0,"``` PHP Notice:  Use of undefined constant response  ```""",2012-12-04 21:08:17,Krinkle,jquery,jquery,228ab3ddae527f72cc3122a1c6115d7718bcfd57,Krinkle,156867,"```
+PHP Notice:  Use of undefined constant response 
+```
+",2012-12-05T08:08:17Z,2012-12-05T08:08:17Z
+2256549,0,"Because I thought I didn't need the quotes, which I no know I do.""",2012-12-05 01:53:01,jaubourg,jquery,jquery,228ab3ddae527f72cc3122a1c6115d7718bcfd57,jaubourg,160354,"Because I thought I didn't need the quotes, which I no know I do.
+",2012-12-05T12:53:01Z,2012-12-05T12:53:01Z
+2190149,2,"@gibson042, You're not gonna believe this but ... https://github.com/jquery/jquery-mobile/blob/4e2fef1dd1bf7cda10983adab7eeee641a8733bf/tests/jquery.testHelper.js#L124 :sob:  They're going to try switching to a direct $.ajax call for the script but it ha""",2012-11-21 09:20:01,dmethvin,jquery,jquery,e889134058232c5e19156353c5fc3bf3b4915a94,dmethvin,157858,"@gibson042, You're not gonna believe this but ... https://github.com/jquery/jquery-mobile/blob/4e2fef1dd1bf7cda10983adab7eeee641a8733bf/tests/jquery.testHelper.js#L124 :sob:
+
+They're going to try switching to a direct $.ajax call for the script but it had me a bit concerned that others might be using that.
+",2012-11-21T20:20:01Z,2012-11-21T20:20:01Z
+2080638,0,"Yeah I agree that makes more sense. I can do a followup.""",2012-10-31 02:54:46,dmethvin,jquery,jquery,e8f91514a6f353e85d8117998087903dc7331210,dmethvin,157858,"Yeah I agree that makes more sense. I can do a followup.
+",2012-10-31T13:54:46Z,2012-10-31T13:54:46Z
+2049583,1,"Very deep ;-)""",2012-10-24 15:35:30,Krinkle,jquery,jquery,812c6087ada4a6383fd2e033d04648ec0f6691ea,Krinkle,156867,"Very deep ;-)
+",2012-10-25T03:35:30Z,2012-10-25T03:35:30Z
+2025991,0,"We can only compare our results to json.parse on browser that have the native method. I agree it's not optimal to test this everywhere but where we actually use it. Perhaps we dump this test's attempt to compare since we don't care about the native result.""",2012-10-19 11:33:24,dmethvin,jquery,jquery,3144163f61ea89855818fab597a2b5f1074d10c3,dmethvin,157858,"We can only compare our results to json.parse on browser that have the native method. I agree it's not optimal to test this everywhere but where we actually use it. Perhaps we dump this test's attempt to compare since we don't care about the native result.
+",2012-10-19T23:33:24Z,2012-10-19T23:33:24Z
+1509152,0,"Yea, prepublish is what most people use in the npm community as a courtesy though. The idea being that you should distribute the built files so that when people download a package they don't have to have the extra rebuild/compile step (and can avoid extra """,2012-06-26 20:10:49,fat,jquery,jquery,d5658e978d9a7234e537d57c45069ce223cb3853,fat,169705,"Yea, prepublish is what most people use in the npm community as a courtesy though. The idea being that you should distribute the built files so that when people download a package they don't have to have the extra rebuild/compile step (and can avoid extra dependencies like grunt).
+
+@jed gave a talk on npm at txjs where he talked about a similar issue with people publishing coffee script packages and suggested this (prepublish) hook pattern.
+",2012-06-27T08:10:49Z,2012-06-27T08:10:49Z
+1478609,0,"Why is this being removed? It's only a """"duplicate"""" to improve performance.""",2012-06-19 08:44:42,rwaldron,jquery,jquery,713cc8609637a943f77039726d96f5e9f7a36f2b,rwaldron,27985,"Why is this being removed? It's only a ""duplicate"" to improve performance.
+",2012-06-19T20:44:42Z,2012-06-19T20:44:42Z
+1414586,2,"So we gave up testing with the minified version? So sad.""",2012-06-04 10:38:22,jaubourg,jquery,jquery,37ffb29d37129293523bf1deacf3609a28b0ceec,jaubourg,160354,"So we gave up testing with the minified version? So sad.
+",2012-06-04T22:38:22Z,2012-06-04T22:38:22Z
+1357344,2,"Yeah, I was going to enhance the performance of the augmentWidthorHeight function by doing exactly what you have there. Having to call getComputedStyle multiple times sucks. I need it to also grab the box-sizing as well, so it needs to be a bit less naive",2012-05-21 09:38:55,mikesherov,jquery,jquery,e0151e5827d7091f311c82d9f951aaaa2688ba8c,mikesherov,364532,"Yeah, I was going to enhance the performance of the augmentWidthorHeight function by doing exactly what you have there. Having to call getComputedStyle multiple times sucks. I need it to also grab the box-sizing as well, so it needs to be a bit less naive, and I have to worry about size for 1.8. It's coming though :-)
+",2012-05-21T21:38:55Z,2012-05-21T21:38:55Z
+1257041,1,"I **LOVE** this change.""",2012-04-25 05:29:09,gibson042,jquery,jquery,6e066a4db72ff6b0d12dd8a43faec0a80e4a1fed,gibson042,1199584,"I **LOVE** this change.
+",2012-04-25T17:29:09Z,2012-04-25T17:29:09Z
+1260002,0,"[Really](http://bugs.jquery.com/ticket/8421)?""",2012-04-25 19:15:45,jaubourg,jquery,jquery,87c83b04589e91a96adcfce788c6207295f83a5b,jaubourg,160354,"[Really](http://bugs.jquery.com/ticket/8421)?
+",2012-04-26T07:15:45Z,2012-04-26T07:15:45Z
+679760,0,"@sebastien-p - Blocking in the sense that we can't actually remove the `data(""""events"""")` code until we evaluate where/why people are using it, and decide if we should be providing better alternatives.   `hasEvent` might be a use case we could provide supp""",2011-10-27 07:30:58,gnarf,jquery,jquery,24e416dca36df4b182a612dba37f8b6cdaa25916,gnarf,549355,"@sebastien-p - Blocking in the sense that we can't actually remove the `data(""events"")` code until we evaluate where/why people are using it, and decide if we should be providing better alternatives. 
+
+`hasEvent` might be a use case we could provide support for, but I'm siding with @dmethvin here.  I think there will always be a better alternative design than peeking at attached event handlers.  This is evidenced by the fact that the pure DOM events have no similar method.  **NOTE:** I still feel that the debugging clause has its uses, but you shouldn't ever need a `hasEvent` in production code.
+",2011-10-27T19:30:58Z,2011-10-27T19:30:58Z
+607457,1,"lol, same time dave""",2011-09-23 01:22:37,timmywil,jquery,jquery,6eb75676c4d21550daa755c3dfc3539b1c530556,timmywil,192451,"lol, same time dave
+",2011-09-23T13:22:37Z,2011-09-23T13:22:37Z
+366321,0,"@jboesch: Rarely you can say that a documentation is also a specification for something. First one is generally a more user-friendly version of the second. In case of jQuery, documentation is certainly not the specification. Is it needed? Maybe, but it is """,2011-05-02 15:58:36,rkatic,jquery,jquery,6c449fd5df3e0ec50e893d055da9aea486e7d71c,rkatic,38577,"@jboesch: Rarely you can say that a documentation is also a specification for something. First one is generally a more user-friendly version of the second.
+In case of jQuery, documentation is certainly not the specification. Is it needed? Maybe, but it is not simple in case of jQuery... but unit tests are pretty close.
+
+EDIT: Also, i think NodeList are also objects. Why you think it have to be explicitly mentioned to be supported? 
+",2011-05-03T03:58:36Z,2011-05-03T04:06:32Z
+634246,1,"@jdalton I'll ping you on Irc to discuss solutions :)""",2011-10-06 00:28:17,rwaldron,jquery,jquery,a28eadff48d5e56bb529fc7a5c7e1a74e46398ed,rwaldron,27985,"@jdalton I'll ping you on Irc to discuss solutions :)
+",2011-10-06T12:28:17Z,2011-10-06T12:28:17Z
+349301,0,"It fails because support.getSetAttribute is false, which is where this hook is being added so this won't be present in browsers that don't have the button problem.""",2011-04-19 06:05:31,timmywil,jquery,jquery,825d3d96cebf9a88f34411a2df95622fd3e32619,timmywil,192451,"It fails because support.getSetAttribute is false, which is where this hook is being added so this won't be present in browsers that don't have the button problem.
+",2011-04-19T18:05:31Z,2011-04-19T18:05:31Z
+339862,0,"It was intended that the VML element be present for all tests. If it causes failures, that indicates additional places where jQuery needs to apply workarounds.""",2011-04-12 13:58:59,jfirebaugh,jquery,jquery,f7f4ef91cf38b3c00414d3ebdb706fc04a8e17c0,jfirebaugh,98601,"It was intended that the VML element be present for all tests. If it causes failures, that indicates additional places where jQuery needs to apply workarounds.
+",2011-04-13T01:58:59Z,2011-04-13T01:58:59Z
+339599,0,"I believe the addition of a VML element to the test HTML causes failures not fixed by the event.js change.  https://github.com/jquery/sizzle/pull/32 is about fixing those.""",2011-04-12 08:59:37,jfirebaugh,jquery,jquery,0d8b247cab2f91e118d0b734028ce827e09a71f7,jfirebaugh,98601,"I believe the addition of a VML element to the test HTML causes failures not fixed by the event.js change.
+
+https://github.com/jquery/sizzle/pull/32 is about fixing those.
+",2011-04-12T20:59:37Z,2011-04-12T20:59:37Z
+291980,0,"Hey Julian, Do you know if this change ended up making it into 1.5.1 final?  jQuery Mobile users have been unable to use jQM with Phonegap since jQuery 1.4.4 because of the file:// issue that this fix seems to address, but it doesn't look like the latest """,2011-03-05 08:14:09,scottjehl,jquery,jquery,cb85da7b62e74e7339ed652ade209aaffbd0c15b,scottjehl,214783,"Hey Julian,
+Do you know if this change ended up making it into 1.5.1 final?  jQuery Mobile users have been unable to use jQM with Phonegap since jQuery 1.4.4 because of the file:// issue that this fix seems to address, but it doesn't look like the latest version of jQuery core makes it better.
+
+Any info you have on this would be great help. 
+We've got a thread going here: https://github.com/jquery/jquery-mobile/issues#issue/991
+
+BTW: there seems to be a separate more minor regression as well in that the success callback didn't always return an HTML dataType when it should, but Kin was able to work around that one temporarily in jQuery Mobile (noted here: https://github.com/jquery/jquery-mobile/issues#issue/991/comment/811934 )
+
+Thanks so much!
+-Scott
+",2011-03-05T19:14:09Z,2011-03-05T19:14:09Z
+236645,0,"@jdalton - I can't comment on that, I haven't reserched those browsers for significance specifically (but note: Firefox has much slower conversion rates).""",2011-01-10 04:29:38,galambalazs,jquery,jquery,012f0c3b4bd3d04c2f3e1ea80fc1230901d607d9,gblazex,309987,"@jdalton - I can't comment on that, I haven't reserched those browsers for significance specifically (but note: Firefox has much slower conversion rates).
+",2011-01-10T15:29:38Z,2011-01-10T15:31:46Z
+234559,1,"You mean semicolons? :P""",2011-01-07 04:21:11,mathiasbynens,jquery,jquery,368f2441f64e95fe5dfda318709e795833470903,mathiasbynens,81942,"You mean semicolons? :P
+",2011-01-07T15:21:11Z,2011-01-07T15:21:11Z
+229882,0,"// Attach callbacks  var deferred = jQuery.Deferred().then( thenCallback1 , thenCallback2, ... ).fail( failCallback1 , failCallback2, ...)  // Resolve  deferred.resolve( value ); // Will call all attached """"then"""" callbacks  // Reject  deferred.reject( error""",2010-12-31 06:46:05,jaubourg,jquery,jquery,5bacb53866dbc3fbb36202a25c756a4ea2fd5965,jaubourg,160354,"// Attach callbacks
+
+var deferred = jQuery.Deferred().then( thenCallback1 , thenCallback2, ... ).fail( failCallback1 , failCallback2, ...)
+
+// Resolve
+
+deferred.resolve( value ); // Will call all attached ""then"" callbacks
+
+// Reject
+
+deferred.reject( error ); // Will call all attached ""fail"" callbacks
+
+I've looked the APIs around and I have to say I don't fancy the then( callbackForSuccess , callbackForError ) signature. I find deferred.then( null , errorCallback ) as a mean to attach an error callback to be quite unnatural, convoluted and plain confusing. Really, deferred.fail( errorCallback ) seems much simpler and straight to the point.
+",2010-12-31T17:46:05Z,2010-12-31T17:46:23Z
+165867,1,"ok cool, I just pulled this down and ran 'make' ... Should the build process be updated to check for new sizzle (and qunit while we're at it)?""",2010-10-10 10:59:07,rwaldron,jquery,jquery,ba149e78a93afa9eab544c7defe3ccf0d412345a,rwaldron,27985,"ok cool, I just pulled this down and ran 'make' ... Should the build process be updated to check for new sizzle (and qunit while we're at it)?
+",2010-10-10T22:59:07Z,2010-10-10T22:59:07Z
+152036,0,"Sounds reasonable, at least until another 'fix' is available (if ever).""",2010-09-21 08:31:33,peol,jquery,jquery,dc8491defe5360afe076249a696f72f73a96dc23,peol,83221,"Sounds reasonable, at least until another 'fix' is available (if ever).
+",2010-09-21T20:31:33Z,2010-09-21T20:33:12Z
+136336,0,"@jeresig: committed and made pull request (http://github.com/rkatic/jquery/commit/452c292daa8de2d45cf283bd51cc98d90e04327f).""",2010-08-27 11:26:00,rkatic,jquery,jquery,94f35d05199ec1634d9c8c60d10f298f260056bd,rkatic,38577,"@jeresig: committed and made pull request (http://github.com/rkatic/jquery/commit/452c292daa8de2d45cf283bd51cc98d90e04327f).
+",2010-08-27T23:26:00Z,2010-08-27T23:26:00Z
+117633,0,"This would have been perfect as a plugin, considering the potential performance issues. I will no think twice before using .data()""",2010-07-27 02:25:20,louisremi,jquery,jquery,2e10af143b7eafb7142524f6534a62aee1910bd1,louisremi,39374,"This would have been perfect as a plugin, considering the potential performance issues. I will no think twice before using .data()
+",2010-07-27T14:25:20Z,2010-07-27T14:25:20Z
+41239,0,"Ugh, I feel petty , but I had to note that this line in ajax.js (line: 576 ):           if ( window.JSON && window.JSON.parse ) {  Should probably be :           if ( window.JSON && (""""function"""" === typeof window.JSON.parse) ) {  Thanks: DBJ """,2010-01-07 12:47:29,DBJDBJ,jquery,jquery,308d6cdad023da190ace2a698ee4815ed8dad9c5,DBJDBJ,145155,"Ugh, I feel petty , but I had to note that this line in ajax.js (line: 576 ):
+
+```
+     if ( window.JSON && window.JSON.parse ) {
+```
+
+Should probably be :
+
+```
+     if ( window.JSON && (""function"" === typeof window.JSON.parse) ) {
+```
+
+Thanks: DBJ
+",2010-01-07T23:47:29Z,2010-01-07T23:47:29Z
+41105,0,"What is using file protocol?   Have you considered creating an identifier for native support in containing scope?  <pre>var IS_NATIVE_XHR = typeof XMLHttpRequest != """"undefined"""";</pre>""",2010-01-06 08:58:37,GarrettS,jquery,jquery,3f648c4e3abe236b8ec6a19822313be794e5a9df,GarrettS,56098,"What is using file protocol? 
+
+Have you considered creating an identifier for native support in containing scope?
+
+<pre>var IS_NATIVE_XHR = typeof XMLHttpRequest != ""undefined"";</pre>
+",2010-01-06T19:58:37Z,2010-01-06T19:58:37Z
+38750,1,"Since .ready() still works it doesn't seem too bad. Using a modified search of $(). on Google Code I found these that may need changing:  jqDnR BlockUI jrails svg-editor jsSpeedTester  It would be great to see this change happen but maybe it needs """,2009-12-15 06:26:03,dmethvin,jquery,jquery,04524287d3e0112deae570ff9247c734833431bb,dmethvin,157858,"Since .ready() still works it doesn't seem too bad. Using a modified search of $(). on Google Code I found these that may need changing:
+
+jqDnR
+BlockUI
+jrails
+svg-editor
+jsSpeedTester
+
+It would be great to see this change happen but maybe it needs to go through a deprecation phase? 
+",2009-12-15T17:26:03Z,2009-12-15T17:26:03Z
+3954419,2,"@gibson042 still unstable in old browsers http://swarm.jquery.org/result/749450 :-(""",2013-08-27 03:55:07,markelog,jquery,jquery,29903f38afc188c250c9a48ee5a7ad4ce62a4a75,markelog,945528,"@gibson042 still unstable in old browsers http://swarm.jquery.org/result/749450 :-(
+",2013-08-27T15:55:07Z,2013-08-27T15:55:07Z
+3031975,2,"Oops. Sorry about that!""",2013-04-17 04:57:52,rwaldron,jquery,jquery,039371c741335d02e7e486420f4a96b43ec2d585,rwaldron,27985,"Oops. Sorry about that!
+",2013-04-17T16:57:52Z,2013-04-17T16:57:52Z
+2423466,2,"Moar bytes :(""",2013-01-11 10:40:08,mathiasbynens,jquery,jquery,c0c1bdde6099a3fa1c16014be090aa6bf1fca8ca,mathiasbynens,81942,"Moar bytes :(
+",2013-01-11T21:40:08Z,2013-01-11T21:40:08Z
+2119688,2,"Ack sorry I got your name typed wrong @lukemelia""",2012-11-07 16:31:52,gnarf,jquery,jquery,877306738f931a711c41d907e69fc8930f985830,gnarf,549355,"Ack sorry I got your name typed wrong @lukemelia
+",2012-11-08T03:31:52Z,2012-11-08T03:31:52Z
+2090958,2,"sorry about that :-(""",2012-11-01 14:42:24,markelog,jquery,jquery,68f001e709b6e6a3ac09d918991480aeef8eb9e5,markelog,945528,"sorry about that :-(
+",2012-11-02T01:42:24Z,2012-11-02T01:42:24Z
+1536428,2,"this makes me totally sad.""",2012-07-03 15:07:04,mikesherov,jquery,jquery,5c60e334d35df7065b7c09073f5aeaed58fd427d,mikesherov,364532,"this makes me totally sad.
+",2012-07-04T03:07:04Z,2012-07-04T03:07:04Z
+1455590,2,"ugh, sorry... I replied to these when I should've been napping. Sorry for sounding like a cranky brat.""",2012-06-13 11:33:43,rwaldron,jquery,jquery,f13de6b3d6256f457da0a3c8274ba33656f8df4f,rwaldron,27985,"ugh, sorry... I replied to these when I should've been napping. Sorry for sounding like a cranky brat.
+",2012-06-13T23:33:43Z,2012-06-13T23:33:43Z
+1261951,2,"Yeah, sorry about the username non-sense. I registered as """"rwldrn"""" a long time ago. I also have """"rwaldron"""" but that doesn't have any of my project stuff :\""",2012-04-26 03:43:34,rwaldron,jquery,jquery,87c83b04589e91a96adcfce788c6207295f83a5b,rwaldron,27985,"Yeah, sorry about the username non-sense. I registered as ""rwldrn"" a long time ago. I also have ""rwaldron"" but that doesn't have any of my project stuff :\
+",2012-04-26T15:43:34Z,2012-04-26T15:43:34Z
+1054268,2,"Jenkins is not amused, *you will feel his botty wrath!* http://swarm.jquery.org/job/983/ """,2012-03-07 05:42:36,dmethvin,jquery,jquery,014b2a57007c4fd2bc85397f83fe36eec88aa975,dmethvin,157858,"Jenkins is not amused, _you will feel his botty wrath!_ http://swarm.jquery.org/job/983/
+",2012-03-07T16:42:36Z,2012-03-07T16:42:36Z
+1053209,2,"I'm disappointed by this commit, unless it fixes a bug. Does it fix a bug? I also wanted to get rid of the code duplication, but @rwldrn had asked me to wait till grunt was integrated before making further changes to the test suite. My plan was to have php""",2012-03-07 02:38:30,mikesherov,jquery,jquery,318d47b730769f538dbc24800b9ad67ff8e73ea9,mikesherov,364532,"I'm disappointed by this commit, unless it fixes a bug. Does it fix a bug? I also wanted to get rid of the code duplication, but @rwldrn had asked me to wait till grunt was integrated before making further changes to the test suite. My plan was to have php invoke grunt, or something like that, each time the test suite were run, and only when you don't have PHP use the document.write fallback hack.
+
+We had discussed in a jquery meeting that PHP was a requirement, but that we should make a base attempt at supporting testing without PHP. This change prioritizes the fallback method and loses any gains from having PHP installed.
+
+The point of using PHP was to concatenate the source down to a single file, which also gets us testing the same source code as the built version of the code. Instead, we're back to including multiple files via document.write in every case. Also, I needed that single include file to test some work I'm doing on a ticket that uses a lazy loaded jQuery. When a lazy loaded script uses document.write to write multiple script tags, execution order is not preserved, so I guess I can't test that now :-/.
+",2012-03-07T13:38:30Z,2012-03-07T13:38:30Z
+679641,2,"@rwldrn : oh, why ? I came here to talk about this, can't call it """"blocking"""" because I am not complaining at all... or maybe I misspoke, sorry.""",2011-10-27 06:43:37,sebastien-p,jquery,jquery,24e416dca36df4b182a612dba37f8b6cdaa25916,sebastien-p,522746,"@rwldrn : oh, why ? I came here to talk about this, can't call it ""blocking"" because I am not complaining at all... or maybe I misspoke, sorry.
+",2011-10-27T18:43:37Z,2011-10-27T18:43:37Z
+360043,2,"This broke my test suite in FF :(""",2011-04-27 11:41:20,kflorence,jquery,jquery,c0450f3c2aab7af902ccf4ba0537088fc26f065d,kflorence,156143,"This broke my test suite in FF :(
+",2011-04-27T23:41:20Z,2011-04-27T23:41:20Z
+529420,2,"I hadn't realized at the time this was documented, sorry for the mess I caused. :(""",2011-08-12 12:40:45,jaubourg,jquery,jquery,c1dcad69427b78f3e70628ab1444f42033ee593a,jaubourg,160354,"I hadn't realized at the time this was documented, sorry for the mess I caused. :(
+",2011-08-13T00:40:45Z,2011-08-13T00:40:45Z
+166830,2,"Sorry, I didn't make it clear that such a test should be performed only for Opera. Other browsers already are burdened in different ways for their own errors. But I get what you're saying... too many issues with too low a success rate to be worth it.  I'""",2010-10-11 14:36:59,curiousdannii,jquery,jquery,dc8491defe5360afe076249a696f72f73a96dc23,curiousdannii,59074,"Sorry, I didn't make it clear that such a test should be performed only for Opera. Other browsers already are burdened in different ways for their own errors. But I get what you're saying... too many issues with too low a success rate to be worth it.
+
+I've just noticed that XMLHttpRequest2 has an abort event. Could it be useful?
+",2010-10-12T02:36:59Z,2010-10-12T02:36:59Z
+44573,2,"I don't understand the thinking your response. I helped you avoid a bug. How does that make me """"upset""""?""",2010-01-29 15:45:02,GarrettS,jquery,jquery,b8076a914ba9d400dc9c48d866b145df6fabafcf,GarrettS,56098,"I don't understand the thinking your response. I helped you avoid a bug. How does that make me ""upset""?
+",2010-01-30T02:45:02Z,2010-01-30T02:45:02Z
+43857,2,"Ahhh yes. Brain fail, sorry!""",2010-01-25 16:35:40,curiousdannii,jquery,jquery,a6ef036bb6a3610431471eebc2623bf8ad06bdd6,curiousdannii,59074,"Ahhh yes. Brain fail, sorry!
+",2010-01-26T03:35:40Z,2010-01-26T03:35:40Z
+37295,2,"Oops, I accidentally committed my work-in-progress liveHandler rewrite in this commit :-/ sorry about that! I'll be landing the correct code soon.""",2009-12-03 05:04:44,jeresig,jquery,jquery,4daae7a79f43815935a2890d16904c5a052717f3,jeresig,1615,"Oops, I accidentally committed my work-in-progress liveHandler rewrite in this commit :-/ sorry about that! I'll be landing the correct code soon.
+",2009-12-03T16:04:44Z,2009-12-03T16:04:44Z
+38424,2,"ew no i hate this.. makes it much harder to read, this is why jquery is not readable IMO, way to much cruft """,2009-12-12 19:12:17,visionmedia,jquery,jquery,ddb86f8d5bd1bd21b2beeeea55baf505b47dfed5,tj,25254,"ew no i hate this.. makes it much harder to read, this is why jquery is not readable IMO, way to much cruft 
+",2009-12-13T06:12:17Z,2009-12-13T06:12:17Z
+3893673,1,"It's quite a bad practice to do so :)""",2013-08-19 08:35:12,egeriis,jquery,jquery,f6e86c3ca4d527d5453a0b5b9591ef38b5d3c000,egeriis,579824,"It's quite a bad practice to do so :)
+",2013-08-19T20:35:12Z,2013-08-19T20:35:12Z
+3893709,1,"Won't happen again :)""",2013-08-19 08:38:41,timmywil,jquery,jquery,f6e86c3ca4d527d5453a0b5b9591ef38b5d3c000,timmywil,192451,"Won't happen again :)
+",2013-08-19T20:38:41Z,2013-08-19T20:38:41Z
+3892944,1,"That's a great idea. Would be a way to also solve Diego's issues with context switching.""",2013-08-19 07:22:53,timmywil,jquery,jquery,6318ae6ab90d4b450dfadf32ab95fe52ed6331cb,timmywil,192451,"That's a great idea. Would be a way to also solve Diego's issues with context switching.
+",2013-08-19T19:22:53Z,2013-08-19T19:22:53Z
+3605761,1,"It looks so much cleaner :-)""",2013-07-10 05:44:01,scottgonzalez,jquery,jquery,b13d8229ae25a6c48b1d59a0e592cde154e063f0,scottgonzalez,141167,"It looks so much cleaner :-)
+",2013-07-10T17:44:01Z,2013-07-10T17:44:01Z
+3295642,1,"lol, nice commit message dave""",2013-05-27 04:00:26,gnarf,jquery,jquery,bd36ea22b670d52636dbe3f10cf6ce1e67d838b8,gnarf,549355,"lol, nice commit message dave
+",2013-05-27T16:00:26Z,2013-05-27T16:00:26Z
+4146997,1,"I love how all the weekend lawyers pop out of the woodwork lol.""",2013-09-20 14:01:12,jdalton,jquery,jquery,9d16fe6283667396094d49559a37fc672c06252c,jdalton,4303,"I love how all the weekend lawyers pop out of the woodwork lol.
+",2013-09-21T02:01:12Z,2013-09-21T02:01:24Z
+4151132,1,"@dmethvin Ok ok :P  ![drclaw](https://f.cloud.github.com/assets/4303/1188033/df33612e-23af-11e3-9e61-a54e04eb02e2.jpg) """,2013-09-22 05:53:28,jdalton,jquery,jquery,9d16fe6283667396094d49559a37fc672c06252c,jdalton,4303,"@dmethvin Ok ok :P
+
+![drclaw](https://f.cloud.github.com/assets/4303/1188033/df33612e-23af-11e3-9e61-a54e04eb02e2.jpg)
+",2013-09-22T17:53:28Z,2013-09-22T17:53:28Z
+2970091,1,"I'm glad you approve :D""",2013-04-08 09:43:54,rwaldron,jquery,jquery,d7d6b7a5c7992834fcd4d4b01eda87169704f032,rwaldron,27985,"I'm glad you approve :D
+",2013-04-08T21:43:54Z,2013-04-08T21:43:54Z
+3049868,1,"Ooh snap :D""",2013-04-19 08:10:55,jdalton,jquery,jquery,1114611f77ee9cd203db65b120d397dbe2f14d14,jdalton,4303,"Ooh snap :D
+",2013-04-19T20:10:55Z,2013-04-19T20:13:00Z
+2551585,1,"I'll go through it now, thanks for the review :)""",2013-02-03 12:02:29,rwaldron,jquery,jquery,7f94a5cc3a167a710576c008da2c186a98ce2dd4,rwaldron,27985,"I'll go through it now, thanks for the review :)
+",2013-02-03T23:02:29Z,2013-02-03T23:02:29Z
+2556734,1,"Ok, cool. I've passed it along.""",2013-02-04 09:19:07,jdalton,jquery,jquery,0e2977583c0455eda940a28b2499cad2cbf24ee4,jdalton,4303,"Ok, cool. I've passed it along.
+",2013-02-04T20:19:07Z,2013-02-04T20:19:07Z
+2502858,1,"@dmethvin Ah, thanks for that!""",2013-01-25 08:20:07,jdalton,jquery,jquery,487b703521e63188102c73e8ce6ce203d28f260b,jdalton,4303,"@dmethvin Ah, thanks for that!
+",2013-01-25T19:20:07Z,2013-01-25T19:20:07Z
+2285372,1,"Cool, I'm looking at this now""",2012-12-10 13:51:26,rwaldron,jquery,jquery,07a7b3e4cf961e51bddcdb90cdca34f9126ed286,rwaldron,27985,"Cool, I'm looking at this now
+",2012-12-11T00:51:26Z,2012-12-11T00:51:26Z
+2238921,1,"Yep, good point.""",2012-12-02 02:57:34,dmethvin,jquery,jquery,c2d6847de09a52496f78baebc04f317e11ece6d2,dmethvin,157858,"Yep, good point.
+",2012-12-02T13:57:34Z,2012-12-02T13:57:34Z
+2238994,1,"No, go ahead, I'll have gibson's changes to integrate later on anyway. It'll just remind me of the ajax rewrite days :P""",2012-12-02 03:31:28,jaubourg,jquery,jquery,c2d6847de09a52496f78baebc04f317e11ece6d2,jaubourg,160354,"No, go ahead, I'll have gibson's changes to integrate later on anyway. It'll just remind me of the ajax rewrite days :P
+",2012-12-02T14:31:28Z,2012-12-02T14:31:28Z
+2239345,1,"This makes me so happy :)  (as well as all the others that follow)""",2012-12-02 06:40:10,rwaldron,jquery,jquery,c2d6847de09a52496f78baebc04f317e11ece6d2,rwaldron,27985,"This makes me so happy :)
+
+(as well as all the others that follow)
+",2012-12-02T17:40:10Z,2012-12-02T17:40:32Z
+2119831,1,"No worries. Thanks for getting this fix in!""",2012-11-07 17:27:58,lukemelia,jquery,jquery,877306738f931a711c41d907e69fc8930f985830,lukemelia,353,"No worries. Thanks for getting this fix in!
+",2012-11-08T04:27:58Z,2012-11-08T04:27:58Z
+2105420,1,"Yep! :smile:""",2012-11-05 11:49:36,Krinkle,jquery,jquery,80d45a69ea5e81897ebcb6868a902f3b21d5b101,Krinkle,156867,"Yep! :smile:
+",2012-11-05T22:49:36Z,2012-11-05T22:49:36Z
+2091011,1,"That sounds like a record!""",2012-11-01 14:55:32,gibson042,jquery,jquery,f651bf8893ceb585245bfc57ba76d3dcb5d0a3b6,gibson042,1199584,"That sounds like a record!
+",2012-11-02T01:55:32Z,2012-11-02T01:55:32Z
+2091033,1,"Lol, yes of course, that's what I meant :open_mouth: """,2012-11-01 15:06:28,Krinkle,jquery,jquery,3f515045808dda2b4320a82894e875eb61d255e2,Krinkle,156867,"Lol, yes of course, that's what I meant :open_mouth: 
+",2012-11-02T02:06:28Z,2012-11-02T02:06:28Z
+2081014,1,"Although, we should open a separate issue for that :-)""",2012-10-31 03:49:11,mikesherov,jquery,jquery,e8f91514a6f353e85d8117998087903dc7331210,mikesherov,364532,"Although, we should open a separate issue for that :-)
+",2012-10-31T14:49:11Z,2012-10-31T14:49:11Z
+2524221,2,"Also... seems like a weird thing to nitpick.""",2013-01-29 13:54:55,rwaldron,jquery,jquery,451d0c37d9297598743b1372bf623d4b7d38e951,rwaldron,27985,"Also... seems like a weird thing to nitpick.
+",2013-01-30T00:54:55Z,2013-01-30T00:54:55Z
+2524229,2,"Nah, I just hate Safari 5.1 with a passion, so was curious whether I could use """"jQuery 2.0 doesn't support it!"""" in the same way I use that for IE8.""",2013-01-29 13:57:10,domenic,jquery,jquery,451d0c37d9297598743b1372bf623d4b7d38e951,domenic,617481,"Nah, I just hate Safari 5.1 with a passion, so was curious whether I could use ""jQuery 2.0 doesn't support it!"" in the same way I use that for IE8.
+",2013-01-30T00:57:10Z,2013-01-30T00:57:10Z
+2524242,2,"It's an awful browser... pretending to be modern, just a fraud.  If this issue doesn't exist in 5.1.7, we shouldn't be special casing it.""",2013-01-29 13:59:35,rwaldron,jquery,jquery,451d0c37d9297598743b1372bf623d4b7d38e951,rwaldron,27985,"It's an awful browser... pretending to be modern, just a fraud.
+
+If this issue doesn't exist in 5.1.7, we shouldn't be special casing it.
+",2013-01-30T00:59:35Z,2013-01-30T00:59:45Z
+2238871,2,"It's a bit too DRY for my taste. Misfires will only be caught in tests because the number of assertions is wrong, supposedly... for moderately complex tests, regressions may be missed entirely.  I'd really prefer if we would give the expected events expl""",2012-12-02 02:34:05,jaubourg,jquery,jquery,c2d6847de09a52496f78baebc04f317e11ece6d2,jaubourg,160354,"It's a bit too DRY for my taste. Misfires will only be caught in tests because the number of assertions is wrong, supposedly... for moderately complex tests, regressions may be missed entirely.
+
+I'd really prefer if we would give the expected events explicitely:
+
+``` js
+function addGlobalEvents( expected ) {
+    expected = expected || """";
+    jQuery( document ).on( ""ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess"", function( e ) {
+        ok( expected.indexOf(e.type) !== -1, e.type );
+    });
+}
+```
+",2012-12-02T13:34:05Z,2012-12-02T13:34:05Z
+2023759,2,"I wonder how much of a performance hit we'll be taking for this... strict mode is has significant performance costs that are attributed to the runtime checks that are required.   JFTR...  -1""",2012-10-19 03:56:01,rwaldron,jquery,jquery,739ba96318f65d2f2c3c80772519fc0887a8c798,rwaldron,27985,"I wonder how much of a performance hit we'll be taking for this... strict mode is has significant performance costs that are attributed to the runtime checks that are required. 
+
+JFTR...
+
+-1
+",2012-10-19T15:56:01Z,2012-10-19T15:56:01Z
+2024075,2,"How do I go about benchmarking the strict build to see what the impact actually is? It feel wrong to me to take decisions without metrics. Never used our benchmarking suite so I'll need some help here.""",2012-10-19 04:46:00,jaubourg,jquery,jquery,739ba96318f65d2f2c3c80772519fc0887a8c798,jaubourg,160354,"How do I go about benchmarking the strict build to see what the impact actually is? It feel wrong to me to take decisions without metrics. Never used our benchmarking suite so I'll need some help here.
+",2012-10-19T16:46:00Z,2012-10-19T16:46:00Z
+2026256,2,"FWIW, I requested the ability to test for strict mode compatibility without actually using strict mode: https://github.com/jshint/jshint/issues/504  It was apparently closed 2 months ago with no explanation :-(""",2012-10-19 13:20:36,scottgonzalez,jquery,jquery,739ba96318f65d2f2c3c80772519fc0887a8c798,scottgonzalez,141167,"FWIW, I requested the ability to test for strict mode compatibility without actually using strict mode: https://github.com/jshint/jshint/issues/504
+
+It was apparently closed 2 months ago with no explanation :-(
+",2012-10-20T01:20:36Z,2012-10-20T01:20:36Z
+2026320,2,"That post was doing well until it invalidated itself by claiming that strict mode is """"parse time""""""",2012-10-19 14:01:36,rwaldron,jquery,jquery,739ba96318f65d2f2c3c80772519fc0887a8c798,rwaldron,27985,"That post was doing well until it invalidated itself by claiming that strict mode is ""parse time""
+",2012-10-20T02:01:36Z,2012-10-20T02:01:36Z
+1702088,2,"Ugh. Yes. I'll fix it later. Thankfully this won't """"break the build""""""",2012-08-11 09:24:21,rwaldron,jquery,jquery,dc3f7d3868e00fb318069b6f87dfc1fc4d10e56f,rwaldron,27985,"Ugh. Yes. I'll fix it later. Thankfully this won't ""break the build""
+",2012-08-11T21:24:21Z,2012-08-11T21:24:21Z
+1573352,2,"Sorry, my """"It's IE's fault"""" alarm is probably stuck on the ON button :/""",2012-07-12 05:22:36,jaubourg,jquery,jquery,2d09e9a325c730c31ada7b68fa46e345ac5535e0,jaubourg,160354,"Sorry, my ""It's IE's fault"" alarm is probably stuck on the ON button :/
+",2012-07-12T17:22:36Z,2012-07-12T17:22:36Z
+1494048,2,"SORRY!!!! *hangs head in shame*""",2012-06-22 08:40:26,gnarf,jquery,jquery,4df3aaeab3f5c1f54d7564fe9973f6bf35664265,gnarf,549355,"SORRY!!!! _hangs head in shame_
+",2012-06-22T20:40:26Z,2012-06-22T20:40:26Z
+1529752,2,"I honestly think there are better uses of our time then worrying about this""",2012-07-02 08:32:19,rwaldron,jquery,jquery,7ff3da186cf9bb5ea23f5a0b9543302ef0f861f7,rwaldron,27985,"I honestly think there are better uses of our time then worrying about this
+",2012-07-02T20:32:19Z,2012-07-02T20:32:19Z
+1454610,2,"So... did you bother looking at the follow up commit that fixed this? Less noise please.""",2012-06-13 07:48:14,rwaldron,jquery,jquery,f13de6b3d6256f457da0a3c8274ba33656f8df4f,rwaldron,27985,"So... did you bother looking at the follow up commit that fixed this? Less noise please.
+",2012-06-13T19:48:14Z,2012-06-13T19:48:14Z
+1302025,2,"num variable is useless. `nth` is a silly name compared to `findElementNode` or something that's actually descriptive""",2012-05-07 08:09:21,Raynos,jquery,jquery,2af3642cd5f968d64c40b83250e00e077b48c086,Raynos,479538,"num variable is useless. `nth` is a silly name compared to `findElementNode` or something that's actually descriptive
+",2012-05-07T20:09:21Z,2012-05-07T20:09:21Z
+1038249,2,"Jenkins and you are at war!""",2012-03-02 17:46:45,mikesherov,jquery,jquery,8013163a36be2e954344ad689e95a5773d61f1e9,mikesherov,364532,"Jenkins and you are at war!
+",2012-03-03T04:46:45Z,2012-03-03T04:46:45Z
+671511,2,"I think something might be weird with this commit. I've reopened the ticket for investigation: http://bugs.jquery.com/ticket/10563#comment:6""",2011-10-24 08:55:26,SlexAxton,jquery,jquery,84d2307e0e20e9245523731a4450314cc0de6a95,SlexAxton,96554,"I think something might be weird with this commit. I've reopened the ticket for investigation: http://bugs.jquery.com/ticket/10563#comment:6
+",2011-10-24T20:55:26Z,2011-10-24T20:55:26Z
+166771,2,"i know malsup's Taconite plugin replaces jQuery.httpData. maybe that's why it stopped working when i tested 1.4.3pre a few months ago :\""",2010-10-11 12:18:19,leeoniya,jquery,jquery,6245ecb2b91cca73f66dc0543beb6626c138bcfc,leeoniya,43234,"i know malsup's Taconite plugin replaces jQuery.httpData. maybe that's why it stopped working when i tested 1.4.3pre a few months ago :\
+",2010-10-12T00:18:19Z,2010-10-12T00:18:19Z
+165617,2,"@jeresig - Right I get that *(and auto converting rgb would be fine)*. I just don't dig swallowing all potential errors :/""",2010-10-09 11:12:27,jdalton,jquery,jquery,2ca36598954759c5b5dce569a39c52b981ed4ab2,jdalton,4303,"@jeresig - Right I get that _(and auto converting rgb would be fine)_. I just don't dig swallowing all potential errors :/
+",2010-10-09T23:12:27Z,2010-10-09T23:13:13Z
+134213,2,"Getting weird errors in WebKit with this error. Will be investigating further tomorrow morning.""",2010-08-24 12:30:17,jeresig,jquery,jquery,396dd2127330a7ed742d1e9092af54b668c46e85,jeresig,1615,"Getting weird errors in WebKit with this error. Will be investigating further tomorrow morning.
+",2010-08-25T00:30:17Z,2010-08-25T00:30:17Z
+99710,2,"...JavaScript already has this capability..."""" """" ... it would be interesting to see cases where a version check actually saved you code...""""  I think I am (finally) sick and tired of this kinder-garten ...""",2010-06-26 01:54:17,DBJDBJ,jquery,jquery,7e6b20e2e813e774ce970d17215260d54bf15cd7,DBJDBJ,145155,"""...JavaScript already has this capability...""
+"" ... it would be interesting to see cases where a version check actually saved you code...""
+
+I think I am (finally) sick and tired of this kinder-garten ...
+",2010-06-26T13:54:17Z,2010-06-26T13:54:17Z
+100882,2,"@dbjdbj -- i know, i actually like jdd a lot and was just giving him crap.  however, while i hate the jQuery.fn.jquery confusion, it's be even more breaking backwards compatible if we renamed it and/or moved it to a new location. If we think we want to d""",2010-06-29 00:58:55,getify,jquery,jquery,7e6b20e2e813e774ce970d17215260d54bf15cd7,getify,150330,"@dbjdbj -- i know, i actually like jdd a lot and was just giving him crap.
+
+however, while i hate the jQuery.fn.jquery confusion, it's be even more breaking backwards compatible if we renamed it and/or moved it to a new location. If we think we want to do so, we actually need to alias to the old location, and people are always gonna have to check if the old location variable is there if the new one isn't.
+
+i think the benefits of renaming/moving are less than the negatives of keeping it in this confusing name/location.
+",2010-06-29T12:58:55Z,2010-06-29T12:58:55Z
+38498,2,"I think this is a great idea, but it's going to screw over a LOT of people who followed bad jQuery tutorials online that all seem to love recommending $() as a shortcut to $(document).""",2009-12-13 13:15:43,ajpiano,jquery,jquery,04524287d3e0112deae570ff9247c734833431bb,ajpiano,155599,"I think this is a great idea, but it's going to screw over a LOT of people who followed bad jQuery tutorials online that all seem to love recommending $() as a shortcut to $(document).
+",2009-12-14T00:15:43Z,2009-12-14T00:15:43Z
+38710,2,"On the minus side, I hate curly braces.  On the plus side, I hate painting bikesheds. Style guides, while vaguely creepy and authoritarian, definitely minimize the number of painters we need to keep around.  (And fwiw, consistency could be maintained w""",2009-12-15 02:49:34,dsc,jquery,jquery,ddb86f8d5bd1bd21b2beeeea55baf505b47dfed5,dsc,47595,"On the minus side, I hate curly braces.
+
+On the plus side, I hate painting bikesheds. Style guides, while vaguely creepy and authoritarian, definitely minimize the number of painters we need to keep around.
+
+(And fwiw, consistency could be maintained with mixed braces, so long as they were used in a regular fashion. It's _irregularity_ that creates inconsistency and importantly, confusion.)
+",2009-12-15T13:49:34Z,2009-12-15T13:49:34Z
+34686,2,"I majorly dig that. Keeping submodules up to date is a pain.""",2009-11-09 14:41:03,jdalton,jquery,jquery,a8b089a02089d3d7b7e0744e59618ff9800e760a,jdalton,4303,"I majorly dig that. Keeping submodules up to date is a pain.
+",2009-11-10T01:41:03Z,2009-11-10T01:41:03Z
+2666642,1,"Of course it did... I assumed everything was in proper order. Thanks for the heads up""",2013-02-21 03:53:06,rwaldron,jquery,jquery,a128355b25dc31a1312e4e190b9e3caec5f0b95b,rwaldron,27985,"Of course it did... I assumed everything was in proper order. Thanks for the heads up
+",2013-02-21T14:53:06Z,2013-02-21T14:53:06Z
+2256562,1,"+1, thanks for catching this""",2012-12-05 01:55:41,jaubourg,jquery,jquery,228ab3ddae527f72cc3122a1c6115d7718bcfd57,jaubourg,160354,"+1, thanks for catching this
+",2012-12-05T12:55:41Z,2012-12-05T12:55:41Z
+2227833,1,"Nice! :+1:""",2012-11-29 06:31:48,gibson042,jquery,jquery,8a79be7894b352c0947a8b067f83b8ef388dfc48,gibson042,1199584,"Nice! :+1:
+",2012-11-29T17:31:48Z,2012-11-29T17:31:48Z
+2059380,1,"Had it that way first, but decided it belonged in the same test block. Next time we won't. Good to know. Thanks!""",2012-10-26 05:28:46,mikesherov,jquery,jquery,8121309694630d3cb29e5b8dc4ad81527a5bb494,mikesherov,364532,"Had it that way first, but decided it belonged in the same test block. Next time we won't. Good to know. Thanks!
+",2012-10-26T17:28:46Z,2012-10-26T17:28:46Z
+2049610,1,"Haha that was previously much deeper ;) a little copy pasta there """,2012-10-24 15:45:44,rwaldron,jquery,jquery,812c6087ada4a6383fd2e033d04648ec0f6691ea,rwaldron,27985,"Haha that was previously much deeper ;) a little copy pasta there 
+",2012-10-25T03:45:44Z,2012-10-25T03:45:44Z
+2023174,1,"Yes, they certainly should!""",2012-10-19 02:23:32,mikesherov,jquery,jquery,739ba96318f65d2f2c3c80772519fc0887a8c798,mikesherov,364532,"Yes, they certainly should!
+",2012-10-19T14:23:32Z,2012-10-19T14:23:32Z
+2003104,1,"Eh, you and I have been down this road before :)""",2012-10-16 02:27:33,rwaldron,jquery,jquery,6aae3e1038925f8f22d6c0aeedf74f0358890be4,rwaldron,27985,"Eh, you and I have been down this road before :)
+",2012-10-16T14:27:33Z,2012-10-16T14:27:33Z
+1997167,1,":clap: :clap: :clap: :clap: """,2012-10-15 04:17:35,mikesherov,jquery,jquery,6ac87167893e1de24761eaff47bbf9a20d0d6f98,mikesherov,364532,":clap: :clap: :clap: :clap: 
+",2012-10-15T16:17:35Z,2012-10-15T16:17:35Z
+2003093,1,"congrats on your first pull, @morgangraphics :clap: """,2012-10-16 02:26:14,mikesherov,jquery,jquery,4bb46f413a0e2f6933013b26d2aceddca6cf03f1,mikesherov,364532,"congrats on your first pull, @morgangraphics :clap: 
+",2012-10-16T14:26:14Z,2012-10-16T14:26:14Z
+1982149,1,"I think I've made it in life now!""",2012-10-11 03:57:12,curiousdannii,jquery,jquery,798a7a7ea2cb612411b3d9fd87e8b0e894b27de8,curiousdannii,59074,"I think I've made it in life now!
+",2012-10-11T15:57:12Z,2012-10-11T15:57:12Z
+1976045,1,"Making my potential novella even more interesting!""",2012-10-10 06:17:21,johnbender,jquery,jquery,a60fed4dec85e7b0c3b6fc5741b14cee1552afc4,johnbender,23505,"Making my potential novella even more interesting!
+",2012-10-10T18:17:21Z,2012-10-10T18:17:21Z
+1877235,1,"Woah, this is awesome. Great to these getting squashed!""",2012-09-19 05:33:18,mikesherov,jquery,jquery,c9b894c98c41f0265a4442610aac3aca74976126,mikesherov,364532,"Woah, this is awesome. Great to these getting squashed!
+",2012-09-19T17:33:18Z,2012-09-19T17:33:18Z
+1849395,1,"... and this was done, tested and all on the iPad \o/  /me is mobile now :)""",2012-09-13 01:45:09,jaubourg,jquery,jquery,74cdd784975ba6e628d1934a859faeb017824a5f,jaubourg,160354,"... and this was done, tested and all on the iPad \o/
+
+/me is mobile now :)
+",2012-09-13T13:45:09Z,2012-09-13T13:45:09Z
+1854534,1,"**Even better .... Thanks ;o)**""",2012-09-13 21:46:58,DBJDBJ,jquery,jquery,b62e5522910766a8fb9f1cf29e069360ae75a902,DBJDBJ,145155,"**Even better .... Thanks ;o)**
+",2012-09-14T09:46:58Z,2012-09-14T09:46:58Z
+1789660,1,"That's why I suggested changing the parameter name to `stepValue`. :-)""",2012-08-30 06:01:09,davidmurdoch,jquery,jquery,0ca936d2c911fe037dda3cb9d6e21f6fe1735a2c,davidmurdoch,187813,"That's why I suggested changing the parameter name to `stepValue`. :-)
+",2012-08-30T18:01:09Z,2012-08-30T18:01:09Z
+2805551,1,"ok great""",2013-03-14 03:17:54,nepsdotin,jquery,jquery,07e50933c4293818c5b36d368368656844e4df88,nepsdotin,1019271,"ok great
+",2013-03-14T14:17:54Z,2013-03-14T14:17:54Z
+1577172,1,"Thank you, thank you, thank you. Completely slipped my mind.""",2012-07-12 22:05:05,jaubourg,jquery,jquery,0d9006531d2b991cdbf419e1b4b0b4e03a588b10,jaubourg,160354,"Thank you, thank you, thank you. Completely slipped my mind.
+",2012-07-13T10:05:05Z,2012-07-13T10:05:05Z
+1551531,1,"Glad to see this land!""",2012-07-07 11:01:57,anthonyryan1,jquery,jquery,dc83072878ed9636c8158a014bd9fa4acc1ccce3,anthonyryan1,543852,"Glad to see this land!
+",2012-07-07T23:01:57Z,2012-07-07T23:01:57Z
+1551757,1,"@davidben and @anthonyryan1 I landed this since there was a good patch (even saved 1 byte gzipped) and I'm glad it solves the problem. To ensure we don't regress on this we'll need a unit test; contributions welcome. I've opened [ticket 12040](http://www.h""",2012-07-07 15:34:04,dmethvin,jquery,jquery,dc83072878ed9636c8158a014bd9fa4acc1ccce3,dmethvin,157858,"@davidben and @anthonyryan1 I landed this since there was a good patch (even saved 1 byte gzipped) and I'm glad it solves the problem. To ensure we don't regress on this we'll need a unit test; contributions welcome. I've opened [ticket 12040](http://www.html5rocks.com/en/tutorials/security/content-security-policy/) on this.
+",2012-07-08T03:34:04Z,2012-07-08T03:34:04Z
+1515601,1,"Hahaha, love the commit comment.""",2012-06-28 01:47:44,richstokoe,jquery,jquery,cde4c326b82af4679026a202f02799e9fbd18cb4,richstokoe,1769858,"Hahaha, love the commit comment.
+",2012-06-28T13:47:44Z,2012-06-28T13:47:44Z
+1492474,1,"haha, thanks mathias!""",2012-06-22 02:14:24,timmywil,jquery,jquery,e2497c682f26b7916d76cb2896c6fe621b376d82,timmywil,192451,"haha, thanks mathias!
+",2012-06-22T14:14:24Z,2012-06-22T14:14:24Z
+1463828,1,"Agreed, I'm glad @scottgonzalez spotted that - much nicer now""",2012-06-15 03:30:06,rwaldron,jquery,jquery,a7430dfb12f2bcf10bd51ec0bab4832791c0aa9f,rwaldron,27985,"Agreed, I'm glad @scottgonzalez spotted that - much nicer now
+",2012-06-15T15:30:06Z,2012-06-15T15:30:06Z
+1454964,1,"@rwldrn, wasn't accusing you of any hair-brainedness, I was just reporting what I saw as a bug. I like your custom task a lot. I was just pointing it out. Feel free to act accordingly :-)""",2012-06-13 09:05:24,mikesherov,jquery,jquery,f13de6b3d6256f457da0a3c8274ba33656f8df4f,mikesherov,364532,"@rwldrn, wasn't accusing you of any hair-brainedness, I was just reporting what I saw as a bug. I like your custom task a lot. I was just pointing it out. Feel free to act accordingly :-)
+",2012-06-13T21:05:24Z,2012-06-13T21:05:24Z
+1425493,1,"Thanks, I missed that new feature. Awesome.""",2012-06-06 11:10:29,Krinkle,jquery,jquery,5d25f78291c11ca26ce70281ee4ac81d1e3d8dd4,Krinkle,156867,"Thanks, I missed that new feature. Awesome.
+",2012-06-06T23:10:29Z,2012-06-06T23:10:35Z
+1426084,1,"Yeah, I'd love to move on, but this indicates that I can't reliably test locally, because those conditionals weren't necessary locally, nor do they really make any sense, unless I don't know how testswarm works.""",2012-06-06 14:37:40,mikesherov,jquery,jquery,5d25f78291c11ca26ce70281ee4ac81d1e3d8dd4,mikesherov,364532,"Yeah, I'd love to move on, but this indicates that I can't reliably test locally, because those conditionals weren't necessary locally, nor do they really make any sense, unless I don't know how testswarm works.
+",2012-06-07T02:37:40Z,2012-06-07T02:37:40Z
+1406319,1,"I like the var. Now when people ask if we have any priors, we can say yes. :)""",2012-06-01 11:12:27,timmywil,jquery,jquery,02dd7c570bf4dbbdfc168f4352d04c667447be5d,timmywil,192451,"I like the var. Now when people ask if we have any priors, we can say yes. :)
+",2012-06-01T23:12:27Z,2012-06-01T23:12:27Z
+1357104,1,"Awesome.  We can finally remove: https://github.com/jupiterjs/jquerypp/blob/master/dom/dimensions/dimensions.js.  Great job!""",2012-05-21 08:35:22,justinbmeyer,jquery,jquery,e0151e5827d7091f311c82d9f951aaaa2688ba8c,justinbmeyer,78602,"Awesome.  We can finally remove: https://github.com/jupiterjs/jquerypp/blob/master/dom/dimensions/dimensions.js.  Great job!
+",2012-05-21T20:35:22Z,2012-05-21T20:35:22Z
+1357118,1,"Actually, is there anyway to detect this?  We have a bunch of widgets that still work on older jQuery versions that depend on a setter.  I'd like them to check if this is available before grabbing our plugin.  Thanks!""",2012-05-21 08:39:04,justinbmeyer,jquery,jquery,e0151e5827d7091f311c82d9f951aaaa2688ba8c,justinbmeyer,78602,"Actually, is there anyway to detect this?  We have a bunch of widgets that still work on older jQuery versions that depend on a setter.  I'd like them to check if this is available before grabbing our plugin.  Thanks!
+",2012-05-21T20:39:04Z,2012-05-21T20:39:34Z
+1357250,1,"@justinbmeyer: Yes, and even corrects for whichever box-sizing you're using :-)""",2012-05-21 09:11:38,mikesherov,jquery,jquery,e0151e5827d7091f311c82d9f951aaaa2688ba8c,mikesherov,364532,"@justinbmeyer: Yes, and even corrects for whichever box-sizing you're using :-)
+",2012-05-21T21:11:38Z,2012-05-21T21:11:38Z
+1349806,1,"Yep, I noticed I'd forgotten that when I got back to the ticket. Thanks!""",2012-05-18 09:03:30,dmethvin,jquery,jquery,e93f2a89e277d3fffbc15b4ef82ebc3ac6a840f5,dmethvin,157858,"Yep, I noticed I'd forgotten that when I got back to the ticket. Thanks!
+",2012-05-18T21:03:30Z,2012-05-18T21:03:30Z
+1299981,1,"Ah, makes perfect sense now :)""",2012-05-07 00:47:12,Krinkle,jquery,jquery,95a4a776cffe6dd56f5796e93c0cba0225ee49e4,Krinkle,156867,"Ah, makes perfect sense now :)
+",2012-05-07T12:47:12Z,2012-05-07T12:47:12Z
+1257109,1,"Also, I like the unwrapping here. Great catch.""",2012-04-25 05:42:10,gibson042,jquery,jquery,6e066a4db72ff6b0d12dd8a43faec0a80e4a1fed,gibson042,1199584,"Also, I like the unwrapping here. Great catch.
+",2012-04-25T17:42:10Z,2012-04-25T17:42:10Z
+1258712,1,"Yeah, that's the big advantage of using jQuery.each in Callbacks.add!""",2012-04-25 11:04:20,jaubourg,jquery,jquery,6e066a4db72ff6b0d12dd8a43faec0a80e4a1fed,jaubourg,160354,"Yeah, that's the big advantage of using jQuery.each in Callbacks.add!
+",2012-04-25T23:04:20Z,2012-04-25T23:04:20Z
+1256280,1,"https://github.com/jquery/jquery/commit/42dbc86573a1172157def6fc417f33b69d00c2a5  thanks for your expert eye.""",2012-04-25 03:17:23,jaubourg,jquery,jquery,245f5a244e024cb99ac84be86f86b88654a909c9,jaubourg,160354,"https://github.com/jquery/jquery/commit/42dbc86573a1172157def6fc417f33b69d00c2a5
+
+thanks for your expert eye.
+",2012-04-25T15:17:23Z,2012-04-25T15:17:23Z
+1236178,1,"Must have been a keyboard spasm on my part. Stray text outside elements in `$()` is ignored which explains why it has no effect. I will clean it up on the next commit in this area. Thanks for keeping an eye open!""",2012-04-20 01:13:26,dmethvin,jquery,jquery,abd2a07498afa48a4ec3ce0471b9b0b4fc812b55,dmethvin,157858,"Must have been a keyboard spasm on my part. Stray text outside elements in `$()` is ignored which explains why it has no effect. I will clean it up on the next commit in this area. Thanks for keeping an eye open!
+",2012-04-20T13:13:26Z,2012-04-20T13:13:26Z
+1448982,1,"Cool, it's great to see this headed toward Promises/A!  I think it's gonna become the norm for multiple promise implementations to be in play in any reasonably interesting app.  I found a situation where I believe it still isn't fully compliant, so I creat""",2012-06-12 07:46:49,briancavalier,jquery,jquery,a41f2406748e3113751ab1e5b5d990d9144123fc,briancavalier,90518,"Cool, it's great to see this headed toward Promises/A!  I think it's gonna become the norm for multiple promise implementations to be in play in any reasonably interesting app.  I found a situation where I believe it still isn't fully compliant, so I created [a quick test case](http://jsfiddle.net/briancavalier/thZYj/).  It should show 3 for both jQuery and when.js, but the jQuery.Deferred seems never to resolve.
+",2012-06-12T19:46:49Z,2012-06-12T19:46:49Z
+1118336,1,"Thanks again @louisremi for the fix! """,2012-03-22 00:05:07,mikesherov,jquery,jquery,07c8a9b2448f42ee940e7fc1351344eb372f7463,mikesherov,364532,"Thanks again @louisremi for the fix! 
+",2012-03-22T11:05:07Z,2012-03-22T11:05:07Z
+1055714,1,"Sweet justice :-P""",2012-03-07 10:20:16,mikesherov,jquery,jquery,318d47b730769f538dbc24800b9ad67ff8e73ea9,mikesherov,364532,"Sweet justice :-P
+",2012-03-07T21:20:16Z,2012-03-07T21:20:16Z
+1062575,1,"ya +1 for clearer code comment :D""",2012-03-08 08:25:40,jdalton,jquery,jquery,5cae50e66e34c277412c01ccb1c24bd6a85d2d8a,jdalton,4303,"ya +1 for clearer code comment :D
+",2012-03-08T19:25:40Z,2012-03-08T19:25:40Z
+1005688,1,"Cool, thanks.""",2012-02-23 18:11:09,jdalton,jquery,jquery,1c35f3816a3b1be0855dcea8ab212af506e91f83,jdalton,4303,"Cool, thanks.
+",2012-02-24T05:11:09Z,2012-02-24T05:11:09Z
+1010082,1,"I'm happy with this.""",2012-02-24 14:48:24,mikesherov,jquery,jquery,52816619a9fb6c5d329541c75407cd05a4750f1c,mikesherov,364532,"I'm happy with this.
+",2012-02-25T01:48:24Z,2012-02-25T01:48:24Z
+1116606,1,"Perfect fix.""",2012-03-21 13:01:27,sidcool1234,jquery,jquery,a619cb3063c104aa5ec808e13d2c84af565eacc6,sidd-kulk,6894,"Perfect fix.
+",2012-03-22T00:01:27Z,2012-03-22T00:01:27Z
+787401,1,"Yea we talked about that.  We don't want to put in too much code for these edge cases, but this is an improvement for .css('width/height').  Feel free to continue tackling tho!""",2011-12-12 05:09:51,timmywil,jquery,jquery,9bea2167c434d5b97643f53da16b04927dc02a7d,timmywil,192451,"Yea we talked about that.  We don't want to put in too much code for these edge cases, but this is an improvement for .css('width/height').  Feel free to continue tackling tho!
+",2011-12-12T16:09:51Z,2011-12-12T16:09:51Z
+787414,1,"That's fine. We should then at least document that known issue.... of course, I'll continue to try to find an efficient, smaller solution :-)""",2011-12-12 05:14:02,mikesherov,jquery,jquery,9bea2167c434d5b97643f53da16b04927dc02a7d,mikesherov,364532,"That's fine. We should then at least document that known issue.... of course, I'll continue to try to find an efficient, smaller solution :-)
+",2011-12-12T16:14:02Z,2011-12-12T16:14:02Z
+825059,1,"Also, the bug tracker said Akismet didn't like all of my links to the MDN articles and then everything crashed out and showed me Python errors. It's probably time to move the jQuery tracker to GitHub :)""",2011-12-28 10:39:06,heygrady,jquery,jquery,7f6a991313380b74d5fb18782fb6b99fd6c4a22d,heygrady,274076,"Also, the bug tracker said Akismet didn't like all of my links to the MDN articles and then everything crashed out and showed me Python errors. It's probably time to move the jQuery tracker to GitHub :)
+",2011-12-28T21:39:06Z,2011-12-28T21:39:06Z
+729164,1,"These tests are great. """,2011-11-17 13:31:51,rwaldron,jquery,jquery,3d6237ef8aff8a31ace3e956e2700aa11e3da752,rwaldron,27985,"These tests are great. 
+",2011-11-18T00:31:51Z,2011-11-18T00:31:51Z
+731389,1,"@rdworth hahaha, ok! stop yelling at me.. geez... ;)""",2011-11-18 09:16:57,rwaldron,jquery,jquery,3d6237ef8aff8a31ace3e956e2700aa11e3da752,rwaldron,27985,"@rdworth hahaha, ok! stop yelling at me.. geez... ;)
+",2011-11-18T20:16:57Z,2011-11-18T20:16:57Z
+731390,1,"@timmywil Can you update the whitespace in accordance with style guide - thanks dude :)""",2011-11-18 09:17:51,rwaldron,jquery,jquery,3d6237ef8aff8a31ace3e956e2700aa11e3da752,rwaldron,27985,"@timmywil Can you update the whitespace in accordance with style guide - thanks dude :)
+",2011-11-18T20:17:51Z,2011-11-18T20:17:51Z
+731439,1,"Yes, that is nice. Thanks for the follow through haha.""",2011-11-18 09:34:31,rwaldron,jquery,jquery,3d6237ef8aff8a31ace3e956e2700aa11e3da752,rwaldron,27985,"Yes, that is nice. Thanks for the follow through haha.
+",2011-11-18T20:34:31Z,2011-11-18T20:34:31Z
+755695,1,"@jrburke good point :)""",2011-11-29 11:52:16,jdalton,jquery,jquery,8bc60bab5dd9747e7ae06c3fdb0c60782d346ff0,jdalton,4303,"@jrburke good point :)
+",2011-11-29T22:52:16Z,2011-11-29T22:52:16Z
+730904,1,"Sounds good to me! Thanks.""",2011-11-18 05:44:43,dmethvin,jquery,jquery,795583d2936a48c6f0048e28f74c5fc71e3a60b0,dmethvin,157858,"Sounds good to me! Thanks.
+",2011-11-18T16:44:43Z,2011-11-18T16:44:43Z
+677980,1,"I use it for debugging, ex. in IE :) where I can't use firequery.""",2011-10-26 18:29:58,gustaff-weldon,jquery,jquery,24e416dca36df4b182a612dba37f8b6cdaa25916,gustaff-weldon,411756,"I use it for debugging, ex. in IE :) where I can't use firequery.
+",2011-10-27T06:29:58Z,2011-10-27T06:29:58Z
+679515,1,"@gnarf37 : So, what about an official """"hasEvent-like"""" support in a near future ? :) This could be as useful for debugging as for other use cases people will think of for sure.""",2011-10-27 05:58:00,sebastien-p,jquery,jquery,24e416dca36df4b182a612dba37f8b6cdaa25916,sebastien-p,522746,"@gnarf37 : So, what about an official ""hasEvent-like"" support in a near future ? :) This could be as useful for debugging as for other use cases people will think of for sure.
+",2011-10-27T17:58:00Z,2011-10-27T17:58:00Z
+679934,1,"I totally understand what you guys are saying and I agree. I am sure a nice solution will came out of this thread, as always :)""",2011-10-27 08:40:54,sebastien-p,jquery,jquery,24e416dca36df4b182a612dba37f8b6cdaa25916,sebastien-p,522746,"I totally understand what you guys are saying and I agree. I am sure a nice solution will came out of this thread, as always :)
+",2011-10-27T20:40:54Z,2011-10-27T20:40:54Z
+670483,1,"Thanks Mike.  You said it better.""",2011-10-24 01:07:20,timmywil,jquery,jquery,3ad0ba62f03ff3d7aec7d3dfb25492cdf33350a7,timmywil,192451,"Thanks Mike.  You said it better.
+",2011-10-24T13:07:20Z,2011-10-24T13:07:20Z
+625426,1,"I wanna give @cowboy a hug :D""",2011-10-02 09:12:12,rwaldron,jquery,jquery,3e0fe5ea3b1dafe454039c7c12c4d5d5fa037c9f,rwaldron,27985,"I wanna give @cowboy a hug :D
+",2011-10-02T21:12:12Z,2011-10-02T21:12:12Z
+696560,1,"Yeah yeah I've seen that, it's an awesome work BTW :) But I was wondering what does the statement `name = name;` stands for ?""",2011-11-04 09:48:13,pomeh,jquery,jquery,9b3768b968bc99d3422355e69e2c7c35bedf681e,pomeh,285534,"Yeah yeah I've seen that, it's an awesome work BTW :)
+But I was wondering what does the statement `name = name;` stands for ?
+",2011-11-04T20:48:13Z,2011-11-04T20:48:13Z
+697799,1,"Wow.... *blink* nice catch ;) I'll fix it in a pull soon.""",2011-11-05 09:45:55,gnarf,jquery,jquery,9b3768b968bc99d3422355e69e2c7c35bedf681e,gnarf,549355,"Wow.... _blink_ nice catch ;) I'll fix it in a pull soon.
+",2011-11-05T20:45:55Z,2011-11-05T20:45:55Z
+697392,1,"wow ! that was fast ! There's 2 bytes now available to more crazy stuff :)""",2011-11-05 02:09:29,pomeh,jquery,jquery,2ce5e95951044ddfc06c3420c7efb1ea1e49134a,pomeh,285534,"wow ! that was fast ! There's 2 bytes now available to more crazy stuff :)
+",2011-11-05T13:09:29Z,2011-11-05T13:09:29Z
+561664,1,"Nice catch - that's the right fix""",2011-08-31 01:45:22,rwaldron,jquery,jquery,ddf925b77007bb6f219c7bc56166753177a86dec,rwaldron,27985,"Nice catch - that's the right fix
+",2011-08-31T13:45:22Z,2011-08-31T13:45:22Z
+1101131,1,"What is ```.removeClass()``` supposed to do here?  **edit**: Ah, ```value === undefined -> className = """"""""```, I didn't know that. has been supported ever since 96dd06e. Nice :)""",2012-03-18 19:02:24,Krinkle,jquery,jquery,96501d38a935187461d45c40f17f8327b2e7cd91,Krinkle,156867,"What is `.removeClass()` supposed to do here?
+
+**edit**: Ah, `value === undefined -> className = """"`, I didn't know that. has been supported ever since 96dd06e. Nice :)
+",2012-03-19T06:02:24Z,2012-03-19T06:06:20Z
+417691,1,"You left var fellback in from my commit which is now unnecessary. Otherwise, good stuff!""",2011-06-06 16:17:22,mikesherov,jquery,jquery,75203de7435b7f32c69da1dde88aa6708bf6bb7d,mikesherov,364532,"You left var fellback in from my commit which is now unnecessary. Otherwise, good stuff!
+",2011-06-07T04:17:22Z,2011-06-07T04:17:22Z
+365832,1,"As I said, probably I am just a consistency-freak...  and for that I am glad that isArrayLike will be considered. :)""",2011-05-02 08:07:59,rkatic,jquery,jquery,6c449fd5df3e0ec50e893d055da9aea486e7d71c,rkatic,38577,"As I said, probably I am just a consistency-freak...
+
+and for that I am glad that isArrayLike will be considered. :)
+",2011-05-02T20:07:59Z,2011-05-02T20:07:59Z
+365833,1,"fair enough :)""",2011-05-02 08:08:54,timmywil,jquery,jquery,6c449fd5df3e0ec50e893d055da9aea486e7d71c,timmywil,192451,"fair enough :)
+",2011-05-02T20:08:54Z,2011-05-02T20:08:54Z
+366336,1,"For users, it probably don't have to be mentioned (it's a documentation). For developers there are unit tests (+docs) :)""",2011-05-02 16:22:02,rkatic,jquery,jquery,6c449fd5df3e0ec50e893d055da9aea486e7d71c,rkatic,38577,"For users, it probably don't have to be mentioned (it's a documentation). For developers there are unit tests (+docs) :)
+",2011-05-03T04:22:02Z,2011-05-03T04:22:21Z
+349304,1,"Ah cool. Thanks for the context.""",2011-04-19 06:06:27,jdalton,jquery,jquery,825d3d96cebf9a88f34411a2df95622fd3e32619,jdalton,4303,"Ah cool. Thanks for the context.
+",2011-04-19T18:06:27Z,2011-04-19T18:06:27Z
+346406,1,"Yay! I always thought this was strange.""",2011-04-17 06:20:38,dmethvin,jquery,jquery,728a70c036dfcdc0c45c5c60c08aeade786ce195,dmethvin,157858,"Yay! I always thought this was strange.
+",2011-04-17T18:20:38Z,2011-04-17T18:20:38Z
+345757,1,"Thanks for explaining it :D""",2011-04-16 07:52:21,jdalton,jquery,jquery,d4b31a15ff7bd0ffb6576229d34a98ce1c9c4085,jdalton,4303,"Thanks for explaining it :D
+",2011-04-16T19:52:21Z,2011-04-16T19:52:21Z
+345906,1,"thanks for that, very helpful""",2011-04-16 12:55:38,rwaldron,jquery,jquery,a76decc47660591bb807aecf56825019da8b39fa,rwaldron,27985,"thanks for that, very helpful
+",2011-04-17T00:55:38Z,2011-04-17T00:55:38Z
+333835,1,"This has to be one of the best commit messages in the repo!""",2011-04-07 17:17:59,pdokas,jquery,jquery,98d83ef85f41fefb40a14eec24c6804c088bbeeb,pdokas,190134,"This has to be one of the best commit messages in the repo!
+",2011-04-08T05:17:59Z,2011-04-08T05:17:59Z
+345296,1,"I am geeking out over the bug and the fix. srsly awesome.""",2011-04-15 19:20:44,jdalton,jquery,jquery,e0856738e6151368cffc963800e06ebcc0bbc314,jdalton,4303,"I am geeking out over the bug and the fix. srsly awesome.
+",2011-04-16T07:20:44Z,2011-04-16T07:20:44Z
+256206,1,"Awesome!  Big ups to the core team!""",2011-01-31 03:59:51,jeremyckahn,jquery,jquery,8d8db3f2b3f8c3d41854726c8a0227f6deecc602,jeremyckahn,366330,"Awesome!  Big ups to the core team!
+",2011-01-31T14:59:51Z,2011-01-31T14:59:51Z
+256463,1,"Awesome work!""",2011-01-31 06:51:50,ctcherry,jquery,jquery,8d8db3f2b3f8c3d41854726c8a0227f6deecc602,ctcherry,760,"Awesome work!
+",2011-01-31T17:51:50Z,2011-01-31T17:51:50Z
+256351,1,"congrats guys""",2011-01-31 05:34:16,sheldon,jquery,jquery,8d8db3f2b3f8c3d41854726c8a0227f6deecc602,sheldon,13083,"congrats guys
+",2011-01-31T16:34:16Z,2011-01-31T16:34:16Z
+241035,1,"What was the issue ? It seems it has to be known for any JS developer :)""",2011-01-14 05:58:48,naholyr,jquery,jquery,52a02383fa521c51d9996a46f03a7080dd825f11,naholyr,214067,"What was the issue ? It seems it has to be known for any JS developer :)
+",2011-01-14T16:58:48Z,2011-01-14T16:58:48Z
+236280,1,"Gotta love auto-updating browsers :) What’s up with this commit though? What exactly do you mean by “no longer necessary with the release of Opera 11”? Older versions never existed?""",2011-01-09 18:43:27,mathiasbynens,jquery,jquery,012f0c3b4bd3d04c2f3e1ea80fc1230901d607d9,mathiasbynens,81942,"Gotta love auto-updating browsers :) What’s up with this commit though? What exactly do you mean by “no longer necessary with the release of Opera 11”? Older versions never existed?
+",2011-01-10T05:43:27Z,2011-01-10T15:30:32Z
+229848,1,"It's totally awesome to see Deferreds/promises added to jQuery with API basically compatible with other libraries, great addition! However, a slight nit: in all other libraries that implement thenable promises/deferreds (node-promise, promised-io, Dojo, ri""",2010-12-31 05:16:05,kriszyp,jquery,jquery,5bacb53866dbc3fbb36202a25c756a4ea2fd5965,kriszyp,34054,"It's totally awesome to see Deferreds/promises added to jQuery with API basically compatible with other libraries, great addition! However, a slight nit: in all other libraries that implement thenable promises/deferreds (node-promise, promised-io, Dojo, ringo, etc.), the signature is usually then(callbackForSuccess, callbackForFail). How do you register a fail handler/callback with this API (to catch errors or when fail() is called)? I like your approach of allowing for adding multiple callbacks in a single call, and this would still be possible by allowing an array to be used as the first arg while reserving the second arg for the error callback (at least in the Deferred impl, vs the _Deferred impl).
+",2010-12-31T16:16:05Z,2010-12-31T16:16:05Z
+230054,1,"I'd be more than happy to make a proposition but I have no clue how.  I was well aware of Promises/A and I've looked at existing implementations.""",2010-12-31 19:55:59,jaubourg,jquery,jquery,5bacb53866dbc3fbb36202a25c756a4ea2fd5965,jaubourg,160354,"I'd be more than happy to make a proposition but I have no clue how.
+
+I was well aware of Promises/A and I've looked at existing implementations.
+",2011-01-01T06:55:59Z,2011-01-01T06:55:59Z
+226991,1,"really cool """,2010-12-27 10:36:58,fmeyer,jquery,jquery,4443371dbaf751ce0d0d92e40f924e41fbd7b54c,fmeyer,5771,"really cool 
+",2010-12-27T21:36:58Z,2010-12-27T21:36:58Z
+225966,1,"Methods are fine too -- something to capture that state info would be great either way :)""",2010-12-24 12:13:25,rmurphey,jquery,jquery,116c82b027a03a7a5670fa580fa9af819cc1cc03,rmurphey,58987,"Methods are fine too -- something to capture that state info would be great either way :)
+",2010-12-24T23:13:25Z,2010-12-24T23:13:25Z
+178962,1,"Ah. Cool deal. Thanks, John!""",2010-10-27 06:48:37,kswedberg,jquery,jquery,6ab402dced3339d24ad007ecf3a6c3f5af3e7610,kswedberg,3485,"Ah. Cool deal. Thanks, John!
+",2010-10-27T18:48:37Z,2010-10-27T18:48:37Z
+180020,1,"@rwldrn: Push push push! :)""",2010-10-28 10:09:42,jeresig,jquery,jquery,3b50eaca2cd0b1439235e39c4e98a6438e8f55b2,jeresig,1615,"@rwldrn: Push push push! :)
+",2010-10-28T22:09:42Z,2010-10-28T22:09:42Z
+171672,1,"jitter, thanks for spotting. I was doing it quickly and a bit sloppily. :) you want to file a pull req? I know it's minor but since you spotted it you could get the authorship cred on the fix. """,2010-10-18 09:53:50,paulirish,jquery,jquery,97dfa0d5a85a32fe56aba837bbf2bc889b092d2b,paulirish,39191,"jitter, thanks for spotting. I was doing it quickly and a bit sloppily. :)
+you want to file a pull req? I know it's minor but since you spotted it you could get the authorship cred on the fix. 
+",2010-10-18T21:53:50Z,2010-10-18T21:53:50Z
+166709,1,"Yeah - that was related, I just landed a variation of it. Thanks for the catch!""",2010-10-11 10:46:01,jeresig,jquery,jquery,884de15fb970affd0b1697245795bce7b231a1db,jeresig,1615,"Yeah - that was related, I just landed a variation of it. Thanks for the catch!
+",2010-10-11T22:46:01Z,2010-10-11T22:46:01Z
+165550,1,"Awesome - speedy patching!""",2010-10-09 08:51:40,rwaldron,jquery,jquery,da597bcf9014b1827e50c0e8f3b9268318574572,rwaldron,27985,"Awesome - speedy patching!
+",2010-10-09T20:51:40Z,2010-10-09T20:51:40Z
+165615,1,"@jdalton: Although they're far more likely to find them baffling and unnecessary - as the bevvy of tickets in our bug tracker indicates :) The user is expecting it to do nothing in IE - this change handles that particular case (we already do this for heigh""",2010-10-09 11:10:02,jeresig,jquery,jquery,2ca36598954759c5b5dce569a39c52b981ed4ab2,jeresig,1615,"@jdalton: Although they're far more likely to find them baffling and unnecessary - as the bevvy of tickets in our bug tracker indicates :) The user is expecting it to do nothing in IE - this change handles that particular case (we already do this for height/width, for example - negative numbers are turned into 0).
+",2010-10-09T23:10:02Z,2010-10-09T23:10:02Z
+169714,1,"Error might be useful - Math, probably less so :)""",2010-10-15 02:16:36,jeresig,jquery,jquery,484cc6e22000aaa6cefab5752b165f6ebd62ffe1,jeresig,1615,"Error might be useful - Math, probably less so :)
+",2010-10-15T14:16:36Z,2010-10-15T14:16:36Z
+170966,1,"Also maybe space separated words are something more easy to read/write. As well this few lines of code would be more readable if only space separated :)""",2010-10-17 16:58:56,rkatic,jquery,jquery,484cc6e22000aaa6cefab5752b165f6ebd62ffe1,rkatic,38577,"Also maybe space separated words are something more easy to read/write. As well this few lines of code would be more readable if only space separated :)
+",2010-10-18T04:58:56Z,2010-10-18T04:59:26Z
+153248,1,"Ah cool. Your current *(revised)* way is good for a fallback solution.""",2010-09-22 15:29:59,jdalton,jquery,jquery,c8dd49f756562fef68f664869952e4f5aab08acd,jdalton,4303,"Ah cool. Your current _(revised)_ way is good for a fallback solution.
+",2010-09-23T03:29:59Z,2010-09-23T03:29:59Z
+152717,1,"Ah. I've always been a fan of `(function(window, document, undefined){ /*...*/ }(window, document));` which compresses even better.  :-)""",2010-09-22 03:12:42,davidmurdoch,jquery,jquery,19b5d9e874bbd97d03d9e0561a70711e2bf91fcb,davidmurdoch,187813,"Ah. I've always been a fan of `(function(window, document, undefined){ /*...*/ }(window, document));` which compresses even better.  :-)
+",2010-09-22T15:12:42Z,2010-09-22T15:12:42Z
+151488,1,"Sweet!""",2010-09-20 18:22:39,jfirebaugh,jquery,jquery,e7c2d3b45bf0e8fbe9d7c9316b6c5adb2c019ea3,jfirebaugh,98601,"Sweet!
+",2010-09-21T06:22:39Z,2010-09-21T06:22:39Z
+151310,1,"great update! thanks..""",2010-09-20 11:31:34,gercheq,jquery,jquery,20673d7e5836dda504b66730b528a8dae9787493,gercheq,69855,"great update! thanks..
+",2010-09-20T23:31:34Z,2010-09-20T23:31:34Z
+151334,1,"totally makes sense! thanks for the addition!""",2010-09-20 12:29:59,irae,jquery,jquery,20673d7e5836dda504b66730b528a8dae9787493,irae,98254,"totally makes sense! thanks for the addition!
+",2010-09-21T00:29:59Z,2010-09-21T00:29:59Z
+151410,1,"@jeresig:  That makes sense.  Thanks for the explanation!""",2010-09-20 15:35:31,jeremyckahn,jquery,jquery,20673d7e5836dda504b66730b528a8dae9787493,jeremyckahn,366330,"@jeresig:  That makes sense.  Thanks for the explanation!
+",2010-09-21T03:35:31Z,2010-09-21T03:35:31Z
+153786,1,"Awesome, thanks!""",2010-09-23 05:27:48,jrburke,jquery,jquery,747ba7defd82bffa6c7ccb69e53b834cbfddb62c,jrburke,73359,"Awesome, thanks!
+",2010-09-23T17:27:48Z,2010-09-23T17:27:48Z
+204353,1,"use my workaround :)""",2010-11-28 14:29:33,CaViCcHi,jquery,jquery,37b607d2815b893d13de4ac3461090d0dd46535e,CaViCcHi,325754,"use my workaround :)
+",2010-11-29T01:29:33Z,2010-11-29T01:29:33Z
+144181,1,"Good call - I was just hunting down that issue! Landed.""",2010-09-09 08:29:40,jeresig,jquery,jquery,ad950c8c5992937640a1e1aca8d63bb476b001f6,jeresig,1615,"Good call - I was just hunting down that issue! Landed.
+",2010-09-09T20:29:40Z,2010-09-09T20:29:40Z
+134154,1,"Then we can be happy that other browsers don't follow the spec, and hope for a fix to the spec instead.""",2010-08-24 10:30:58,jzaefferer,jquery,jquery,cb40495b21bcb7802f3ab6ae0f837f2bf5b385ed,jzaefferer,52585,"Then we can be happy that other browsers don't follow the spec, and hope for a fix to the spec instead.
+",2010-08-24T22:30:58Z,2010-08-24T22:30:58Z
+112256,1,"thats fantastic and useful addition.""",2010-07-19 18:52:00,defkode,jquery,jquery,2e10af143b7eafb7142524f6534a62aee1910bd1,defkode,15524,"thats fantastic and useful addition.
+",2010-07-20T06:52:00Z,2010-07-20T06:52:00Z
+54571,1,"I hope it is not patronising if I offer this : http://gist.github.com/329172  Thanks : DBJ""",2010-03-11 03:43:03,DBJDBJ,jquery,jquery,141ad3c3e21e7734e67e37b5fb39782fe11b3c18,DBJDBJ,145155,"I hope it is not patronising if I offer this : http://gist.github.com/329172
+
+Thanks : DBJ
+",2010-03-11T14:43:03Z,2010-03-11T14:43:03Z
+52100,1,"*erm `""""use strict"""";`, humor fail :D""",2010-03-02 08:45:15,jdalton,jquery,jquery,a4043cdcbfa1ca069265a7cbcaba269629789cc0,jdalton,4303,"*erm `""use strict"";`, humor fail :D
+",2010-03-02T19:45:15Z,2010-03-02T19:45:15Z
+100707,1,"while i agree with jdalton's sentiment, can someone kick him off this thread unless he can be more productive and useful!? :) haha, jdd.""",2010-06-28 14:05:38,getify,jquery,jquery,7e6b20e2e813e774ce970d17215260d54bf15cd7,getify,150330,"while i agree with jdalton's sentiment, can someone kick him off this thread unless he can be more productive and useful!? :) haha, jdd.
+",2010-06-29T02:05:38Z,2010-06-29T02:05:38Z
+46556,1,"xD  This was a good one! I've spent about 40 minutes trying to solve this issue as a bug (before posting the issue in trac). Turns out it was a test case problem.  John, isn't a bit dangerous changing a test that passed in previous releases?""",2010-02-08 16:07:51,irae,jquery,jquery,75bb2d6e510a3c048a42ce673e9655fa779eacd5,irae,98254,"xD
+
+This was a good one! I've spent about 40 minutes trying to solve this issue as a bug (before posting the issue in trac).
+Turns out it was a test case problem.
+
+John, isn't a bit dangerous changing a test that passed in previous releases?
+",2010-02-09T03:07:51Z,2010-02-09T03:07:51Z
+45825,1,"oh, good luck getting paid in that case. hahaha""",2010-02-04 12:18:04,leeoniya,jquery,jquery,104757705a19df3b6b9750aaef30aa451082f825,leeoniya,43234,"oh, good luck getting paid in that case. hahaha
+",2010-02-04T23:18:04Z,2010-02-04T23:18:04Z
+43665,1,"Well, to that end, we could use document.documentMode to actually test whether IE8 is operating in IE7 mode or not :)""",2010-01-24 11:32:41,cowboy,jquery,jquery,09ef5b7598bcdd9e6c254b24b55a54e6bfb2b4ca,cowboy,54051,"Well, to that end, we could use document.documentMode to actually test whether IE8 is operating in IE7 mode or not :)
+",2010-01-24T22:32:41Z,2010-01-24T22:32:41Z
+46657,1,"@Garrett: Perhaps you missed my thanks in the commit message? Definitely appreciate the input.  @jdalton: When you get the volume of questions, support requests, possible bug reports, and other miscellany that I do related to jQuery it significantly help""",2010-02-09 03:55:40,jeresig,jquery,jquery,435772e29b4ac4ccfdefbc4045d43f714e153381,jeresig,1615,"@Garrett: Perhaps you missed my thanks in the commit message? Definitely appreciate the input.
+
+@jdalton: When you get the volume of questions, support requests, possible bug reports, and other miscellany that I do related to jQuery it significantly helps to have everyone use the appropriate resources for communication. For example, I completely ignore bug reports sent via Twitter at this point. They're simply too short to contain meaning and trying to extracting additional information is akin to teeth-pulling. It's pretty simple: If you think you've found an issue but you aren't sure about and would like to discuss it further: Bring it to the forum. If you've absolutely found an issue: File it in the bug tracker. This way all discussion related to a particular issue can be contained and easily referenced. But see this discussion: It's in this completely unrelated commit - how am I going to be able to find it again and figure out how or why this discussion came about? or how about when I go back to look at the changes from ticket #5851 and see this non-relevant discussion taking place? We provide organized communication tools for a reason - it makes our jobs somewhat sane and it makes it easier for you, as well.
+
+@Garrett: ""Again, the problem with using FunctionDeclaration as a Statement is that some implementations will interpret the FunctionDeclaration and add it to the scope immediately upon entering the execution context."" Absolutely - I remember running across a similar issue a while back that was related to that. That is why, in this particular case, these functions weren't competing with any other function declarations.
+
+You may have misinterpreted my request: Comments on commits are absolutely welcome - but you didn't comment on the changes related to this commit, you were just using this mechanism to communicate. The forum (or even better, the bug tracker) would've been a much better place for this discussion.
+",2010-02-09T14:55:40Z,2010-02-09T14:55:40Z
+39786,1,"Have to say I really appreciate this as one time I needed jQuery as a string and manually escaping all these was a pain.  Don't ask why I needed jQuery as a string..  :D""",2009-12-23 15:22:49,paulirish,jquery,jquery,3776cbe314ac6f5081e998c3d5ac84d3fbc51872,paulirish,39191,"Have to say I really appreciate this as one time I needed jQuery as a string and manually escaping all these was a pain. 
+Don't ask why I needed jQuery as a string..  :D
+",2009-12-24T02:22:49Z,2009-12-24T02:22:49Z
+39787,1,"Massively better. Hip hip hooray Alex!""",2009-12-23 15:31:04,paulirish,jquery,jquery,5dc6b7ce3469eaadb37a151d449e8d36571d1894,paulirish,39191,"Massively better. Hip hip hooray Alex!
+",2009-12-24T02:31:04Z,2009-12-24T02:31:04Z
+178138,1,"Thanks for the tip and quick response! I'll try that out.""",2010-10-26 10:43:58,pseudosavant,jquery,jquery,3ec2f1aef6b137d0f639e2fc53f95352d24b9d90,pseudosavant,455424,"Thanks for the tip and quick response! I'll try that out.
+",2010-10-26T22:43:58Z,2010-10-26T22:43:58Z
+38432,1,"Nice change! Better performance without arguments.callee plus much easier to debug :)""",2009-12-13 00:07:16,padolsey,jquery,jquery,98ce35d52b17a033822f31d8a36232222d0d365e,padolsey,59852,"Nice change! Better performance without arguments.callee plus much easier to debug :)
+",2009-12-13T11:07:16Z,2009-12-13T11:07:16Z
+38475,1,"I find this way is much more concise and easy to read.. braces just clutter the code and make it harder to scan. example: http://gist.github.com/255605 Hell if you could use try / catch without braces I would lol but ya its preference I suppose... I used """,2009-12-13 10:19:41,visionmedia,jquery,jquery,ddb86f8d5bd1bd21b2beeeea55baf505b47dfed5,tj,25254,"I find this way is much more concise and easy to read.. braces just clutter the code and make it harder to scan. example: http://gist.github.com/255605
+Hell if you could use try / catch without braces I would lol but ya its preference I suppose... I used to write like you guys, maybe 3 years ago
+but I have more of a functional approach with every language I write in now
+",2009-12-13T21:19:41Z,2009-12-13T21:19:41Z
+38490,1,"This is certainly more consistent. Consistency is good.""",2009-12-13 11:47:54,ericflo,jquery,jquery,ddb86f8d5bd1bd21b2beeeea55baf505b47dfed5,ericflo,1228,"This is certainly more consistent. Consistency is good.
+",2009-12-13T22:47:54Z,2009-12-13T22:47:54Z
+38510,1,"@mislav Andrew and Tobie have done plenty of code consistency commits. Consistency is a good thing.""",2009-12-13 14:53:03,jdalton,jquery,jquery,ddb86f8d5bd1bd21b2beeeea55baf505b47dfed5,jdalton,4303,"@mislav Andrew and Tobie have done plenty of code consistency commits. Consistency is a good thing.
+",2009-12-14T01:53:03Z,2009-12-14T01:53:03Z
+35594,1,"Text node was retrieved from .text().""""  I understand IE can bother you but this one is ok :-)""",2009-11-18 04:25:59,genezys,jquery,jquery,b30af34f28074b491929445f5aad3d62c63e772f,genezys,65271,"""Text node was retrieved from .text().""
+
+I understand IE can bother you but this one is ok :-)
+",2009-11-18T15:25:59Z,2009-11-18T15:25:59Z
+2937153,2,"Sorry, I thought my comments were sufficient:  ``` If the code includes a valid, prologue position strict mode pragma, execute code by injecting a script tag into the document. ... Do the injection.   Otherwise, avoid the DOM node creation, insert""",2013-04-03 04:35:20,rwaldron,jquery,jquery,feea9394b75a5dcb16fad013a402b388f97cefba,rwaldron,27985,"Sorry, I thought my comments were sufficient:
+
+```
+If the code includes a valid, prologue position
+strict mode pragma, execute code by injecting a
+script tag into the document.
+... Do the injection.
+
+
+Otherwise, avoid the DOM node creation, insertion
+and removal by using an indirect global eval
+```
+
+I'm confident that the path needed for ""use strict"" will be fairly uncommon with jQuery users, so I'd rather not impose any potential performance penalties of a DOM operation on the most common cases.
+",2013-04-03T16:35:20Z,2013-04-03T16:35:20Z
+2190932,0,"Don't forget to delete `jQuery.scriptorder` afterwards. Use `window.*` in the future so they are easier to catch.""",2012-11-21 11:59:58,Krinkle,jquery,jquery,e889134058232c5e19156353c5fc3bf3b4915a94,Krinkle,156867,"Don't forget to delete `jQuery.scriptorder` afterwards. Use `window.*` in the future so they are easier to catch.
+",2012-11-21T22:59:58Z,2012-11-21T22:59:58Z
+2025906,0,"That source is not reputable, as they have published numerous erroneous statements and frequently allow code examples to become out dates. Furthermore, Chris Heilman is not an authority on the subject matter, nor does he back his claims with even the sligh""",2012-10-19 11:08:26,rwaldron,jquery,jquery,739ba96318f65d2f2c3c80772519fc0887a8c798,rwaldron,27985,"That source is not reputable, as they have published numerous erroneous statements and frequently allow code examples to become out dates. Furthermore, Chris Heilman is not an authority on the subject matter, nor does he back his claims with even the slightest shred of supporting content... But when I produce a point-by-point gist of all strict mode scenarios, I'm probably full of shit right?
+
+Anyone can write a blog and submit it to hacks.mozilla...
+",2012-10-19T23:08:26Z,2012-10-19T23:08:26Z
+1544981,0,"Saved another 12 with that event.js whack, so minus 48.""",2012-07-05 12:35:12,dmethvin,jquery,jquery,cdd5132dcc02d4a3ff8df390677ffb8ff4b5a477,dmethvin,157858,"Saved another 12 with that event.js whack, so minus 48.
+",2012-07-06T00:35:12Z,2012-07-06T00:35:12Z
+1490988,1,"Maybe jshint should get an option to whitelist this, so we could use comment-option within this function.  Either way, this is a pretty nice hack to get around that :wink2:""",2012-06-21 16:39:09,Krinkle,jquery,jquery,7ff3da186cf9bb5ea23f5a0b9543302ef0f861f7,Krinkle,156867,"Maybe jshint should get an option to whitelist this, so we could use comment-option within this function.
+
+Either way, this is a pretty nice hack to get around that :wink2:
+",2012-06-22T04:39:09Z,2012-06-22T17:25:50Z
+1256384,2,"We should always use real declarations. Using unused args as var declarations is hacky. """,2012-04-25 03:38:49,mikesherov,jquery,jquery,42dbc86573a1172157def6fc417f33b69d00c2a5,mikesherov,364532,"We should always use real declarations. Using unused args as var declarations is hacky. 
+",2012-04-25T15:38:49Z,2012-04-25T15:38:49Z
+1256431,1,"\o/ I'm a hacker!""",2012-04-25 03:46:40,jaubourg,jquery,jquery,42dbc86573a1172157def6fc417f33b69d00c2a5,jaubourg,160354,"\o/ I'm a hacker!
+",2012-04-25T15:46:40Z,2012-04-25T15:46:40Z
+680036,0,"Why not put `.split( """" """" )` in hoverHack, too?""",2011-10-27 09:25:21,davidmurdoch,jquery,jquery,5c0c86378a602fbc06535617fc5d712fa6d6e024,davidmurdoch,187813,"Why not put `.split( "" "" )` in hoverHack, too?
+",2011-10-27T21:25:21Z,2011-10-27T21:25:21Z
+677210,0,"Same as everyone else. Debugging, and the occasional crazy hack.""",2011-10-26 09:31:31,SlexAxton,jquery,jquery,24e416dca36df4b182a612dba37f8b6cdaa25916,SlexAxton,96554,"Same as everyone else. Debugging, and the occasional crazy hack.
+",2011-10-26T21:31:31Z,2011-10-26T21:31:31Z
+378955,2,"Apparently, every browser we support do allow an opening html comment at the start of inline script tags, exemplified by the fact it worked in 1.5.2 when we were still using script tag injection. Sadly, this feature is popular enough to have a library like""",2011-05-11 02:51:41,jaubourg,jquery,jquery,391398cf23603201f63c6e815a287e0cb107988c,jaubourg,160354,"Apparently, every browser we support do allow an opening html comment at the start of inline script tags, exemplified by the fact it worked in 1.5.2 when we were still using script tag injection. Sadly, this feature is popular enough to have a library like Drupal use it.
+
+If you want to revert it, feel free to do it, but it's clearly a regression, it breaks a major PHP library, it's actually a bug since what we were doing with scripts in 1.6.0 wasn't symetric with what the browsers do. Thought it was perfectly into the boundaries between a RC and a release.
+",2011-05-11T14:51:41Z,2011-05-11T14:51:41Z
+632870,2,"Why are you obfuscating your browser sniffing.  Better to be honest about it with .browser""",2011-10-05 08:41:03,cmcnulty,jquery,jquery,a28eadff48d5e56bb529fc7a5c7e1a74e46398ed,cmcnulty,638534,"Why are you obfuscating your browser sniffing.  Better to be honest about it with .browser
+",2011-10-05T20:41:03Z,2011-10-05T20:41:03Z
+332970,0,"A bonus of script injection+eval is you can capture the return value from the eval(....) code too""",2011-04-07 03:58:24,jdalton,jquery,jquery,f3c6077da02f080f09d73ec4d8a8029f76654c2b,jdalton,4303,"A bonus of script injection+eval is you can capture the return value from the eval(....) code too
+",2011-04-07T15:58:24Z,2011-04-07T15:58:24Z
+333816,0,"There are tickets actually. They are all related to Firefox not executing the string passed to globalEval synchronously when using script tag injection and non-async scripts are being loaded (jdalton confirmed to me this was fixed in firefox a few months a""",2011-04-07 17:06:00,jaubourg,jquery,jquery,f3c6077da02f080f09d73ec4d8a8029f76654c2b,jaubourg,160354,"There are tickets actually. They are all related to Firefox not executing the string passed to globalEval synchronously when using script tag injection and non-async scripts are being loaded (jdalton confirmed to me this was fixed in firefox a few months ago provided you set the injected script tag as async).
+
+But, in the end, the globalEval rewrite is a by-product of the support rewrite, I just put it in a separate commit so that it could be ""inspected"" separately. Not feature-testing for how to add text to a script tag saves a lot of size in support.js.
+",2011-04-08T05:06:00Z,2011-04-08T05:06:00Z
+241756,0,"Reverting this without fixing the issue in #7608 just breaks all versions of Opera again. The reason for why curCSS is split up should probably be commented here too in order to avoid forgetting why it exists in the first place. rwldrn had an alternative p""",2011-01-15 06:58:05,csnover,jquery,jquery,cf7ddcf79a3d4d455711b67b252b19ae343645b1,csnover,229244,"Reverting this without fixing the issue in #7608 just breaks all versions of Opera again. The reason for why curCSS is split up should probably be commented here too in order to avoid forgetting why it exists in the first place. rwldrn had an alternative patch for this, check the closed pull requests. :)
+",2011-01-15T17:58:05Z,2011-01-15T18:04:22Z
+2660957,0,"Why `window.String` instead of `String`? They're reliable globals in the language (not just in the browser API), also whitelisted in JSHint.  Or is this to allow better minification? Afaik it can only optimise the host object name that is locally aliased""",2013-02-20 10:22:28,Krinkle,jquery,jquery,22e28b01e60e87b2454f88ca128fb84916b13564,Krinkle,156867,"Why `window.String` instead of `String`? They're reliable globals in the language (not just in the browser API), also whitelisted in JSHint.
+
+Or is this to allow better minification? Afaik it can only optimise the host object name that is locally aliased, not the property. So at best this'd become `a.String`.
+",2013-02-20T21:22:28Z,2013-02-20T21:22:28Z
+166997,1,"I'm all for this change, quick question though: for a plugin that is specifically designed to override $.ajax (eg. http://github.com/appendto/jquery-mockjax), would the better process be something like this?      var _oldAjax = $.ajax;     $.ajax = func""",2010-10-11 20:43:29,gilmoreorless,jquery,jquery,6245ecb2b91cca73f66dc0543beb6626c138bcfc,gilmoreorless,159415,"I'm all for this change, quick question though: for a plugin that is specifically designed to override $.ajax (eg. http://github.com/appendto/jquery-mockjax), would the better process be something like this?
+
+```
+var _oldAjax = $.ajax;
+$.ajax = function () { ...do stuff... };
+$.extend($.ajax, _oldAjax);
+```
+",2010-10-12T08:43:29Z,2010-10-12T08:43:29Z
+165612,0,"@jdalton: I think the John's point is: If rgba in css is simply not applied, than same behavior is expected in JS too. Maybe because rgba could be used as a """"progressive enhancement"""" hack... """,2010-10-09 11:00:43,rkatic,jquery,jquery,2ca36598954759c5b5dce569a39c52b981ed4ab2,rkatic,38577,"@jdalton: I think the John's point is: If rgba in css is simply not applied, than same behavior is expected in JS too. Maybe because rgba could be used as a ""progressive enhancement"" hack... 
+",2010-10-09T23:00:43Z,2010-10-09T23:00:43Z
+166590,1,"@jeresig - Welp sucko, when they fix it then something like a weak inference + version sniff will do. As for them not fixing bugs because it will affect a js lib; that is my new pet peeve, browsers should fix bugs and let libs fix there own bugs :P""",2010-10-11 08:18:44,jdalton,jquery,jquery,dc8491defe5360afe076249a696f72f73a96dc23,jdalton,4303,"@jeresig - Welp sucko, when they fix it then something like a weak inference + version sniff will do. As for them not fixing bugs because it will affect a js lib; that is my new pet peeve, browsers should fix bugs and let libs fix there own bugs :P
+",2010-10-11T20:18:44Z,2010-10-11T20:18:44Z
+99700,2,"@jamespadolsey  oh, duh! I'll just go over to the corner and hang my head for awhile for forgetting about that. I suppose it may be still worth adding a method to do the comparison, as a convenience and """"nudge in the hey use this direction"""" for plugin auth""",2010-06-26 00:57:50,jdodds,jquery,jquery,7e6b20e2e813e774ce970d17215260d54bf15cd7,jdodds,126290,"@jamespadolsey  oh, duh! I'll just go over to the corner and hang my head for awhile for forgetting about that. I suppose it may be still worth adding a method to do the comparison, as a convenience and ""nudge in the hey use this direction"" for plugin authors, but it's right on that line of being easy to consider totally superfluous. 
+
+Edit: No, it appears my original suspicions were correct, and I'm just way too quick to assume that other people have really checked what they're telling me. 
+",2010-06-26T12:57:50Z,2010-06-26T14:00:23Z
+46573,0,"@irae: I see that your posts aren't coming through. You should file a Github support ticket, sometimes people get put in the spam filter accidentally and need to be freed.""",2010-02-08 17:34:11,jeresig,jquery,jquery,75bb2d6e510a3c048a42ce673e9655fa779eacd5,jeresig,1615,"@irae: I see that your posts aren't coming through. You should file a Github support ticket, sometimes people get put in the spam filter accidentally and need to be freed.
+",2010-02-09T04:34:11Z,2010-02-09T04:34:11Z
+1146790,0,"So much win with the [NoScope fix](http://msdn.microsoft.com/en-us/library/ie/ms533897\(v=vs.85\).aspx#1) here *(minus the UA sniff)*. +1 from [the future](https://github.com/jquery/jquery/pull/718#issuecomment-4796946)!""",2012-03-28 17:05:21,jdalton,jquery,jquery,2ef4093cf7f52383dd43bd361864edcda27e5c3c,jdalton,4303,"So much win with the [NoScope fix](http://msdn.microsoft.com/en-us/library/ie/ms533897%28v=vs.85%29.aspx#1) here _(minus the UA sniff)_.
++1 from [the future](https://github.com/jquery/jquery/pull/718#issuecomment-4796946)!
+",2012-03-29T05:05:21Z,2012-03-29T05:32:45Z
+165770,0,"You'd need to escape every regexp special characters (think . for instance) in s.data so that you don't have false negative. Talk about a """"simple"""" hack gone wrong in the convoluted department (not to mention performance and memory issues in older browsers""",2010-10-10 04:05:40,jeresig,jquery,jquery,0ca35de311ff4d1dac5c9dc4de05a32a1754cd7a,jeresig,1615,"Toss an extra endline above this.
+",2010-10-10T16:05:40Z,2010-10-10T16:05:40Z
+43664,0,"Injecting the container is not using dependency injection. The translation loader are already tagged so just use this tag.""",2010-01-24 11:18:58,jdalton,jquery,jquery,09ef5b7598bcdd9e6c254b24b55a54e6bfb2b4ca,jdalton,4303,"It's a more stable solution, as Opera has changed their UA string once already, nothing is stopping them from changing it in the future. Using the API the browser provides will ensure it will work in the future.
+",2010-01-24T22:18:58Z,2010-01-24T22:18:58Z

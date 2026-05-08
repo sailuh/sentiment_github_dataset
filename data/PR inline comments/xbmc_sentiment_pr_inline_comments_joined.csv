@@ -1,0 +1,2914 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+8041,2,"I'm sorry, I just don't care about your kind that much.""",2011-03-13 03:00:38,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/62#discussion_r8041,2011-03-13T14:00:38Z,2018-11-27T21:09:14Z,elupus,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDInputStreams/DVDStateSerializer.cpp,,,,,1,"@@ -94,7 +94,7 @@ bool CDVDStateSerializer::DVDToXMLState( std::string &xmlstate, const dvd_state_
+           }
+ 
+           { TiXmlElement eValue(""tv_usec"");
+-            sprintf(buffer, ""%ld"", state->registers.GPRM_time[i].tv_usec);
++            sprintf(buffer, ""%d"", state->registers.GPRM_time[i].tv_usec);","This is wrong. tv_usec is defined as a long int on linux. Is this different on ios?
+",6a49e5fd4704b1e8b8a9fd3ffb557b614dd4e294
+4049265,1,"You can't just throw this one away :)""",2013-05-01 16:26:18,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4049265,2013-05-02T04:26:18Z,2018-11-27T21:11:31Z,jmarshallnz,CONTRIBUTOR,xbmc/guilib/GUIWindowManager.cpp,,533.0,,,1,"@@ -530,7 +530,6 @@ void CGUIWindowManager::RenderPass()
+   CGUIWindow* pWindow = GetWindow(GetActiveWindow());
+   if (pWindow)
+   {
+-    pWindow->ClearBackground();","You can't just throw this one away :)
+",86c660485947efd3749d99cfddaf4f053af64e63
+4050527,0,"Yep, see earlier comment about keeping things the same for this PR.  My hope is to add shader-based GL as a new renderer. This way we could have gl2/gl3/gl4 selected at runtime based on hw capabilities. Iirc @jmarshallnz has a GL shader implementation a""",2013-05-01 19:40:06,theuni,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4050527,2013-05-02T07:40:06Z,2018-11-27T21:11:34Z,theuni,CONTRIBUTOR,xbmc/rendering/gl/RenderSystemGL.cpp,,646.0,,,48,"@@ -622,4 +624,298 @@ void CRenderSystemGL::ResetGLErrors()
+   }
+ }
+ 
++void CRenderSystemGL::DrawSceneGraphImpl( const CSceneGraph *sceneGraph, const CDirtyRegionList *dirtyRegions)
++{
++  unsigned int unit, alpha, range = 0;
++
++  if(g_Windowing.UseLimitedColor())
++    range = 235 - 16;
++  else
++    range = 255 -  0;
++
++  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
++  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
++  
++  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
++  glTexEnvf(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
++  glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
++  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE0);
++  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
++  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_PRIMARY_COLOR);
++  glTexEnvf(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);","Yep, see earlier comment about keeping things the same for this PR.
+
+My hope is to add shader-based GL as a new renderer. This way we could have gl2/gl3/gl4 selected at runtime based on hw capabilities. Iirc @jmarshallnz has a GL shader implementation around somewhere already that could probably be c/p for the most part.
+",86c660485947efd3749d99cfddaf4f053af64e63
+5920441,2,"sorry for delayed answer, i have to sleep yesterday because i was tired from paid projects i have and was prone to mistakes. did you mean: bool CGUILabel::Process(unsigned int currentTime) {   // TODO Add the correct processing   bool overFlows = (m_""",2013-08-21 21:58:54,stupid-boy,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3128#discussion_r5920441,2013-08-22T09:58:54Z,2018-11-27T21:12:21Z,stupid-boy,CONTRIBUTOR,xbmc/guilib/GUIListLabel.cpp,,,,,1,"@@ -74,8 +74,11 @@ bool CGUIListLabel::UpdateColors()
+ 
+ void CGUIListLabel::Process(unsigned int currentTime, CDirtyRegionList &dirtyregions)
+ {
+-  if (m_label.Process(currentTime))
+-    MarkDirtyRegion();
++  if (HasFocus() || m_alwaysScroll)
++  {","sorry for delayed answer, i have to sleep yesterday because i was tired from paid projects i have and was prone to mistakes.
+did you mean:
+bool CGUILabel::Process(unsigned int currentTime)
+{
+  // TODO Add the correct processing
+  bool overFlows = (m_renderRect.Width() + 0.5f < m_textLayout.GetTextWidth()); // 0.5f to deal with floating point rounding issues
+  bool renderSolid = (m_color == COLOR_DISABLED);
+  bool scroll = false;
+
+  if (overFlows && m_scrolling && !renderSolid)
+    scroll = m_textLayout.UpdateScrollinfo(m_scrollInfo);
+
+  return (scroll && overFlows && m_scrolling);
+}
+with this i get few more percents in long run average, but not problematic ones. i can proceed this way too if you meant it.
+",69ea43dd4613b8dc14442fe067b9d22e2a042da0
+5306443,1,"Excellent, thanks.""",2013-07-19 19:25:51,smspillaz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2989#discussion_r5306443,2013-07-20T07:25:51Z,2018-11-27T21:12:06Z,smspillaz,CONTRIBUTOR,xbmc/windowing/WinEventsWayland.cpp,,523.0,,,523,"@@ -0,0 +1,1722 @@
++/*
++*      Copyright (C) 2005-2013 Team XBMC
++*      http://www.xbmc.org
++*
++*  This Program is free software; you can redistribute it and/or modify
++*  it under the terms of the GNU General Public License as published by
++*  the Free Software Foundation; either version 2, or (at your option)
++*  any later version.
++*
++*  This Program is distributed in the hope that it will be useful,
++*  but WITHOUT ANY WARRANTY; without even the implied warranty of
++*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++*  GNU General Public License for more details.
++*
++*  You should have received a copy of the GNU General Public License
++*  along with XBMC; see the file COPYING.  If not, see
++*  <http://www.gnu.org/licenses/>.
++*
++*/
++#include ""system.h""
++
++#if defined (HAVE_WAYLAND)
++
++#include <algorithm>
++#include <sstream>
++#include <vector>
++
++#include <boost/bind.hpp>
++#include <boost/function.hpp>
++#include <boost/noncopyable.hpp>
++#include <boost/scope_exit.hpp>
++#include <boost/scoped_ptr.hpp>
++#include <boost/shared_ptr.hpp>
++#include <boost/weak_ptr.hpp>
++
++#include <sys/poll.h>
++#include <sys/mman.h>
++
++#include <wayland-client.h>
++#include <xkbcommon/xkbcommon.h>
++
++#include ""Application.h""
++#include ""WindowingFactory.h""
++#include ""WinEvents.h""
++#include ""WinEventsWayland.h""
++#include ""utils/Stopwatch.h""
++#include ""utils/log.h""
++
++#include ""DllWaylandClient.h""
++#include ""DllXKBCommon.h""
++#include ""WaylandProtocol.h""
++
++namespace xbmc
++{
++namespace wayland
++{
++class IInputReceiver
++{
++public:
++
++  virtual ~IInputReceiver() {}
++
++  virtual bool InsertPointer(struct wl_pointer *pointer) = 0;
++  virtual bool InsertKeyboard(struct wl_keyboard *keyboard) = 0;
++
++  virtual void RemovePointer() = 0;
++  virtual void RemoveKeyboard() = 0;
++};
++
++class IPointerReceiver
++{
++public:
++
++  virtual ~IPointerReceiver() {}
++  virtual void Motion(uint32_t time,
++                      const float &x,
++                      const float &y) = 0;
++  virtual void Button(uint32_t serial,
++                      uint32_t time,
++                      uint32_t button,
++                      enum wl_pointer_button_state state) = 0;
++  virtual void Axis(uint32_t time,
++                    uint32_t axis,
++                    float value) = 0;
++  virtual void Enter(struct wl_surface *surface,
++                     double surfaceX,
++                     double surfaceY) = 0;
++};
++
++class IKeymap
++{
++public:
++
++  virtual ~IKeymap() {};
++  
++  virtual uint32_t KeysymForKeycode(uint32_t code) const = 0;
++  virtual void UpdateMask(uint32_t depressed,
++                          uint32_t latched,
++                          uint32_t locked,
++                          uint32_t group) = 0;
++  virtual uint32_t CurrentModifiers() = 0;
++};
++
++class IKeyboardReceiver
++{
++public:
++
++  virtual ~IKeyboardReceiver() {}
++
++  virtual void UpdateKeymap(uint32_t format,
++                            int fd,
++                            uint32_t size) = 0;
++  virtual void Enter(uint32_t serial,
++                     struct wl_surface *surface,
++                     struct wl_array *keys) = 0;
++  virtual void Leave(uint32_t serial,
++                     struct wl_surface *surface) = 0;
++  virtual void Key(uint32_t serial,
++                   uint32_t time,
++                   uint32_t key,
++                   enum wl_keyboard_key_state state) = 0;
++  virtual void Modifier(uint32_t serial,
++                        uint32_t depressed,
++                        uint32_t latched,
++                        uint32_t locked,
++                        uint32_t group) = 0;
++};
++
++class Pointer
++{
++public:
++
++  Pointer(IDllWaylandClient &,
++          struct wl_pointer *,
++          IPointerReceiver &);
++  ~Pointer();
++
++  struct wl_pointer * GetWlPointer();
++
++  void SetCursor(uint32_t serial,
++                 struct wl_surface *surface,
++                 int32_t hotspot_x,
++                 int32_t hotspot_y);
++
++  static void HandleEnterCallback(void *,
++                                  struct wl_pointer *,
++                                  uint32_t,
++                                  struct wl_surface *,
++                                  wl_fixed_t, 
++                                  wl_fixed_t);
++  static void HandleLeaveCallback(void *,
++                                  struct wl_pointer *,
++                                  uint32_t,
++                                  struct wl_surface *);
++  static void HandleMotionCallback(void *,
++                                   struct wl_pointer *,
++                                   uint32_t,
++                                   wl_fixed_t,
++                                   wl_fixed_t);
++  static void HandleButtonCallback(void *,
++                                   struct wl_pointer *,
++                                   uint32_t,
++                                   uint32_t,
++                                   uint32_t,
++                                   uint32_t);
++  static void HandleAxisCallback(void *,
++                                 struct wl_pointer *,
++                                 uint32_t,
++                                 uint32_t,
++                                 wl_fixed_t);
++
++private:
++
++  void HandleEnter(uint32_t serial,
++                   struct wl_surface *surface,
++                   wl_fixed_t surfaceXFixed,
++                   wl_fixed_t surfaceYFixed);
++  void HandleLeave(uint32_t serial,
++                   struct wl_surface *surface);
++  void HandleMotion(uint32_t time,
++                    wl_fixed_t surfaceXFixed,
++                    wl_fixed_t surfaceYFixed);
++  void HandleButton(uint32_t serial,
++                    uint32_t time,
++                    uint32_t button,
++                    uint32_t state);
++  void HandleAxis(uint32_t time,
++                  uint32_t axis,
++                  wl_fixed_t value);
++
++  static const struct wl_pointer_listener m_listener;
++
++  IDllWaylandClient &m_clientLibrary;
++  struct wl_pointer *m_pointer;
++  IPointerReceiver &m_receiver;
++};
++
++const struct wl_pointer_listener Pointer::m_listener =
++{
++  Pointer::HandleEnterCallback,
++  Pointer::HandleLeaveCallback,
++  Pointer::HandleMotionCallback,
++  Pointer::HandleButtonCallback,
++  Pointer::HandleAxisCallback
++};
++
++class Keyboard :
++  public boost::noncopyable
++{
++public:
++
++  Keyboard(IDllWaylandClient &,
++           struct wl_keyboard *,
++           IKeyboardReceiver &);
++  ~Keyboard();
++
++  struct wl_keyboard * GetWlKeyboard();
++
++  static void HandleKeymapCallback(void *,
++                                   struct wl_keyboard *,
++                                   uint32_t,
++                                   int,
++                                   uint32_t);
++  static void HandleEnterCallback(void *,
++                                  struct wl_keyboard *,
++                                  uint32_t,
++                                  struct wl_surface *,
++                                  struct wl_array *);
++  static void HandleLeaveCallback(void *,
++                                  struct wl_keyboard *,
++                                  uint32_t,
++                                  struct wl_surface *);
++  static void HandleKeyCallback(void *,
++                                struct wl_keyboard *,
++                                uint32_t,
++                                uint32_t,
++                                uint32_t,
++                                uint32_t);
++  static void HandleModifiersCallback(void *,
++                                      struct wl_keyboard *,
++                                      uint32_t,
++                                      uint32_t,
++                                      uint32_t,
++                                      uint32_t,
++                                      uint32_t);
++
++private:
++
++  void HandleKeymap(uint32_t format,
++                    int fd,
++                    uint32_t size);
++  void HandleEnter(uint32_t serial,
++                   struct wl_surface *surface,
++                   struct wl_array *keys);
++  void HandleLeave(uint32_t serial,
++                   struct wl_surface *surface);
++  void HandleKey(uint32_t serial,
++                 uint32_t time,
++                 uint32_t key,
++                 uint32_t state);
++  void HandleModifiers(uint32_t serial,
++                       uint32_t mods_depressed,
++                       uint32_t mods_latched,
++                       uint32_t mods_locked,
++                       uint32_t group);
++
++  static const struct wl_keyboard_listener m_listener;
++
++  IDllWaylandClient &m_clientLibrary;
++  struct wl_keyboard *m_keyboard;
++  IKeyboardReceiver &m_reciever;
++};
++
++const struct wl_keyboard_listener Keyboard::m_listener =
++{
++  Keyboard::HandleKeymapCallback,
++  Keyboard::HandleEnterCallback,
++  Keyboard::HandleLeaveCallback,
++  Keyboard::HandleKeyCallback,
++  Keyboard::HandleModifiersCallback
++};
++
++class Seat :
++  public boost::noncopyable
++{
++public:
++
++  Seat(IDllWaylandClient &,
++       struct wl_seat *,
++       IInputReceiver &);
++  ~Seat();
++
++  struct wl_seat * GetWlSeat();
++
++  static void HandleCapabilitiesCallback(void *,
++                                         struct wl_seat *,
++                                         uint32_t);
++
++private:
++
++  static const struct wl_seat_listener m_listener;
++
++  void HandleCapabilities(enum wl_seat_capability);
++
++  IDllWaylandClient &m_clientLibrary;
++  struct wl_seat * m_seat;
++  IInputReceiver &m_input;
++
++  enum wl_seat_capability m_currentCapabilities;
++};
++
++const struct wl_seat_listener Seat::m_listener =
++{
++  Seat::HandleCapabilitiesCallback
++};
++}
++
++class ITimeoutManager
++{
++public:
++  
++  typedef boost::function<void()> Callback;
++  typedef boost::shared_ptr <Callback> CallbackPtr;
++  
++  virtual ~ITimeoutManager() {}
++  virtual CallbackPtr RepeatAfterMs (const Callback &callback,
++                                     uint32_t initial, 
++                                     uint32_t timeout) = 0;
++};
++
++class IEventListener
++{
++public:
++
++  virtual ~IEventListener() {}
++  virtual bool OnEvent(XBMC_Event &) = 0;
++  virtual bool OnFocused() = 0;
++  virtual bool OnUnfocused() = 0;
++};
++
++class ICursorManager
++{
++public:
++
++  virtual ~ICursorManager() {}
++  virtual void SetCursor(uint32_t serial,
++                         struct wl_surface *surface,
++                         double surfaceX,
++                         double surfaceY) = 0;
++};
++
++class PointerProcessor :
++  public wayland::IPointerReceiver
++{
++public:
++
++  PointerProcessor(IEventListener &,
++                   ICursorManager &);
++
++private:
++
++  void Motion(uint32_t time,
++              const float &x,
++              const float &y);
++  void Button(uint32_t serial,
++              uint32_t time,
++              uint32_t button,
++              enum wl_pointer_button_state state);
++  void Axis(uint32_t time,
++            uint32_t axis,
++            float value);
++  void Enter(struct wl_surface *surface,
++             double surfaceX,
++             double surfaceY);
++
++  IEventListener &m_listener;
++  ICursorManager &m_cursorManager;
++
++  uint32_t m_currentlyPressedButton;
++  float    m_lastPointerX;
++  float    m_lastPointerY;
++
++  /* There is no defined export for these buttons -
++   * wayland appears to just be using the evdev codes
++   * directly */
++  static const unsigned int WaylandLeftButton = 272;
++  static const unsigned int WaylandMiddleButton = 273;
++  static const unsigned int WaylandRightButton = 274;
++
++  static const unsigned int WheelUpButton = 4;
++  static const unsigned int WheelDownButton = 5;
++  
++};
++
++class XKBKeymap :
++  public wayland::IKeymap
++{
++public:
++
++  XKBKeymap(IDllXKBCommon &m_xkbCommonLibrary,
++            struct xkb_keymap *keymap,
++            struct xkb_state *state);
++  ~XKBKeymap();
++
++private:
++
++  uint32_t KeysymForKeycode(uint32_t code) const;
++  void UpdateMask(uint32_t depressed,
++                  uint32_t latched,
++                  uint32_t locked,
++                  uint32_t group);
++  uint32_t CurrentModifiers();
++
++  IDllXKBCommon &m_xkbCommonLibrary;
++
++  struct xkb_keymap *m_keymap;
++  struct xkb_state *m_state;
++
++  xkb_mod_index_t m_internalLeftControlIndex;
++  xkb_mod_index_t m_internalLeftShiftIndex;
++  xkb_mod_index_t m_internalLeftSuperIndex;
++  xkb_mod_index_t m_internalLeftAltIndex;
++  xkb_mod_index_t m_internalLeftMetaIndex;
++
++  xkb_mod_index_t m_internalRightControlIndex;
++  xkb_mod_index_t m_internalRightShiftIndex;
++  xkb_mod_index_t m_internalRightSuperIndex;
++  xkb_mod_index_t m_internalRightAltIndex;
++  xkb_mod_index_t m_internalRightMetaIndex;
++
++  xkb_mod_index_t m_internalCapsLockIndex;
++  xkb_mod_index_t m_internalNumLockIndex;
++  xkb_mod_index_t m_internalModeIndex;
++};
++
++class KeyboardProcessor :
++  public wayland::IKeyboardReceiver
++{
++public:
++
++  KeyboardProcessor(IDllXKBCommon &m_xkbCommonLibrary,
++                    IEventListener &listener,
++                    ITimeoutManager &timeouts);
++  ~KeyboardProcessor();
++  
++  void SetXBMCSurface(struct wl_surface *xbmcWindow);
++
++private:
++
++  void UpdateKeymap(uint32_t format,
++                    int fd,
++                    uint32_t size);
++  void Enter(uint32_t serial,
++             struct wl_surface *surface,
++             struct wl_array *keys);
++  void Leave(uint32_t serial,
++             struct wl_surface *surface);
++  void Key(uint32_t serial,
++           uint32_t time,
++           uint32_t key,
++           enum wl_keyboard_key_state state);
++  void Modifier(uint32_t serial,
++                uint32_t depressed,
++                uint32_t latched,
++                uint32_t locked,
++                uint32_t group);
++                
++  void SendKeyToXBMC(uint32_t key,
++                     uint32_t sym,
++                     uint32_t type);
++  void RepeatCallback(uint32_t key,
++                      uint32_t sym);
++
++  IDllXKBCommon &m_xkbCommonLibrary;
++
++  boost::scoped_ptr<wayland::IKeymap> m_keymap;
++  IEventListener &m_listener;
++  ITimeoutManager &m_timeouts;
++  struct wl_surface *m_xbmcWindow;
++  
++  ITimeoutManager::CallbackPtr m_repeatCallback;
++  uint32_t m_repeatSym;
++  
++  struct xkb_context *m_context;
++};
++
++class EventDispatch :
++  public IEventListener
++{
++public:
++
++  bool OnEvent(XBMC_Event &);
++  bool OnFocused();
++  bool OnUnfocused();
++};
++}
++
++namespace xw = xbmc::wayland;
++
++namespace
++{
++class WaylandEventLoop :
++  public xbmc::ITimeoutManager
++{
++public:
++
++  WaylandEventLoop(IDllWaylandClient &clientLibrary,
++                   struct wl_display *display);
++  
++  void Dispatch();
++  
++  struct CallbackTracker
++  {
++    typedef boost::weak_ptr <Callback> CallbackObserver;
++    
++    CallbackTracker(uint32_t time,
++                    uint32_t initial,
++                    const CallbackPtr &callback);
++    
++    uint32_t time;
++    uint32_t remaining;
++    CallbackObserver callback;
++  };","Excellent, thanks.
+",f4ba1ffab924812505ba7bf86169a65fb58edec6
+3149346,2,"Although correct, it's a bit weird and not immediately obvious that this Copy method is doing a shallow copy of the FileItem base class properties, but not the actual list members...""",2013-02-25 21:23:29,Voyager1,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2311#discussion_r3149346,2013-02-26T08:23:29Z,2018-11-27T21:10:57Z,Voyager1,NONE,xbmc/windows/GUIMediaWindow.cpp,,1690.0,,,6,"@@ -1686,7 +1686,8 @@ void CGUIMediaWindow::OnFilterItems(const CStdString &filter)
+   
+   m_viewControl.Clear();
+   
+-  CFileItemList items(m_vecItems->GetPath()); // use the original path - it'll likely be relied on for other things later.
++  CFileItemList items;
++  items.Copy(*m_vecItems, false); // use the original path - it'll likely be relied on for other things later.","Although correct, it's a bit weird and not immediately obvious that this Copy method is doing a shallow copy of the FileItem base class properties, but not the actual list members...
+",9f54bdb538fcfae998466f7bebe0344315b3f1fd
+2070437,1,"make that N330 pretend it's a single core with no HT and you should see any issues :)""",2012-11-08 04:01:16,davilla,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1548#discussion_r2070437,2012-11-08T15:01:16Z,2018-11-27T21:10:37Z,davilla,CONTRIBUTOR,xbmc/cores/AudioEngine/Interfaces/AESink.h,,96.0,,,1,"@@ -87,5 +87,17 @@ class IAESink
+     This method sets the volume control, volume ranges from 0.0 to 1.0.
+   */
+   virtual void  SetVolume(float volume) {};
++
++  /*
++    Requests sink to prepare itself for a suspend state
++    @return false if sink cannot be suspended
++  */
++  virtual bool SoftSuspend() {return true;};
++","make that N330 pretend it's a single core with no HT and you should see any issues :)
+",2b41991e324d1cfdbf5202bc02c821df97953d89
+1117832,1,"Yep, will add in a separate commit.  Thanks for reviewing the code, it is really appreciated :)""",2012-07-06 14:37:08,anssih,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/987#discussion_r1117832,2012-07-07T02:37:08Z,2018-11-27T21:09:58Z,anssih,MEMBER,xbmc/cores/AudioEngine/Sinks/AESinkALSA.cpp,,157.0,,,61,"@@ -144,26 +151,40 @@ bool CAESinkALSA::Initialize(AEAudioFormat &format, std::string &device)
+ 
+   format.m_channelLayout = m_channelLayout;
+ 
+-  /* if passthrough we need the additional AES flags */
+-  if (m_passthrough)
+-    GetPassthroughDevice(format, device);
++  std::string AESParams;
++  /* digital interfaces should have AESx set, though in practice most
++   * receivers don't care */
++  if (m_passthrough || device.substr(0, 6) == ""iec958"" || device.substr(0, 4) == ""hdmi"")","Yep, will add in a separate commit.
+
+Thanks for reviewing the code, it is really appreciated :)
+",b73081c99ebecc60e7c85b11897c08cc49af26b7
+2955373,0,"In order to get the most out of it the decoder can decode frames in advance (the thread does not block in flipPage). This way the one or other decoding cycle can even last longer than refreshRate without the need of dropping a frame.  vdpau decodes, the""",2013-02-10 04:27:24,FernetMenta,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/870#discussion_r2955373,2013-02-10T15:27:24Z,2018-11-27T21:10:52Z,FernetMenta,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDCodecs/Video/DVDVideoCodec.h,,254.0,,,1,"@@ -243,4 +250,11 @@ class CDVDVideoCodec
+   {
+     return 0;
+   }
++
++  virtual bool GetPts(double &pts, int &skippedDeint, int &interlaced)
++  {
++    return false;
++  }
++","In order to get the most out of it the decoder can decode frames in advance (the thread does not block in flipPage). This way the one or other decoding cycle can even last longer than refreshRate without the need of dropping a frame.
+
+vdpau decodes, then does deinterlacing. de-interlacing needs 4 past and 2 future frames. Hence there's quite a couple of frames in the queue.
+
+When doing de-interlacing it is better just to skip a deinterlaced frame instead of dropping in decoder. The decoder signals with this flag that it just skipped a deinterling cycle. This can't be determined by pts.
+",caa0bcc1ee1eace92160f74d9c0946586ec56d4f
+658387,1,"pts is in microseconds, so.. 50 to 100 is not much :)  I prefer the m_started change.  If you could squash all the commits on that branch together and push them forced to same branch again i'll merge it.""",2012-04-07 20:34:19,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/854#discussion_r658387,2012-04-08T08:34:19Z,2018-11-27T21:09:47Z,elupus,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDPlayerVideo.cpp,,866.0,,,5,"@@ -863,7 +863,7 @@ int CDVDPlayerVideo::GetLevel()
+ void CDVDPlayerVideo::ProcessOverlays(DVDVideoPicture* pSource, double pts)
+ {
+   // remove any overlays that are out of time
+-  m_pOverlayContainer->CleanUp(pts - m_iSubtitleDelay);
++  m_pOverlayContainer->CleanUp(m_pClock->GetClock() - m_iSubtitleDelay);","pts is in microseconds, so.. 50 to 100 is not much :)
+
+I prefer the m_started change.
+
+If you could squash all the commits on that branch together and push
+them forced to same branch again i'll merge it.
+",baf86f7f195e72a538a79443b2e96bcdb6a49c13
+289991,1,"of course :) fixed locally""",2011-12-13 05:04:59,davilla,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/568#discussion_r289991,2011-12-13T16:04:59Z,2018-11-27T21:09:43Z,davilla,CONTRIBUTOR,xbmc/cores/AudioRenderers/CoreAudioRenderer.cpp,,1178.0,,,50,"@@ -1179,6 +1173,27 @@ bool CCoreAudioRenderer::InitializeEncoded(AudioDeviceID outputDevice, UInt32 sa
+   return true;
+ }
+ 
++void CCoreAudioRenderer::OnLostDevice()
++{
++  if (g_application.IsPlayingVideo() && g_guiSettings.GetBool(""videoplayer.adjustrefreshrate""))","of course :) fixed locally
+",7863407a3ddbfb836856c65e87deb21dc2490d75
+6362711,0,"Probably because it's set using GET_R() et. al.  You could certainly change it to GLfloat and divide by 255.0f when it's assigned above.""",2013-09-13 14:19:38,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3247#discussion_r6362711,2013-09-14T02:19:38Z,2018-11-27T21:12:30Z,jmarshallnz,CONTRIBUTOR,xbmc/pictures/SlideShowPicture.cpp,,,,,1,"@@ -915,6 +916,7 @@ void CSlideShowPic::Render(float *x, float *y, CBaseTexture* pTexture, color_t c
+   tex[1][0] = tex[2][0] = u2;
+   tex[2][1] = tex[3][1] = v2;
+ 
++  glUniform4f(uniColLoc,(col[0][0] / 255.0), (col[0][1] / 255.0), (col[0][2] / 255.0), (col[0][3] / 255.0));","Probably because it's set using GET_R() et. al.  You could certainly change it to GLfloat and divide by 255.0f when it's assigned above.
+",2c05ea9dd6915d0f0ffec19ac58fa1480946f4f1
+6294676,1,"No, it's not architecture, it's CPU family. In log we get """"x86 64-bit"""". I think it's better than """"x86_64 64-bit"""" :)""",2013-09-11 02:16:27,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3232#discussion_r6294676,2013-09-11T14:16:27Z,2018-11-27T21:12:28Z,Karlson2k,MEMBER,xbmc/utils/SystemInfo.cpp,,892.0,,,103,"@@ -865,6 +885,24 @@ bool CSysInfo::HasVideoToolBoxDecoder()
+ #endif
+ }
+ 
++std::string CSysInfo::GetBuildTargetCpuFamily(void)
++{
++#if defined(__thumb__) || defined(_M_ARMT) 
++  return ""ARM (Thumb)"";
++#elif defined(__arm__) || defined(_M_ARM) || defined (__aarch64__)
++  return ""ARM"";
++#elif defined(__mips__) || defined(mips) || defined(__mips)
++  return ""MIPS"";
++#elif defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X64) || defined(_M_AMD64) || \","No, it's not architecture, it's CPU family. In log we get ""x86 64-bit"". I think it's better than ""x86_64 64-bit"" :)
+",88b46613a229a2d26720e8b57feb3f8b221ed5e7
+6295045,2,"@stupid-boy Free what buffer?  They're already static strings chilling in .data. @Karlson2k I'm not concerned about performance. I'm concerned about ugly and unnecessary .c_str() calls.""",2013-09-11 02:28:53,t-nelson,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3232#discussion_r6295045,2013-09-11T14:28:53Z,2018-11-27T21:12:28Z,t-nelson,CONTRIBUTOR,xbmc/utils/SystemInfo.cpp,,884.0,,,95,"@@ -865,6 +885,24 @@ bool CSysInfo::HasVideoToolBoxDecoder()
+ #endif
+ }
+ 
++std::string CSysInfo::GetBuildTargetCpuFamily(void)","@stupid-boy Free what buffer?  They're already static strings chilling in .data.
+@Karlson2k I'm not concerned about performance. I'm concerned about ugly and unnecessary .c_str() calls.
+",88b46613a229a2d26720e8b57feb3f8b221ed5e7
+4048295,2,"Yes, the naming is all pretty terrible. I believe it's because we've gone through several iterations of what """"render"""" actually means :)  One is used for fullscreen rendering, the other is used for video controls.  This is very much a hack, and hopeful""",2013-05-01 13:34:42,theuni,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4048295,2013-05-02T01:34:42Z,2018-11-27T21:11:29Z,theuni,CONTRIBUTOR,xbmc/cores/VideoRenderers/RenderManager.cpp,,680.0,,,20,"@@ -675,6 +677,7 @@ void CXBMCRenderManager::Render(bool clear, DWORD flags, DWORD alpha)
+ 
+ void CXBMCRenderManager::Present()
+ {
++  g_Windowing.DrawSceneGraph();","Yes, the naming is all pretty terrible. I believe it's because we've gone through several iterations of what ""render"" actually means :)
+
+One is used for fullscreen rendering, the other is used for video controls.
+
+This is very much a hack, and hopefully a temporary one until video renderers can be brought under the same roof.
+",86c660485947efd3749d99cfddaf4f053af64e63
+4049981,2,"Feels a bit weird having this be part of the public interface.  If CRenderSystem just depends on m_batches then maybe a helper function which returns those should have the side effect of calling MergeSimilar before doing that?""",2013-05-01 18:31:27,smspillaz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4049981,2013-05-02T06:31:27Z,2018-11-27T21:11:33Z,smspillaz,CONTRIBUTOR,xbmc/rendering/SceneGraph.h,,,,,1,"@@ -0,0 +1,93 @@
++/*
++*      Copyright (C) 2005-2013 Team XBMC
++*      http://www.xbmc.org
++*
++*  This Program is free software; you can redistribute it and/or modify
++*  it under the terms of the GNU General Public License as published by
++*  the Free Software Foundation; either version 2, or (at your option)
++*  any later version.
++*
++*  This Program is distributed in the hope that it will be useful,
++*  but WITHOUT ANY WARRANTY; without even the implied warranty of
++*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++*  GNU General Public License for more details.
++*
++*  You should have received a copy of the GNU General Public License
++*  along with XBMC; see the file COPYING.  If not, see
++*  <http://www.gnu.org/licenses/>.
++*
++*/
++#pragma once
++#include <vector>
++#include ""threads/CriticalSection.h""
++#include ""guilib/Geometry.h""
++
++typedef uint32_t color_t;
++class CBaseTexture;
++
++
++struct PackedVertex
++{
++  float x, y, z;            // screen coords
++  float u1, v1;             // texture coords (required for texturing)
++  float u2, v2;             // difuse texture cords (required for diffuse texturing)
++  unsigned char r, g, b, a; // per-vertex colors (only necessary when diffuse color varies by vertex)
++};
++typedef std::vector<PackedVertex> PackedVertices;
++
++/*! \brief A collection of data required to perform a single render call.
++     This can include many vertices as long as they can be batched into a
++     single draw call
++ */
++struct BatchDraw
++{
++  BatchDraw() : texture(NULL), diffuseTexture(NULL), dirty(true), color(0) { vertices.reserve(4); };
++  CBaseTexture *texture;
++  CBaseTexture *diffuseTexture;
++  bool dirty;
++  uint32_t color;
++
++  PackedVertices vertices;
++};
++
++class CSceneGraph
++{
++public:
++  typedef const BatchDraw *const_iterator;
++  CSceneGraph();
++  CSceneGraph(const CSceneGraph& other);
++  /*! \brief Queue a new batch in the scene. It will not be visible until
++      the graph is drawn
++   */
++  void Add(const BatchDraw &batch);
++
++  /*! \brief Discard all current batches in the scene. If the scene was not
++       drawn already, the current batches will never be seen.
++   */
++  void Clear();
++
++  /*! \brief Quick way to add a rectangle to the scene, with optional texture.
++      If texture coords are missing, the entire texture will be drawn.
++   */
++  void DrawQuad(const CRect &rect, color_t color, CBaseTexture *texture=NULL, const CRect *texCoords=NULL);
++
++// Only use these on a COPY of the Scene Graph. Forced double-buffering helps
++// to avoid complicated Locking.
++
++  /*! \brief helper function for iterating through batches*/
++  const_iterator begin() const;
++ 
++ /*! \brief helper function for iterating through batches*/
++  const_iterator end() const;
++
++  /*! \brief Perform quick optimizations on the scene based on similar
++       attributes. Contiguous batches can be merged under some conditions which
++       results in less draw calls
++  */
++  void MergeSimilar();","Feels a bit weird having this be part of the public interface.
+
+If CRenderSystem just depends on m_batches then maybe a helper function which returns those should have the side effect of calling MergeSimilar before doing that?
+",86c660485947efd3749d99cfddaf4f053af64e63
+4052250,1,"Noted, lets deal with it later :)""",2013-05-01 22:18:07,smspillaz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4052250,2013-05-02T10:18:07Z,2018-11-27T21:11:36Z,smspillaz,CONTRIBUTOR,xbmc/rendering/gles/RenderSystemGLES.cpp,,647.0,,,102,"@@ -631,4 +632,318 @@ GLint CRenderSystemGLES::GUIShaderGetCoord1()
+   return -1;
+ }
+ 
++GLint CRenderSystemGLES::GUIShaderGetUniCol()
++{
++  if (m_pGUIshader[m_method])
++    return m_pGUIshader[m_method]->GetUniColLoc();
++
++  return -1;
++}
++
++void CRenderSystemGLES::DrawSceneGraphImpl(const CSceneGraph *sceneGraph, const CDirtyRegionList *dirtyRegions)
++{
++
++  if (!m_bRenderCreated)","Noted, lets deal with it later :)
+",86c660485947efd3749d99cfddaf4f053af64e63
+4148785,2,"yeah - silly github comments drop out xml-isms ```#include <vector>```""",2013-05-08 17:41:33,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2691#discussion_r4148785,2013-05-09T05:41:33Z,2018-11-27T21:11:43Z,jmarshallnz,CONTRIBUTOR,xbmc/cores/VideoRenderers/RenderFeatures.h,,21.0,,,21,"@@ -0,0 +1,39 @@
++#pragma once
++/*
++ *      Copyright (C) 2005-2012 Team XBMC
++ *      http://www.xbmc.org
++ *
++ *  This Program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  This Program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with XBMC; see the file COPYING.  If not, see
++ *  <http://www.gnu.org/licenses/>.
++ *
++ */
++","yeah - silly github comments drop out xml-isms
+`#include <vector>`
+",73fae08231724b1d883a5678b78d73cb630186a6
+5567015,1,"A perfect timing. Just a second before my commit :)""",2013-08-03 02:41:20,DoraXBMC,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2049#discussion_r5567015,2013-08-03T14:41:20Z,2018-11-27T21:12:10Z,GilShpr,NONE,xbmc/interfaces/json-rpc/ProfilesOperations.cpp,,,,,1,"@@ -0,0 +1,153 @@
++/*
++ *      Copyright (C) 2013 Team XBMC
++ *      http://xbmc.org
++ *
++ *  This Program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  This Program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with XBMC; see the file COPYING.  If not, see
++ *  <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#include ""ProfilesOperations.h""
++#include ""ApplicationMessenger.h""
++#include ""guilib/LocalizeStrings.h""
++#include ""profiles/ProfilesManager.h""
++#include ""utils/md5.h""
++
++using namespace JSONRPC;
++
++JSONRPC_STATUS CProfilesOperations::GetProfiles(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result)
++{
++  CFileItemList listItems;
++
++  for (unsigned int i = 0; i < CProfilesManager::Get().GetNumberOfProfiles(); ++i)
++  {
++    const CProfile *profile = CProfilesManager::Get().GetProfile(i);
++    CFileItemPtr item(new CFileItem(profile->getName()));
++    item->SetArt(""thumb"", profile->getThumb());
++    listItems.Add(item);
++  }
++
++  HandleFileItemList(""profileid"", false, ""profiles"", listItems, parameterObject, result);
++
++  if (parameterObject.isMember(""properties"") &&
++      parameterObject[""properties""].isArray() &&
++      result.isMember(""profiles"") &&
++      result[""profiles""].isArray())
++  {
++    for (CVariant::const_iterator_array propertyiter = parameterObject[""properties""].begin_array(); propertyiter != parameterObject[""properties""].end_array(); ++propertyiter)
++    {
++      if (propertyiter->isString() &&
++          propertyiter->asString() == ""lockmode"")
++      {
++        for (CVariant::const_iterator_array profileiter = result[""profiles""].begin_array(); profileiter != result[""profiles""].end_array(); ++profileiter)
++        {
++          CStdString profilename = (*profileiter)[""label""].asString();
++          int index = CProfilesManager::Get().GetProfileIndex(profilename);
++          const CProfile *profile = CProfilesManager::Get().GetProfile(index);
++          LockType locktype = LOCK_MODE_UNKNOWN;
++          if (index == 0)
++            locktype = CProfilesManager::Get().GetMasterProfile().getLockMode();
++          else
++            locktype = profile->getLockMode();
++          CVariant object = *profileiter;
++          object[""lockmode""] = locktype;
++        }
++      }
++    }
++  }
++  return OK;
++}
++
++JSONRPC_STATUS CProfilesOperations::GetCurrentProfile(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result)
++{
++  const CProfile& currentProfile = CProfilesManager::Get().GetCurrentProfile();
++  CVariant profileVariant = CVariant(CVariant::VariantTypeObject);
++  profileVariant[""label""] = currentProfile.getName();
++  profileVariant[""thumbnail""] = """";
++  if (parameterObject.isMember(""properties"") &&
++      parameterObject[""properties""].isArray())
++  {
++    for (CVariant::const_iterator_array propertyiter = parameterObject[""properties""].begin_array(); propertyiter != parameterObject[""properties""].end_array(); ++propertyiter)
++    {
++      if (propertyiter->isString() &&
++          propertyiter->asString() == ""lockmode"")
++      {
++        profileVariant[""lockmode""] = currentProfile.getLockMode();;
++      }
++    }
++  }
++
++  result = profileVariant;
++
++  return OK;
++}
++
++JSONRPC_STATUS CProfilesOperations::LoadProfile(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result)
++{
++  CStdString profilename = parameterObject[""profile""].asString();
++  int index = CProfilesManager::Get().GetProfileIndex(profilename);
++    
++	// Init prompt
++	bool bPrompt = false;
++	bPrompt = parameterObject[""prompt""].asBoolean();
++    
++	bool bCanceled;
++  bool bLoadProfile(false);
++  if (index >= 0)
++	{
++	  if (CProfilesManager::Get().GetMasterProfile().getLockMode() == LOCK_MODE_EVERYONE ||            // Password not needed
++        (bPrompt && g_passwordManager.IsProfileLockUnlocked(index, bCanceled, bPrompt)))  // Password needed and user asked to enter it
++    {
++      bLoadProfile = true;
++    }
++	  else if (!bCanceled && parameterObject.isMember(""password"") &&
++      parameterObject[""password""].isObject() &&
++      parameterObject[""password""].isMember(""password""))  // Password needed and user provided it
++	  {
++      const CVariant &passwordObject = parameterObject[""password""];
++	    CStdString strToVerify;  // Holds user saved password hash
++		  if (index == 0)
++		    strToVerify = CProfilesManager::Get().GetMasterProfile().getLockCode();
++		  else
++		  {
++	      CProfile *profile = CProfilesManager::Get().GetProfile(index);
++		    strToVerify = profile->getLockCode();
++		  }
++
++		  CStdString password = passwordObject[""password""].asString();
++		
++		  // Create password hash from the provided password if md5 is not used
++      CStdString md5pword2;
++      CStdString encryption = passwordObject[""encryption""].asString();
++      if (encryption.Equals(""none""))
++		  {
++			  XBMC::XBMC_MD5 md5state;
++			  md5state.append(password);
++			  md5state.getDigest(md5pword2);
++		  }
++		  else if (encryption.Equals(""md5""))
++		  {
++			  md5pword2 = password;
++		  }
++
++		  // Verify profided password
++      if (strToVerify.Equals(md5pword2))
++		    bLoadProfile = true;
++	  }
++	}
++
++  if (bLoadProfile)
++    CApplicationMessenger::Get().LoadProfile(index);
++  return ACK;","A perfect timing.
+Just a second before my commit :)
+",2492ed8e1ff0d5c92b199de7610f652085ebfc09
+8044,2,"weird reindent, so can't see what changed.""",2011-03-13 03:10:43,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/62#discussion_r8044,2011-03-13T14:10:43Z,2018-11-27T21:09:15Z,elupus,CONTRIBUTOR,xbmc/settings/GUISettings.cpp,,405.0,,,1,"@@ -357,43 +357,51 @@ void CGUISettings::Initialize()
+   // System settings
+   AddGroup(4, 13000);
+   CSettingsCategory* vs = AddCategory(4, ""videoscreen"", 21373);
++
++#if (defined(__APPLE__) && defined(__arm__))
++  // define but hide display, resolution and blankdisplays settings on atv2/ios, they are not user controlled
++  AddInt(NULL, ""videoscreen.screen"", 240, 0, -1, 1, g_Windowing.GetNumScreens(), SPIN_CONTROL_TEXT);
++  AddInt(NULL, ""videoscreen.resolution"", 131, -1, 0, 1, INT_MAX, SPIN_CONTROL_TEXT);
++  AddBool(NULL, ""videoscreen.blankdisplays"", 13130, false);
++#else
+   // this setting would ideally not be saved, as its value is systematically derived from videoscreen.screenmode.
+   // contains a DISPLAYMODE
+   AddInt(vs, ""videoscreen.screen"", 240, 0, -1, 1, g_Windowing.GetNumScreens(), SPIN_CONTROL_TEXT);
+   // this setting would ideally not be saved, as its value is systematically derived from videoscreen.screenmode.
+   // contains an index to the g_settings.m_ResInfo array. the only meaningful fields are iScreen, iWidth, iHeight.
+-#if defined (__APPLE__)
+-  AddInt(vs, ""videoscreen.resolution"", 131, -1, 0, 1, INT_MAX, SPIN_CONTROL_TEXT);
+-#else
+-  AddInt(vs, ""videoscreen.resolution"", 169, -1, 0, 1, INT_MAX, SPIN_CONTROL_TEXT);
+-#endif
++  #if defined (__APPLE__)
++    AddInt(vs, ""videoscreen.resolution"", 131, -1, 0, 1, INT_MAX, SPIN_CONTROL_TEXT);
++  #else
++    AddInt(vs, ""videoscreen.resolution"", 169, -1, 0, 1, INT_MAX, SPIN_CONTROL_TEXT);
++  #endif
+   AddString(g_application.IsStandAlone() ? vs : NULL, ""videoscreen.screenmode"", 243, ""DESKTOP"", SPIN_CONTROL_TEXT);
+ 
+-#if defined(_WIN32) || defined (__APPLE__)
+-  // We prefer a fake fullscreen mode (window covering the screen rather than dedicated fullscreen)
+-  // as it works nicer with switching to other applications. However on some systems vsync is broken
+-  // when we do this (eg non-Aero on ATI in particular) and on others (AppleTV) we can't get XBMC to
+-  // the front
+-  bool fakeFullScreen = true;
+-  bool showSetting = true;
+-  if (g_sysinfo.IsAeroDisabled())
+-    fakeFullScreen = false;
+-
+-#if defined(_WIN32) && defined(HAS_GL)
+-  fakeFullScreen = true;
+-  showSetting = false;
+-#endif
+-
+-#if defined (__APPLE__)
+-  if (g_sysinfo.IsAppleTV())
+-  {
+-    fakeFullScreen = false;
+-  }
+-  showSetting = false;
+-#endif
+-  AddBool(showSetting ? vs : NULL, ""videoscreen.fakefullscreen"", 14083, fakeFullScreen);
+-  AddBool(vs, ""videoscreen.blankdisplays"", 13130, false);
+-  AddSeparator(vs, ""videoscreen.sep1"");
++  #if defined(_WIN32) || defined (__APPLE__)
++    // We prefer a fake fullscreen mode (window covering the screen rather than dedicated fullscreen)
++    // as it works nicer with switching to other applications. However on some systems vsync is broken
++    // when we do this (eg non-Aero on ATI in particular) and on others (AppleTV) we can't get XBMC to
++    // the front
++    bool fakeFullScreen = true;
++    bool showSetting = true;
++    if (g_sysinfo.IsAeroDisabled())
++      fakeFullScreen = false;
++
++    #if defined(_WIN32) && defined(HAS_GL)
++      fakeFullScreen = true;
++      showSetting = false;
++    #endif
++
++    #if defined (__APPLE__)
++      if (g_sysinfo.IsAppleTV())
++      {
++        fakeFullScreen = false;
++      }
++      showSetting = false;
++    #endif
++    AddBool(showSetting ? vs : NULL, ""videoscreen.fakefullscreen"", 14083, fakeFullScreen);
++    AddBool(vs, ""videoscreen.blankdisplays"", 13130, false);
++    AddSeparator(vs, ""videoscreen.sep1"");
++  #endif
+ #endif","weird reindent, so can't see what changed.
+",6a49e5fd4704b1e8b8a9fd3ffb557b614dd4e294
+6365024,0,"No need for the if()'s""",2013-09-14 10:11:35,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3265#discussion_r6365024,2013-09-14T22:11:35Z,2018-11-27T21:12:31Z,jmarshallnz,CONTRIBUTOR,lib/cximage-6.0/CxImage/ximadsp.cpp,,,,,1,"@@ -2484,12 +2491,18 @@ bool CxImage::GaussianBlur(float radius /*= 1.0f*/, CxImage* iDst /*= 0*/)
+ 		pPalette = new RGBQUAD[head.biClrUsed];
+ 		memcpy(pPalette, GetPalette(),GetPaletteSize());
+ 		if (!IncreaseBpp(24))
++    {
++      if(pPalette)
++        delete [] pPalette;","No need for the if()'s
+",bace22a43fe5293f08ac42badbbe3f522645464f
+1783614,0,"you should probably initialize the path of the list with m_vecItems->GetPath() here, since you're assigning that at the end to """"items"""". See Pull request 1176 (https://github.com/xbmc/xbmc/pull/1176) where tvshows/seasons watched-filtering is using the li""",2012-10-07 22:53:02,Voyager1,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1399#discussion_r1783614,2012-10-08T10:53:02Z,2018-11-27T21:10:20Z,Voyager1,NONE,xbmc/windows/GUIMediaWindow.cpp,,1654.0,,,263,"@@ -1593,7 +1643,112 @@ bool CGUIMediaWindow::GetFilteredItems(const CStdString &filter, CFileItemList &
+ 
+   items.ClearItems();
+   items.Append(filteredItems);
+-  return (items.GetObjectCount() > 0);
++
++  return items.GetObjectCount() > 0;
++}
++
++bool CGUIMediaWindow::GetAdvanceFilteredItems(CFileItemList &items, bool &hasNewItems)
++{
++  hasNewItems = false;
++
++  CFileItemList resultItems;","you should probably initialize the path of the list with m_vecItems->GetPath() here, since you're assigning that at the end to ""items"".
+See Pull request 1176 (https://github.com/xbmc/xbmc/pull/1176) where tvshows/seasons watched-filtering is using the list path to determine the node type.
+",7c46f10989df470461cd40d3e12945b812ef8fd7
+6506593,0,"@Skixbmc @Karlson2k  ```""""%s\%s""""``` should be ```""""%s\\%s""""``` right?""",2013-09-22 10:48:05,ace20022,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3285#discussion_r6506593,2013-09-22T22:48:05Z,2018-11-27T21:12:36Z,ace20022,MEMBER,xbmc/threads/platform/win/Win32Exception.cpp,,128.0,,,17,"@@ -115,17 +115,17 @@ bool win32_exception::write_minidump(EXCEPTION_POINTERS* pEp)
+ {
+   // Create the dump file where the xbmc.exe resides
+   bool returncode = false;
+-  CStdString dumpFileName;
++  std::string dumpFileName;
+   CStdStringW dumpFileNameW;
+   SYSTEMTIME stLocalTime;
+   GetLocalTime(&stLocalTime);
+ 
+-  dumpFileName.Format(""xbmc_crashlog-%s-%04d%02d%02d-%02d%02d%02d.dmp"",
++  dumpFileName = StringUtils::Format(""xbmc_crashlog-%s-%04d%02d%02d-%02d%02d%02d.dmp"",
+                       mVersion.c_str(),
+                       stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay,
+                       stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond);
+ 
+-  dumpFileName.Format(""%s\\%s"", CWIN32Util::GetProfilePath().c_str(), CUtil::MakeLegalFileName(dumpFileName));
++  dumpFileName = StringUtils::Format(""%s\%s"", CWIN32Util::SmbToUnc(CWIN32Util::GetProfilePath()).c_str(), CUtil::MakeLegalFileName(dumpFileName).c_str());","@Skixbmc @Karlson2k  `""%s\%s""` should be `""%s\\%s""` right?
+",72fdffdfce88ead6078fd3a3b09a29224693e7ba
+6778969,0,"!m_strPassword.empty()""",2013-10-04 08:51:59,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3324#discussion_r6778969,2013-10-04T20:51:59Z,2018-11-27T21:12:51Z,jmarshallnz,CONTRIBUTOR,xbmc/URL.cpp,,,,,1,"@@ -577,9 +584,19 @@ CStdString CURL::GetWithoutUserDetails() const
+   strURL = m_strProtocol;
+   strURL += ""://"";
+ 
++  if (redact && m_strUserName != """")
++  {
++    strURL += ""USERNAME"";
++    if (m_strPassword != """")","!m_strPassword.empty()
+",4b40afbed67bd2ba042581e8d95dd3fda0ccdf67
+5966849,1,"Thinks I found a better way. :)""",2013-08-24 08:37:10,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3121#discussion_r5966849,2013-08-24T20:37:10Z,2018-11-27T21:12:22Z,Karlson2k,MEMBER,xbmc/cores/dvdplayer/DVDInputStreams/DVDInputStreamPVRManager.cpp,,67.0,,,23,"@@ -58,15 +58,16 @@
+ 
+ void CDVDInputStreamPVRManager::ResetScanTimeout(unsigned int iTimeoutMs)
+ {
+-  m_iScanTimeout = iTimeoutMs > 0 ?
+-      XbmcThreads::SystemClockMillis() + iTimeoutMs :
+-      0;
++  if (iTimeoutMs > 0)
++    m_ScanTimeout.Set(iTimeoutMs);
++  else
++    m_ScanTimeout.SetInfinite();
+ }
+ 
+ bool CDVDInputStreamPVRManager::IsEOF()
+ {
+   // don't mark as eof while within the scan timeout
+-  if (m_iScanTimeout && XbmcThreads::SystemClockMillis() < m_iScanTimeout)
++  if (!m_ScanTimeout.IsTimePast())","Thinks I found a better way. :)
+",415781d7df50fd00a00629542e73e0d5860ac3b2
+5628791,0,"Lets only re-add that hack if we find an ATI card that needs it again.""",2013-08-06 23:09:08,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2747#discussion_r5628791,2013-08-07T11:09:08Z,2018-11-27T21:12:16Z,elupus,CONTRIBUTOR,xbmc/windowing/X11/WinSystemX11GLES.cpp,,147.0,,,18,"@@ -142,11 +143,8 @@ bool CWinSystemX11GLES::DestroyWindowSystem()
+     m_eglDisplay = 0;
+   }
+ 
+-  if (m_dpy)
+-  {
+-    XCloseDisplay(m_dpy);
+-    m_dpy = NULL;
+-  }
++  //we don't call XCloseDisplay() here, since ati keeps a pointer to our m_dpy
++  //so instead we just let m_dpy die on exit","Lets only re-add that hack if we find an ATI card that needs it again.
+",8670cdda0dde1356879f90603065cb98e4c94c6b
+4767998,2,"Oh right. Crap.""",2013-06-18 20:49:41,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2886#discussion_r4767998,2013-06-19T08:49:41Z,2018-11-27T21:11:59Z,elupus,CONTRIBUTOR,xbmc/Application.cpp,,2763.0,,,26,"@@ -2756,6 +2760,8 @@ void CApplication::FrameMove(bool processEvents, bool processGUI)
+   }
+   if (processGUI && m_renderGUI)
+   {
++    g_renderManager.FrameMove();","Oh right. Crap.
+",cc6a3fc2c921f772265197d92ef13d7227677015
+4183083,0,"problem is that /xbmc/linux/PlatformDefs.h defines 'byte unsigned cha' at 158, RPI's /usr/include/linux/i2c.h uses 'byte' as param name at line 26. reordering includes fixes compilation, as long as param is included (somehow ) before define.""",2013-05-11 00:17:57,stupid-boy,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2727#discussion_r4183083,2013-05-11T12:17:57Z,2018-11-27T21:11:46Z,stupid-boy,CONTRIBUTOR,xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp,,30.0,,,18,"@@ -18,16 +18,16 @@
+  *
+  */
+ 
+-#include ""EGLNativeTypeAmlogic.h""
+-#include ""guilib/gui3d.h""
+-#include ""utils/AMLUtils.h""
+-#include ""utils/StringUtils.h""
+-
+ #include <stdlib.h>
+ #include <linux/fb.h>
+ #include <sys/ioctl.h>
+ #include <EGL/egl.h>
+ 
++#include ""EGLNativeTypeAmlogic.h""
++#include ""guilib/gui3d.h""
++#include ""utils/AMLUtils.h""
++#include ""utils/StringUtils.h""
++","problem is that /xbmc/linux/PlatformDefs.h defines 'byte unsigned cha' at 158, RPI's /usr/include/linux/i2c.h uses 'byte' as param name at line 26. reordering includes fixes compilation, as long as param is included (somehow ) before define.
+",2da5c6520ab0abd90345b8cd140d37635800d607
+685025,1,"Nice catch. Leftover from the evolved development :)""",2012-04-13 20:57:03,wsoltys,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/757#discussion_r685025,2012-04-14T08:57:03Z,2018-11-27T21:09:50Z,wsoltys,NONE,xbmc/cores/paplayer/windows/WMAcodec.h,,,,,1,"@@ -0,0 +1,51 @@
++#pragma once
++
++/*
++ *      Copyright (C) 2005-2012 Team XBMC
++ *      http://www.xbmc.org
++ *
++ *  This Program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  This Program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with XBMC; see the file COPYING.  If not, write to
++ *  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
++ *  http://www.gnu.org/copyleft/gpl.html
++ *
++ */
++
++#include ""../CachingCodec.h""
++#include <wmsdk.h>
++#include ""utils/RingBuffer.h""
++#include ""win32/XBMCistream.h""
++
++class WMAcodec : public CachingCodec
++{
++public:
++  WMAcodec();
++  virtual ~WMAcodec();
++
++  virtual bool Init(const CStdString &strFile, unsigned int filecache);
++  virtual void DeInit();
++  virtual __int64 Seek(__int64 iSeekTime);
++  virtual int ReadPCM(BYTE *pBuffer, int size, int *actualsize);
++  virtual int ReadSamples(float *pBuffer, int numsamples, int *actualsamples);
++  virtual bool CanInit();
++  static bool IsWMAavailable();
++
++private:
++  IWMSyncReader* m_ISyncReader;
++  INSSBuffer* m_pINSSBuffer;","Nice catch. Leftover from the evolved development :)
+",77aa3a25e3455a3e30b871d3dac4789c406dd87a
+5628382,0,"http://pastebin.com/3BdHqHDQ <- there are some more - but those in that pasty are the ones where i am sure it is safe to change them...""",2013-08-06 22:40:53,Memphiz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2895#discussion_r5628382,2013-08-07T10:40:53Z,2018-11-27T21:12:16Z,Memphiz,MEMBER,xbmc/Application.cpp,,5750.0,,,9,"@@ -5742,3 +5742,24 @@ bool CApplication::SetLanguage(const CStdString &strLanguage)
+ 
+   return true;
+ }
++
++void CApplication::CloseNetworkShares()
++{
++  CLog::Log(LOGDEBUG,""CApplication::CloseNetworkShares: Closing all network shares"");
++
++#if defined(HAS_FILESYSTEM_SMB) && !defined(_WIN32)","http://pastebin.com/3BdHqHDQ <- there are some more - but those in that pasty are the ones where i am sure it is safe to change them...
+",54d194c349cd3a52ba118e01f030f60851c8b21c
+6643034,0,"No, look at https://github.com/xbmc/xbmc/pull/3326/files#L3R180. I need Lock to survive after function GetAndLockConverter, until UnlockConverter is called. This is the main reason for lock.""",2013-09-27 14:05:39,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3326#discussion_r6643034,2013-09-28T02:05:39Z,2018-11-27T21:12:43Z,Karlson2k,MEMBER,xbmc/utils/CharsetConverter.cpp,,,,,1,"@@ -55,54 +56,360 @@
+   #define UTF8_SOURCE ""UTF-8""
+ #endif
+ 
++enum SpecialCharset
++{
++  NotSpecialCharset = 0,
++  SystemCharset,
++  UserCharset /* locale.charset */, 
++  SubtitleCharset /* subtitles.charset */,
++  KaraokeCharset /* karaoke.charset */
++};
++
++
++class CConverterType
++{
++public:
++  CConverterType(const std::string& sourceCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(enum SpecialCharset sourceSpecialCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(const std::string& sourceCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(enum SpecialCharset sourceSpecialCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(const CConverterType& other);
++  ~CConverterType();
++
++  iconv_t GetAndLockConverter(void);
++  void UnlockConverter(void);
++
++  void Reset(void);
++  void ReinitTo(const std::string& sourceCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen = 1);
++  std::string GetSourceCharset(void) const
++  { return m_sourceCharset; }
++  std::string GetTargetCharset(void) const
++  { return m_targetCharset; }
++  unsigned int GetTargetSingleCharMaxLen(void) const
++  { return m_targetSingleCharMaxLen; }
++
++private:
++  static std::string ResolveSpecialCharset(enum SpecialCharset charset);
++
++  CCriticalSection m_critSection;
++  CSingleLock m_converterLock;
++  enum SpecialCharset m_sourceSpecialCharset;
++  std::string m_sourceCharset;
++  enum SpecialCharset m_targetSpecialCharset;
++  std::string m_targetCharset;
++  iconv_t m_iconv;
++  unsigned int m_targetSingleCharMaxLen;
++};
++
++CConverterType::CConverterType(const std::string& sourceCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(NotSpecialCharset),
++  m_sourceCharset(sourceCharset),
++  m_targetSpecialCharset(NotSpecialCharset),
++  m_targetCharset(targetCharset),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(enum SpecialCharset sourceSpecialCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(sourceSpecialCharset),
++  m_sourceCharset(),
++  m_targetSpecialCharset(NotSpecialCharset),
++  m_targetCharset(targetCharset),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(const std::string& sourceCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(NotSpecialCharset),
++  m_sourceCharset(sourceCharset),
++  m_targetSpecialCharset(targetSpecialCharset),
++  m_targetCharset(),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(enum SpecialCharset sourceSpecialCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(sourceSpecialCharset),
++  m_sourceCharset(),
++  m_targetSpecialCharset(targetSpecialCharset),
++  m_targetCharset(),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(const CConverterType& other):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(other.m_sourceSpecialCharset),
++  m_sourceCharset(other.m_sourceCharset),
++  m_targetSpecialCharset(other.m_targetSpecialCharset),
++  m_targetCharset(other.m_targetCharset),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(other.m_targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();","No, look at https://github.com/xbmc/xbmc/pull/3326/files#L3R180. I need Lock to survive after function GetAndLockConverter, until UnlockConverter is called. This is the main reason for lock.
+",04f6e3727f0ad4376aeedef93a8b38a7b00b8aa7
+6347465,1,"Should I go and buy a can of paint ? :)""",2013-09-13 01:21:40,davilla,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3247#discussion_r6347465,2013-09-13T13:21:40Z,2018-11-27T21:12:29Z,davilla,CONTRIBUTOR,xbmc/windowing/egl/WinSystemEGL.cpp,,,,,1,"@@ -320,8 +320,16 @@ void CWinSystemEGL::UpdateResolutions()
+ 
+   if (!m_egl->ProbeResolutions(resolutions) || !resolutions.size())
+   {
+-    CLog::Log(LOGERROR, ""%s: Could not find any possible resolutions"",__FUNCTION__);
+-    return;
++    CLog::Log(LOGWARNING, ""%s: ProbeResolutions failed. Trying safe default."",__FUNCTION__);
++
++    RESOLUTION_INFO fallback;
++    if (!m_egl->GetPreferredResolution(&fallback))","Should I go and buy a can of paint ? :)
+",2c05ea9dd6915d0f0ffec19ac58fa1480946f4f1
+6358852,1,"Looks good with those changes thanks @davilla""",2013-09-13 09:01:46,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3247#discussion_r6358852,2013-09-13T21:01:46Z,2018-11-27T21:12:30Z,jmarshallnz,CONTRIBUTOR,xbmc/windowing/egl/WinSystemEGL.cpp,,,,,1,"@@ -320,8 +320,16 @@ void CWinSystemEGL::UpdateResolutions()
+ 
+   if (!m_egl->ProbeResolutions(resolutions) || !resolutions.size())
+   {
+-    CLog::Log(LOGERROR, ""%s: Could not find any possible resolutions"",__FUNCTION__);
+-    return;
++    CLog::Log(LOGWARNING, ""%s: ProbeResolutions failed. Trying safe default."",__FUNCTION__);
++
++    RESOLUTION_INFO fallback;
++    if (!m_egl->GetPreferredResolution(&fallback))","Looks good with those changes thanks @davilla
+",2c05ea9dd6915d0f0ffec19ac58fa1480946f4f1
+6191405,2,"@Montellese Can't find any overload for std::string. :( EDIT: found it. Strange overload: CStdString in input, std::string on output.""",2013-09-05 07:29:09,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3097#discussion_r6191405,2013-09-05T19:29:09Z,2018-11-27T21:12:24Z,Karlson2k,MEMBER,xbmc/Util.cpp,,,,,1,"@@ -756,6 +756,17 @@ void CUtil::Tokenize(const CStdString& path, vector<CStdString>& tokens, const s
+   }
+ }
+ 
++void CUtil::Tokenize(const std::string& path, std::vector<std::string>& tokens, const std::string& delimiters)","@Montellese Can't find any overload for std::string. :(
+EDIT: found it. Strange overload: CStdString in input, std::string on output.
+",4af1fcd140f3bd66790d2692281fcdc823b24e40
+4049884,1,"++i. Maybe I'll stop doing these ones :P""",2013-05-01 18:19:05,smspillaz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4049884,2013-05-02T06:19:05Z,2018-11-27T21:11:32Z,smspillaz,CONTRIBUTOR,xbmc/rendering/gles/RenderSystemGLES.cpp,,,,,1,"@@ -631,4 +632,318 @@ GLint CRenderSystemGLES::GUIShaderGetCoord1()
+   return -1;
+ }
+ 
++GLint CRenderSystemGLES::GUIShaderGetUniCol()
++{
++  if (m_pGUIshader[m_method])
++    return m_pGUIshader[m_method]->GetUniColLoc();
++
++  return -1;
++}
++
++void CRenderSystemGLES::DrawSceneGraphImpl(const CSceneGraph *sceneGraph, const CDirtyRegionList *dirtyRegions)
++{
++
++  if (!m_bRenderCreated)
++    return;
++  int range, unit = 0;
++
++  if(g_Windowing.UseLimitedColor())
++    range = 235 - 16;
++  else
++    range = 255 -  0;
++
++  GLint posLoc  = -1;
++  GLint tex0Loc = -1;
++  GLint tex1Loc = -1;
++  GLint uniColLoc = -1;
++
++  for(CSceneGraph::const_iterator i = sceneGraph->begin(); i != sceneGraph->end(); i++)","++i. Maybe I'll stop doing these ones :P
+",86c660485947efd3749d99cfddaf4f053af64e63
+4050385,1,"@topfs2 *cough* ^^ :)""",2013-05-01 19:23:24,theuni,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4050385,2013-05-02T07:23:24Z,2018-11-27T21:11:34Z,theuni,CONTRIBUTOR,xbmc/rendering/gles/RenderSystemGLES.cpp,,,,,1,"@@ -631,4 +632,318 @@ GLint CRenderSystemGLES::GUIShaderGetCoord1()
+   return -1;
+ }
+ 
++GLint CRenderSystemGLES::GUIShaderGetUniCol()
++{
++  if (m_pGUIshader[m_method])
++    return m_pGUIshader[m_method]->GetUniColLoc();
++
++  return -1;
++}
++
++void CRenderSystemGLES::DrawSceneGraphImpl(const CSceneGraph *sceneGraph, const CDirtyRegionList *dirtyRegions)
++{
++
++  if (!m_bRenderCreated)
++    return;
++  int range, unit = 0;
++
++  if(g_Windowing.UseLimitedColor())
++    range = 235 - 16;
++  else
++    range = 255 -  0;
++
++  GLint posLoc  = -1;
++  GLint tex0Loc = -1;
++  GLint tex1Loc = -1;
++  GLint uniColLoc = -1;
++
++  for(CSceneGraph::const_iterator i = sceneGraph->begin(); i != sceneGraph->end(); i++)
++  {
++    if (i->texture)
++      LoadToGPU(i->texture);
++    if (i->diffuseTexture)
++      LoadToGPU(i->diffuseTexture);
++
++    if (i->vertices.size() < 4)
++      continue;
++  }
++
++  // Clear directly before the first draw in each frame
++  if (m_needsClear)
++  {
++    if (dirtyRegions)
++    {
++      for (CDirtyRegionList::const_iterator region = dirtyRegions->begin(); region != dirtyRegions->end(); region++)
++      {
++        SetScissors(*region);
++        ClearBuffers(0);
++        ResetScissors();
++      }
++    }
++    else
++      ClearBuffers(0);
++    m_needsClear = false;
++  }
++
++  for(CSceneGraph::const_iterator i = sceneGraph->begin(); i != sceneGraph->end(); i++)
++  {
++    unit = 0;
++    unsigned int r,g,b,a = 0;
++
++    if (i->vertices.size() < 4)
++      continue;
++
++    unsigned int triangleVerts = 6 * (i->vertices.size() / 4);
++    GLushort idx[triangleVerts];
++    GLushort *itr = idx;
++    for(unsigned int j=0; j < i->vertices.size(); j+=4)
++    {
++      *itr++ = j + 0;
++      *itr++ = j + 1;
++      *itr++ = j + 2;
++      *itr++ = j + 0;
++      *itr++ = j + 2;
++      *itr++ = j + 3;
++     }
++
++    if (i->texture)
++      BindToUnit(i->texture, unit++);
++
++    r = GET_R(i->color) * range / 255;
++    g = GET_G(i->color) * range / 255;
++    b = GET_B(i->color) * range / 255;
++    a = GET_A(i->color);
++
++    bool hasAlpha = a < 255 || (i->texture && i->texture->HasAlpha());
++
++    if (i->diffuseTexture)
++    {
++      BindToUnit(i->diffuseTexture, unit++);
++
++      hasAlpha |= i->diffuseTexture->HasAlpha();
++
++      if (r == 255 && g == 255 && b == 255 && a == 255 )
++      {
++        EnableGUIShader(SM_MULTI);
++      }
++      else
++      {
++        EnableGUIShader(SM_MULTI_BLENDCOLOR);
++      }
++    }
++    else if (i->texture)
++    {
++      EnableGUIShader(SM_TEXTURE);
++    }
++    else
++    {
++      EnableGUIShader(SM_DEFAULT);
++    }
++
++    posLoc  = GUIShaderGetPos();
++    tex0Loc = GUIShaderGetCoord0();
++    tex1Loc = GUIShaderGetCoord1();
++    uniColLoc = GUIShaderGetUniCol();
++
++    glUniform4f(uniColLoc, ((float)r / 255.0), ((float)g / 255.0), ((float)b / 255.0), ((float)a / 255.0));
++
++    if (i->diffuseTexture)
++    {
++      glVertexAttribPointer(tex1Loc, 2, GL_FLOAT,         GL_FALSE, sizeof(PackedVertex), (char*)&i->vertices[0] + offsetof(PackedVertex, u2));
++      glEnableVertexAttribArray(tex1Loc);
++    }
++
++    if ( hasAlpha )
++    {
++      glEnable( GL_BLEND );
++      glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
++    }
++    else
++    {
++      glDisable(GL_BLEND);
++    }
++
++    glEnableVertexAttribArray(posLoc);
++    glVertexAttribPointer(posLoc,  3, GL_FLOAT,         GL_FALSE, sizeof(PackedVertex), (char*)&i->vertices[0] + offsetof(PackedVertex, x));","@topfs2 _cough_ ^^ :)
+",86c660485947efd3749d99cfddaf4f053af64e63
+3403311,0,"Previously the entire LinuxJoystickSDL file was #define-guarded by HAS_SDL_JOYSTICK""",2013-03-16 04:18:52,garbear,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2370#discussion_r3403311,2013-03-16T15:18:52Z,2018-11-27T21:11:08Z,garbear,CONTRIBUTOR,xbmc/input/linux/Makefile,,3.0,,,4,"@@ -1,5 +1,7 @@
+ SRCS=LIRC.cpp \
+-  LinuxInputDevices.cpp
++     LinuxInputDevices.cpp \
++     LinuxJoystick.cpp \","Previously the entire LinuxJoystickSDL file was #define-guarded by HAS_SDL_JOYSTICK
+",cba812868995ca9ff646794a245dac49e9e2d983
+4032493,0,"There's no guarantee here that addon is non-NULL I think?  So you should really use the addon->Name() if it's available, else fallback to the previous code.""",2013-04-30 16:11:42,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2677#discussion_r4032493,2013-05-01T04:11:42Z,2018-11-27T21:11:29Z,jmarshallnz,CONTRIBUTOR,xbmc/interfaces/python/XBPyThread.cpp,,,,,1,"@@ -341,17 +341,7 @@ void XBPyThread::Process()
+       if (pDlgToast)
+       {
+         CStdString desc;
+-        CStdString path;
+-        CStdString script;
+-        URIUtils::Split(m_source, path, script);
+-        if (script.Equals(""default.py""))
+-        {
+-          CStdString path2;
+-          URIUtils::RemoveSlashAtEnd(path);
+-          URIUtils::Split(path, path2, script);
+-        }
+-
+-        desc.Format(g_localizeStrings.Get(2100), script);
++        desc.Format(g_localizeStrings.Get(2100), addon->Name());","There's no guarantee here that addon is non-NULL I think?
+
+So you should really use the addon->Name() if it's available, else fallback to the previous code.
+",59deaaf2c09237946587bb807f7af97b6f431508
+3632099,2,"I am sorry, didn't look carefully enough. I get confused every time when I look into this part of the code so maybe it's a good time change it to something more meaningful. LookAndFeelResolution is the resolution the user has set. It changes e.g. when tog""",2013-04-02 19:44:27,FernetMenta,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2531#discussion_r3632099,2013-04-03T07:44:27Z,2018-11-27T21:11:12Z,FernetMenta,CONTRIBUTOR,xbmc/Application.cpp,,952.0,,,166,"@@ -932,14 +943,14 @@ bool CApplication::InitWindow()
+   // force initial window creation to be windowed, if fullscreen, it will switch to it below
+   // fixes the white screen of death if starting fullscreen and switching to windowed.
+   bool bFullScreen = false;
+-  if (!g_Windowing.CreateNewWindow(""XBMC"", bFullScreen, g_settings.m_ResInfo[RES_WINDOW], OnEvent))
++  if (!g_Windowing.CreateNewWindow(""XBMC"", bFullScreen, CDisplaySettings::Get().GetResolutionInfo(RES_WINDOW), OnEvent))
+   {
+     CLog::Log(LOGFATAL, ""CApplication::Create: Unable to create window"");
+     return false;
+   }
+ #else
+-  bool bFullScreen = g_guiSettings.m_LookAndFeelResolution != RES_WINDOW;
+-  if (!g_Windowing.CreateNewWindow(""XBMC"", bFullScreen, g_settings.m_ResInfo[g_guiSettings.m_LookAndFeelResolution], OnEvent))
++  bool bFullScreen = CDisplaySettings::Get().GetCurrentResolution() != RES_WINDOW;","I am sorry, didn't look carefully enough. I get confused every time when I look into this part of the code so maybe it's a good time change it to something more meaningful. LookAndFeelResolution is the resolution the user has set. It changes e.g. when toggling full screen or when changing the settings. ""adjust display to match video"" can also set ""current"" but this should not overwrite LookAndFeel.
+",ed49cfdfa95b5683b31ccebffa8751813bbb5787
+2160673,1,"No toe-stepping bobo1on1 - it's open-source and team-work :)   Until the DSP's and other enhancements get in, do you mind if I tweak a few things? The volume amplification can happily stay in the stream, but I do think the limiter should run on the fina""",2012-11-17 16:25:02,DDDamian,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1788#discussion_r2160673,2012-11-18T03:25:02Z,2018-11-27T21:10:40Z,DDDamian,CONTRIBUTOR,xbmc/cores/AudioEngine/Engines/SoftAE/SoftAE.cpp,,1365.0,,,5,"@@ -1362,7 +1362,7 @@ unsigned int CSoftAE::RunStreamStage(unsigned int channelCount, void *out, bool
+     if (!frame)
+       continue;
+ 
+-    float volume = stream->GetVolume() * stream->GetReplayGain();
++    float volume = stream->GetVolume() * stream->GetReplayGain() * stream->RunLimiter(frame, channelCount);","No toe-stepping bobo1on1 - it's open-source and team-work :) 
+
+Until the DSP's and other enhancements get in, do you mind if I tweak a few things? The volume amplification can happily stay in the stream, but I do think the limiter should run on the final samples.
+
+The streams already have a volume level per stream which can be any level not just 0.0f - 1.0f, so they can be amplified all you want. The limiter can then run in place of the hard clamp on a larger sample set. You still get your feature, the limiter will still kick in to give the poor-mans DRC and it won't become VolAmpire running all the time on top of the hard clamp on a small dataset.
+",c2d58951fba987861bb1b1160806fcb3fafcb8fe
+896198,0,"On this note.. My thoughts here has always been to separate m_decode and m_render. dvdplayer decodes, calls flippage, it signals app thread new frame, but doesn't make the new frame available for render yet. FlipPage blocks until a new decode buffer i ava""",2012-05-29 09:49:41,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/870#discussion_r896198,2012-05-29T21:49:41Z,2018-11-27T21:09:55Z,elupus,CONTRIBUTOR,xbmc/cores/VideoRenderers/OverlayRenderer.cpp,,,,,1,"@@ -90,7 +90,7 @@ long COverlayMainThread::Release()
+ CRenderer::CRenderer()
+ {
+   m_render = 0;
+-  m_decode = (m_render + 1) % 2;
++//  m_decode = (m_render + 1) % 2;","On this note.. My thoughts here has always been to separate m_decode and m_render. dvdplayer decodes, calls flippage, it signals app thread new frame, but doesn't make the new frame available for render yet. FlipPage blocks until a new decode buffer i available. 
+
+This mean that app thread can keep rendering previous frame until it request a new frame. When it request a new frame it check if a frame is available after decode. If there is, it swaps this in and make the previous render frame available for decode (this wakes up decode thread that was waiting for a buffer).
+
+In a sense it's a buffer system where each buffer can have 3 states. Idle, Used for render or used for decode.
+",caa0bcc1ee1eace92160f74d9c0946586ec56d4f
+6502779,1,"Also avoids taking the lock.  We can spare the 4 bytes :)""",2013-09-21 03:08:32,t-nelson,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3313#discussion_r6502779,2013-09-21T15:08:32Z,2018-11-27T21:12:36Z,t-nelson,CONTRIBUTOR,xbmc/windowing/WinEvents.cpp,,59.0,,,59,"@@ -0,0 +1,77 @@
++/*
++ *      Copyright (C) 2013 Team XBMC
++ *      http://xbmc.org
++ *
++ *  This Program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  This Program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with XBMC; see the file COPYING.  If not, see
++ *  <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#include ""WinEvents.h""
++#include ""peripherals/Peripherals.h""
++#include ""threads/SingleLock.h""
++
++#if   defined(TARGET_WINDOWS)
++#include ""windows/WinEventsWin32.h""
++#define WinEventsType CWinEventsWin32
++
++#elif defined(TARGET_DARWIN_OSX)
++#include ""osx/WinEventsOSX.h""
++#define WinEventsType CWinEventsOSX
++
++#elif defined(TARGET_DARWIN_IOS)
++#include ""osx/WinEventsIOS.h""
++#define WinEventsType CWinEventsIOS
++
++#elif defined(TARGET_ANDROID)
++#include ""android/WinEventsAndroid.h""
++#define WinEventsType CWinEventsAndroid
++
++#elif (defined(TARGET_FREEBSD) || defined(TARGET_LINUX)) && defined(HAS_SDL_WIN_EVENTS)
++#include ""WinEventsSDL.h""
++#define WinEventsType CWinEventsSDL
++
++#elif defined(TARGET_LINUX) && defined(HAS_LINUX_EVENTS)
++#include ""WinEventsLinux.h""
++#define WinEventsType CWinEventsLinux
++#endif
++
++static WinEventsType    g_imp;
++static CCriticalSection g_lock;
++static bool             g_init  = false;
++
++void Init()
++{
++  CSingleLock lock(g_lock);
++  if (!g_init)
++  {
++    PERIPHERALS::CPeripherals::Get().RegisterObserver(&g_imp);","Also avoids taking the lock.  We can spare the 4 bytes :)
+",cb85945241ba1c1abde708167823d7244363327e
+76327,0,"HoldSurface() is needed for hardware decoder only because the surfaces are shared and the decoder should not release them until the processor is destroyed. For software decoding the surfaces are exclusively controlled by the processor, so they don't have """,2011-07-27 22:07:33,a11599,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/259#discussion_r76327,2011-07-28T10:07:33Z,2018-11-27T21:09:26Z,a11599,NONE,xbmc/cores/dvdplayer/DVDCodecs/Video/DXVA.cpp,,1103.0,,,165,"@@ -972,6 +1084,25 @@ void CProcessor::HoldSurface(IDirect3DSurface9* surface)
+   m_heldsurfaces.push_back(surface);
+ }
+ 
++bool CProcessor::CreateSurfaces()
++{
++  CSingleLock lock(m_section);
++
++  m_surfaces_count = m_size;
++  m_surfaces = (LPDIRECT3DSURFACE9*)calloc(m_surfaces_count, sizeof(LPDIRECT3DSURFACE9));
++  CHECK(m_service->CreateSurface((m_desc.SampleWidth + 15) & ~15,
++                                 (m_desc.SampleHeight + 15) & ~15,
++                                  m_surfaces_count - 1,
++                                  m_desc.Format,
++                                  D3DPOOL_DEFAULT,
++                                  0,
++                                  DXVA2_VideoSoftwareRenderTarget,
++                                  m_surfaces,
++                                  NULL));
++
++  return true;","HoldSurface() is needed for hardware decoder only because the surfaces are shared and the decoder should not release them until the processor is destroyed. For software decoding the surfaces are exclusively controlled by the processor, so they don't have to be held. Surface refs are added/released in CProcessor::Add() and CProcessor::Render().
+",53583f1b60b912a04d34c4b3896a1c77ff1ecf3b
+6346131,2,"this will break arm android. You must add a new case instead of replacing existing ones.""",2013-09-12 23:51:05,wsnipex,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3256#discussion_r6346131,2013-09-13T11:51:05Z,2018-11-27T21:12:29Z,wsnipex,MEMBER,configure.in,,609.0,,,5,"@@ -606,13 +606,19 @@ ffmpeg_target_os=$(tolower $(uname -s))
+ 
+ # host detection and setup
+ case $host in
+-  i*86*-android-linux-gnu*)
++  i*86*-linux-android*)","this will break arm android. You must add a new case instead of replacing existing ones.
+",defeb74de10c317201b88bb17677643634ec4ec8
+6294600,1,"@t-nelson  return 'int' is good solution. Can distinguish between failed and '32' bit. And easily extendible in future for 128-bit :) I don't see any issue. If someone need to distinguish between 32 and 64 bit then ifdefs can be used. If someone would l""",2013-09-11 02:14:06,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3232#discussion_r6294600,2013-09-11T14:14:06Z,2018-11-27T21:12:28Z,Karlson2k,MEMBER,xbmc/utils/SystemInfo.cpp,,,,,1,"@@ -442,10 +442,30 @@ bool CSysInfo::IsOS64bit()
+   if (ptrIsWow64 == NULL || ptrIsWow64(GetCurrentProcess(), &wow64proc) == FALSE)
+     return false; // Can't detect OS
+   return wow64proc != FALSE;
+-#else // TARGET_WINDOWS
+-  // TODO: Implement Linux, FreeBSD, Android, OSX
++#elif defined(TARGET_ANDROID) || defined(TARGET_DARWIN_IOS)
++  return false; // so far Android and IOS are only 32-bit
++#elif defined(TARGET_POSIX)
++  struct utsname un;
++  if (uname(&un) == 0)
++  {
++    std::string machine(un.machine);
++    if (machine == ""x86_64"" || machine == ""amd64"" || machine == ""ppc64"" || machine == ""ia64"")
++      return true;
++    return false;
++  }
++  return false; // can't detect
++#else
+   return false;
+-#endif // TARGET_WINDOWS
++#endif
++}
++
++bool CSysInfo::IsXBMC64bit(void)","@t-nelson  return 'int' is good solution. Can distinguish between failed and '32' bit. And easily extendible in future for 128-bit :)
+I don't see any issue. If someone need to distinguish between 32 and 64 bit then ifdefs can be used.
+If someone would like to use this function instead of ifdefs - I see no problem. Compiler will optimize call and even cut not needed code for selected bitness.
+",88b46613a229a2d26720e8b57feb3f8b221ed5e7
+6224542,0,"I agree about that in that case. But i'm talking about the patch in general. There are several places where you replace a disabled state with a timed out state.""",2013-09-07 00:09:37,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3121#discussion_r6224542,2013-09-07T12:09:37Z,2018-11-27T21:12:24Z,elupus,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDInputStreams/DVDInputStreamPVRManager.cpp,,67.0,,,23,"@@ -58,15 +58,16 @@
+ 
+ void CDVDInputStreamPVRManager::ResetScanTimeout(unsigned int iTimeoutMs)
+ {
+-  m_iScanTimeout = iTimeoutMs > 0 ?
+-      XbmcThreads::SystemClockMillis() + iTimeoutMs :
+-      0;
++  if (iTimeoutMs > 0)
++    m_ScanTimeout.Set(iTimeoutMs);
++  else
++    m_ScanTimeout.SetInfinite();
+ }
+ 
+ bool CDVDInputStreamPVRManager::IsEOF()
+ {
+   // don't mark as eof while within the scan timeout
+-  if (m_iScanTimeout && XbmcThreads::SystemClockMillis() < m_iScanTimeout)
++  if (!m_ScanTimeout.IsTimePast())","I agree about that in that case. But i'm talking about the patch in general. There are several places where you replace a disabled state with a timed out state.
+",415781d7df50fd00a00629542e73e0d5860ac3b2
+3996734,0,"ha - last but not least - get rid of that string include completly from that header - its not used ... (prefer includes in cpp files where needed)""",2013-04-28 23:16:34,Memphiz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2668#discussion_r3996734,2013-04-29T11:16:34Z,2018-11-27T21:11:28Z,Memphiz,MEMBER,xbmc/network/Network.h,,,,,1,"@@ -24,6 +24,8 @@
+ #include <vector>
+ #include ""utils/StdString.h""
+ #include ""system.h""
++#include <string>
++using namespace std;","ha - last but not least - get rid of that string include completly from that header - its not used ... (prefer includes in cpp files where needed)
+",9a4fb22491ad3ca07e9a743a69360de40fd9021b
+3131386,0,"Hmm. I can look into this tonight of you want. On 25/02/2013 3:17 PM, """"Sascha Montellese"""" <notifications@github.com> wrote:  > In xbmc/Application.cpp: > > > @@ -914,13 +914,15 @@ bool CApplication::InitWindow() > >    } > >  #endif > > > > +  //""",2013-02-24 20:25:26,smspillaz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2303#discussion_r3131386,2013-02-25T07:25:26Z,2018-11-27T21:10:56Z,smspillaz,CONTRIBUTOR,xbmc/Application.cpp,,920.0,,,7,"@@ -914,13 +914,15 @@ bool CApplication::InitWindow()
+   }
+ #endif
+ 
++  // set GUI res and force the clear of the screen
++  // do this first because SetViewResolution will create an OpenGL context
++  // and then we can init the render system from there
++  g_graphicsContext.SetVideoResolution(g_guiSettings.m_LookAndFeelResolution);","Hmm. I can look into this tonight of you want.
+On 25/02/2013 3:17 PM, ""Sascha Montellese"" notifications@github.com wrote:
+
+> In xbmc/Application.cpp:
+> 
+> > @@ -914,13 +914,15 @@ bool CApplication::InitWindow()
+> >    }
+> >  #endif
+> > -  // set GUI res and force the clear of the screen
+> > -  // do this first because SetViewResolution will create an OpenGL context
+> > -  // and then we can init the render system from there
+> > -  g_graphicsContext.SetVideoResolution(g_guiSettings.m_LookAndFeelResolution);
+> 
+> Don't have time right now for a closer look but IIRC there's kind of a
+> chicken-egg problem in this area where
+> g_guiSettings.m_LookAndFeelResolution depends on the rendering system
+> already being initialised to be able to choose from a list of available and
+> valid resolutions and the fact that the rendering system needs to know
+> about the resolution to use. It popped up once after @theunihttps://github.com/theunirefactored some of the ""run headless"" stuff.
+> 
+> —
+> Reply to this email directly or view it on GitHubhttps://github.com/xbmc/xbmc/pull/2303/files#r3131350.
+",27509f5e421f9c009d5dec4792f01e840793d5b5
+2871068,0,"Should be if(NPT_FAILED(ObjectIDValidate()))  """,2013-02-03 05:39:28,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2157#discussion_r2871068,2013-02-03T16:39:28Z,2018-11-27T21:10:48Z,elupus,CONTRIBUTOR,xbmc/network/upnp/UPnPServer.cpp,,,,,1,"@@ -489,6 +509,11 @@ static NPT_String TranslateWMPObjectId(NPT_String id)
+     NPT_Reference<CThumbLoader>    thumb_loader;
+ 
+     CLog::Log(LOGINFO, ""Received UPnP Browse Metadata request for object '%s'"", (const char*)object_id);
++    
++    if(ObjectIDValidate(id)) {","Should be if(NPT_FAILED(ObjectIDValidate()))
+",a30061679b4a9122b20a1350694ccebcc7bd3839
+2602467,0,"Am 10.01.2013 01:10, schrieb Lars Op den Kamp: > In xbmc/pvr/PVRDatabase.cpp: > >> @@ -609,8 +609,8 @@ bool CPVRDatabase::RemoveStaleChannelsFromGroup(const CPVRChannelGroup &group) >>    if (!group.IsInternalGroup()) >>    { >>      /* First remove chann""",2013-01-09 22:29:48,skywalker666,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2056#discussion_r2602467,2013-01-10T09:29:48Z,2018-11-27T21:10:47Z,skywalker666,CONTRIBUTOR,xbmc/pvr/PVRDatabase.cpp,,612.0,,,6,"@@ -609,8 +609,8 @@ bool CPVRDatabase::RemoveStaleChannelsFromGroup(const CPVRChannelGroup &group)
+   if (!group.IsInternalGroup())
+   {
+     /* First remove channels that don't exist in the main channels table */
+-    CStdString strWhereClause = FormatSQL(""idChannel IN (SELECT m.idChannel FROM map_channelgroups_channels m LEFT JOIN channels on m.idChannel = channels.idChannel WHERE channels.idChannel IS NULL)"");
+-    bDelete = DeleteValues(""map_channelgroups_channels"", strWhereClause);
++    CStdString strQuery = FormatSQL(""DELETE m FROM map_channelgroups_channels m LEFT JOIN channels c ON (c.idChannel = m.idChannel) WHERE c.idChannel IS NULL"");","Am 10.01.2013 01:10, schrieb Lars Op den Kamp:
+
+> In xbmc/pvr/PVRDatabase.cpp:
+> 
+> > @@ -609,8 +609,8 @@ bool CPVRDatabase::RemoveStaleChannelsFromGroup(const CPVRChannelGroup &group)
+> >    if (!group.IsInternalGroup())
+> >    {
+> >      /\* First remove channels that don't exist in the main channels table */
+> > -    CStdString strWhereClause = FormatSQL(""idChannel IN (SELECT m.idChannel FROM map_channelgroups_channels m LEFT JOIN channels on m.idChannel = channels.idChannel WHERE channels.idChannel IS NULL)"");
+> > -    bDelete = DeleteValues(""map_channelgroups_channels"", strWhereClause);
+> > -    CStdString strQuery = FormatSQL(""DELETE m FROM map_channelgroups_channels m LEFT JOIN channels c ON (c.idChannel = m.idChannel) WHERE c.idChannel IS NULL"");
+> 
+> this should be enough:
+> 
+> |DELETE FROM map_channelgroups_channels m LEFT JOIN channels c ON (c.idChannel = m.idChannel) WHERE c.idChannel IS NULL
+> |
+> 
+> (without m after DELETE)
+
+Nope, this produces a MySQL error, as it does not know from which table 
+to delete from ... My statement works, just the code is not tested ...
+
+Cheers Jan
+",7e0a4251ad79bb292272029f58165b49a419d872
+5555625,2,"Missed that during the rebase.... sorry - fixed""",2013-08-02 03:40:48,DoraXBMC,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2049#discussion_r5555625,2013-08-02T15:40:48Z,2018-11-27T21:12:09Z,GilShpr,NONE,project/VS2010Express/XBMC.vcxproj.filters,,,,,1,"@@ -5941,8 +5944,7 @@
+     <ClInclude Include=""..\..\xbmc\settings\SettingSection.h"">
+       <Filter>settings</Filter>
+     </ClInclude>
+-    <ClInclude Include=""..\..\xbmc\interfaces\json-rpc\FavouritesOperations.h"">
+-      <Filter>interfaces\json-rpc</Filter>
++    <ClInclude Include=""..\..\xbmc\interfaces\json-rpc\FavouritesOperations.h"">      <Filter>interfaces\json-rpc</Filter>","Missed that during the rebase.... sorry - fixed
+",2492ed8e1ff0d5c92b199de7610f652085ebfc09
+5556409,2,"what a shame.... :(""",2013-08-02 04:16:03,DoraXBMC,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2049#discussion_r5556409,2013-08-02T16:16:03Z,2018-11-27T21:12:09Z,GilShpr,NONE,xbmc/interfaces/json-rpc/ProfilesOperations.cpp,,,,,1,"@@ -0,0 +1,153 @@
++/*
++ *      Copyright (C) 2013 Team XBMC
++ *      http://xbmc.org
++ *
++ *  This Program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  This Program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with XBMC; see the file COPYING.  If not, see
++ *  <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#include ""ProfilesOperations.h""
++#include ""ApplicationMessenger.h""
++#include ""guilib/LocalizeStrings.h""
++#include ""profiles/ProfilesManager.h""
++#include ""utils/md5.h""
++
++using namespace JSONRPC;
++
++JSONRPC_STATUS CProfilesOperations::GetProfiles(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result)
++{
++  CFileItemList listItems;
++
++  for (unsigned int i = 0; i < CProfilesManager::Get().GetNumberOfProfiles(); ++i)
++  {
++    const CProfile *profile = CProfilesManager::Get().GetProfile(i);
++    CFileItemPtr item(new CFileItem(profile->getName()));
++    item->SetArt(""thumb"", profile->getThumb());
++    listItems.Add(item);
++  }
++
++  HandleFileItemList(""profileid"", false, ""profiles"", listItems, parameterObject, result);
++
++  if (parameterObject.isMember(""properties"") &&
++      parameterObject[""properties""].isArray() &&
++      result.isMember(""profiles"") &&
++      result[""profiles""].isArray())
++  {
++    for (CVariant::const_iterator_array propertyiter = parameterObject[""properties""].begin_array(); propertyiter != parameterObject[""properties""].end_array(); ++propertyiter)
++    {
++      if (propertyiter->isString() &&
++          propertyiter->asString() == ""lockmode"")
++      {
++        for (CVariant::const_iterator_array profileiter = result[""profiles""].begin_array(); profileiter != result[""profiles""].end_array(); ++profileiter)
++        {
++          CStdString profilename = (*profileiter)[""label""].asString();
++          int index = CProfilesManager::Get().GetProfileIndex(profilename);
++          const CProfile *profile = CProfilesManager::Get().GetProfile(index);
++          LockType locktype = LOCK_MODE_UNKNOWN;
++          if (index == 0)
++            locktype = CProfilesManager::Get().GetMasterProfile().getLockMode();
++          else
++            locktype = profile->getLockMode();
++          CVariant object = *profileiter;","what a shame.... :(
+",2492ed8e1ff0d5c92b199de7610f652085ebfc09
+2955097,2,"Eh? this is weird. You should never ask codec for pts. """,2013-02-10 02:08:22,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/870#discussion_r2955097,2013-02-10T13:08:22Z,2018-11-27T21:10:51Z,elupus,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDCodecs/Video/DVDVideoCodec.h,,254.0,,,1,"@@ -243,4 +250,11 @@ class CDVDVideoCodec
+   {
+     return 0;
+   }
++
++  virtual bool GetPts(double &pts, int &skippedDeint, int &interlaced)
++  {
++    return false;
++  }
++","Eh? this is weird. You should never ask codec for pts. 
+",caa0bcc1ee1eace92160f74d9c0946586ec56d4f
+2955170,0,"This is needed to control dropping. Consider we just dropped a frame in decoder, this is at the end of the queue. How should player know that it has already catched up? You can't by just looking at the front of the queue.""",2013-02-10 02:39:35,FernetMenta,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/870#discussion_r2955170,2013-02-10T13:39:35Z,2018-11-27T21:10:51Z,FernetMenta,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDCodecs/Video/DVDVideoCodec.h,,254.0,,,1,"@@ -243,4 +250,11 @@ class CDVDVideoCodec
+   {
+     return 0;
+   }
++
++  virtual bool GetPts(double &pts, int &skippedDeint, int &interlaced)
++  {
++    return false;
++  }
++","This is needed to control dropping. Consider we just dropped a frame in decoder, this is at the end of the queue. How should player know that it has already catched up? You can't by just looking at the front of the queue.
+",caa0bcc1ee1eace92160f74d9c0946586ec56d4f
+232457,1,"I'd use """"strDevice"""", but that's personal :)""",2011-11-16 00:55:33,opdenkamp,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/536#discussion_r232457,2011-11-16T11:55:33Z,2018-11-27T21:09:42Z,opdenkamp,MEMBER,xbmc/input/ButtonTranslator.cpp,,,,,1,"@@ -367,9 +367,9 @@ CButtonTranslator::CButtonTranslator()
+ CButtonTranslator::~CButtonTranslator()
+ {}
+ 
+-bool CButtonTranslator::Load()
++bool CButtonTranslator::Load(const char* Device)","I'd use ""strDevice"", but that's personal :)
+",49dc49389b9a31c7d38df553eb4bf51d1b47f523
+232777,1,"i grew up in the days before you could rely on the order compilers evaluated logical expressions :-)""",2011-11-16 03:43:55,jhsrennie,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/536#discussion_r232777,2011-11-16T14:43:55Z,2018-11-27T21:09:42Z,jhsrennie,NONE,xbmc/input/ButtonTranslator.cpp,,,,,1,"@@ -426,7 +426,31 @@ bool CButtonTranslator::Load()
+ 
+ #endif
+ 
++  // If we were called with a device name try loading mappings for that device now
++  if (Device)
++  {
++    if (strlen(Device) != 0)","i grew up in the days before you could rely on the order compilers evaluated logical expressions :-)
+",49dc49389b9a31c7d38df553eb4bf51d1b47f523
+5828733,0,"@elupus ping... Good to merge?""",2013-08-16 22:54:16,Voyager1,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3099#discussion_r5828733,2013-08-17T10:54:16Z,2018-11-27T21:12:19Z,Voyager1,NONE,xbmc/cores/VideoRenderers/BaseRenderer.cpp,,,,,1,"@@ -232,7 +232,8 @@ RESOLUTION CBaseRenderer::FindClosestResolution(float fps, float multiplier, RES
+     if (info.iScreenWidth  != curr.iScreenWidth
+     ||  info.iScreenHeight != curr.iScreenHeight
+     ||  info.iScreen       != curr.iScreen
+-    ||  info.fRefreshRate < (fRefreshRate * multiplier / 1.001) - 0.001)
++    ||  info.fRefreshRate < (fRefreshRate * multiplier / 1.001) - 0.001
++    ||  ((info.dwFlags & D3DPRESENTFLAG_INTERLACED) && !(curr.dwFlags & D3DPRESENTFLAG_INTERLACED)))","@elupus ping... Good to merge?
+",4f69b1f4393b05402fc20ff4279e573e67ea11c8
+4491164,0,"Thanks""",2013-06-01 20:47:03,xhaggi,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1772#discussion_r4491164,2013-06-02T08:47:03Z,2018-11-27T21:11:51Z,xhaggi,MEMBER,xbmc/guilib/GUITexture.cpp,,180.0,,,16,"@@ -174,8 +175,12 @@ void CGUITextureBase::Render()
+ 
+   // set our draw color
+   #define MIX_ALPHA(a,c) (((a * (c >> 24)) / 255) << 24) | (c & 0x00ffffff)
+-  color_t color = m_diffuseColor;
+-  if (m_alpha != 0xFF) color = MIX_ALPHA(m_alpha, m_diffuseColor);
++
++  // diffuse color
++  color_t color = (m_info.diffuseColor) ? m_info.diffuseColor : m_diffuseColor;","Thanks
+",7bd7a4c91f782fb0f540cb1723e8cf65dc2440d8
+6642372,0,"We need only one copy of it - it perfectly fits to be static.  Other solutions looks like a workaround/hacks: make variable non-static and create static instance of class to have only one unique non-static member variable.  We don't need constructors, d""",2013-09-27 12:09:46,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3326#discussion_r6642372,2013-09-28T00:09:46Z,2018-11-27T21:12:40Z,Karlson2k,MEMBER,xbmc/utils/CharsetConverter.cpp,,303.0,,,234,"@@ -55,54 +56,360 @@
+   #define UTF8_SOURCE ""UTF-8""
+ #endif
+ 
++enum SpecialCharset
++{
++  NotSpecialCharset = 0,
++  SystemCharset,
++  UserCharset /* locale.charset */, 
++  SubtitleCharset /* subtitles.charset */,
++  KaraokeCharset /* karaoke.charset */
++};
++
++
++class CConverterType
++{
++public:
++  CConverterType(const std::string& sourceCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(enum SpecialCharset sourceSpecialCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(const std::string& sourceCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(enum SpecialCharset sourceSpecialCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen = 1);
++  CConverterType(const CConverterType& other);
++  ~CConverterType();
++
++  iconv_t GetAndLockConverter(void);
++  void UnlockConverter(void);
++
++  void Reset(void);
++  void ReinitTo(const std::string& sourceCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen = 1);
++  std::string GetSourceCharset(void) const
++  { return m_sourceCharset; }
++  std::string GetTargetCharset(void) const
++  { return m_targetCharset; }
++  unsigned int GetTargetSingleCharMaxLen(void) const
++  { return m_targetSingleCharMaxLen; }
++
++private:
++  static std::string ResolveSpecialCharset(enum SpecialCharset charset);
++
++  CCriticalSection m_critSection;
++  CSingleLock m_converterLock;
++  enum SpecialCharset m_sourceSpecialCharset;
++  std::string m_sourceCharset;
++  enum SpecialCharset m_targetSpecialCharset;
++  std::string m_targetCharset;
++  iconv_t m_iconv;
++  unsigned int m_targetSingleCharMaxLen;
++};
++
++CConverterType::CConverterType(const std::string& sourceCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(NotSpecialCharset),
++  m_sourceCharset(sourceCharset),
++  m_targetSpecialCharset(NotSpecialCharset),
++  m_targetCharset(targetCharset),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(enum SpecialCharset sourceSpecialCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(sourceSpecialCharset),
++  m_sourceCharset(),
++  m_targetSpecialCharset(NotSpecialCharset),
++  m_targetCharset(targetCharset),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(const std::string& sourceCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(NotSpecialCharset),
++  m_sourceCharset(sourceCharset),
++  m_targetSpecialCharset(targetSpecialCharset),
++  m_targetCharset(),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(enum SpecialCharset sourceSpecialCharset, enum SpecialCharset targetSpecialCharset, unsigned int targetSingleCharMaxLen /*= 1*/):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(sourceSpecialCharset),
++  m_sourceCharset(),
++  m_targetSpecialCharset(targetSpecialCharset),
++  m_targetCharset(),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++CConverterType::CConverterType(const CConverterType& other):
++  m_critSection(),
++  m_converterLock(m_critSection),
++  m_sourceSpecialCharset(other.m_sourceSpecialCharset),
++  m_sourceCharset(other.m_sourceCharset),
++  m_targetSpecialCharset(other.m_targetSpecialCharset),
++  m_targetCharset(other.m_targetCharset),
++  m_iconv(NULL),
++  m_targetSingleCharMaxLen(other.m_targetSingleCharMaxLen)
++{
++  m_converterLock.Leave();
++}
++
++
++CConverterType::~CConverterType()
++{
++  m_converterLock.Enter();
++  if (m_iconv != NULL)
++    iconv_close(m_iconv);
++}
++
++
++iconv_t CConverterType::GetAndLockConverter(void)
++{
++  m_converterLock.Enter();
++  if (m_iconv == NULL)
++  {
++    if (m_sourceSpecialCharset)
++      m_sourceCharset = ResolveSpecialCharset(m_sourceSpecialCharset);
++    if (m_targetSpecialCharset)
++      m_targetCharset = ResolveSpecialCharset(m_targetSpecialCharset);
++
++    m_iconv = iconv_open(m_targetCharset.c_str(), m_sourceCharset.c_str());
++    if (m_iconv == (iconv_t)-1)
++    {
++      CLog::Log(LOGERROR, ""%s: iconv_open() for \""%s\"" -> \""%s\"" failed, errno = %d (%s)"",
++                __FUNCTION__, m_sourceCharset.c_str(), m_targetCharset.c_str(), errno, strerror(errno));
++      m_iconv = NULL;
++
++      m_converterLock.Leave(); // don't lock if still unset
++    }
++  }
++
++  return m_iconv;
++}
++
++void CConverterType::UnlockConverter(void)
++{
++  m_converterLock.Leave();
++}
++
++
++void CConverterType::Reset(void)
++{
++  m_converterLock.Enter();
++  if (m_iconv != NULL)
++  {
++    iconv_close(m_iconv);
++    m_iconv = NULL;
++  }
++
++  if (m_sourceSpecialCharset)
++    m_sourceCharset.clear();
++  if (m_targetSpecialCharset)
++    m_targetCharset.clear();
++
++  m_converterLock.Leave();
++}
++
++void CConverterType::ReinitTo(const std::string& sourceCharset, const std::string& targetCharset, unsigned int targetSingleCharMaxLen /*= 1*/)
++{
++  m_converterLock.Enter();
++  if (sourceCharset != m_sourceCharset || targetCharset != m_targetCharset)
++  {
++    if (m_iconv != NULL)
++    {
++      iconv_close(m_iconv);
++      m_iconv = NULL;
++    }
++
++    m_sourceSpecialCharset = NotSpecialCharset;
++    m_sourceCharset = sourceCharset;
++    m_targetSpecialCharset = NotSpecialCharset;
++    m_targetCharset = targetCharset;
++    m_targetSingleCharMaxLen = targetSingleCharMaxLen;
++  }
++  m_converterLock.Leave();
++}
++
++std::string CConverterType::ResolveSpecialCharset(enum SpecialCharset charset)
++{
++  switch (charset)
++  {
++  case SystemCharset:
++    return """";
++  case UserCharset:
++    return g_langInfo.GetGuiCharSet();
++  case SubtitleCharset:
++    return g_langInfo.GetSubtitleCharSet();
++  case KaraokeCharset:
++    {
++      CSetting* karaokeSetting = CSettings::Get().GetSetting(""karaoke.charset"");
++      if (karaokeSetting == NULL || ((CSettingString*)karaokeSetting)->GetValue() == ""DEFAULT"")
++        return g_langInfo.GetGuiCharSet();
++
++      return ((CSettingString*)karaokeSetting)->GetValue();
++    }
++  case NotSpecialCharset:
++  default:
++    return ""UTF-8""; /* dummy value */
++  }
++}
++
++
++enum StdConversionType /* Keep it in sync with CCharsetConverter::CInnerConverter::m_stdConversion */
++{
++  NoConversion = -1,
++  SubtitleCharsetToW = 0,
++  Utf8ToUserCharset,
++  UserCharsetToUtf8,
++  Utf32ToUserCharset,
++  WtoUtf8,
++  Utf16LEtoW,
++  Utf16BEtoUtf8,
++  Utf16LEtoUtf8,
++  Utf8toW,
++  Utf8ToSystem,
++  Ucs2CharsetToUtf8
++};
++#define LastStdConversionType Ucs2CharsetToUtf8
++#define NumberOfStdConversionTypes ((int)LastStdConversionType + 1)
++
++class CCharsetConverter::CInnerConverter
++{
++public:
++  static bool logicalToVisualBiDi(const std::string& stringSrc, std::string& stringDst, FriBidiCharSet fribidiCharset, FriBidiCharType base = FRIBIDI_TYPE_LTR, bool* bWasFlipped =NULL);
++  static void reset(void);
++  static void resetSystemCharset(void);
++  static void resetUserCharset(void);
++  static void resetSubtitleCharset(void);
++  static void resetKaraokeCharset(void);
++  static void reinitCharsetsFromSettings(void);
++  
++  template<class INPUT,class OUTPUT>
++  static bool stdConvert(StdConversionType convertType, const INPUT& strSource, OUTPUT& strDest, bool failOnInvalidChar = false);
++  template<class INPUT,class OUTPUT>
++  static bool customConvert(const std::string& sourceCharset, const std::string& targetCharset, const INPUT& strSource, OUTPUT& strDest, bool failOnInvalidChar = false);
++
++private:
++  template<class INPUT,class OUTPUT>
++  static bool convert(iconv_t type, int multiplier, const INPUT& strSource, OUTPUT& strDest, bool failOnInvalidChar = false);
++
++  static CConverterType m_stdConversion[NumberOfStdConversionTypes];
++};","We need only one copy of it - it perfectly fits to be static. 
+Other solutions looks like a workaround/hacks: make variable non-static and create static instance of class to have only one unique non-static member variable. 
+We don't need constructors, destructors or anything else for this class. And fully static class is faster - no need to retrieve and pass a pointer to class object on each function call.
+",04f6e3727f0ad4376aeedef93a8b38a7b00b8aa7
+6264884,1,"sure, sure :)""",2013-09-10 01:15:10,davilla,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3193#discussion_r6264884,2013-09-10T13:15:10Z,2018-11-27T21:12:27Z,davilla,CONTRIBUTOR,tools/depends/target/gnutls/Makefile,,8.0,,,8,"@@ -0,0 +1,40 @@
++include ../../Makefile.include
++DEPS= ../../Makefile.include Makefile
++
++# lib name, version
++LIBNAME=gnutls
++VERSION=3.1.14
++SOURCE=$(LIBNAME)-$(VERSION)
++ARCHIVE=$(SOURCE).tar.xz","sure, sure :)
+",38663adb8025d36fd9ad3bf4d43733d0b74b5f78
+6252698,1,"It's not a problem as this function is used only from TestCharsetConverter.cpp :)""",2013-09-09 10:07:18,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3097#discussion_r6252698,2013-09-09T22:07:18Z,2018-11-27T21:12:26Z,Karlson2k,MEMBER,xbmc/utils/CharsetConverter.cpp,,609.0,,,636,"@@ -594,61 +625,26 @@ void CCharsetConverter::ucs2CharsetToStringCharset(const CStdStringW& strSource,
+     }
+   }
+   CSingleLock lock(m_critSection);
+-  convert(m_iconvUcs2CharsetToStringCharset,4,""UTF-16LE"",
+-          g_langInfo.GetGuiCharSet(),strCopy,strDest);
++  return convert(m_iconvUcs2CharsetToStringCharset,1,""UTF-16LE"",
++          g_langInfo.GetGuiCharSet(),strCopy,stringDst);
+ }
+ 
+-void CCharsetConverter::utf32ToStringCharset(const unsigned long* strSource, CStdStringA& strDest)
++bool CCharsetConverter::utf32ToStringCharset(const std::u32string& utf32StringSrc, std::string& stringDst)
+ {
+   CSingleLock lock(m_critSection);
+-
+-  if (m_iconvUtf32ToStringCharset == (iconv_t) - 1)
+-  {
+-    CStdString strCharset=g_langInfo.GetGuiCharSet();
+-    m_iconvUtf32ToStringCharset = iconv_open(strCharset.c_str(), ""UTF-32LE"");
+-  }
+-
+-  if (m_iconvUtf32ToStringCharset != (iconv_t) - 1)
+-  {
+-    const unsigned long* ptr=strSource;
+-    while (*ptr) ptr++;
+-    const char* src = (const char*) strSource;
+-    size_t inBytes = (ptr-strSource+1)*4;
+-
+-    char *dst = strDest.GetBuffer(inBytes);
+-    size_t outBytes = inBytes;
+-
+-    if (iconv_const(m_iconvUtf32ToStringCharset, &src, &inBytes, &dst, &outBytes) == (size_t)-1)
+-    {
+-      CLog::Log(LOGERROR, ""%s failed"", __FUNCTION__);
+-      strDest.ReleaseBuffer();
+-      strDest = (const char *)strSource;
+-      return;
+-    }
+-
+-    if (iconv(m_iconvUtf32ToStringCharset, NULL, NULL, &dst, &outBytes) == (size_t)-1)
+-    {
+-      CLog::Log(LOGERROR, ""%s failed cleanup"", __FUNCTION__);
+-      strDest.ReleaseBuffer();
+-      strDest = (const char *)strSource;
+-      return;
+-    }
+-
+-    strDest.ReleaseBuffer();
+-  }
++  return convert(m_iconvUtf32ToStringCharset, 1, g_langInfo.GetGuiCharSet().c_str(), ""UTF-32"", utf32StringSrc, stringDst);","It's not a problem as this function is used only from TestCharsetConverter.cpp :)
+",4af1fcd140f3bd66790d2692281fcdc823b24e40
+4110921,1,"Hehe, yeah looks good.""",2013-05-06 23:01:07,Montellese,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2698#discussion_r4110921,2013-05-07T11:01:07Z,2018-11-27T21:11:40Z,Montellese,MEMBER,xbmc/settings/SettingLevel.cpp,,,,,1,"@@ -0,0 +1,125 @@
++/*
++ *      Copyright (C) 2013 Team XBMC
++ *      http://www.xbmc.org
++ *
++ *  This Program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  This Program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with XBMC; see the file COPYING.  If not, see
++ *  <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#include ""SettingLevel.h""
++#include ""SettingsManager.h""
++#include ""utils/log.h""
++#include ""utils/XBMCTinyXML.h""
++
++#include <algorithm>
++
++#define XML_ATTR_DEFAULT   ""default""
++#define XML_ATTR_VALUE     ""value""
++
++using namespace std;
++
++bool CSettingLevelCondition::Check() const
++{
++  if (m_settingsManager == NULL)
++    return false;
++
++  bool found = m_settingsManager->GetConditions().Check(""IsDefined"", m_value);
++  if (m_negated)
++    return !found;
++
++  return found;
++}
++
++CLevelCondition::CLevelCondition(CSettingsManager *settingsManager /* = NULL */)
++  : CSettingCondition(settingsManager), m_level(SETTINGS_LEVEL_DEFAULT)
++{
++  m_operation = CBooleanLogicOperationPtr(new CSettingLevelConditionCombination(m_settingsManager));
++}
++
++CLevelCondition::CLevelCondition(const CLevelCondition &rhs)
++  : CSettingCondition(rhs.m_settingsManager), m_level(rhs.m_level)
++{
++  m_operation = rhs.m_operation;
++}
++
++bool CLevelCondition::Deserialize(const TiXmlNode *node)
++{
++  if (node == NULL)
++    return false;
++
++  const TiXmlElement *element = node->ToElement();
++  if (element == NULL)
++    return false;
++
++  // get the level this condition is intended for
++  int level = -1;
++  if (element->QueryIntAttribute(XML_ATTR_VALUE, &level) != TIXML_SUCCESS || !(0 <= level && level <= SettingLevelInternal))","Hehe, yeah looks good.
+",6ae15d4292c0f4dd4ee0446eb49ae0042ddd5b24
+4049083,2,"Yea, I really really don't like this either. I landed on doing it this way because I figured it would be easiest to implement across the board.  I don't think that keeping m_pixels around is safe universally. My fear was that some implementations (espec""",2013-05-01 15:42:38,theuni,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/2681#discussion_r4049083,2013-05-02T03:42:38Z,2018-11-27T21:11:31Z,theuni,CONTRIBUTOR,xbmc/guilib/GUIFontTTF.cpp,,898.0,,,1,"@@ -860,4 +816,97 @@ void CGUIFontTTFBase::EmboldenGlyph(FT_GlyphSlot slot)
+   slot->metrics.vertAdvance  += dy;
+ }
+ 
++void CGUIFontTTF::Begin()
++{
++  if (m_nestedBeginCount == 0)
++    m_batchDraws.clear();
++  m_nestedBeginCount++;
++}
++
++void CGUIFontTTF::End()
++{
++  if (m_nestedBeginCount == 0)
++    return;
++
++  if (--m_nestedBeginCount > 0)
++    return;
++
++  for (std::vector<BatchDraw>::iterator i = m_batchDraws.begin(); i != m_batchDraws.end(); i++)
++  {
++    i->texture = m_texture;
++    i->diffuseTexture = NULL;
++    i->dirty = true;
++    CSceneGraph *sceneGraph = g_Windowing.GetSceneGraph();
++    sceneGraph->Add(*i);
++  }
++}
++
++CBaseTexture* CGUIFontTTF::ReallocTexture(unsigned int& newHeight)
++{
++  unsigned int oldHeight = m_textureHeight;
++  unsigned int oldPitch = m_texturePitch;
++  newHeight = CBaseTexture::PadPow2(newHeight);
++  if(!m_texture)
++    m_texture = new CBaseTexture;
++
++  m_texture->Allocate(m_textureWidth, newHeight, XB_FMT_A8L8);
++  if (!m_texture)
++  {
++    CLog::Log(LOGERROR, ""GUIFontTTFGL::CacheCharacter: Error creating new cache texture for size %f"", m_height);
++    delete m_texture;
++    return NULL;
++  }
++  m_textureHeight = m_texture->GetHeight();
++  m_textureWidth = m_texture->GetWidth();
++  m_texturePitch = m_texture->GetPitch();
++  m_textureBlockSize = m_texture->GetBlockSize();
++  unsigned char* newCachedPixels = new unsigned char[m_texturePitch * m_textureHeight];
++  if (m_cachePixels)
++  {
++    unsigned char* src = m_cachePixels;
++    unsigned char* dst = newCachedPixels;
++    for (unsigned int y = 0; y < oldHeight; y++)
++    {
++      memcpy(dst, src, oldPitch);
++      src += oldPitch;
++      dst += oldPitch;
++    }
++    delete [] m_cachePixels;
++    m_cachePixels = newCachedPixels;
++  }
++  else
++  {
++    memset(newCachedPixels, 0, m_texturePitch * m_textureHeight);
++    m_cachePixels = newCachedPixels;
++  }
++  return m_texture;
++}
++
++bool CGUIFontTTF::CopyCharToTexture(FT_BitmapGlyph bitGlyph, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2)
++{
++  FT_Bitmap bitmap = bitGlyph->bitmap;
++
++  unsigned char* source = (unsigned char*) bitmap.buffer;
++  unsigned char* target = (unsigned char*) m_cachePixels + y1 * m_texturePitch + x1 * m_textureBlockSize;
++
++  for (unsigned int y = y1; y < y2; y++)
++  {
++    unsigned char *dst2 = target;
++    unsigned char *src2 = source;
++    for (int x = 0; x < bitmap.width; x++, src2++)
++    {
++      memset(dst2, 0xff, m_textureBlockSize - 1);
++      dst2+= m_textureBlockSize -1;
++      *dst2++ = src2[0];
++    }
++     source += bitmap.width;
++     target += m_texturePitch;
++  }
++  // THE SOURCE VALUES ARE THE SAME IN BOTH SITUATIONS.
++
++  // Since we have a new texture, we need to delete the old one
++  // the Begin(); End(); stuff is handled by whoever called us
++  m_texture->Update(m_textureWidth, m_textureHeight, m_texturePitch, XB_FMT_A8L8, m_cachePixels, true);","Yea, I really really don't like this either. I landed on doing it this way because I figured it would be easiest to implement across the board.
+
+I don't think that keeping m_pixels around is safe universally. My fear was that some implementations (especially those that can provide mapped pointers to physical locations) could cause m_texture to be invalidated after upload.
+
+Though I suppose we could add an option in CTexture for whether it should be kept around if not, then the implementations could decide?
+",86c660485947efd3749d99cfddaf4f053af64e63
+56731,2,"I though i said no globals :(""",2011-07-02 01:16:36,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/243#discussion_r56731,2011-07-02T13:16:36Z,2018-11-27T21:09:20Z,elupus,CONTRIBUTOR,xbmc/cores/VideoRenderers/WinRenderer.cpp,,,,,1,"@@ -235,15 +247,22 @@ int CWinRenderer::NextYV12Texture()
+     return -1;
+ }
+ 
+-void CWinRenderer::AddProcessor(DXVA::CProcessor* processor, int64_t id)
++void CWinRenderer::AddProcessor(DVDVideoPicture* picture, bool still)
+ {
+-  int source = NextYV12Texture();
+-  if(source < 0)
+-    return;
+-  DXVABuffer *buf = (DXVABuffer*)m_VideoBuffers[source];
+-  SAFE_RELEASE(buf->proc);
+-  buf->proc = processor->Acquire();
+-  buf->id   = id;
++  if (m_renderMethod == RENDER_DXVA)
++  {
++    if (still)
++      g_Windowing.m_processor->StillFrame();
++    g_Windowing.m_processor->ProcessPicture(picture);","I though i said no globals :(
+",2d6ce32fae0dbf7f11f3a07897711ba7e6a09d08
+5568442,0,"here we have an utf-8 string assign to a CStdStringW, are you sure it is assigned with the correct utf-8 conversion?""",2013-08-03 12:46:19,ulion,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3034#discussion_r5568442,2013-08-04T00:46:19Z,2018-11-27T21:12:12Z,ulion,CONTRIBUTOR,xbmc/windowing/osx/WinSystemOSX.mm,,1637.0,,,12,"@@ -1626,4 +1626,15 @@ static void DisplayReconfigured(CGDirectDisplayID display,
+   return [(NSOpenGLContext*)m_glContext CGLContextObj];
+ }
+ 
++CStdStringW CWinSystemOSX::GetClipboard(void)
++{
++  CStdStringW pasted_text;
++
++  const char *szStr = Cocoa_Paste();
++  if (szStr)
++    pasted_text = szStr;
++
++  return pasted_text;","here we have an utf-8 string assign to a CStdStringW, are you sure it is assigned with the correct utf-8 conversion?
+",30f8944d1b882372207c1596cd10c3800602d8c9
+6445842,1,"Forget about it :-) all fine.""",2013-09-18 08:41:38,fritsch,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3292#discussion_r6445842,2013-09-18T20:41:38Z,2018-11-27T21:12:33Z,fritsch,MEMBER,xbmc/utils/StringUtils.cpp,,,,,1,"@@ -112,14 +112,35 @@ void StringUtils::ToLower(string &str)
+   transform(str.begin(), str.end(), str.begin(), ::tolower);
+ }
+ 
++/* In this version, either string can be mixed-case */
+ bool StringUtils::EqualsNoCase(const std::string &str1, const std::string &str2)
+ {
+-  string tmp1 = str1;
+-  string tmp2 = str2;
+-  ToLower(tmp1);
+-  ToLower(tmp2);
+-  
+-  return tmp1.compare(tmp2) == 0;
++  const char *s1 = str1.c_str();
++  const char *s2 = str2.c_str();
++  while (true)","Forget about it :-) all fine.
+",02fd1ab143bfa35d77ace5ee557ac344c1cd6b25
+1692602,0,"There is no time calculation done anymore in getoverlay. Only the assignment for filling the fields in the overlay structure. Or what do you mean?""",2012-09-25 19:29:23,Memphiz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1458#discussion_r1692602,2012-09-26T07:29:23Z,2018-11-27T21:10:08Z,Memphiz,MEMBER,xbmc/cores/dvdplayer/DVDCodecs/Overlay/DVDOverlayCodecFFmpeg.cpp,,,,,1,"@@ -166,12 +181,30 @@ int CDVDOverlayCodecFFmpeg::Decode(BYTE* data, int size, double pts, double dura
+     return OC_ERROR;
+   }
+ 
+-  if (len != size)
++  if (len != avpkt.size)
+     CLog::Log(LOGWARNING, ""%s - avcodec_decode_subtitle didn't consume the full packet"", __FUNCTION__);
+ 
+   if (!gotsub)
+     return OC_BUFFER;
+ 
++  double pts_offset = 0.0;
++ 
++  if (m_pCodecContext->codec_id == CODEC_ID_HDMV_PGS_SUBTITLE && m_Subtitle.format == 0) 
++  {
++    // for pgs subtitles the packet pts of the end_segments are wrong
++    // instead use the subtitle pts to calc the offset here
++    // see http://git.videolan.org/?p=ffmpeg.git;a=commit;h=2939e258f9d1fff89b3b68536beb931b54611585
++    if (m_Subtitle.pts != DVD_NOPTS_VALUE)
++    {
++      pts_offset = DVD_TIME_TO_MSEC(m_Subtitle.pts - pPacket->pts);
++    }
++  }
++
++  m_StartTime   = DVD_MSEC_TO_TIME(m_Subtitle.start_display_time + pts_offset);
++  m_StopTime    = DVD_MSEC_TO_TIME(m_Subtitle.end_display_time + pts_offset);  
++
++  //adapt start and stop time to our packet pts
++  CDVDOverlayCodec::GetAbsoluteTimes(m_StartTime, m_StopTime, pPacket);","There is no time calculation done anymore in getoverlay. Only the assignment for filling the fields in the overlay structure. Or what do you mean?
+",6070da3e41bde91172d82420c750c330c4f9f409
+76471,0,"HoldSurface is a trick to handle the termination of the decoder. It shouldn't be necessary when the processor is the only object dealing with the surfaces. To check for yourself, you can switch the DX runtime to debug mode (with the DirectX Control panel)""",2011-07-28 02:07:29,CrystalP,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/259#discussion_r76471,2011-07-28T14:07:29Z,2018-11-27T21:09:27Z,CrystalP,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDCodecs/Video/DXVA.cpp,,1103.0,,,165,"@@ -972,6 +1084,25 @@ void CProcessor::HoldSurface(IDirect3DSurface9* surface)
+   m_heldsurfaces.push_back(surface);
+ }
+ 
++bool CProcessor::CreateSurfaces()
++{
++  CSingleLock lock(m_section);
++
++  m_surfaces_count = m_size;
++  m_surfaces = (LPDIRECT3DSURFACE9*)calloc(m_surfaces_count, sizeof(LPDIRECT3DSURFACE9));
++  CHECK(m_service->CreateSurface((m_desc.SampleWidth + 15) & ~15,
++                                 (m_desc.SampleHeight + 15) & ~15,
++                                  m_surfaces_count - 1,
++                                  m_desc.Format,
++                                  D3DPOOL_DEFAULT,
++                                  0,
++                                  DXVA2_VideoSoftwareRenderTarget,
++                                  m_surfaces,
++                                  NULL));
++
++  return true;","HoldSurface is a trick to handle the termination of the decoder. It shouldn't be necessary when the processor is the only object dealing with the surfaces.
+To check for yourself, you can switch the DX runtime to debug mode (with the DirectX Control panel), switch on all test in the ""debugging"" panel, bump the debug output level to 3. Then play videos through the dxva renderer, exit xbmc. DX will xcomplain if something is wrong in the surface handling.
+Ignore the warning about the scissors' rect, I'm going to ping jmarshall about that.
+",53583f1b60b912a04d34c4b3896a1c77ff1ecf3b
+6226095,0,"this looks inverted to me after these changes after a quick look. 0 timeout means no timeout means handle eof like normal eof, and don't return false in IsEOF()""",2013-09-07 11:06:03,opdenkamp,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3121#discussion_r6226095,2013-09-07T23:06:03Z,2018-11-27T21:12:25Z,opdenkamp,MEMBER,xbmc/cores/dvdplayer/DVDPlayer.cpp,,,,,1,"@@ -2292,11 +2291,15 @@ void CDVDPlayer::HandleMessages()
+             if (bShowPreview)
+             {
+               UpdateApplication(0);
+-              m_iChannelEntryTimeOut = XbmcThreads::SystemClockMillis() + CSettings::Get().GetInt(""pvrplayback.channelentrytimeout"");
++              int timeoutValue = CSettings::Get().GetInt(""pvrplayback.channelentrytimeout"");
++              if (timeoutValue == 0)
++                m_ChannelEntryTimeOut.Set(XbmcThreads::EndTime::InfiniteValue);","this looks inverted to me after these changes after a quick look. 0 timeout means no timeout means handle eof like normal eof, and don't return false in IsEOF()
+",415781d7df50fd00a00629542e73e0d5860ac3b2
+1959656,0,"not needed: you should make sure URIUtils::HasEncodedHostname returns true, then CURL does all this for you.""",2012-10-26 21:48:16,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1687#discussion_r1959656,2012-10-27T09:48:16Z,2018-11-27T21:10:32Z,elupus,CONTRIBUTOR,xbmc/TextureCache.cpp,,,,,1,"@@ -103,13 +103,16 @@ CStdString CTextureCache::GetWrappedImageURL(const CStdString &image, const CStd
+ 
+   CStdString encoded(image);
+   CURL::Encode(encoded);","not needed: you should make sure URIUtils::HasEncodedHostname returns true, then CURL does all this for you.
+",8521e5e5808c9538a93b7dfcff10d6ec70f85ed3
+1038720,0,"plz don't forget FreeBSD here. or use _LINUX or TARGET_*""",2012-06-23 22:25:33,Fneufneu,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1060#discussion_r1038720,2012-06-24T10:25:33Z,2018-11-27T21:09:57Z,Fneufneu,MEMBER,xbmc/visualizations/fishBMC/fishbmc_addon.cpp,,,,,1,"@@ -0,0 +1,374 @@
++/*   fishBMC visualization plugin
++ *   Copyright (C) 2012 Marcel Ebmer
++
++ *   This program is free software; you can redistribute it and/or modify
++ *   it under the terms of the GNU General Public License as published by
++ *   the Free Software Foundation; either version 2 of the License, or
++ *   (at your option) any later version.
++
++ *   This program is distributed in the hope that it will be useful,
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *   GNU General Public License for more details.
++
++ *   You should have received a copy of the GNU General Public License along
++ *   with this program; if not, write to the Free Software Foundation, Inc.,
++ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. */
++
++#ifdef __GNUC__
++#define __cdecl
++#endif
++
++#include ""addons/include/xbmc_vis_types.h""
++#include ""addons/include/xbmc_vis_dll.h""
++
++#include ""fische.h""
++
++#include <cmath>
++#include <cstring>
++#include <unistd.h>
++#include <iostream>
++#include <string>
++#include <fstream>
++#include <sstream>
++#include <sys/stat.h>
++
++
++// global variables
++FISCHE*     g_fische;
++double      g_aspect;
++bool        g_isrotating;
++double      g_angle;
++double      g_lastangle;
++bool        g_errorstate;
++int         g_framedivisor;
++double      g_angleincrement;
++double      g_texright;
++double      g_texleft;
++bool        g_filemode;
++int         g_size;
++uint8_t*    g_axis = 0;
++
++
++
++
++
++// render functions
++// must be included AFTER global variables
++#if defined(__linux__) || defined(__APPLE__)","plz don't forget FreeBSD here.
+or use _LINUX or TARGET_*
+",cf7af6d564b6d9a1a41f8fe85be035f51a673185
+91479,2,"sorry for the multiple comment here, but this problem could also be avoided by first of all doing a clean separation between DXVA Decoder and Renderer - as proposed in isidrogar's PR 346 (see https://github.com/xbmc/xbmc/pull/346)""",2011-08-13 23:19:42,Voyager1,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/342#discussion_r91479,2011-08-14T11:19:42Z,2018-11-27T21:09:29Z,Voyager1,NONE,xbmc/cores/VideoRenderers/WinRenderer.cpp,,1021.0,,,34,"@@ -1005,13 +1007,20 @@ bool CWinRenderer::CreateYV12Texture(int index)
+ 
+ bool CWinRenderer::Supports(EINTERLACEMETHOD method)
+ {
+-  if(CONF_FLAGS_FORMAT_MASK(m_flags) == CONF_FLAGS_FORMAT_DXVA)
++  if(m_renderMethod == RENDER_DXVA)
+   {
+-    if(method == VS_INTERLACEMETHOD_NONE)
++    if(method == VS_INTERLACEMETHOD_NONE
++    ||(method == VS_INTERLACEMETHOD_AUTO || method == VS_INTERLACEMETHOD_DXVA_ANY) && DXVA_DEINTERLACE_MASK(m_processorCaps)
++    || method == VS_INTERLACEMETHOD_DXVA_BOB && (m_processorCaps & DXVA_DEINTERLACE_BOB)
++    || method == VS_INTERLACEMETHOD_DXVA_ADAPTIVE_LOW && (m_processorCaps & DXVA_DEINTERLACE_ADAPTIVE_LOW)
++    || method == VS_INTERLACEMETHOD_DXVA_ADAPTIVE_MEDIUM && (m_processorCaps & DXVA_DEINTERLACE_ADAPTIVE_MEDIUM)
++    || method == VS_INTERLACEMETHOD_DXVA_ADAPTIVE_HIGH && (m_processorCaps & DXVA_DEINTERLACE_ADAPTIVE_HIGH))
+       return true;
+-    return false;
+   }
+ 
++  if(CONF_FLAGS_FORMAT_MASK(m_flags) == CONF_FLAGS_FORMAT_DXVA)","sorry for the multiple comment here, but this problem could also be avoided by first of all doing a clean separation between DXVA Decoder and Renderer - as proposed in isidrogar's PR 346 (see https://github.com/xbmc/xbmc/pull/346)
+",874cc5f80099318151c743d483b94926d4049b65
+76305,0,"... to clarify: the only instance where """"holdSurface"""" is called in DXVA.cpp is by CDecoder. Now for software decoded we don't pass through this channel so in that case we will are using """"unheld"""" surfaces potentially being released while you still need the""",2011-07-27 21:48:37,Voyager1,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/259#discussion_r76305,2011-07-28T09:48:37Z,2018-11-27T21:09:26Z,Voyager1,NONE,xbmc/cores/dvdplayer/DVDCodecs/Video/DXVA.cpp,,1103.0,,,165,"@@ -972,6 +1084,25 @@ void CProcessor::HoldSurface(IDirect3DSurface9* surface)
+   m_heldsurfaces.push_back(surface);
+ }
+ 
++bool CProcessor::CreateSurfaces()
++{
++  CSingleLock lock(m_section);
++
++  m_surfaces_count = m_size;
++  m_surfaces = (LPDIRECT3DSURFACE9*)calloc(m_surfaces_count, sizeof(LPDIRECT3DSURFACE9));
++  CHECK(m_service->CreateSurface((m_desc.SampleWidth + 15) & ~15,
++                                 (m_desc.SampleHeight + 15) & ~15,
++                                  m_surfaces_count - 1,
++                                  m_desc.Format,
++                                  D3DPOOL_DEFAULT,
++                                  0,
++                                  DXVA2_VideoSoftwareRenderTarget,
++                                  m_surfaces,
++                                  NULL));
++
++  return true;","... to clarify: the only instance where ""holdSurface"" is called in DXVA.cpp is by CDecoder. Now for software decoded we don't pass through this channel so in that case we will are using ""unheld"" surfaces potentially being released while you still need them.
+",53583f1b60b912a04d34c4b3896a1c77ff1ecf3b
+6643596,0,"yes, currently it's working with !IsEmpty(), but as stereoscopics stuff is anything else then trivial/straight forward I prefered to provide a infobool (which isn't working atm it seems, no idea why) to abstract this and wrap any future logic change. Can """,2013-09-27 19:24:10,da-anda,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3340#discussion_r6643596,2013-09-28T07:24:10Z,2018-11-27T21:12:43Z,da-anda,MEMBER,xbmc/GUIInfoManager.cpp,,587.0,,,24,"@@ -579,7 +579,9 @@ int CGUIInfoManager::TranslateString(const CStdString &condition)
+                                   { ""progress"",         LISTITEM_PROGRESS },
+                                   { ""dateadded"",        LISTITEM_DATE_ADDED },
+                                   { ""dbtype"",           LISTITEM_DBTYPE },
+-                                  { ""dbid"",             LISTITEM_DBID }};
++                                  { ""dbid"",             LISTITEM_DBID },
++                                  { ""stereoscopicmode"", LISTITEM_STEREOSCOPIC_MODE },
++                                  { ""isstereoscopic"",   LISTITEM_IS_STEREOSCOPIC }};","yes, currently it's working with !IsEmpty(), but as stereoscopics stuff is anything else then trivial/straight forward I prefered to provide a infobool (which isn't working atm it seems, no idea why) to abstract this and wrap any future logic change. Can remove it though
+",481e7c92542900c52a719896d7799342527db3e4
+6778937,0,"You could lose this log if you want (just make the log below start with """"Loading items:"""")""",2013-10-04 08:50:45,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3324#discussion_r6778937,2013-10-04T20:50:45Z,2018-11-27T21:12:51Z,jmarshallnz,CONTRIBUTOR,xbmc/FileItem.cpp,,,,,1,"@@ -2586,10 +2586,11 @@ bool CFileItemList::Load(int windowID)
+   CFile file;
+   if (file.Open(GetDiscFileCache(windowID)))
+   {
+-    CLog::Log(LOGDEBUG,""Loading fileitems [%s]"",GetPath().c_str());
++    std::string redactPath = CURL::GetRedacted(GetPath());
++    CLog::Log(LOGDEBUG,""Loading fileitems [%s]"", redactPath.c_str());","You could lose this log if you want (just make the log below start with ""Loading items:"")
+",4b40afbed67bd2ba042581e8d95dd3fda0ccdf67
+6785118,0,"This routine is only ever called with a std::string, so I suggest changing the signature.  This then allows you to drop the strcmp() which is gonna warn on some compilers.""",2013-10-05 10:02:03,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3307#discussion_r6785118,2013-10-05T22:02:03Z,2018-11-27T21:12:52Z,jmarshallnz,CONTRIBUTOR,xbmc/guilib/StereoscopicsManager.cpp,,,,,1,"@@ -229,20 +253,59 @@ RENDER_STEREO_MODE CStereoscopicsManager::GetPreferredPlaybackMode(void)
+   return playbackMode;
+ }
+ 
+-bool CStereoscopicsManager::OnMessage(CGUIMessage &message)
++int CStereoscopicsManager::ConvertVideoToGuiStereoMode(const char *mode)
+ {
+-  switch (message.GetMessage())
++  size_t i = 0;
++  while (VideoModeToGuiModeMap[i].name)
+   {
+-  case GUI_MSG_PLAYBACK_STARTED:
+-    OnPlaybackStarted();
+-    break;
+-  case GUI_MSG_PLAYBACK_STOPPED:
+-  case GUI_MSG_PLAYLISTPLAYER_STOPPED:
+-    OnPlaybackStopped();
+-    break;
++    if (0 == strcmp(mode, VideoModeToGuiModeMap[i].name))
++      return VideoModeToGuiModeMap[i].mode;
++    i++;
+   }
++  return -1;
++}
+ 
+-  return false;
++int CStereoscopicsManager::ConvertStringToGuiStereoMode(const char *mode)","This routine is only ever called with a std::string, so I suggest changing the signature.  This then allows you to drop the strcmp() which is gonna warn on some compilers.
+",5091a3fefe3cf386fb232da3835d01b869bfce8a
+6224585,1,"Just rechecked. Except this place, disabled state is replaced with """"Infinite"""" state (disabled state in other words). :)""",2013-09-07 00:26:01,Karlson2k,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3121#discussion_r6224585,2013-09-07T12:26:01Z,2018-11-27T21:12:24Z,Karlson2k,MEMBER,xbmc/cores/dvdplayer/DVDInputStreams/DVDInputStreamPVRManager.cpp,,67.0,,,23,"@@ -58,15 +58,16 @@
+ 
+ void CDVDInputStreamPVRManager::ResetScanTimeout(unsigned int iTimeoutMs)
+ {
+-  m_iScanTimeout = iTimeoutMs > 0 ?
+-      XbmcThreads::SystemClockMillis() + iTimeoutMs :
+-      0;
++  if (iTimeoutMs > 0)
++    m_ScanTimeout.Set(iTimeoutMs);
++  else
++    m_ScanTimeout.SetInfinite();
+ }
+ 
+ bool CDVDInputStreamPVRManager::IsEOF()
+ {
+   // don't mark as eof while within the scan timeout
+-  if (m_iScanTimeout && XbmcThreads::SystemClockMillis() < m_iScanTimeout)
++  if (!m_ScanTimeout.IsTimePast())","Just rechecked. Except this place, disabled state is replaced with ""Infinite"" state (disabled state in other words). :)
+",415781d7df50fd00a00629542e73e0d5860ac3b2
+6249489,0,"UTF-32 versus UTF-32LE ?  Any issues?""",2013-09-09 08:14:36,jmarshallnz,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3097#discussion_r6249489,2013-09-09T20:14:36Z,2018-11-27T21:12:25Z,jmarshallnz,CONTRIBUTOR,xbmc/utils/CharsetConverter.cpp,,609.0,,,636,"@@ -594,61 +625,26 @@ void CCharsetConverter::ucs2CharsetToStringCharset(const CStdStringW& strSource,
+     }
+   }
+   CSingleLock lock(m_critSection);
+-  convert(m_iconvUcs2CharsetToStringCharset,4,""UTF-16LE"",
+-          g_langInfo.GetGuiCharSet(),strCopy,strDest);
++  return convert(m_iconvUcs2CharsetToStringCharset,1,""UTF-16LE"",
++          g_langInfo.GetGuiCharSet(),strCopy,stringDst);
+ }
+ 
+-void CCharsetConverter::utf32ToStringCharset(const unsigned long* strSource, CStdStringA& strDest)
++bool CCharsetConverter::utf32ToStringCharset(const std::u32string& utf32StringSrc, std::string& stringDst)
+ {
+   CSingleLock lock(m_critSection);
+-
+-  if (m_iconvUtf32ToStringCharset == (iconv_t) - 1)
+-  {
+-    CStdString strCharset=g_langInfo.GetGuiCharSet();
+-    m_iconvUtf32ToStringCharset = iconv_open(strCharset.c_str(), ""UTF-32LE"");
+-  }
+-
+-  if (m_iconvUtf32ToStringCharset != (iconv_t) - 1)
+-  {
+-    const unsigned long* ptr=strSource;
+-    while (*ptr) ptr++;
+-    const char* src = (const char*) strSource;
+-    size_t inBytes = (ptr-strSource+1)*4;
+-
+-    char *dst = strDest.GetBuffer(inBytes);
+-    size_t outBytes = inBytes;
+-
+-    if (iconv_const(m_iconvUtf32ToStringCharset, &src, &inBytes, &dst, &outBytes) == (size_t)-1)
+-    {
+-      CLog::Log(LOGERROR, ""%s failed"", __FUNCTION__);
+-      strDest.ReleaseBuffer();
+-      strDest = (const char *)strSource;
+-      return;
+-    }
+-
+-    if (iconv(m_iconvUtf32ToStringCharset, NULL, NULL, &dst, &outBytes) == (size_t)-1)
+-    {
+-      CLog::Log(LOGERROR, ""%s failed cleanup"", __FUNCTION__);
+-      strDest.ReleaseBuffer();
+-      strDest = (const char *)strSource;
+-      return;
+-    }
+-
+-    strDest.ReleaseBuffer();
+-  }
++  return convert(m_iconvUtf32ToStringCharset, 1, g_langInfo.GetGuiCharSet().c_str(), ""UTF-32"", utf32StringSrc, stringDst);","UTF-32 versus UTF-32LE ?  Any issues?
+",4af1fcd140f3bd66790d2692281fcdc823b24e40
+5831576,2,"Yeah sorry. If there's weren't a ton of other changes here I'd fix it but it's not worth it at this point.""",2013-08-18 01:51:38,jimfcarroll,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3119#discussion_r5831576,2013-08-18T13:51:38Z,2018-11-27T21:12:20Z,jimfcarroll,MEMBER,xbmc/interfaces/legacy/Control.h,,74.0,,,5,"@@ -71,7 +71,7 @@
+      *
+      * TODO:This later solution should be implemented for future scripting 
+      * languages while the former will remain as deprecated functionality 
+-     * for Python.
++     * for Python. ","Yeah sorry. If there's weren't a ton of other changes here I'd fix it but it's not worth it at this point.
+",d9fe623441383ae0a5a3b74a261ee6fbaeae76e2
+469846,2,"Thanks for the tips but I tried both and always get refresh 0    :-(  I added you to the repo as collab, be free to try other variations""",2012-02-20 18:16:41,tomtor,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/697#discussion_r469846,2012-02-21T05:16:41Z,2018-11-27T21:09:45Z,tomtor,NONE,xbmc/cores/VideoRenderers/RenderManager.cpp,,,,,1,"@@ -247,6 +247,8 @@ bool CXBMCRenderManager::Configure(unsigned int width, unsigned int height, unsi
+     m_presentevent.Set();
+   }
+ 
++  m_GlobalAudioDelay = g_advancedSettings.GetGlobalAudioDelay(fps);","Thanks for the tips but I tried both and always get refresh 0    :-(
+
+I added you to the repo as collab, be free to try other variations
+",2714488707357f5598a5debd57d0c37b36aa682d
+8036,2,"I really don't like the __arm__ keyword. This is nothing arm related it is IOS related""",2011-03-13 02:54:02,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/62#discussion_r8036,2011-03-13T13:54:02Z,2018-11-27T21:09:14Z,elupus,CONTRIBUTOR,xbmc/Application.cpp,,863.0,,,58,"@@ -851,30 +855,46 @@ bool CApplication::InitDirectoriesOSX()
+   CUtil::GetHomePath(xbmcPath);
+   setenv(""XBMC_HOME"", xbmcPath.c_str(), 0);
+ 
++#if defined(__arm__)
++  CStdString fontconfigPath;
++  fontconfigPath = xbmcPath + ""/system/players/dvdplayer/etc/fonts/fonts.conf"";
++  setenv(""FONTCONFIG_FILE"", fontconfigPath.c_str(), 0);
++#endif
++  ","I really don't like the **arm** keyword. This is nothing arm related it is IOS related
+",6a49e5fd4704b1e8b8a9fd3ffb557b614dd4e294
+6434951,0,"Not sure what you mean here, if I remove those three functions, how does the class work ? I'm using the same methods used in DisplaySettings.cpp. OnSettingChanging might or might not be needed, this is POC not a finished PR that is ready to inject. I can'""",2013-09-18 02:46:00,davilla,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3288#discussion_r6434951,2013-09-18T14:46:00Z,2018-11-27T21:12:33Z,davilla,CONTRIBUTOR,xbmc/network/NetworkSettings.cpp,,51.0,,,51,"@@ -0,0 +1,177 @@
++/*
++ *      Copyright (C) 2005-2013 Team XBMC
++ *      http://xbmc.org
++ *
++ *  This Program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  This Program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with XBMC; see the file COPYING.  If not, see
++ *  <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#include ""NetworkSettings.h""
++#include ""Application.h""
++
++#include ""guilib/GUIWindowManager.h""
++#include ""network/GUIDialogAccessPoints.h""
++#include ""settings/AdvancedSettings.h""
++#include ""settings/Setting.h""
++#include ""settings/Settings.h""
++#include ""utils/log.h""
++
++CNetworkSettings::CNetworkSettings()
++{
++  CLog::Log(LOGDEBUG, ""CNetworkSettings::CNetworkSettings"");
++}
++
++CNetworkSettings::~CNetworkSettings()
++{
++}
++
++CNetworkSettings& CNetworkSettings::Get()
++{
++  static CNetworkSettings sNetworkSettings;
++  return sNetworkSettings;
++}
++
++bool CNetworkSettings::OnSettingChanging(const CSetting *setting)","Not sure what you mean here, if I remove those three functions, how does the class work ? I'm using the same methods used in DisplaySettings.cpp. OnSettingChanging might or might not be needed, this is POC not a finished PR that is ready to inject. I can't tell until the callbacks actually get called.
+",7d645b0f6b411a9bfb086ad3c00182d00dbe8aea
+6644167,0,Err:509,2013-09-28 01:30:23,opdenkamp,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/3236#discussion_r6644167,2013-09-28T13:30:23Z,2018-11-27T21:12:44Z,opdenkamp,MEMBER,xbmc/pvr/dialogs/GUIDialogPVRTimerSettings.cpp,,,,,1,"@@ -56,9 +57,19 @@
+ 
+ void CGUIDialogPVRTimerSettings::AddChannelNames(CFileItemList &channelsList, SETTINGSTRINGS &channelNames, bool bRadio)
+ {
++  int entry = 0;
++  int dummyChannelID = -1;","= PVR_VIRTUAL_CHANNEL_UID
+",3a546f95ebb25b4e9eb4902f2ac199c26dcbbc4d
+3686444,2,"We had a solution (ffmpeg event) but unfortunately this part was not accepted upstream. Michael said that it would break some other functionality. Comparing new and old state is the only idea I have so far.""",2013-04-07 03:19:40,FernetMenta,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1757#discussion_r3686444,2013-04-07T15:19:40Z,2018-11-27T21:11:17Z,FernetMenta,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDDemuxers/DVDDemuxFFmpeg.cpp,,,,,1,"@@ -1327,3 +1376,37 @@ void CDVDDemuxFFmpeg::GetStreamCodecName(int iStreamId, CStdString &strName)
+       strName = codec->name;
+   }
+ }
++
++bool CDVDDemuxFFmpeg::IsActiveStream(int idx)
++{
++  if (m_program == UINT_MAX)
++    return true;
++
++  for (unsigned int i = 0; i < m_pFormatContext->programs[m_program]->nb_stream_indexes; i++)
++  {
++    if (idx ==  m_pFormatContext->programs[m_program]->stream_index[i] &&
++        m_pFormatContext->streams[idx]->codec->codec_type != AVMEDIA_TYPE_UNKNOWN)
++      return true;
++  }
++
++  return false;
++}
++
++bool CDVDDemuxFFmpeg::IsProgramChange()
++{
++  if (m_program == UINT_MAX)
++    return false;
++
++  bool change(false);
++  int noOfStreams = GetNrOfStreams();
++  for (int i = 0; i < noOfStreams; i++)
++  {
++    if ((m_streams[i]->type == STREAM_NONE && IsActiveStream(i)) ||
++        (m_streams[i]->type != STREAM_NONE && !IsActiveStream(i)))
++      change = true;
++  }","We had a solution (ffmpeg event) but unfortunately this part was not accepted upstream. Michael said that it would break some other functionality. Comparing new and old state is the only idea I have so far.
+",73d790c0a0c5ca7e2941e123c63b0354cbe56c42
+1692394,0,"Ok, i would then prefer that the whole start stop time calc is done there. Don't have half in decode and half in get overlay.""",2012-09-25 18:33:14,elupus,xbmc,xbmc,,https://github.com/xbmc/xbmc/pull/1458#discussion_r1692394,2012-09-26T06:33:14Z,2018-11-27T21:10:08Z,elupus,CONTRIBUTOR,xbmc/cores/dvdplayer/DVDCodecs/Overlay/DVDOverlayCodecFFmpeg.cpp,,,,,1,"@@ -166,12 +181,30 @@ int CDVDOverlayCodecFFmpeg::Decode(BYTE* data, int size, double pts, double dura
+     return OC_ERROR;
+   }
+ 
+-  if (len != size)
++  if (len != avpkt.size)
+     CLog::Log(LOGWARNING, ""%s - avcodec_decode_subtitle didn't consume the full packet"", __FUNCTION__);
+ 
+   if (!gotsub)
+     return OC_BUFFER;
+ 
++  double pts_offset = 0.0;
++ 
++  if (m_pCodecContext->codec_id == CODEC_ID_HDMV_PGS_SUBTITLE && m_Subtitle.format == 0) 
++  {
++    // for pgs subtitles the packet pts of the end_segments are wrong
++    // instead use the subtitle pts to calc the offset here
++    // see http://git.videolan.org/?p=ffmpeg.git;a=commit;h=2939e258f9d1fff89b3b68536beb931b54611585
++    if (m_Subtitle.pts != DVD_NOPTS_VALUE)
++    {
++      pts_offset = DVD_TIME_TO_MSEC(m_Subtitle.pts - pPacket->pts);
++    }
++  }
++
++  m_StartTime   = DVD_MSEC_TO_TIME(m_Subtitle.start_display_time + pts_offset);
++  m_StopTime    = DVD_MSEC_TO_TIME(m_Subtitle.end_display_time + pts_offset);  
++
++  //adapt start and stop time to our packet pts
++  CDVDOverlayCodec::GetAbsoluteTimes(m_StartTime, m_StopTime, pPacket);","Ok, i would then prefer that the whole start stop time calc is done there.
+Don't have half in decode and half in get overlay.
+",6070da3e41bde91172d82420c750c330c4f9f409

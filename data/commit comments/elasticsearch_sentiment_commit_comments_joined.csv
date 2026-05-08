@@ -1,0 +1,21 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3971995,1,"I like the idea of keeping them distinct. This would also enforce the difference between queries and filters for end-users.""",2013-08-28 22:44:31,javanna,elasticsearch,elasticsearch,60ac34ff3a191d83132c2727a7b0f8862a26d362,javanna,832460,"I like the idea of keeping them distinct. This would also enforce the difference between queries and filters for end-users.
+",2013-08-29T10:44:31Z,2013-08-29T10:44:31Z
+3953583,0,"It looks like the url user/repo/zipball/master is now working. It wasn't working back when this issue was opened, therefore we changed the github url where we get the archive from. Unfortunately the structure of the archive is slightly different when downl""",2013-08-27 02:34:36,javanna,elasticsearch,elasticsearch,352d2aaf18824389446f63cc6bbe64e04e012e96,javanna,832460,"It looks like the url user/repo/zipball/master is now working. It wasn't working back when this issue was opened, therefore we changed the github url where we get the archive from. Unfortunately the structure of the archive is slightly different when downloaded from the new url, since it contains a subfolder that has a slightly different naming, which we relied on in order to strip that part of the path from every zip entry and put all the files directly under the _site folder. To be more specific, the archives contain now a `repo-master` top-level folder, while using the other address the top-level folder is `user-repo-hash`.
+
+We would like to keep the new adopted url format (user/repo/archive/master.zip) since it seems more future-proof, but we need to adapt the zip extraction process too in order for this to work properly.
+
+Going to reopen the issue.
+",2013-08-27T14:34:36Z,2013-08-27T14:34:36Z
+4100394,1,"@clintongormley Great! Thank you so much.""",2013-09-16 00:52:06,tadd,elasticsearch,elasticsearch,a6fffae6dff97914ca8f26583a501d7d04ce4c08,tadd,243698,"@clintongormley Great! Thank you so much.
+",2013-09-16T12:52:06Z,2013-09-16T12:52:06Z
+4085886,1,"@tadd agreed - I wasn't aware of that syntax. I've added your suggestions and pushed. thanks!""",2013-09-12 22:41:16,clintongormley,elasticsearch,elasticsearch,9f59a85c26e4aef9d65a459039cbce0f017333a0,clintongormley,56599,"@tadd agreed - I wasn't aware of that syntax. I've added your suggestions and pushed. thanks!
+",2013-09-13T10:41:16Z,2013-09-13T10:41:16Z
+4085815,1,"Thank you!  It looks far better.""",2013-09-12 22:28:22,tadd,elasticsearch,elasticsearch,822043347ed4151498e1405dd7494cc2c51684e9,tadd,243698,"Thank you!  It looks far better.
+",2013-09-13T10:28:22Z,2013-09-13T10:28:22Z
+3952090,1,"Once again, thanks a lot for pointing this out Matt! I'm looking into it.""",2013-08-26 23:26:49,javanna,elasticsearch,elasticsearch,352d2aaf18824389446f63cc6bbe64e04e012e96,javanna,832460,"Once again, thanks a lot for pointing this out Matt! I'm looking into it.
+",2013-08-27T11:26:49Z,2013-08-27T11:26:49Z
+3765815,1,"this is a good way of randomizing the replicas. maybe we can make this more generic in the base class!""",2013-07-31 23:26:22,s1monw,elasticsearch,elasticsearch,5cd01461f64482e7626da48ce444da4003be9a53,s1monw,973334,"this is a good way of randomizing the replicas. maybe we can make this more generic in the base class!
+",2013-08-01T11:26:22Z,2013-08-01T11:26:22Z
+2674637,1,"All right. Thank you again for this, I'm testing it right now""",2013-02-22 03:13:20,jgagnon1,elasticsearch,elasticsearch,4753ffdf1e8529a636c5dbb6ee005bf2aeec2d76,jgagnon1,568924,"All right. Thank you again for this, I'm testing it right now
+",2013-02-22T14:13:20Z,2013-02-22T14:13:20Z

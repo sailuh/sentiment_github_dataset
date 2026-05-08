@@ -1,0 +1,272 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+6142365,2,"oh, you're absolutely right -- sorry for my confusion! That makes sense, it should add `word.length` to get the next match.""",2013-09-03 12:19:18,eliasdorneles,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1037#discussion_r6142365,2013-09-04T00:19:18Z,2013-09-04T00:58:03Z,eliasdorneles,NONE,coffee/lib/abstract-chosen.coffee,,,,,1,"@@ -177,16 +172,22 @@ class AbstractChosen
+       this.update_results_content this.results_option_build()
+       this.winnow_results_set_highlight()
+ 
+-  search_string_match: (search_string, regex) ->
+-    if regex.test search_string
+-      return true
+-    else if @enable_split_word_search and (search_string.indexOf("" "") >= 0 or search_string.indexOf(""["") == 0)
+-      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+-      parts = search_string.replace(/\[|\]/g, """").split("" "")
+-      if parts.length
+-        for part in parts
+-          if regex.test part
+-            return true
++  search_string_match: (search_string, words) ->
++    for word in words
++      if search_string.toLowerCase().indexOf(word) < 0
++        return false
++    return true
++
++  highlight_search_text: (text, words) ->
++    # sort the query words to highlight the longest first
++    words.sort (a, b) -> b.length - a.length
++    highlight_offset = 10  # 1 + '<em></em>'.length
++    for word in words
++      startpos = text.toLowerCase().indexOf word
++      while startpos >= 0
++        text = text.substr(0, startpos) + '<em>' + text.substr(startpos, word.length) + '</em>' + text.substr(startpos + word.length)
++        startpos = text.toLowerCase().indexOf(word, startpos + highlight_offset)","oh, you're absolutely right -- sorry for my confusion! That makes sense, it should add `word.length` to get the next match.
+",58146cea40855156adeae1620eeefe306e93933c
+5383881,1,"Save here :)""",2013-07-24 08:56:58,koenpunt,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1397#discussion_r5383881,2013-07-24T20:56:58Z,2013-07-24T21:52:23Z,koenpunt,CONTRIBUTOR,public/index.proto.html,,,,,1,"@@ -1448,12 +1448,9 @@
+       </ul>
+ 
+       <footer>
+-        &copy; 2011 <a href=""http://www.getharvest.com/"">Harvest</a> - Chosen is licensed under the <a href=""http://en.wikipedia.org/wiki/MIT_License"">MIT license</a>.
++        &copy; 2011 <a href=""http://www.getharvest.com/"">Harvest</a> &mdash; Chosen is licensed under the <a href=""https://github.com/harvesthq/chosen/blob/master/LICENSE.md"">MIT license</a>.","Save here :)
+",2cbd0c3da5699b82ca76e63b56d897aa7a70f413
+5197615,1,"I'm really liking the block string syntax here. Very readable :)""",2013-07-15 06:41:10,kenearley,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1343#discussion_r5197615,2013-07-15T18:41:10Z,2013-07-16T17:17:41Z,kenearley,NONE,coffee/lib/abstract-chosen.coffee,,94.0,,,32,"@@ -88,6 +89,10 @@ class AbstractChosen
+ 
+     """"""<li id=""#{option.dom_id}"" class=""#{classes.join(' ')}""#{style}>#{option.search_text}</li>""""""
+ 
++  result_add_group: (group) ->
++    group.dom_id = @container_id + ""_g_"" + group.array_index
++    """"""<li id=""#{group.dom_id}"" class=""group-result"">#{group.search_text}</li>""""""","I'm really liking the block string syntax here. Very readable :)
+",1b7cd20f6da7f7863cf67369b28b9e4b91e839e5
+4384581,1,"I figured there'd be a few. Thanks!""",2013-05-24 04:37:48,pfiller,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1236#discussion_r4384581,2013-05-24T16:37:48Z,2013-06-03T20:15:15Z,pfiller,CONTRIBUTOR,contributing.md,,,,,1,"@@ -0,0 +1,169 @@
++# Contributing to this project
++
++Please take a moment to review this document in order to make the contribution
++process easy and effective for everyone involved.
++
++Following these guidelines helps to communicate that you respect the time of
++the project maintainers who give their time to share this project freely. 
++In return, the maintainers will reciprocate that respect in addressing your 
++issue or assessing your pull requests.
++
++_**Please Note:** These guidelines are adapted from [@necolas](https://github.com/necolas)'s 
++[issue-guidelines](https://github.com/necolas/issue-guidelines) and serve as
++an excellent starting point for contributing to any open source project._
++
++
++## Using the issue tracker
++
++The issue tracker is the preferred channel for [bug reports](#bugs),
++[features requests](#features) and [submitting pull
++requests](#pull-requests), but please respect the following restrictions:
++
++* Please **do not** use the issue tracker for personal support requests (use
++  [Stack Overflow](http://stackoverflow.com) or IRC).
++
++* Please **do not** derail or troll issues. Keep the discussion on topic and
++  respect the opinions of others.
++
++
++<a name=""bugs""></a>
++## Bug reports
++
++A bug is a _demonstrable problem_ that is caused by the code in the repository.
++Good bug reports are extremely helpful - thank you!
++
++Guidelines for bug reports:
++
++1. **Use the GitHub issue search** &mdash; check if the issue has already been
++   reported.
++
++2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
++   repository's latest `master` changes.
++
++3. **Isolate the problem** &mdash; ideally create a [reduced test
++   case](http://css-tricks.com/6263-reduced-test-cases/) and a live example 
++   (perhaps a [fiddle](http://jsfiddle.net)).
++
++A good bug report shouldn't leave others needing to chase you up for more
++information. Please try to be as detailed as possible in your report. What is
++your environment? What steps will reproduce the issue? What browser(s) and OS
++experience the problem? What would you expect to be the outcome? All these
++details will help people to fix any potential bugs.
++
++Example:
++
++> Short and descriptive example bug report title
++>
++> A summary of the issue and the browser/OS environment in which it occurs. If
++> suitable, include the steps required to reproduce the bug.
++>
++> 1. This is the first step
++> 2. This is the second step
++> 3. Further steps, etc.
++>
++> `<url>` - a link to the reduced test case
++>
++> Any other information you want to share that is relevant to the issue being
++> reported. This might include the lines of code that you have identified as
++> causing the bug, and potential solutions (and your opinions on their
++> merits).
++
++
++<a name=""features""></a>
++## Feature requests
++
++Feature requests are welcome. But take a moment to find out whether your idea
++fits with the scope and aims of the project. It's up to *you* to make a strong
++case to convince the project's developers of the merits of this feature. Please
++provide as much detail and context as possible.
++
++Building something great means choosing features carefully. It is much, much 
++easier to add features than it is to take them away. Additions to Chosen
++will be evaluated on a combination of scope (how well it fits into the project),
++maintenance burden and general usefulness.
++
++Building something great often means saying no to seemingly good ideas. Don't 
++dispair if your feature request isn't accepted, take action! Fork the 
++repository, build your idea and share it with others. We released Chosen under
++the MIT License for this purpose precisely. Open source works best when smart 
++and dedicated people riff off of each others' ideas to make even greater things. 
++
++
++
++<a name=""pull-requests""></a>
++## Pull requests
++
++Good pull requests - patches, improvements, new features - are a fantastic help. 
++They should remain focused in scope and avoid containing unrelated commits.
++
++**Please ask first** before embarking on any significant pull request (e.g.
++implementing features, refactoring code, porting to a different language),
++otherwise you risk spending a lot of time working on something that the
++project's developers might not want to merge into the project.
++
++Please use the [git flow for pull requesets](#git-flow) and follow Chosen's 
++[code conventions](#code-conventions) bevore submitting your work. Adhering to ","I figured there'd be a few. Thanks!
+",abd69cefbd5636242acf36f27700ef565f4d9fc2
+301179,0,"I originally found that CSS snippet on StackOverflow and the comments came with it.  I've updated the comments, and added a blurb about why border-box is used.  FireFox8 still defines -moz-box-sizing so I left that entry. It appears that the latest Chrome""",2011-12-17 07:37:16,justindujardin,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/407#discussion_r301179,2011-12-17T18:37:16Z,2012-01-13T19:15:27Z,justindujardin,CONTRIBUTOR,chosen/chosen.css,,,,,1,"@@ -120,6 +124,12 @@
+   border: 1px solid #aaa;
+   font-family: sans-serif;
+   font-size: 1em;
++  width:100%;
++  box-sizing: border-box; /* css3 rec */
++  -moz-box-sizing: border-box; /* ff2 */
++  -ms-box-sizing: border-box; /* ie8 */
++  -webkit-box-sizing: border-box; /* safari3 */","I originally found that CSS snippet on StackOverflow and the comments came with it.  I've updated the comments, and added a blurb about why border-box is used.
+
+FireFox8 still defines -moz-box-sizing so I left that entry.
+It appears that the latest Chrome and Safari do not defined the -webkit-box-sizing, but I figure it doesn't hurt to leave.
+",fecc5a6b327777e75ea3e35fadf4e4dde3dba2ad
+187345,1,"well, it would be easier IMO to pass the value. Thus, ``this`` in the callback will not refer to the field with the way you call it currently AFAIS.""",2011-10-24 08:16:34,stof,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/316#discussion_r187345,2011-10-24T20:16:34Z,2011-10-25T19:36:53Z,stof,CONTRIBUTOR,chosen/chosen.jquery.js,,,,,1,"@@ -630,6 +634,10 @@
+       if (this.result_highlight) {
+         high = this.result_highlight;
+         high_id = high.attr(""id"");
++        if (high.hasClass(""new-result"")) {
++          this.options.new_item_callback();","well, it would be easier IMO to pass the value.
+Thus, `this` in the callback will not refer to the field with the way you call it currently AFAIS.
+",b4a379acdd336b2d9ab4e14cf951272a8b4dc19d
+5459101,2,"It seems weird to me that this is setting the form field value after getting called by `search_field_disabled` which just read that value. I couldn't really think of a cleaner way to do this, though, so I'm not 100% sure what to suggest to make it better.""",2013-07-29 07:30:15,pfiller,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1415#discussion_r5459101,2013-07-29T19:30:15Z,2017-03-24T20:57:45Z,pfiller,CONTRIBUTOR,coffee/chosen.jquery.coffee,,,,,1,"@@ -102,17 +105,27 @@ class Chosen extends AbstractChosen
+     @form_field_jq.removeData('chosen')
+     @form_field_jq.show()
+ 
++  enable: ->
++    @is_disabled = false
++    @form_field.disabled = false","It seems weird to me that this is setting the form field value after getting called by `search_field_disabled` which just read that value. I couldn't really think of a cleaner way to do this, though, so I'm not 100% sure what to suggest to make it better.
+",dd55277338cd1cbdfa85ad684131349969e48023
+4384197,0,"The issue with doing that is that if the title changes, so do the url hashes. I reverted to using explicit named anchors to ensure the urls don't change when the title copy does.""",2013-05-24 04:19:11,necolas,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1236#discussion_r4384197,2013-05-24T16:19:11Z,2013-06-03T20:15:15Z,necolas,NONE,contributing.md,,30.0,,,30,"@@ -0,0 +1,169 @@
++# Contributing to this project
++
++Please take a moment to review this document in order to make the contribution
++process easy and effective for everyone involved.
++
++Following these guidelines helps to communicate that you respect the time of
++the project maintainers who give their time to share this project freely. 
++In return, the maintainers will reciprocate that respect in addressing your 
++issue or assessing your pull requests.
++
++_**Please Note:** These guidelines are adapted from [@necolas](https://github.com/necolas)'s 
++[issue-guidelines](https://github.com/necolas/issue-guidelines) and serve as
++an excellent starting point for contributing to any open source project._
++
++
++## Using the issue tracker
++
++The issue tracker is the preferred channel for [bug reports](#bugs),
++[features requests](#features) and [submitting pull
++requests](#pull-requests), but please respect the following restrictions:
++
++* Please **do not** use the issue tracker for personal support requests (use
++  [Stack Overflow](http://stackoverflow.com) or IRC).
++
++* Please **do not** derail or troll issues. Keep the discussion on topic and
++  respect the opinions of others.
++
++
++<a name=""bugs""></a>","The issue with doing that is that if the title changes, so do the url hashes. I reverted to using explicit named anchors to ensure the urls don't change when the title copy does.
+",abd69cefbd5636242acf36f27700ef565f4d9fc2
+3440255,0,"I'm not suer why the cake build change this from _ref to _ref1""",2013-03-19 09:39:14,ido-ran,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1096#discussion_r3440255,2013-03-19T20:39:14Z,2013-03-19T20:39:14Z,ido-ran,NONE,chosen/chosen.jquery.js,,1033.0,,,350,"@@ -1004,8 +1030,9 @@ Copyright (c) 2011 by Harvest
+     };
+ 
+     Chosen.prototype.keydown_checker = function(evt) {
+-      var stroke, _ref;
+-      stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
++      var stroke, _ref1;","I'm not suer why the cake build change this from _ref to _ref1
+",462858159c33990055f681479a1e32791673f7a4
+4053969,1,"Yeah. What @stof said :smiley: """,2013-05-02 01:01:08,kenearley,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1186#discussion_r4053969,2013-05-02T13:01:08Z,2013-05-02T13:01:34Z,kenearley,NONE,coffee/chosen.proto.coffee,,120.0,,,28,"@@ -116,21 +116,12 @@ class Chosen extends AbstractChosen
+   container_mouseup: (evt) ->
+     this.results_reset(evt) if evt.target.nodeName is ""ABBR"" and not @is_disabled
+ 
+-  # scrolling event handler for all but Firefox
+   search_results_mousewheel: (evt) ->
+-    @search_results.scrollTop -= evt.wheelDelta
+-    evt.preventDefault()
+-
+-  # scrolling event handler for Firefox
+-  search_results_mousewheel_ff: (evt) ->
+-    target = evt.currentTarget
+-    delta = evt.wheelDelta or (evt.originalEvent and evt.originalEvent.wheelDelta) or -evt.detail
+-    bottom_overflow = target.scrollTop + target.getHeight() - target.scrollHeight >= 0
+-    top_overflow = target.scrollTop <= 0
+-    
+-    if target.scrollHeight > target.getHeight() and ((delta < 0 and bottom_overflow) or (delta > 0 and top_overflow))
+-        evt.preventDefault()
+-
++    delta = -evt.wheelDelta or evt.detail","Yeah. What @stof said :smiley: 
+",7fb96a44203c7dae3a1d712ba5cf6a284cc0b358
+5911759,1,"Yeah. I looked at doing that. I'll revisit it again. I'm sure we can get it nice and clean ;)""",2013-08-21 10:46:03,kenearley,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1494#discussion_r5911759,2013-08-21T22:46:03Z,2013-08-22T14:01:00Z,kenearley,NONE,Gruntfile.coffee,,,,,1,"@@ -50,8 +52,10 @@ module.exports = (grunt) ->
+     compass:
+       chosen_css:
+         options:
+-          specify:
+-            ['sass/chosen.scss']
++          banner: ""<%= comments %>""
++          sassDir: ""sass""
++          cssDir: ""public""","Yeah. I looked at doing that. I'll revisit it again. I'm sure we can get it nice and clean ;)
+",b1b9c76ec2b21ade7d634a39ba6962c8a1c40f8a
+4386943,1,"Let me know how you feel once it becomes clear that no one reads this thing :)  If you come up with nicer wording, I'd appreciate it being fed back upstream (along with any other improvements you guys make) so other people using the guidelines can benef""",2013-05-24 06:46:29,necolas,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1236#discussion_r4386943,2013-05-24T18:46:29Z,2013-06-03T20:15:15Z,necolas,NONE,contributing.md,,,,,1,"@@ -0,0 +1,185 @@
++# Contributing to this project
++
++Please take a moment to review this document in order to make the contribution
++process easy and effective for everyone involved.
++
++Following these guidelines helps to communicate that you respect the time of
++the project maintainers who give their time to share this project freely. 
++In return, the maintainers will reciprocate that respect in addressing your 
++issue or assessing your pull requests.","Let me know how you feel once it becomes clear that no one reads this thing :)
+
+If you come up with nicer wording, I'd appreciate it being fed back upstream (along with any other improvements you guys make) so other people using the guidelines can benefit from them. Thanks
+",abd69cefbd5636242acf36f27700ef565f4d9fc2
+3855449,1,"You're right. I was thinking that the plugin version returned different data, but it does not. Whee!""",2013-04-18 03:05:59,pfiller,harvesthq,chosen,,https://github.com/harvesthq/chosen/pull/1144#discussion_r3855449,2013-04-18T15:05:59Z,2013-04-18T17:28:26Z,pfiller,CONTRIBUTOR,coffee/chosen.proto.coffee,,,,,1,"@@ -6,6 +6,9 @@ root = this
+ 
+ class Chosen extends AbstractChosen
+ 
++  constructor: (@form_field, @options={}) ->
++    super(@form_field, @options) unless null isnt Chosen.IE_DOCUMENT_MODE < 8","You're right. I was thinking that the plugin version returned different data, but it does not. Whee!
+",829226ef446f6292ed6f6adda96c6d641bbcc6ec

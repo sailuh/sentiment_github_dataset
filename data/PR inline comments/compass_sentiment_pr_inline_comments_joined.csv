@@ -1,0 +1,45 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+430197,0,"Well, no. The forward slashes are creating the problems, they're supposed to be hashes. Or do you mean the names?""",2012-02-08 10:53:08,nathggns,chriseppstein,compass,,https://github.com/Compass/compass/pull/703#discussion_r430197,2012-02-08T21:53:08Z,2012-02-14T01:54:18Z,nathggns,CONTRIBUTOR,doc-src/content/help/tutorials/spriting.markdown,,57.0,,,7,"@@ -52,14 +52,14 @@ You can now apply the `icon-XXX` classes to your markup as needed.
+ 
+ Let's go over what happened there. The import statement told compass to [generate a
+ stylesheet that is customized for your sprites](https://gist.github.com/729507). This
+-stylesheet is [magic](/help/tutorials/spriting/magic-imports), it is not written to disk, and it can be customized
++stylesheet is [magic](#magic-imports), it is not written to disk, and it can be customized
+ by setting configuration variables before you import it. See the section below on
+-[Customization Options](/help/tutorials/spriting/customization). The goal of this stylesheet is to provide a","Well, no. The forward slashes are creating the problems, they're supposed to be hashes. Or do you mean the names?
+",47ea695f30b0d405b3af97b1cd45998a45761929
+4525355,0,"I would DRY this up a bit and calculate the width before calling `ImageRow.new` within the if statement.""",2013-06-04 03:31:03,scottdavis,chriseppstein,compass,,https://github.com/Compass/compass/pull/1310#discussion_r4525355,2013-06-04T15:31:03Z,2013-06-06T15:46:03Z,scottdavis,MEMBER,lib/compass/sass_extensions/sprites/row_fitter.rb,,,,,1,"@@ -38,14 +38,19 @@ def efficiency
+         end
+ 
+         private
+-        def new_row(image = nil)
+-          row = Compass::SassExtensions::Sprites::ImageRow.new(width)
++        def new_row(image = nil)          
++          if image
++            row = Compass::SassExtensions::Sprites::ImageRow.new(width + 2 * image.spacing)
++          else 
++            row = Compass::SassExtensions::Sprites::ImageRow.new(width + 2 * @images[0].spacing)","I would DRY this up a bit and calculate the width before calling `ImageRow.new` within the if statement.
+",b10ad5babcd6404ddca54844b013ab2eb6e9c5be
+788473,2,"You're right. It's a fourth value. I have hideously embarrassed myself by getting it backwards.""",2012-05-08 03:19:40,rachelnabors,chriseppstein,compass,,https://github.com/Compass/compass/pull/877#discussion_r788473,2012-05-08T15:19:40Z,2012-05-08T15:19:40Z,nearestnabors,NONE,frameworks/compass/stylesheets/compass/css3/_text-shadow.scss,,46.0,,,4,"@@ -43,6 +43,7 @@ $default-text-shadow-blur:     1px  !default;
+   @if $color == none {
+     text-shadow: none;
+   } @else {
++    text-shadow: $color $hoff $voff; // for browsers without spread distance (like IE)","You're right. It's a fourth value. I have hideously embarrassed myself by getting it backwards.
+",f5fac74f8d98ca47c0186ddc9776fb4de662f6cd
+4465376,0,"But even without space reuse this is wrong because there's space on both sides. The naive algorithm would be `images.inject(0) {|sum, img| sum + img.width + 2 * img.spacing}`. Also, do we need spacing on the edges? I don't think so.""",2013-05-30 07:56:41,chriseppstein,chriseppstein,compass,,https://github.com/Compass/compass/pull/1303#discussion_r4465376,2013-05-30T19:56:41Z,2013-05-30T19:56:41Z,chriseppstein,MEMBER,lib/compass/sass_extensions/sprites/image_row.rb,,34.0,,,31,"@@ -23,15 +23,15 @@ def add(image)
+         alias :<< :add
+         
+         def height
+-          images.map(&:height).max
++          return (images.map(&:height).max + images.map(&:spacing).max)
+         end
+         
+-        def width
++        def width          
+           images.map(&:width).max
+         end
+ 
+         def total_width
+-          images.inject(0) {|sum, img| sum + img.width }
++          images.inject(0) {|sum, img| sum + img.width + img.spacing}","But even without space reuse this is wrong because there's space on both sides. The naive algorithm would be `images.inject(0) {|sum, img| sum + img.width + 2 * img.spacing}`. Also, do we need spacing on the edges? I don't think so.
+",f493ad82c1b71ad185cb9afe5cdeaf3567ded7ab

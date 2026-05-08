@@ -1,0 +1,29 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3964234,1,"@pablopaul Oh missed that one, was totally focused on line (38). I think I need another cup of coffee.""",2013-08-28 03:37:01,mhayes,zurb,foundation,3989be5558dc6efec55fb7a47459404c51cb4721,mhayes,125222,"@pablopaul Oh missed that one, was totally focused on line (38). I think I need another cup of coffee.
+",2013-08-28T15:37:01Z,2013-08-28T15:37:01Z
+3811089,0,"Could you check if it fixes the performance problem reported here: https://github.com/zurb/foundation/pull/2859  But I think, that when the user just need to change the selected value programmatically, it's a shame to have to refresh (recreate) the whole""",2013-08-07 07:52:47,raziel057,zurb,foundation,a840d198bda1d8fb74f02bc3875e1dd48d60e36f,raziel057,652505,"Could you check if it fixes the performance problem reported here: https://github.com/zurb/foundation/pull/2859
+
+But I think, that when the user just need to change the selected value programmatically, it's a shame to have to refresh (recreate) the whole list. What do you think about this?
+",2013-08-07T19:52:47Z,2013-08-07T19:52:47Z
+3758599,1,"Good call. I'll add that in. """,2013-07-31 04:11:22,mrsweaters,zurb,foundation,b6d7783fd7d6397c583a8db1bc51cb742c47f501,mrsweaters,535897,"Good call. I'll add that in. 
+",2013-07-31T16:11:22Z,2013-07-31T16:11:22Z
+3221100,1,"A okey. I should start looking at the JavaScript/jquery ^^""",2013-05-15 08:23:40,MekZii,zurb,foundation,2f9b746db42b2b1849a775ab3ad9da49c5f87a4b,Ilyes512,2445415,"A okey. I should start looking at the JavaScript/jquery ^^
+",2013-05-15T20:23:40Z,2013-05-15T20:23:40Z
+2976310,0,"This seems to have awaken Issue #1789 again, why do you changed scroll to offset ?""",2013-04-09 04:21:33,Korri,zurb,foundation,38ce01edc88852b167666e69aaa62ea7c4ca1df1,Korri,130747,"This seems to have awaken Issue #1789 again, why do you changed scroll to offset ?
+",2013-04-09T16:21:33Z,2013-04-09T16:21:33Z
+2091460,0,"The rule you guys used in the past with the ie.less was the following:  a img { border: 0; }""",2012-11-01 18:18:01,sjonnet19,zurb,foundation,9215b0b930af4b9b267183a10077390d3436ca38,sjonnet19,1060672,"The rule you guys used in the past with the ie.less was the following:
+
+a img { border: 0; }
+",2012-11-02T05:18:01Z,2012-11-02T05:18:01Z
+2168625,0,"We just pulled in this change, and it also broke many of the changes we had based on the hide class. We were specifically using css inheritance for the classes that had a display element + plus the option of the hide class. This seems like the wrong approa""",2012-11-16 14:37:06,aaronbhansen,zurb,foundation,06151af561e9cee0b937651066d4e5038c21f0e9,aaronbhansen,1092833,"We just pulled in this change, and it also broke many of the changes we had based on the hide class. We were specifically using css inheritance for the classes that had a display element + plus the option of the hide class. This seems like the wrong approach using !important rather than specifically targeting hide classes.
+",2012-11-17T01:37:06Z,2012-11-17T01:37:06Z
+1885637,0,"Not sure if I like this idea. I get how having a variable for this adds some flexibility, on the other hand it isn't likely that you will have one font color throughout the whole site anyways so I'm not sure how useful it is.  Using the color set in a pare""",2012-09-20 14:55:28,chrisnicola,zurb,foundation,3247fa843b8936a646418c66d5da61cdbb4692f9,chrisnicola,156449,"Not sure if I like this idea. I get how having a variable for this adds some flexibility, on the other hand it isn't likely that you will have one font color throughout the whole site anyways so I'm not sure how useful it is.
+
+Using the color set in a parent allows me to switch between light on dark and dark on light more easily. This just complicates the rules I have to write as I now I have ensure there is a rule for every header for any elements that change the color contrasts.
+",2012-09-21T02:55:28Z,2012-09-21T02:55:28Z
+4211381,0,"I feel like this should be using the margin variable set on line 327, otherwise RTL websites are going to have incorrect animations.""",2013-09-30 02:04:40,danielsamuels,zurb,foundation,0177da71e1c0e753129a24a3a0379b2831378607,danielsamuels,1781176,"I feel like this should be using the margin variable set on line 327, otherwise RTL websites are going to have incorrect animations.
+",2013-09-30T14:04:40Z,2013-09-30T14:04:40Z
+3892188,1,"Probably not as you're right that it's an edge case - I can work around it fairly simply in my case by applying the styling I need. Thanks again!""",2013-08-19 06:12:44,Kwal,zurb,foundation,6bfed252f62aedfbdd3115b92fc5c6d7df0adcdd,kwal,600568,"Probably not as you're right that it's an edge case - I can work around it fairly simply in my case by applying the styling I need. Thanks again!
+",2013-08-19T18:12:44Z,2013-08-19T18:12:44Z
+3892195,1,"No problem, thanks for bringing up this issue though. Happy coding!""",2013-08-19 06:13:36,mhayes,zurb,foundation,6bfed252f62aedfbdd3115b92fc5c6d7df0adcdd,mhayes,125222,"No problem, thanks for bringing up this issue though. Happy coding!
+",2013-08-19T18:13:36Z,2013-08-19T18:13:36Z

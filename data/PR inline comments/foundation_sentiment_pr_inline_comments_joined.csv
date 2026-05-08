@@ -1,0 +1,132 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+393432,0,"I'll change it.""",2012-01-27 08:56:02,stereobooster,zurb,foundation,,https://github.com/foundation/foundation-sites/pull/250#discussion_r393432,2012-01-27T19:56:02Z,2012-03-11T22:05:52Z,stereobooster,NONE,javascripts/jquery.customforms.js,,,,,1,"@@ -6,121 +6,108 @@
+  * http://www.opensource.org/licenses/mit-license.php
+ */
+ 
+-jQuery(document).ready(function ($) {
+-  
++(function ($) {
++
++  var $currentDropdown,
++      currentPosition = 0,
++      focus,
++      $document = $(document),
++      ownEvent = 'foundation',
++      maxVisibleOptions = 10;
++
+   function appendCustomMarkup(type) {
+     $('form.custom input:' + type).each(function () {
+ 
+-      var $this = $(this).hide(),
++      var $this = $(this).removeAttr('style').addClass('customized'),
+           $span = $this.next('span.custom.' + type);
+ 
+       if ($span.length === 0) {
+         $span = $('<span class=""custom ' + type + '""></span>').insertAfter($this);
+       }
+ 
+-      $span.toggleClass('checked', $this.is(':checked'));
+-      $span.toggleClass('disabled', $this.is(':disabled'));
++      $span.toggleClass('checked', $this.is(':checked'))
++        .toggleClass('disabled', $this.is(':disabled'));
+     });
+   }
+-  appendCustomMarkup('checkbox');
+-  appendCustomMarkup('radio');
+ 
+-  function appendCustomSelect(sel) {
+-    var $this = $(sel),
+-        $customSelect = $this.next('div.custom.dropdown'),
+-        $options = $this.find('option'),
++  function refreshCustomSelect($select, append) {
++    var $customSelect = $select.next(append ? 'div.custom.dropdown' : ''),
++        $options = $select.find('option'),
+         maxWidth = 0,
++        outerWidth,
++        li = '',
++        $ul,
++        html,
+         $li;
+ 
+-    if ($customSelect.length === 0) {
+-      $customSelect = $('<div class=""custom dropdown""><a href=""#"" class=""selector""></a><ul></ul></div>""');
+-      $options.each(function () {
+-        $li = $('<li>' + $(this).html() + '</li>');
+-        $customSelect.find('ul').append($li);
+-      });
+-      $customSelect.prepend('<a href=""#"" class=""current"">' + $options.first().html() + '</a>');
++    if (append && $customSelect.length === 0) {
++      $customSelect = $('<div class=""custom dropdown""><span class=""selector""></span><ul></ul></div>""');
++      $customSelect.prepend('<span class=""current"">' + $options.first().html() + '</span>');
+ 
+-      $this.after($customSelect);
+-      $this.hide();
+-      
++      $select.after($customSelect);
++      $ul = $customSelect.find('ul');
+     } else {
+-      // refresh the ul with options from the select in case the supplied markup doesn't match
+-      $customSelect.find('ul').html('');
+-      $options.each(function () {
+-        $li = $('<li>' + $(this).html() + '</li>');
+-        $customSelect.find('ul').append($li);
+-      });
++      $ul = $customSelect.find('ul').html('');
++      $customSelect.removeAttr('style');
++      $ul.removeAttr('style');  
+     }
+ 
+-    $customSelect.toggleClass('disabled', $this.is(':disabled'));
++    if (append) {
++      $customSelect.toggleClass('disabled', $select.is(':disabled'));
++      $select.removeAttr('style').addClass('customized');
++    }
+ 
+-    $options.each(function (index) {
++    $options.each(function () {
++      html = $(this).html();
++      li += '<li';
+       if (this.selected) {
+-        $customSelect.find('li').eq(index).addClass('selected');
+-        $customSelect.find('.current').html($(this).html());
++        li += ' class=""selected""';
++        $customSelect.find('.current').html(html);
+       }
++      li += '>' + html + '</li>';
+     });
++    $ul.append(li);
++
++    $li = $customSelect.find('li');
+ 
+-    $customSelect.find('li').each(function () {
++    // fix width
++    $li.each(function () {
+       $customSelect.addClass('open');
+-      if ($(this).outerWidth() > maxWidth) {
+-        maxWidth = $(this).outerWidth();
++      outerWidth = $(this).outerWidth();
++      if (outerWidth > maxWidth) {
++        maxWidth = outerWidth;
+       }
+       $customSelect.removeClass('open');
+     });
++
+     $customSelect.css('width', maxWidth + 18 + 'px');
+-    $customSelect.find('ul').css('width', maxWidth + 16 + 'px');
++    $ul.css('width', maxWidth + 16 + 'px');
+ 
++    if ($li.length > maxVisibleOptions) {
++      $customSelect.addClass('open');
++      $ul.css('height', $li.first().outerHeight() * maxVisibleOptions + 'px')
++        .css('overflow-y', 'scroll');
++      $customSelect.removeClass('open');
++    }
+   }
+ 
+-  $('form.custom select').each(function () {
+-    appendCustomSelect(this);
+-  });
+-  
+-});
++  $(function () {","I'll change it.
+",04bf2eadbd95d5666e7498797dcfe6ecaf019569

@@ -1,0 +1,564 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+3383589,0,"Style: split declaration and assignment.""",2013-03-14 11:52:06,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/744#discussion_r3383589,2013-03-14T22:52:06Z,2013-05-25T17:56:21Z,bnoordhuis,CONTRIBUTOR,src/uv-common.c,,,,,1,"@@ -170,16 +173,41 @@ struct sockaddr_in uv_ip4_addr(const char* ip, int port) {
+   return addr;
+ }
+ 
+-
+ struct sockaddr_in6 uv_ip6_addr(const char* ip, int port) {
+   struct sockaddr_in6 addr;
++  char * address_part = NULL;
++  const char* zone_index = NULL;","Style: split declaration and assignment.
+",1b2631d4015707ab55278d2f004d891a64b76619
+2530135,2,"Oh, okay. Still - don't trust the guy who wrote that.""",2013-01-02 05:43:04,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/674#discussion_r2530135,2013-01-02T16:43:04Z,2013-01-02T16:43:04Z,bnoordhuis,CONTRIBUTOR,src/unix/stream.c,,185.0,,,54,"@@ -178,13 +177,33 @@ void uv__stream_osx_select(void* arg) {
+     if (r == 0)
+       continue;
+ 
++    /* Empty socketpair's buffer in case of interruption */
++    if (FD_ISSET(s->int_fd, &sread))
++      while (1) {
++        r = read(s->int_fd, buf, sizeof(buf));
++
++        if (r == sizeof(buf))","Oh, okay. Still - don't trust the guy who wrote that.
+",984a28329fac8ad5ba78a307a38d576c3fe22279
+171878,0,"This is inconsistent with the other UNIX implementations. The caller is responsible for not passing in NULL.""",2011-10-14 05:36:16,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/208#discussion_r171878,2011-10-14T17:36:16Z,2011-10-30T16:54:27Z,bnoordhuis,CONTRIBUTOR,src/unix/linux.c,,,,,1,"@@ -83,6 +87,44 @@ double uv_get_total_memory(void) {
+   return (double) sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
+ }
+ 
++#ifdef PR_SET_NAME
++static char* process_title;
++static pthread_mutex_t process_title_mutex_ = PTHREAD_MUTEX_INITIALIZER;
++
++size_t uv_get_process_title(char* buffer, size_t size) {
++  size_t result = 0;
++
++  pthread_mutex_lock(&process_title_mutex_);
++
++  if (process_title != NULL) result = uv__strlcpy(buffer, process_title, size);
++
++  pthread_mutex_unlock(&process_title_mutex_);
++
++  return result;
++}
++
++void uv_set_process_title(const char* title) {
++  pthread_mutex_lock(&process_title_mutex_);
++
++  if (title != NULL) {","This is inconsistent with the other UNIX implementations. The caller is responsible for not passing in NULL.
+",0efc492825d97e6109da939d69d0f6d6fe8461ce
+2786590,2,"Style: Long line. Wrap at 80 characters max. I believe I pointed that out last night too. :-/""",2013-01-27 03:01:37,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/692#discussion_r2786590,2013-01-27T14:01:37Z,2014-01-25T04:39:15Z,bnoordhuis,CONTRIBUTOR,src/unix/udp.c,,,,,1,"@@ -554,6 +560,69 @@ int uv_udp_set_membership(uv_udp_t* handle, const char* multicast_addr,
+   return 0;
+ }
+ 
++int uv_udp_set_membership6(uv_udp_t* handle, const char* multicast_addr,
++  const char* interface_addr, uv_membership membership) {
++
++  int optname;
++  struct ipv6_mreq mreq;
++  struct in6_addr multicast_addr_n;
++  struct in6_addr interface_addr_n;
++
++  uv_interface_address_t* interfaces;
++  int interfaces_count;
++
++  memset(&mreq, 0, sizeof mreq);
++  memset(&multicast_addr_n, 0, sizeof multicast_addr_n);
++  memset(&interface_addr_n, 0, sizeof interface_addr_n);
++
++  if (interface_addr) {
++    uv_inet_pton(AF_INET6, interface_addr, &interface_addr_n);
++    if (uv_interface_addresses(&interfaces, &interfaces_count).code != UV_OK) {
++      uv__set_sys_error(handle->loop, UV_EINVAL);
++      return -1;
++    }
++
++    while (interfaces_count--) {
++      if (interfaces[interfaces_count].address.address4.sin_family == AF_INET6) {
++        if (memcmp(&interfaces[interfaces_count].address.address6.sin6_addr, &interface_addr_n, sizeof interface_addr_n) == 0) {","Style: Long line. Wrap at 80 characters max. I believe I pointed that out last night too. :-/
+",3c711beb5fd491a8cd88f363d16b02775d4eabd3
+4138189,0,"indent""",2013-05-08 04:57:14,piscisaureus,joyent,libuv,,https://github.com/joyent/libuv/pull/786#discussion_r4138189,2013-05-08T16:57:14Z,2013-05-08T22:17:29Z,piscisaureus,NONE,test/runner.c,,163.0,,,1,"@@ -121,13 +134,48 @@ int run_tests(int timeout, int benchmark_output) {
+     rewind_cursor();
+ 
+   if (!benchmark_output && !tap_output) {
+-    log_progress(total, passed, failed, ""Done.\n"");
++    log_progress(total, passed, failed, todos, skipped, ""Done.\n"");
+   }
+ 
+   return failed;
+ }
+ 
+ 
++void log_tap_result(int test_count, const char * test, int status,
++    process_info_t * process) {
++  const char * result;
++  const char * directive;
++  char reason[1024];
++
++  switch (status) {
++  case TEST_OK:","indent
+",742c9113c3bec13df6f347bf1deeabe8f8fb2ef1
+3398872,1,"All of it. :-) Use two spaces, not four.""",2013-03-15 09:36:05,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/744#discussion_r3398872,2013-03-15T20:36:05Z,2013-05-25T17:56:21Z,bnoordhuis,CONTRIBUTOR,test/test-ip6-addr.c,,,,,1,"@@ -0,0 +1,89 @@
++/* Copyright Joyent, Inc. and other Node contributors. All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the ""Software""), to
++ * deal in the Software without restriction, including without limitation the
++ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
++ * sell copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include ""uv.h""
++#include ""task.h""
++
++#include <sys/socket.h>
++#include <netinet/in.h>
++#include <stdio.h>
++#include <string.h>
++
++typedef void (*iface_info_cb)(const char* ip6_addr, const char* device_name, int iface_index, int scope_value);
++
++void stringify_address(char* address) {
++    int i, j;
++    ASSERT(strlen(address)==32);
++    address[40] = '\0';
++    for (i=7; i>=0; i--) {
++      for (j=0; j<4; j++)
++        address[i*5 + j] = address[i*4 + j];
++      if (i > 0)
++        address[i*5 - 1] = ':';
++    }","All of it. :-) Use two spaces, not four.
+",1b2631d4015707ab55278d2f004d891a64b76619
+1781088,1,"Doesn't hurt but kind of superfluous. :-)""",2012-10-07 09:06:30,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/581#discussion_r1781088,2012-10-07T21:06:30Z,2012-10-07T21:06:30Z,bnoordhuis,CONTRIBUTOR,test/test-condvar-consumer-producer.c,,50.0,,,50,"@@ -0,0 +1,123 @@
++/* Copyright Joyent, Inc. and other Node contributors. All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the ""Software""), to
++ * deal in the Software without restriction, including without limitation the
++ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
++ * sell copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include ""uv.h""
++#include ""task.h""
++
++#include <stdio.h>
++#include <stdlib.h>
++
++#define MAX_CONSUMERS 32
++#define MAX_LOOPS 1000
++
++struct buffer_s {
++  ngx_queue_t queue;
++  int data;
++};
++typedef struct buffer_s buffer_t;
++
++static ngx_queue_t queue;
++static uv_mutex_t mutex;
++static uv_cond_t empty;
++static uv_cond_t full;
++
++volatile int finished_consumers = 0;
++
++
++void produce(int value) {
++  buffer_t* buf;
++  buf = malloc(sizeof(buffer_t));
++  ngx_queue_init(&buf->queue);
++  (*buf).data = value;
++  ASSERT(ngx_queue_empty(&queue));","Doesn't hurt but kind of superfluous. :-)
+",a0f96882a2ed0c39c30495b3bc07d7a287789daa
+778296,1,"I'd just replace this with two calls to `add_work()`. Less code, easier to read. :-)""",2012-05-05 01:41:18,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/404#discussion_r778296,2012-05-05T13:41:18Z,2012-05-05T14:20:09Z,bnoordhuis,CONTRIBUTOR,test/test-threadpool-parallel.c,,,,,1,"@@ -0,0 +1,79 @@
++/* Copyright Joyent, Inc. and other Node contributors. All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the ""Software""), to
++ * deal in the Software without restriction, including without limitation the
++ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
++ * sell copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include ""uv.h""
++#include ""task.h""
++
++#ifndef _WIN32
++#include <unistd.h>
++#endif
++
++
++static int work_cb_running     = 0;
++static int work_cb_running_max = 0;
++
++
++static void work_cb(uv_work_t* work) {
++  work_cb_running++;
++
++  if (work_cb_running > work_cb_running_max) {
++    work_cb_running_max = work_cb_running;
++  }
++
++#ifdef _WIN32
++  Sleep(1000);
++#else
++  sleep(1);
++#endif
++  
++  work_cb_running--;
++}
++
++
++static void after_work_cb(uv_work_t* work) {
++  free(work);
++}
++
++
++void add_work(void) {
++  uv_work_t* w = (uv_work_t*) malloc(sizeof(*w));
++  ASSERT(w != NULL);
++
++  uv_queue_work(uv_default_loop(), w, work_cb, after_work_cb);
++}
++
++
++TEST_IMPL(threadpool_parallel) {
++  int i;
++
++  uv_set_parallel(1);
++
++  for (i = 0; i < 2; i++) {
++    add_work();
++  }","I'd just replace this with two calls to `add_work()`. Less code, easier to read. :-)
+",fb9928fd21a6867e0fae6edeee5aabbb2a68cadf
+2785417,0,"Leaking interfaces?""",2013-01-26 10:03:01,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/692#discussion_r2785417,2013-01-26T21:03:01Z,2014-01-25T04:39:15Z,bnoordhuis,CONTRIBUTOR,src/win/udp.c,,,,,1,"@@ -632,6 +631,80 @@ int uv_udp_set_membership(uv_udp_t* handle, const char* multicast_addr,
+ }
+ 
+ 
++int uv_udp_set_membership6(uv_udp_t* handle, const char* multicast_addr,
++    const char* interface_addr, uv_membership membership) {
++  int optname;
++  struct ipv6_mreq mreq;
++  struct in6_addr multicast_addr_n;
++  struct in6_addr interface_addr_n;
++
++  uv_interface_address_t* interfaces;
++  int interfaces_count;
++
++  if (!(handle->flags & UV_HANDLE_IPV6)) {
++    return uv__set_artificial_error(handle->loop, UV_EINVAL);
++  }
++
++  if (!(handle->flags & UV_HANDLE_BOUND) &&
++      uv_udp_bind6(handle, uv_addr_ip6_any_, 0) < 0) {
++    return -1;
++  }
++
++  memset(&mreq, 0, sizeof mreq);
++  memset(&multicast_addr_n, 0, sizeof multicast_addr_n);
++  memset(&interface_addr_n, 0, sizeof interface_addr_n);
++  
++  if(interface_addr) {
++    uv_inet_pton(AF_INET6, interface_addr, &interface_addr_n);
++    if (uv_interface_addresses(&interfaces, &interfaces_count).code != UV_OK) {","Leaking interfaces?
+",3c711beb5fd491a8cd88f363d16b02775d4eabd3
+3432140,0,"Agree with @bajtos. I use the double-indent style for function signatures (but not function calls) too.""",2013-03-19 03:28:54,piscisaureus,joyent,libuv,,https://github.com/joyent/libuv/pull/744#discussion_r3432140,2013-03-19T14:28:54Z,2013-05-25T17:56:21Z,piscisaureus,NONE,test/test-ip6-addr.c,,,,,1,"@@ -0,0 +1,83 @@
++/* Copyright Joyent, Inc. and other Node contributors. All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the ""Software""), to
++ * deal in the Software without restriction, including without limitation the
++ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
++ * sell copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include ""uv.h""
++#include ""task.h""
++
++#include <stdio.h>
++#include <string.h>
++
++#ifdef __linux__
++# include <sys/socket.h>
++# include <net/if.h>
++#endif
++
++typedef void (*iface_info_cb)(const char* ip6_addr, const char* device_name,
++     unsigned iface_index);","Agree with @bajtos. I use the double-indent style for function signatures (but not function calls) too.
+",1b2631d4015707ab55278d2f004d891a64b76619
+3432466,2,"I don't like that idea because the zone index handling is already awfully long. I defined a new macro `UV_PLATFORM_HAS_IP6_LINK_LOCAL_ADDRESS` and protected the helper function with `#ifdef` instead.  Perhaps we could move `uv__parse_zone_index` to plat""",2013-03-19 03:45:14,bajtos,joyent,libuv,,https://github.com/joyent/libuv/pull/744#discussion_r3432466,2013-03-19T14:45:14Z,2013-05-25T17:56:21Z,bajtos,CONTRIBUTOR,src/uv-common.c,,,,,1,"@@ -170,14 +173,38 @@ struct sockaddr_in uv_ip4_addr(const char* ip, int port) {
+   return addr;
+ }
+ 
++static unsigned uv__parse_zone_index(const char* zone_index) {
++#ifdef __linux__
++  return if_nametoindex(zone_index);
++#elif defined(_WIN32)
++  return atoi(zone_index);
++#endif
++}","I don't like that idea because the zone index handling is already awfully long. I defined a new macro `UV_PLATFORM_HAS_IP6_LINK_LOCAL_ADDRESS` and protected the helper function with `#ifdef` instead.
+
+Perhaps we could move `uv__parse_zone_index` to platform-specific files (e.g. [include/uv-private/uv-win.h](https://github.com/joyent/libuv/blob/master/include/uv-private/uv-win.h)) in order to keep [src/uv-common.c](https://github.com/joyent/libuv/blob/master/src/uv-common.c) cleaner, possibly defining the helper function as a macro instead?
+
+What do you think?
+",1b2631d4015707ab55278d2f004d891a64b76619
+5905848,1,"Well, do it then. :-)""",2013-08-21 07:26:54,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/894#discussion_r5905848,2013-08-21T19:26:54Z,2013-08-21T20:06:56Z,bnoordhuis,CONTRIBUTOR,src/unix/fsevents.c,,,,,1,"@@ -459,35 +592,54 @@ int uv__fsevents_init(uv_fs_event_t* handle) {
+   handle->cf_cb->flags |= UV__HANDLE_INTERNAL;
+   uv_unref((uv_handle_t*) handle->cf_cb);
+ 
++  /* TODO(indutny): check return value */","Well, do it then. :-)
+",df6309a37cf8a60216194e1de683a40322b4ae09
+5906132,1,"Ah, okay. Can you update the comment with that? :-)""",2013-08-21 07:37:21,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/894#discussion_r5906132,2013-08-21T19:37:21Z,2013-08-21T20:06:56Z,bnoordhuis,CONTRIBUTOR,src/unix/fsevents.c,,,,,1,"@@ -169,79 +185,79 @@ static void uv__fsevents_event_cb(ConstFSEventStreamRef streamRef,
+         path++;
+         len--;
+       }
+-    }
+ 
+ #ifdef MAC_OS_X_VERSION_10_7
+-    /* Ignore events with path equal to directory itself */
+-    if (len == 0)
+-      continue;
++      /* Ignore events with path equal to directory itself */
++      if (len == 0)
++        continue;
+ #endif /* MAC_OS_X_VERSION_10_7 */
+ 
+-    /* Do not emit events from subdirectories (without option set) */
+-    pos = strchr(path, '/');
+-    if ((handle->cf_flags & UV_FS_EVENT_RECURSIVE) == 0 &&
+-        pos != NULL &&
+-        pos != path + 1)
+-      continue;
++      /* Do not emit events from subdirectories (without option set) */
++      pos = strchr(path, '/');
++      if ((handle->cf_flags & UV_FS_EVENT_RECURSIVE) == 0 &&
++          pos != NULL &&
++          pos != path + 1)
++        continue;
+ 
+ #ifndef MAC_OS_X_VERSION_10_7
+-    path = """";
+-    len = 0;
++      path = """";
++      len = 0;
+ #endif /* MAC_OS_X_VERSION_10_7 */
+ 
+-    event = malloc(sizeof(*event) + len);
+-    if (event == NULL)
+-      break;
++      event = malloc(sizeof(*event) + len);
++      if (event == NULL)
++        break;
+ 
+-    memcpy(event->path, path, len + 1);
++      memset(event, 0, sizeof(*event));
++      memcpy(event->path, path, len + 1);
+ 
+-    if ((eventFlags[i] & kFSEventsModified) != 0 &&
+-        (eventFlags[i] & kFSEventsRenamed) == 0)
+-      event->events = UV_CHANGE;
+-    else
+-      event->events = UV_RENAME;
++      if ((eventFlags[i] & kFSEventsModified) != 0 &&
++          (eventFlags[i] & kFSEventsRenamed) == 0)
++        event->events = UV_CHANGE;
++      else
++        event->events = UV_RENAME;
+ 
+-    QUEUE_INSERT_TAIL(&add_list, &event->member);
+-  }
+-  uv_mutex_lock(&handle->cf_mutex);
+-  QUEUE_ADD(&handle->cf_events, &add_list);
+-  uv_mutex_unlock(&handle->cf_mutex);
++      if (tail != NULL)
++        tail->next = event;
++      tail = event;
++    }
+ 
+-  uv_async_send(handle->cf_cb);
++    if (tail != NULL) {
++      uv_mutex_lock(&handle->cf_mutex);
++      tail->next = handle->cf_event;
++      handle->cf_event = tail;
++      uv_mutex_unlock(&handle->cf_mutex);
++
++      uv_async_send(handle->cf_cb);
++    }
++  }
+ }
+ 
+ 
+-static void uv__fsevents_schedule(void* arg) {
+-  uv_fs_event_t* handle;
++static void uv__fsevents_create_stream(uv_loop_t* loop, CFArrayRef paths) {
++  uv__cf_loop_state_t* state;
+   FSEventStreamContext ctx;
+   FSEventStreamRef ref;
+-  CFStringRef path;
+-  CFArrayRef paths;
+   CFAbsoluteTime latency;
+   FSEventStreamCreateFlags flags;
+ 
+-  handle = arg;
+-
+   /* Initialize context */
+   ctx.version = 0;
+-  ctx.info = handle;
++  ctx.info = loop;
+   ctx.retain = NULL;
+   ctx.release = NULL;
+   ctx.copyDescription = NULL;
+ 
+-  /* Initialize paths array */
+-  path = CFStringCreateWithCString(NULL,
+-                                   handle->filename,
+-                                   CFStringGetSystemEncoding());
+-  assert(path != NULL);
+-  paths = CFArrayCreate(NULL, (const void**)&path, 1, NULL);
+-  assert(paths != NULL);
+-
+   latency = 0.15;
+ 
+   /* Set appropriate flags */
+   flags = kFSEventStreamCreateFlagFileEvents;
+ 
++  /*
++   * NOTE: While we definitely could remember last event id,
++   * this will not be a right solution here. Because we might be watching
++   * different paths after reschedule.","Ah, okay. Can you update the comment with that? :-)
+",df6309a37cf8a60216194e1de683a40322b4ae09
+1253191,2,"Yeah I was kind of irritated about the m4 directory.  I forgot about set.""",2012-07-27 03:02:26,JustinVenus,joyent,libuv,,https://github.com/joyent/libuv/pull/501#discussion_r1253191,2012-07-27T15:02:26Z,2012-07-29T02:38:32Z,JustinVenus,NONE,autogen.sh,,4.0,,,1,"@@ -0,0 +1,15 @@
++#!/usr/bin/env bash
++
++#fix for solaris","Yeah I was kind of irritated about the m4 directory.  I forgot about set.
+",b86878ff0299be7a4a465df817b21352ccc07600
+531422,1,"Yeah, that would be nice.""",2012-03-07 12:18:44,piscisaureus,joyent,libuv,,https://github.com/joyent/libuv/pull/326#discussion_r531422,2012-03-07T23:18:44Z,2012-03-07T23:33:07Z,piscisaureus,NONE,src/win/util.c,,423.0,,,41,"@@ -385,8 +385,70 @@ uv_err_t uv_resident_set_memory(size_t* rss) {
+ 
+ 
+ uv_err_t uv_uptime(double* uptime) {
+-  *uptime = (double)GetTickCount()/1000.0;
+-  return uv_ok_;
++  uv_err_t err;
++  PERF_DATA_BLOCK *pPerfData = NULL;
++  PERF_OBJECT_TYPE *pObj;
++  PERF_COUNTER_DEFINITION *pDef;
++  PERF_COUNTER_DEFINITION *pDefUptime = NULL;
++  DWORD dataSize = 1024;
++  DWORD getSize;
++  LONG lError = ERROR_MORE_DATA;
++  unsigned __int64 upsec;
++  UINT i;
++  BYTE *pData;
++
++  *uptime = 0;
++  
++  while (lError == ERROR_MORE_DATA) {
++    if (pPerfData) {
++      free(pPerfData);
++    }
++    pPerfData = (PERF_DATA_BLOCK*)malloc(dataSize);
++    if (!pPerfData) {
++      uv_fatal_error(ERROR_OUTOFMEMORY, ""malloc"");
++    }
++    getSize = dataSize;
++
++    lError = RegQueryValueEx(HKEY_PERFORMANCE_DATA, ""2"", NULL, NULL,
++                             (BYTE*)pPerfData, &getSize);
++    if (lError != ERROR_SUCCESS && getSize > 0) {
++      if (wcsncmp(pPerfData->Signature, ""PERF"", 4) == 0) {
++        break;
++      }
++    } else if (lError != ERROR_SUCCESS && lError != ERROR_MORE_DATA) {
++      err = uv__new_sys_error(GetLastError());
++      goto done;
++    }
++
++    dataSize += 1024;","Yeah, that would be nice.
+",162a5f1a37ad75c7b47540b69fad74a940369734
+3763609,1,"Yes, it should. Good catch. Addressed in bnoordhuis/libuv@9896947.""",2013-04-11 10:50:14,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/753#discussion_r3763609,2013-04-11T22:50:14Z,2013-07-25T10:37:14Z,bnoordhuis,CONTRIBUTOR,src/win/tty.c,,,,,1,"@@ -346,8 +346,12 @@ static void uv_tty_queue_read_line(uv_loop_t* loop, uv_tty_t* handle) {
+   memset(&req->overlapped, 0, sizeof(req->overlapped));
+ 
+   handle->read_line_buffer = handle->alloc_cb((uv_handle_t*) handle, 8192);
++  if (handle->read_line_buffer.len == 0) {
++    uv__set_artificial_error(handle->loop, UV_ENOBUFS);
++    handle->read_cb(handle, -1, buf);","Yes, it should. Good catch. Addressed in bnoordhuis/libuv@9896947.
+",1acbd768b092b791d0ceb3b2bd2b129a2c785b40
+1522486,0,"This should be part of the `ifeq (Linux,$(uname_S))` block.""",2012-09-04 01:18:48,bnoordhuis,joyent,libuv,,https://github.com/joyent/libuv/pull/532#discussion_r1522486,2012-09-04T13:18:48Z,2012-09-04T13:18:48Z,bnoordhuis,CONTRIBUTOR,config-unix.mk,,28.0,,,4,"@@ -25,6 +25,7 @@ CPPFLAGS += -Isrc -Isrc/unix/ev
+ LINKFLAGS=-lm
+ 
+ CPPFLAGS += -D_LARGEFILE_SOURCE
++CPPFLAGS += -D_GNU_SOURCE","This should be part of the `ifeq (Linux,$(uname_S))` block.
+",7b5fc8aebf4ad60b793d39dd692b2a44d9a4261e
+159279,1,"Is link to wkipedia article enough? :)""",2011-10-06 20:06:22,indutny,joyent,libuv,,https://github.com/joyent/libuv/pull/214#discussion_r159279,2011-10-07T08:06:22Z,2011-10-07T08:20:57Z,indutny,CONTRIBUTOR,include/uv.h,,,,,1,"@@ -1063,7 +1063,7 @@ struct uv_fs_event_s {
+ };
+ 
+ 
+-/* Gets load avg */
++/* Gets load avg (in same format as in /proc/loadavg) */","Is link to wkipedia article enough? :)
+",99bb04d7544acc1240ef0551703da5eb8dae9a05
+4485499,0,"I can't recall where now, but I had found that method on some page or project source code.  After some more research, it looks like there's a less hacky method available with sockaddr_ll.""",2013-05-31 09:07:05,mscdex,joyent,libuv,,https://github.com/joyent/libuv/pull/502#discussion_r4485499,2013-05-31T21:07:05Z,2013-07-20T17:37:04Z,mscdex,CONTRIBUTOR,src/unix/linux-core.c,,,,,1,"@@ -681,6 +686,30 @@ uv_err_t uv_interface_addresses(uv_interface_address_t** addresses,
+     address++;
+   }
+ 
++  /* Fill in physical addresses for each interface */
++  for (ent = addrs; ent != NULL; ent = ent->ifa_next) {
++    if (!(ent->ifa_flags & IFF_UP && ent->ifa_flags & IFF_RUNNING) ||
++        (ent->ifa_addr == NULL) ||
++        (ent->ifa_addr->sa_family != PF_PACKET)) {
++      continue;
++    }
++
++    address = *addresses;
++
++    for (i = 0; i < (*count); i++) {
++      if (strcmp(address->name, ent->ifa_name) == 0) {
++        sa_data = ((struct sockaddr*)(ent->ifa_addr))->sa_data;
++        sa_data += 10;","I can't recall where now, but I had found that method on some page or project source code.
+
+After some more research, it looks like there's a less hacky method available with sockaddr_ll.
+",617a6cedf9462af1e23132001262be03e4fd708f

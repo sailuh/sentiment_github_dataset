@@ -1,0 +1,120 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3902901,0,"alright""",2013-08-20 06:32:46,bilderbuchi,openframeworks,openFrameworks,ddf2c9aa51ca571064a0e6aacd96ceb7adb70fb8,bilderbuchi,327442,"alright
+",2013-08-20T18:32:46Z,2013-08-20T18:32:46Z
+3008039,1,"@LeoColomb: look a couple comments above yours ;-)""",2013-04-14 02:06:04,bilderbuchi,openframeworks,openFrameworks,f85ba9b28faeb75ddb649bd45758166d707c6c56,bilderbuchi,327442,"@LeoColomb: look a couple comments above yours ;-)
+",2013-04-14T14:06:04Z,2013-04-14T14:06:04Z
+1959978,1,"very nice!""",2012-10-07 19:39:50,julapy,openframeworks,openFrameworks,6ccf10c80ee5ad6fc90d4f115a3895bd2ae4313f,julapy,331382,"very nice!
+",2012-10-08T07:39:50Z,2012-10-08T07:39:50Z
+1864693,0,"@arturoc: If you multiply-include `gst.h`, wouldn't it be good to add some include guards, so that we don't include it several times, driving up compilation/linking times?""",2012-09-17 04:15:36,bilderbuchi,openframeworks,openFrameworks,7318035cf93447fd09e19fe92baac744dd3e048d,bilderbuchi,327442,"@arturoc: If you multiply-include `gst.h`, wouldn't it be good to add some include guards, so that we don't include it several times, driving up compilation/linking times?
+",2012-09-17T16:15:36Z,2012-09-17T16:15:47Z
+1283131,0,"Another interesting update to this method in the same threat http://forum.openframeworks.cc/index.php/topic,6092.15.html""",2012-05-02 03:43:18,nardove,openframeworks,openFrameworks,740c6822395f8bdfa86edf8a42e659e0f33604d3,nardove,277690,"Another interesting update to this method in the same threat http://forum.openframeworks.cc/index.php/topic,6092.15.html
+",2012-05-02T15:43:18Z,2012-05-02T15:43:18Z
+1192617,0,"@bilderbuchi -- sorry, might be.  I have been moving around among different machines to test windows pg, so maybe the bad commit was there?  """,2012-04-10 01:12:15,ofZach,openframeworks,openFrameworks,1a48b5afdf82361b040b02b1999be1703accb958,ofZach,142897,"@bilderbuchi -- sorry, might be.  I have been moving around among different machines to test windows pg, so maybe the bad commit was there?  
+",2012-04-10T13:12:15Z,2012-04-10T13:12:15Z
+1192607,0,"could be  -- also it looks like the clock was ahead (it was on a windows 7 laptop I rarely use) so that's why these commits come out for today, but I think they were made a while back.  The important stuff is done after those weird commits, in these commit""",2012-04-10 01:10:43,ofZach,openframeworks,openFrameworks,1a48b5afdf82361b040b02b1999be1703accb958,ofZach,142897,"could be  -- also it looks like the clock was ahead (it was on a windows 7 laptop I rarely use) so that's why these commits come out for today, but I think they were made a while back.  The important stuff is done after those weird commits, in these commits: f57915351475d50377e1299e81678541f2aa2d7e, c93c448e37fd716aa3c1cfa916d50c4ccba7a288, 67d1d8c769a1979b8a0cc71436083d10a83bee47
+
+what's a good way to fix this? 
+",2012-04-10T13:10:43Z,2012-04-10T13:11:00Z
+1003359,0,"I guess you skip updating the createProjects scripts until the project generator is finished? Because right now, it's broken because of the move.""",2012-02-23 06:07:03,bilderbuchi,openframeworks,openFrameworks,91d76830cf705026afe09fc6fbf8e5a347e900ca,bilderbuchi,327442,"I guess you skip updating the createProjects scripts until the project generator is finished? Because right now, it's broken because of the move.
+",2012-02-23T17:07:03Z,2012-02-23T17:07:03Z
+1039137,0,"the loadData() methods added here broke 32-bit and 16-bit image display in the AdvancedImageLoading example. i'm not completely sure why. maybe the ofPixels were being converted before?""",2012-03-03 08:02:18,kylemcdonald,openframeworks,openFrameworks,c50648e29199a3f61eae05f6ceb350a97ab275d7,kylemcdonald,157106,"the loadData() methods added here broke 32-bit and 16-bit image display in the AdvancedImageLoading example. i'm not completely sure why. maybe the ofPixels were being converted before?
+",2012-03-03T19:02:18Z,2012-03-03T19:02:18Z
+331517,0,"yes, the repository version is usually outdated and even if it's not right now it will install some plugins at the system level which from my experience can be problematic""",2011-04-06 03:55:01,arturoc,openframeworks,openFrameworks,fb8fad30736df4c62e64f9547a1121351d801d1a,arturoc,48240,"yes, the repository version is usually outdated and even if it's not right now it will install some plugins at the system level which from my experience can be problematic
+",2011-04-06T15:55:01Z,2011-04-06T15:55:01Z
+3665197,2,"oh, sorry, didn't saw it, had to fix it because the core wasn't compiling for me this morning""",2013-07-18 03:24:07,arturoc,openframeworks,openFrameworks,912cd96a8cca60d31abe2624fcce6736f5f393f5,arturoc,48240,"oh, sorry, didn't saw it, had to fix it because the core wasn't compiling for me this morning
+",2013-07-18T15:24:07Z,2013-07-18T15:24:07Z
+1904841,2,"sorry, it's fixed now""",2012-09-25 10:52:56,arturoc,openframeworks,openFrameworks,33933ef7705f6fdbda602176209498e91b7a7eb5,arturoc,48240,"sorry, it's fixed now
+",2012-09-25T22:52:56Z,2012-09-25T22:52:56Z
+1675305,2,"sorry, please ignore this comment. compiler was stuck... rebuilding OF fixed it.""",2012-08-06 01:22:47,julapy,openframeworks,openFrameworks,918b8b9a9e27fe1289d5ccd8162094eec41e468f,julapy,331382,"sorry, please ignore this comment.
+compiler was stuck... rebuilding OF fixed it.
+",2012-08-06T13:22:47Z,2012-08-06T13:22:47Z
+1192448,2,"sorry -- I have been moving around machines and checked in code from windows machines, etc.   this is fsck -- full:   new-host-3:openFrameworks$ git fsck --full error in commit 4a136cc45b89fbeec99fc1020716de705490d3d3: invalid author/committer line - """,2012-04-10 00:28:01,ofZach,openframeworks,openFrameworks,1a48b5afdf82361b040b02b1999be1703accb958,ofZach,142897,"sorry -- I have been moving around machines and checked in code from windows machines, etc. 
+
+this is fsck -- full: 
+
+new-host-3:openFrameworks$ git fsck --full
+error in commit 4a136cc45b89fbeec99fc1020716de705490d3d3: invalid author/committer line - bad email
+warning in tree bb1f763543cc01b7f5904fcfb636888c3ad73def: contains zero-padded file modes
+dangling blob ba210ec823ab12aec5021ad2a854887600265424
+dangling blob c681661242b9e03d67e615db7cb15af1facb7ecb
+dangling blob 8ba0068d4b09045a4dc4e4374e1946d04f419b79
+dangling blob fddc7a236690849d6ff3e5cbb06dc3b5739acaa4
+dangling blob 1b31874dc3db746d1ccb09227fd9f41ea043f8f7
+dangling blob 228cc52655c9b3dfbfadc1aa44ca13742fbb1869
+dangling blob 348d89cffb1a286f2ad57b884815dddaeedfc07a
+dangling blob d9a5cd54f0365cc1ede624d32fe4e73aef8b798e
+",2012-04-10T12:28:01Z,2012-04-10T12:28:01Z
+1097198,2,"@ofTheo sorry! i can do all changes as pull requests. i understand that it's easier to review it in a pr.""",2012-03-16 18:12:07,kylemcdonald,openframeworks,openFrameworks,14f5496a27eb7ad7db492397db3879a2e21392cb,kylemcdonald,157106,"@ofTheo sorry! i can do all changes as pull requests. i understand that it's easier to review it in a pr.
+",2012-03-17T05:12:07Z,2012-03-17T05:12:07Z
+1095499,2,"sorry ! I was trying to fix an error with seeing ../../../../, but it looks like I introduced another problem.  will take a look at it later today. """,2012-03-16 07:15:58,ofZach,openframeworks,openFrameworks,918818c864c663938377ff48b72f512ae06ec51e,ofZach,142897,"sorry ! I was trying to fix an error with seeing ../../../../, but it looks like I introduced another problem.  will take a look at it later today. 
+",2012-03-16T18:15:58Z,2012-03-16T18:15:58Z
+973164,2,"yes, sorry the ifdef is incorrect, it's fixed now""",2012-02-15 23:05:11,arturoc,openframeworks,openFrameworks,8bfde75beefc27e53c6cfb503db0035b0f828dfd,arturoc,48240,"yes, sorry the ifdef is incorrect, it's fixed now
+",2012-02-16T10:05:11Z,2012-02-16T10:05:11Z
+941612,2,"crap, sorry, it's fixed now""",2012-02-07 05:19:09,expokorea,openframeworks,openFrameworks,ffa58485f2364b8e09b648a4117c41be192cd394,expokorea,1415701,"crap, sorry, it's fixed now
+",2012-02-07T16:19:09Z,2012-02-07T16:19:09Z
+485288,2,"sorry, i'm not at work anymore. can check 32bit earliest tomorrow. :-/""",2011-07-19 04:38:58,bilderbuchi,openframeworks,openFrameworks,043b1099aa1db9706b2bca0d90b24a8ce4ea9ec0,bilderbuchi,327442,"sorry, i'm not at work anymore. can check 32bit earliest tomorrow. :-/
+",2011-07-19T16:38:58Z,2011-07-19T16:38:58Z
+455803,2,"just in time! will try it soon! thanks! started to mess around with the old ofxControlPanel from your repo :(""",2011-06-30 05:22:25,benben,openframeworks,openFrameworks,ad9d79bc34c54b96b7072d9dc1b01819f6960ffd,benben,124513,"just in time! will try it soon! thanks! started to mess around with the old ofxControlPanel from your repo :(
+",2011-06-30T17:22:25Z,2011-06-30T17:22:25Z
+443200,2,"i'm crying. this is awful please, please undo :'(!!!! it was lovely to control before, now it's like trying to control a balloon with a fan some of us need to aim the camera quickly and accurately!""",2011-06-22 03:27:30,elliotwoods,openframeworks,openFrameworks,51d5e7f8d87b9d6f3e918d28267cb5428139bde1,elliotwoods,328294,"i'm crying. this is awful
+please, please undo :'(!!!!
+it was lovely to control before, now it's like trying to control a balloon with a fan
+some of us need to aim the camera quickly and accurately!
+",2011-06-22T15:27:30Z,2011-06-22T15:27:30Z
+2098370,2,"nope, when i run 0072 it also gives the error: `error: There is no SDK with the name or path 'macosx'` :(  i hope it's just 3.2.2 (which probably is a very small minority of people) but if `""""""""` works everywhere then we should definitely switch to that in""",2012-11-03 14:42:34,kylemcdonald,openframeworks,openFrameworks,cef7ff35149a9c7deccce36c0df4a760674fa9de,kylemcdonald,157106,"nope, when i run 0072 it also gives the error: `error: There is no SDK with the name or path 'macosx'` :(
+
+i hope it's just 3.2.2 (which probably is a very small minority of people) but if `""""` works everywhere then we should definitely switch to that in the next release. i'll add an issue.
+",2012-11-04T01:42:34Z,2012-11-04T01:42:34Z
+1542133,2,"@ofTheo :( really? this removes the feature of being able to change the style of the grid (e.g. before you could make a white grid if you liked, or change the S,B values of the colour yourself, with this change, it's now completely fixed.""",2012-07-05 02:40:57,elliotwoods,openframeworks,openFrameworks,354570bd8d6dd96562fa24bbe85aab913372130e,elliotwoods,328294,"@ofTheo :(
+really?
+this removes the feature of being able to change the style of the grid (e.g. before you could make a white grid if you liked, or change the S,B values of the colour yourself, with this change, it's now completely fixed.
+",2012-07-05T14:40:57Z,2012-07-05T14:40:57Z
+1192547,2,"is it broken? the commit history looks quite weird.""",2012-04-10 00:53:47,ofTheo,openframeworks,openFrameworks,1a48b5afdf82361b040b02b1999be1703accb958,ofTheo,144000,"is it broken?
+the commit history looks quite weird.
+",2012-04-10T12:53:47Z,2012-04-10T12:53:47Z
+1189738,2,"hmm this is weird, is this the autoformatter?""",2012-04-09 09:07:46,kylemcdonald,openframeworks,openFrameworks,d1a1ee1eace4152eb67fdb4e86a8b0efb3e5163b,kylemcdonald,157106,"hmm this is weird, is this the autoformatter?
+",2012-04-09T21:07:46Z,2012-04-09T21:07:46Z
+1648418,2,".. but now testing this version, it works fine for me in both VS2010 and Win CB ... weird.""",2012-07-30 06:55:30,danomatika,openframeworks,openFrameworks,7709a23aef3bea47da65aa661b157f414522b4dc,danomatika,480637,".. but now testing this version, it works fine for me in both VS2010 and Win CB ... weird.
+",2012-07-30T18:55:30Z,2012-07-30T18:55:30Z
+3583878,1,"I think that would be great! shall we call the color uniform color_uniform ?   Shall i send a PR? - I'd also add  a fix for a typo in matrixStack.getModelViewPorjectionMatrix() if that's ok =)""",2013-07-08 02:01:47,tgfrerer,openframeworks,openFrameworks,a9fedc3318f3cae6e0a308cc81f04f137416c6a0,tgfrerer,423509,"I think that would be great! shall we call the color uniform color_uniform ? 
+
+Shall i send a PR? - I'd also add  a fix for a typo in matrixStack.getModelViewPorjectionMatrix() if that's ok =)
+",2013-07-08T14:01:47Z,2013-07-08T14:01:47Z
+2599658,1,"err, thanks :) i had those packages installed and thought it was detecting available packages. it should be fixed now but if you can double check""",2013-02-11 05:51:28,arturoc,openframeworks,openFrameworks,56caffc011ac2d8ed8c7b30d628aaf0429d704c3,arturoc,48240,"err, thanks :) i had those packages installed and thought it was detecting available packages. it should be fixed now but if you can double check
+",2013-02-11T16:51:28Z,2013-02-11T16:51:28Z
+2722088,1,"ah, even better :)""",2013-03-01 03:32:21,kylemcdonald,openframeworks,openFrameworks,f85ba9b28faeb75ddb649bd45758166d707c6c56,kylemcdonald,157106,"ah, even better :)
+",2013-03-01T14:32:21Z,2013-03-01T14:32:21Z
+3007948,1,"Looks great! love `OF_TTF_MONO`, etc""",2013-04-14 00:58:57,elliotwoods,openframeworks,openFrameworks,f85ba9b28faeb75ddb649bd45758166d707c6c56,elliotwoods,328294,"Looks great!
+love `OF_TTF_MONO`, etc
+",2013-04-14T12:58:57Z,2013-04-14T12:58:57Z
+1959962,1,"Awesome work everyone, it's beautiful!""",2012-10-07 19:34:11,bilderbuchi,openframeworks,openFrameworks,6ccf10c80ee5ad6fc90d4f115a3895bd2ae4313f,bilderbuchi,327442,"Awesome work everyone, it's beautiful!
+",2012-10-08T07:34:11Z,2012-10-08T07:34:11Z
+3434282,0,"not sure why I had to do this on the RPi as linux works correctly but some of the functions were coming up missing   here is a hack that worked for me in hopes it helps https://github.com/jvcleave/openFrameworks/commit/235cd7760c419fb3b6ff33651005ec2f36""",2013-06-16 08:45:29,jvcleave,openframeworks,openFrameworks,116b89b29620a9b203d290577a492fc8c6d9a6ef,jvcleave,150037,"not sure why I had to do this on the RPi as linux works correctly but some of the functions were coming up missing 
+
+here is a hack that worked for me in hopes it helps
+https://github.com/jvcleave/openFrameworks/commit/235cd7760c419fb3b6ff33651005ec2f361804e0
+",2013-06-16T20:45:29Z,2013-06-16T20:45:29Z
+1975199,0,"yes, but if there's a key the server keeps asking for the key password whenever i run the release script so i can't fully automate it unless i switch to https""",2012-10-10 04:08:39,arturoc,openframeworks,openFrameworks,05aa5663ef581d449a6b7de986aebde671d1a927,arturoc,48240,"yes, but if there's a key the server keeps asking for the key password whenever i run the release script so i can't fully automate it unless i switch to https
+",2012-10-10T16:08:39Z,2012-10-10T16:08:39Z
+2029239,0,"will you do this in the near-future, or should we open an issue for that, so that we don't forget?""",2012-10-21 07:35:14,bilderbuchi,openframeworks,openFrameworks,c97249ed24126ae9998710940bcf30d1f6673eec,bilderbuchi,327442,"will you do this in the near-future, or should we open an issue for that, so that we don't forget?
+",2012-10-21T19:35:14Z,2012-10-21T19:35:23Z
+1192605,0,"darn, no I only noticed: 4a136cc is the SHA of the commit we had trouble with last time - this shouldn't be in the repo anymore... maybe one of those machines you used still had the polluted repo on it?""",2012-04-10 01:10:03,bilderbuchi,openframeworks,openFrameworks,1a48b5afdf82361b040b02b1999be1703accb958,bilderbuchi,327442,"darn, no I only noticed: 4a136cc is the SHA of the commit we had trouble with last time - this shouldn't be in the repo anymore... maybe one of those machines you used still had the polluted repo on it?
+",2012-04-10T13:10:03Z,2012-04-10T13:10:03Z
+1421159,0,"hi! what was the reason why you reverted the fix in ce9b22e038ca16b581a16722436327bef206cbdf with this commit, @gameoverhack? See also #559""",2012-06-05 17:35:04,bilderbuchi,openframeworks,openFrameworks,7709a23aef3bea47da65aa661b157f414522b4dc,bilderbuchi,327442,"hi! what was the reason why you reverted the fix in ce9b22e038ca16b581a16722436327bef206cbdf with this commit, @gameoverhack? See also #559
+",2012-06-06T05:35:04Z,2012-06-06T05:35:04Z
+1036541,0,"made a pull request its a hack but at least fixes it on IOS""",2012-03-02 05:49:39,vanderlin,openframeworks,openFrameworks,eb7e594fffabb3ff825b67aaf0b1bca4e0b17aa0,vanderlin,149997,"made a pull request its a hack but at least fixes it on IOS
+",2012-03-02T16:49:39Z,2012-03-02T16:49:39Z
+973481,2,"mm, weird that seems to work in android, let me take a look  El 16/02/12 12:44, lukasz karluk escribió: > this line is also throwing an error on iphone, GL_UNSIGNED_INT is undeclared. > > --- > Reply to this email directly or view it on GitHub: > ht""",2012-02-16 00:50:54,arturoc,openframeworks,openFrameworks,5b1f22a80109b1d3abb339cc2fc15ac3f8798849,arturoc,48240,"mm, weird that seems to work in android, let me take a look
+
+El 16/02/12 12:44, lukasz karluk escribió:
+
+> this line is also throwing an error on iphone, GL_UNSIGNED_INT is undeclared.
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> https://github.com/openframeworks/openFrameworks/commit/5b1f22a80109b1d3abb339cc2fc15ac3f8798849#commitcomment-973460
+",2012-02-16T11:50:54Z,2012-02-16T11:50:54Z
+973455,0,"this line is throwing an error on iphone, GL_UNSIGNED_INT is undeclared.""",2012-02-16 00:43:48,julapy,openframeworks,openFrameworks,5b1f22a80109b1d3abb339cc2fc15ac3f8798849,julapy,331382,"this line is throwing an error on iphone, GL_UNSIGNED_INT is undeclared.
+",2012-02-16T11:43:48Z,2012-02-16T11:43:48Z
+1989108,2,"hm this confirms my fears from my second comment. @gameoverhack could you take a look at this?""",2012-10-12 07:34:47,bilderbuchi,openframeworks,openFrameworks,7709a23aef3bea47da65aa661b157f414522b4dc,bilderbuchi,327442,"hm this confirms my fears from my second comment. @gameoverhack could you take a look at this?
+",2012-10-12T19:34:47Z,2012-10-12T19:34:47Z

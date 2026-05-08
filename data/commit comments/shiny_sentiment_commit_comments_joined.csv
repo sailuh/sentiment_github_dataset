@@ -1,0 +1,9 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2559988,0,"Formatting of this documentation page is broken from """"## Not run"""" on""",2013-02-04 21:34:22,dmenne,rstudio,shiny,b3944127ea897645e06625e1a8b289c738c9fe5e,dmenne,506275,"Formatting of this documentation page is broken from ""## Not run"" on
+",2013-02-05T08:34:22Z,2013-02-05T08:34:22Z
+2056336,1,"This is definitely a game-changer for building interest and enthusiasm and of course learning. Bravo!""",2012-10-25 15:51:19,jjallaire,rstudio,shiny,0b891ad557b7bea18abdf9cad29b50d62c7a6604,jjallaire,104391,"This is definitely a game-changer for building interest and enthusiasm and of course learning. Bravo!
+",2012-10-26T03:51:19Z,2012-10-26T03:51:19Z
+2049951,1,"Great catch, thank you!  Also I noticed that I did this totally wrong by doing a normal assignment instead of at least <<-, if not explicit get/assign on globalenv(). Must have been in a hurry :)""",2012-10-24 17:55:37,jcheng5,rstudio,shiny,6df226b21cf41bdcae506f34cc71a2dc28839229,jcheng5,129551,"Great catch, thank you!
+
+Also I noticed that I did this totally wrong by doing a normal assignment instead of at least <<-, if not explicit get/assign on globalenv(). Must have been in a hurry :)
+",2012-10-25T05:55:37Z,2012-10-25T06:13:41Z

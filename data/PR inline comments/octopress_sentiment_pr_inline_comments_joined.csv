@@ -1,0 +1,21 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+3519386,0,"I haven't seen any issues with it -- perhaps that's a Ruby 1.8 vs. 1.9 issue?""",2013-03-25 08:43:43,MrJoy,imathis,octopress,,https://github.com/imathis/octopress/pull/1061#discussion_r3519386,2013-03-25T19:43:43Z,2013-03-25T19:43:43Z,MrJoy,NONE,Rakefile,,295.0,,,49,"@@ -276,13 +287,21 @@ end
+ # Deploying  #
+ ##############
+ 
++# Unpublicized helper task to ensure that at deploy-time we act like we're
++# going to production -- unless the user has explicitly instructed us
++# otherwise.
++task :set_deployment_environment do
++  ENV['OCTOPRESS_ENV'] = 'production' unless(ENV['OCTOPRESS_ENV'])
++  configuration  = configurator.read_configuration","I haven't seen any issues with it -- perhaps that's a Ruby 1.8 vs. 1.9 issue?
+",e19b64fa51f1e7e5d42fa1aa911da156f1b0cce1
+4364142,0,"There is no way for us to know the root of your Octopress directory, as `lib/` will be distributed as a gem, much like `jekyll`. Do you know of a better way to find this directory?  As you can see from the diff, this used to be an absolute directory rel""",2013-05-23 04:22:05,parkr,imathis,octopress,,https://github.com/imathis/octopress/pull/1261#discussion_r4364142,2013-05-23T16:22:05Z,2013-05-26T14:35:51Z,parkr,COLLABORATOR,lib/octopress.rb,,15.0,,,11,"@@ -12,7 +12,7 @@ def self.lib_root
+   #
+   # Returns the absolute path of the main octopress installation
+   def self.root
+-    File.dirname(lib_root)
++    Dir.pwd","There is no way for us to know the root of your Octopress directory, as `lib/` will be distributed as a gem, much like `jekyll`. Do you know of a better way to find this directory?
+
+As you can see from the diff, this used to be an absolute directory relative to this file, but it's no longer possible to do so when this is distributed as a gem.
+",d4896764ed3bc757f3ab617c70daf85f2356d85a

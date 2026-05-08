@@ -1,0 +1,84 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id,comment_user_login
+6164472,1,"> You are right this is quite possible. However would you ever be able to deserialize it to the object type you passed?  Very good point!""",2013-09-04 07:47:05,Haacked,restsharp,RestSharp,,https://github.com/restsharp/RestSharp/pull/376#discussion_r6164472,2013-09-04T19:47:05Z,2013-09-04T21:20:45Z,CONTRIBUTOR,RestSharp/RestClient.cs,,,,,1,"@@ -464,17 +464,22 @@ private IRestResponse<T> Deserialize<T>(IRestRequest request, IRestResponse raw)
+ 		{
+ 			request.OnBeforeDeserialization(raw);
+ 
+-			IDeserializer handler = GetHandler(raw.ContentType);
+-			handler.RootElement = request.RootElement;
+-			handler.DateFormat = request.DateFormat;
+-			handler.Namespace = request.XmlNamespace;
+-
+ 			IRestResponse<T> response = new RestResponse<T>();
+ 			try
+ 			{
+ 			    response = raw.toAsyncResponse<T>();
+-				response.Data = handler.Deserialize<T>(raw);
+ 				response.Request = request;
++
++				// Only attempt to deserialize if the request was successful","> You are right this is quite possible. However would you ever be able to deserialize it to the object type you passed?
+
+Very good point!
+",4d227a38633043f767396a0f4c0890fb36b8921e,haacked
+6156859,0,"Probably should check `baseUrl` for null and throw an `ArgumentNullException` or an `ArgumentException` if it's empty.""",2013-09-04 03:26:19,Haacked,restsharp,RestSharp,,https://github.com/restsharp/RestSharp/pull/362#discussion_r6156859,2013-09-04T15:26:19Z,2013-09-04T16:55:27Z,CONTRIBUTOR,RestSharp/RestClient.cs,,,,,1,"@@ -64,12 +64,21 @@ public RestClient()
+ 		/// Sets the BaseUrl property for requests made by this client instance
+ 		/// </summary>
+ 		/// <param name=""baseUrl""></param>
+-		public RestClient(string baseUrl)
+-			: this()
++		public RestClient(Uri baseUrl) : this()
+ 		{
+ 			BaseUrl = baseUrl;
+ 		}
+ 
++        /// <summary>
++        /// Sets the BaseUrl property for requests made by this client instance
++        /// </summary>
++        /// <param name=""baseUrl""></param>
++        public RestClient(string baseUrl) : this()
++        {","Probably should check `baseUrl` for null and throw an `ArgumentNullException` or an `ArgumentException` if it's empty.
+",c8547c69d0d46fe0d27953de78051379dcb92d0e,haacked
+5410075,0,"Isn't the max length `32766`? Why choose something smaller?""",2013-07-25 09:08:11,Haacked,restsharp,RestSharp,,https://github.com/restsharp/RestSharp/pull/247#discussion_r5410075,2013-07-25T21:08:11Z,2013-07-25T21:08:11Z,CONTRIBUTOR,RestSharp/Extensions/StringExtensions.cs,,52.0,,,5,"@@ -49,7 +49,21 @@ public static string UrlDecode(this string input)
+ 		/// </summary>
+ 		public static string UrlEncode(this string input)
+ 		{
+-			return Uri.EscapeDataString(input);
++            const int maxLength = 30000;","Isn't the max length `32766`? Why choose something smaller?
+",8bbd7f342e2f9366c605d0239b3c393fa39d1589,haacked
+6158521,1,"Actually, nevermind. I can fix this up. :smile:""",2013-09-04 04:23:34,Haacked,restsharp,RestSharp,,https://github.com/restsharp/RestSharp/pull/396#discussion_r6158521,2013-09-04T16:23:34Z,2013-09-04T16:23:34Z,CONTRIBUTOR,RestSharp/Http.Sync.cs,,224.0,,,5,"@@ -221,7 +221,7 @@ private HttpWebRequest ConfigureWebRequest(string method, Uri url)
+ 
+ 			if(ClientCertificates != null)
+ 			{
+-				webRequest.ClientCertificates = ClientCertificates;
++                webRequest.ClientCertificates.AddRange(ClientCertificates);","Actually, nevermind. I can fix this up. :smile:
+",19dc9c4717e897cdcc78e04a1d6c796dea2ac9d4,haacked
+5409993,2,"The indentation here is weird. It's not aligned with the rest of the code.""",2013-07-25 09:05:23,Haacked,restsharp,RestSharp,,https://github.com/restsharp/RestSharp/pull/247#discussion_r5409993,2013-07-25T21:05:23Z,2013-07-25T21:05:23Z,CONTRIBUTOR,RestSharp/Extensions/StringExtensions.cs,,66.0,,,19,"@@ -49,7 +49,21 @@ public static string UrlDecode(this string input)
+ 		/// </summary>
+ 		public static string UrlEncode(this string input)
+ 		{
+-			return Uri.EscapeDataString(input);
++            const int maxLength = 30000;
++            if (input.Length <= maxLength)
++                return Uri.EscapeDataString(input);
++
++            StringBuilder sb = new StringBuilder(input.Length * 2);
++            int index = 0;            
++            while (index < input.Length)
++            {
++                int length = Math.Min(input.Length - index, maxLength);
++                string subString = input.Substring(index, length);
++                sb.Append(Uri.EscapeDataString(subString));
++                index += subString.Length;
++            }
++
++			return sb.ToString();","The indentation here is weird. It's not aligned with the rest of the code.
+",8bbd7f342e2f9366c605d0239b3c393fa39d1589,haacked
+6168723,1,"Ah cool. Thanks!""",2013-09-04 10:22:25,Haacked,restsharp,RestSharp,,https://github.com/restsharp/RestSharp/pull/349#discussion_r6168723,2013-09-04T22:22:25Z,2013-09-04T22:56:58Z,CONTRIBUTOR,RestSharp/Deserializers/XmlDeserializer.cs,,175.0,,,18,"@@ -168,7 +169,34 @@ private void Map(object x, XElement root)
+ 					}
+ 
+ 					prop.SetValue(x, value, null);
+-				}
++				}
++                else if (type == typeof(DateTimeOffset))
++                {
++                    var toConvert = value.ToString();","Ah cool. Thanks!
+",7de5465d486773d7c9934e98b16f11ddf3b17e54,haacked

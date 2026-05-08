@@ -1,0 +1,19 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+785633,0,"Actually it *should* still work on pre-3.0 I just have to test it. There is no checks done on what flags you are setting so since the values are `static final int`s they'll be compiled in the code. They'll be ignore as flags on those platforms but you shou""",2011-12-11 12:18:36,JakeWharton,JakeWharton,ActionBarSherlock,bdbcdae608141e5451c83ea550e25a0bd91bdee2,JakeWharton,66577,"Actually it _should_ still work on pre-3.0 I just have to test it. There is no checks done on what flags you are setting so since the values are `static final int`s they'll be compiled in the code. They'll be ignore as flags on those platforms but you should still be able to test whether they're set or not.
+",2011-12-11T23:18:36Z,2011-12-11T23:18:36Z
+1051519,2,"I'm going to revert this then. I don't like the inconsistency between compilation SDKs.""",2012-03-06 15:41:00,JakeWharton,JakeWharton,ActionBarSherlock,765dbb1f59133299f61756827a9fefe520eb83ac,JakeWharton,66577,"I'm going to revert this then. I don't like the inconsistency between compilation SDKs.
+",2012-03-07T02:41:00Z,2012-03-07T02:41:00Z
+911706,1,"Sounds good. We definitely don't need the hassle later. Hopefully Holo endures.""",2012-01-28 18:47:18,thorinside,JakeWharton,ActionBarSherlock,47b75e30ddcdb3962ec419ca886590dda774897a,thorinside,291679,"Sounds good. We definitely don't need the hassle later. Hopefully Holo endures.
+",2012-01-29T05:47:18Z,2012-01-29T05:47:18Z
+1171025,1,"Works Great!""",2012-04-03 17:35:46,NeilCannon,JakeWharton,ActionBarSherlock,8b46b1c661ecaffa13ca2ea958367b9810854b52,NeilCannon,696723,"Works Great!
+",2012-04-04T05:35:46Z,2012-04-04T05:35:46Z
+1676229,0,"This commit seems to break compatibility with API 11-. onActionMode* appeared on API 11 only. When running on Donut, I have an exception :  ``` W/dalvikvm(242): VFY: unable to find class referenced in signature (Landroid/view/ActionMode;) E/dalvikvm(242): """,2012-08-06 04:49:00,blinkseb,JakeWharton,ActionBarSherlock,a4a89e010c498ba6e1e0056309a1604ab147a9c1,blinkseb,386274,"This commit seems to break compatibility with API 11-. onActionMode\* appeared on API 11 only. When running on Donut, I have an exception :
+
+```
+W/dalvikvm(242): VFY: unable to find class referenced in signature (Landroid/view/ActionMode;)
+E/dalvikvm(242): Could not find method android.support.v4.app.Watson.onActionModeFinished, referenced from method com.actionbarsherlock.app.SherlockFragmentActivity.onActionModeFinished
+W/dalvikvm(242): VFY: unable to resolve virtual method 1388: Landroid/support/v4/app/Watson;.onActionModeFinished (Landroid/view/ActionMode;)V
+```
+",2012-08-06T16:49:00Z,2012-08-06T16:49:00Z
+905891,1,"I did indeed. I always forget about the plugins. Thanks!""",2012-01-26 10:29:42,JakeWharton,JakeWharton,ActionBarSherlock,898b00f20c5e3e566267324d3a51a950f64a25bd,JakeWharton,66577,"I did indeed. I always forget about the plugins. Thanks!
+",2012-01-26T21:29:42Z,2012-01-26T21:29:48Z

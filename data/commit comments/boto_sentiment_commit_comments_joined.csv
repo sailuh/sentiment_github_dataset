@@ -1,0 +1,15 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2304978,1,"Thanks, just what I needed today!""",2012-12-13 08:03:03,dariux,boto,boto,cda266d12e5647c8a1996431857daf7c07cddc66,dariux,1332112,"Thanks, just what I needed today!
+",2012-12-13T19:03:03Z,2012-12-13T19:03:03Z
+1250793,1,"This is awesome work, thanks!""",2012-04-24 03:36:35,gtaylor,boto,boto,1cc4fdb8eb47284e3b4b1b797d7c7b1625b425b7,gtaylor,75556,"This is awesome work, thanks!
+",2012-04-24T15:36:35Z,2012-04-24T15:36:35Z
+1017215,1,"Thanks, good suggestion. Fixed.""",2012-02-27 11:04:47,mfschwartz,boto,boto,33fb4d2ed692ecb9e80e55ab178a0d07a7908b9d,mfschwartz,333551,"Thanks, good suggestion. Fixed.
+",2012-02-27T22:04:47Z,2012-02-27T22:04:47Z
+1017040,1,"Seems like specifically looking for the value None would be both more explicit and more accurate with respect to the documentation.""",2012-02-27 10:19:50,disruptek,boto,boto,33fb4d2ed692ecb9e80e55ab178a0d07a7908b9d,disruptek,1479799,"Seems like specifically looking for the value None would be both more explicit and more accurate with respect to the documentation.
+",2012-02-27T21:19:50Z,2012-02-27T21:19:50Z
+943701,1,"@swaroopch don't apologize, we need more nitpicking like this on the docs. You are encouraged to double-check us.""",2012-02-07 14:53:59,gtaylor,boto,boto,36be983ec48a540b872566e1d57a9f199e89a66c,gtaylor,75556,"@swaroopch don't apologize, we need more nitpicking like this on the docs. You are encouraged to double-check us.
+",2012-02-08T01:53:59Z,2012-02-08T01:53:59Z
+1450002,1,"I think this has already been fixed in develop.  Thanks!""",2012-06-12 11:19:21,garnaat,boto,boto,8fd6bdc8933bcdd0e2c02d3482545d8f9b5facd0,garnaat,2056,"I think this has already been fixed in develop.  Thanks!
+",2012-06-12T23:19:21Z,2012-06-12T23:19:21Z
+429594,1,"Did the IAM template get excluded from this commit? Just checking :)""",2011-06-14 01:33:00,gtaylor,boto,boto,75512afaa2c5b11fec2a9fa7de7f0b8772f38c56,gtaylor,75556,"Did the IAM template get excluded from this commit? Just checking :)
+",2011-06-14T13:33:00Z,2011-06-14T13:33:00Z

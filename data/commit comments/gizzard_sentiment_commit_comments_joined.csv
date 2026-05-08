@@ -1,0 +1,23 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+241221,1,":) :) :)""",2011-01-14 09:32:12,robey,twitter,gizzard,c94b905b6e39d64e52462cdab283ba794fdacc79,robey,172,":) :) :)
+",2011-01-14T20:32:12Z,2011-01-14T20:32:12Z
+306024,2,"that seems like a bug!""",2011-03-17 11:19:23,stevej,twitter,gizzard,86264d8bfe8c450af8f573ad71535ed13f4a79ff,stevej,5834,"that seems like a bug!
+",2011-03-17T22:19:23Z,2011-03-17T22:19:23Z
+306036,2,"Oh sorry, I misrepresented the problem. It prints the headers every 5 minutes or if they've changed to help log parsers re-sync.  https://github.com/twitter/ostrich/blob/master/src/main/scala/com/twitter/ostrich/stats/W3CStats.scala#L45-60""",2011-03-17 11:27:24,sprsquish,twitter,gizzard,86264d8bfe8c450af8f573ad71535ed13f4a79ff,sprsquish,206,"Oh sorry, I misrepresented the problem. It prints the headers every 5 minutes or if they've changed to help log parsers re-sync.
+
+https://github.com/twitter/ostrich/blob/master/src/main/scala/com/twitter/ostrich/stats/W3CStats.scala#L45-60
+",2011-03-17T22:27:24Z,2011-03-17T22:27:24Z
+241217,2,"some weird indentation here...""",2011-01-14 09:30:41,robey,twitter,gizzard,cfa3efefd1705f823ee6e62586ed497ee32f6068,robey,172,"some weird indentation here...
+",2011-01-14T20:30:41Z,2011-01-14T20:30:41Z
+306017,0,"The timeout should be the socket timeout as well as connect timeout so we don't block indefinitely on job injection. Not sure how to do this in finagle.""",2011-03-17 11:14:37,freels,twitter,gizzard,c8d10f1258a276bb61dede1094a6563ebf1fbad3,freels,1407,"The timeout should be the socket timeout as well as connect timeout so we don't block indefinitely on job injection. Not sure how to do this in finagle.
+",2011-03-17T22:14:37Z,2011-03-17T22:14:37Z
+306056,0,"Here's what we're seeing:  <pre> #Version: 1.0 #Date: 17-Mar-2011 22:48:25 #CRC: 49526060 #Fields: operation arguments action-timing result-count Rob:setName rob_bob - - </pre>""",2011-03-17 11:49:49,sprsquish,twitter,gizzard,86264d8bfe8c450af8f573ad71535ed13f4a79ff,sprsquish,206,"Here's what we're seeing:
+
+<pre>
+#Version: 1.0
+#Date: 17-Mar-2011 22:48:25
+#CRC: 49526060
+#Fields: operation arguments action-timing result-count
+Rob:setName rob_bob - -
+</pre>
+",2011-03-17T22:49:49Z,2011-03-17T22:50:04Z

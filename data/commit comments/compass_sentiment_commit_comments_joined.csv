@@ -1,0 +1,29 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2091015,2,"boo. Want to come up with something that looks nice in both the scss and docs? create a documentation styleguide?""",2012-11-01 14:57:34,ericam,chriseppstein,compass,6543e1816c72fdb57fa12eda54d8ae674ec484df,mirisuzanne,104161,"boo. Want to come up with something that looks nice in both the scss and docs? create a documentation styleguide?
+",2012-11-02T01:57:34Z,2012-11-02T01:57:34Z
+584211,2,"i would have merged this into master instead of stable =(  edit: im stupid""",2011-09-12 08:31:03,scottdavis,chriseppstein,compass,92981fb5d31670acd6f9b413a2075bb1bfc1af95,scottdavis,11871,"i would have merged this into master instead of stable =(
+
+edit: im stupid
+",2011-09-12T20:31:03Z,2011-09-12T20:34:10Z
+855622,2,"> This makes compass fail on Win, when paths with backslashes are used, as File.expand_path() will convert backslashes to slashes.  Will this ever be fixed?""",2012-01-10 16:23:06,leek,chriseppstein,compass,539f206e51d34a35bbcec602e7a5d5ae21246a9e,leek,60204,"> This makes compass fail on Win, when paths with backslashes are used, as File.expand_path() will convert backslashes to slashes.
+
+Will this ever be fixed?
+",2012-01-11T03:23:06Z,2012-01-11T03:23:06Z
+1419516,2,"This commit broke the tests :(  https://secure.travis-ci.org/#!/chriseppstein/compass/jobs/1538994""",2012-06-05 08:47:58,chriseppstein,chriseppstein,compass,1c9883360c6da221eccdd92d63bc45359dce8efb,chriseppstein,1839,"This commit broke the tests :(  https://secure.travis-ci.org/#!/chriseppstein/compass/jobs/1538994
+",2012-06-05T20:47:58Z,2012-06-05T20:47:58Z
+280224,2,"Also: This change broke a couple tests :(""",2011-02-22 13:51:51,chriseppstein,chriseppstein,compass,802bc71c05ff140f8edaa6c431d11c1414c69508,chriseppstein,1839,"Also: This change broke a couple tests :(
+",2011-02-23T00:51:51Z,2011-02-23T00:51:51Z
+280408,2,"That's because I suck at what I do. Fixed now, sorry.  132621c230f76192d3605b5e1b5ae0d58bff57bc""",2011-02-22 19:15:29,ericam,chriseppstein,compass,802bc71c05ff140f8edaa6c431d11c1414c69508,mirisuzanne,104161,"That's because I suck at what I do. Fixed now, sorry.
+
+132621c230f76192d3605b5e1b5ae0d58bff57bc
+",2011-02-23T06:15:29Z,2011-02-23T06:15:48Z
+1419566,2,"Well damn. Not my day. Looking into it, but I'm not sure I understand the error.""",2012-06-05 08:56:34,ericam,chriseppstein,compass,1c9883360c6da221eccdd92d63bc45359dce8efb,mirisuzanne,104161,"Well damn. Not my day. Looking into it, but I'm not sure I understand the error.
+",2012-06-05T20:56:34Z,2012-06-05T20:56:34Z
+278729,2,"I'm worried that this change will break existing sites with no way to recover the old behavior if they are relying on it. Thoughts?""",2011-02-21 09:53:34,chriseppstein,chriseppstein,compass,802bc71c05ff140f8edaa6c431d11c1414c69508,chriseppstein,1839,"I'm worried that this change will break existing sites with no way to recover the old behavior if they are relying on it. Thoughts?
+",2011-02-21T20:53:34Z,2011-02-21T20:53:34Z
+295334,2,"Global = bad. Let's go over your plugin code soon and we'll sort it out -- I don't want it to be horrible for the developer or the user.""",2011-03-08 14:04:43,chriseppstein,chriseppstein,compass,214243073541fc8f90236b8af114fb3af0551b55,chriseppstein,1839,"Global = bad. Let's go over your plugin code soon and we'll sort it out -- I don't want it to be horrible for the developer or the user.
+",2011-03-09T01:04:43Z,2011-03-09T01:04:43Z
+295390,2,"well get in IRC sometime =(""",2011-03-08 14:54:50,scottdavis,chriseppstein,compass,214243073541fc8f90236b8af114fb3af0551b55,scottdavis,11871,"well get in IRC sometime =(
+",2011-03-09T01:54:50Z,2011-03-09T01:54:50Z
+71337,2,"I have the same error as starpeak :(""",2010-04-27 06:05:03,brainopia,chriseppstein,compass,33aa0317d7e69bc4ab9a6f71a8302aaded9b2120,brainopia,386,"I have the same error as starpeak :(
+",2010-04-27T18:05:03Z,2010-04-27T18:05:03Z

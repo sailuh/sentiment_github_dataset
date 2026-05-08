@@ -1,0 +1,1836 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+3504492,2,"that was my favorite ScalaDoc :(""",2013-03-24 07:35:09,jozic,scala,scala,,https://github.com/scala/scala/pull/2275#discussion_r3504492,2013-03-24T18:35:09Z,2013-03-24T18:35:09Z,jozic,CONTRIBUTOR,src/library/scala/util/Properties.scala,,155.0,,,24,"@@ -150,18 +150,70 @@ private[scala] trait PropertiesTrait {
+   def scalaCmd              = if (isWin) ""scala.bat"" else ""scala""
+   def scalacCmd             = if (isWin) ""scalac.bat"" else ""scalac""
+ 
+-  /** Can the java version be determined to be at least as high as the argument?
+-   *  Hard to properly future proof this but at the rate 1.7 is going we can leave
+-   *  the issue for our cyborg grandchildren to solve.","that was my favorite ScalaDoc :(
+",a425ee17f5b3e7c03c6cb7991d23cdb232f268c6
+2200906,2,"I must have gone blind. Sorry.""",2012-11-21 12:41:45,dcsobral,scala,scala,,https://github.com/scala/scala/pull/1655#discussion_r2200906,2012-11-21T23:41:45Z,2012-11-22T12:44:53Z,dcsobral,CONTRIBUTOR,src/reflect/scala/reflect/internal/util/StripMarginInterpolator.scala,,35.0,,,35,"@@ -0,0 +1,36 @@
++package scala.reflect
++package internal
++package util
++
++trait StripMarginInterpolator {
++  def stringContext: StringContext
++
++  /**
++   * A safe combination of `[[scala.collection.immutable.StringLike#stripMargin]]
++   * and [[scala.StringContext#s]].
++   *
++   * The margin of each line is defined by whitespace leading up to a '|' character.
++   * This margin is stripped '''before''' the arguments are interpolated into to string.
++   *
++   * {{{
++   * scala> val foo = ""f|o|o""
++   * foo: String = f|o|o
++   * scala> sm""""""|${foo}
++   *             |""""""
++   * res0: String =
++   * ""f|o|o
++   * ""
++   * }}}
++   */
++  final def sm(args: Any*): String = {
++    def stripTrailingPart(s: String) = {
++      val (pre, post) = s.span(_ != '\n')
++      pre + post.stripMargin
++    }
++    val stripped = stringContext.parts.toList match {
++      case head :: tail => head.stripMargin :: (tail map stripTrailingPart)
++      case Nil => Nil
++    }
++    new StringContext(stripped: _*).s(args: _*)","I must have gone blind. Sorry.
+",d929fdfa082f861dc5d6060589825c971ed7907a
+1763056,0,"Does this show up elsewhere?   Seems a useful method, but I could be wrong.""",2012-10-04 03:30:23,jsuereth,scala,scala,,https://github.com/scala/scala/pull/1458#discussion_r1763056,2012-10-04T15:30:23Z,2012-10-08T14:10:51Z,jsuereth,CONTRIBUTOR,src/reflect/scala/reflect/api/Mirrors.scala,,242.0,,,55,"@@ -232,14 +209,6 @@ trait Mirrors { self: Universe =>
+      *  It must be a member (declared or inherited) of the class underlying this mirror.
+      */
+     def reflectConstructor(constructor: MethodSymbol): MethodMirror
+-
+-    /** Optionally, the mirror of the companion object of the class reflected by this mirror.
+-     *  If this mirror represents a Scala instance class, the mirror for the companion
+-     *  object of that class, or None if no such object exists.
+-     *  Otherwise, if the mirror represents a runtime instance class, a mirror representing the static
+-     *  part of the same class.
+-     */
+-    override def companion: Option[ModuleMirror]","Does this show up elsewhere?   Seems a useful method, but I could be wrong.
+",49dcb8ff33483949cecce671a2d87676cefa457f
+1703393,0,"Small point for next time: I'd prefer to this to use type local to this test case, rather than `List[Int]`. Sure, the signature of `List#map` doesn't change all that often, but there is no need to couple this test to it.""",2012-09-26 18:16:16,retronym,scala,scala,,https://github.com/scala/scala/pull/1384#discussion_r1703393,2012-09-27T06:16:16Z,2012-09-27T06:16:16Z,retronym,MEMBER,test/files/run/macro-reify-type/Test_2.scala,,5.0,,,5,"@@ -0,0 +1,21 @@
++import StaticReflect._
++
++object Test extends App {
++  //println(method[List[Int]](""distinct""))
++  println(method[List[Int]](""map""))","Small point for next time: I'd prefer to this to use type local to this test case, rather than `List[Int]`. Sure, the signature of `List#map` doesn't change all that often, but there is no need to couple this test to it.
+",b2625d9d7b7bbd0f107d5842b2cb90fa69a959b7
+915686,0,"I agree this needs to be worked out. However, we currently have a request to use custom hashing on TrieMaps. I think we should at least enable the TrieMaps to take custom Hashing objects for now. Given that we don't do this with the rest of the collection""",2012-06-01 04:19:33,axel22,scala,scala,,https://github.com/scala/scala/pull/652#discussion_r915686,2012-06-01T16:19:33Z,2012-06-01T19:09:52Z,axel22,CONTRIBUTOR,src/library/scala/Equality.scala,,,,,1,"@@ -0,0 +1,37 @@
++/*                     __                                               *\
++**     ________ ___   / /  ___     Scala API                            **
++**    / __/ __// _ | / /  / _ |    (c) 2003-2011, LAMP/EPFL             **
++**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
++** /____/\___/_/ |_/____/_/ | |                                         **
++**                          |/                                          **
++\*                                                                      */
++
++package scala
++
++/** `Equality` is a trait whose instances each represent a strategy for determining
++  * equality of instances of a type.
++  *
++  * `Equality`'s companion object defines a default equality for all
++  * objects - it calls their `==` method.
++  *
++  * @since 2.10
++  */
++@annotation.implicitNotFound(msg = ""No implicit Equality defined for ${T}."")
++trait Equality[T] extends Serializable {","I agree this needs to be worked out. However, we currently have a request to use custom hashing on TrieMaps. I think we should at least enable the TrieMaps to take custom Hashing objects for now.
+Given that we don't do this with the rest of the collections, it should not be hard to switch to a different strategy once we figure it out.
+",ddaf6c5235acbf808ffd5ded710f513f4df3882e
+2648038,0,"So that I don't forget. We also need to change `versionFormat`!""",2013-01-15 00:50:04,xeno-by,scala,scala,,https://github.com/scala/scala/pull/1898#discussion_r2648038,2013-01-15T11:50:04Z,2013-01-15T11:50:04Z,xeno-by,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/Macros.scala,,152.0,,,47,"@@ -135,9 +143,15 @@ trait Macros extends scala.tools.reflect.FastTrack with Traces {
+         loop(owner)
+       }
+ 
+-      def signature: List[Int] = {
++      def signature: List[List[Int]] = {
++        def fingerprint(tpe: Type): Int = tpe.dealias match {
++          case TypeRef(_, RepeatedParamClass, underlying :: Nil) => fingerprint(underlying)
++          case ExprClassOf(_) => IMPLPARAM_EXPR
++          case _ => IMPLPARAM_OTHER
++        }
++","So that I don't forget. We also need to change `versionFormat`!
+",24fb2af325dc0978213755df177d5a84bee86611
+2518650,2,"Let's please assume this didn't happen""",2012-12-28 11:31:05,xeno-by,scala,scala,,https://github.com/scala/scala/pull/1809#discussion_r2518650,2012-12-28T22:31:05Z,2012-12-28T22:31:05Z,xeno-by,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/Typers.scala,,4771.0,,,21,"@@ -4767,7 +4767,7 @@ trait Typers extends Modes with Adaptations with Tags {
+               // SI-5967 Important to replace param type A* with Seq[A] when seen from from a reference, to avoid
+               //         inference errors in pattern matching.
+               stabilize(tree2, pre2, mode, pt) modifyType dropIllegalStarTypes
+-            }
++            }) setAttachments tree.attachments
+         }","Let's please assume this didn't happen
+",6c3c0e391655457e917a8c85d2d74eb9297e0571
+1895508,0,"It passes.  But instead, I included a test that is divorved from the standard library (ie, it doesn't depend on the signature of `Option#getOrElse`). It was more convenient to test for an error due to failure to eliminate a tail call than to check for s""",2012-10-19 10:11:36,retronym,scala,scala,,https://github.com/scala/scala/pull/1507#discussion_r1895508,2012-10-19T22:11:36Z,2012-10-22T20:11:58Z,retronym,MEMBER,test/files/neg/t6526.scala,,3.0,,,3,"@@ -0,0 +1,36 @@
++import scala.annotation.tailrec
++
++class TailRec {","It passes.
+
+But instead, I included a test that is divorved from the standard library (ie, it doesn't depend on the signature of `Option#getOrElse`). It was more convenient to test for an error due to failure to eliminate a tail call than to check for successful tail call elimination.
+",ff3e57beddfec9678b5be1c6031a45e483e1dd66
+1628670,0,"Well, it looks like classfile annotations are pickled as well.  `class W extends scala.annotation.ClassfileAnnotation; @W trait X`  Decompilation shows:  ``` @ScalaSignature(bytes=""""\006\001M1q!\001\002\021\002G\005QAA\001Y\025\005\031\021a\002\037f[B$\030""",2012-09-18 01:20:37,xeno-by,scala,scala,,https://github.com/scala/scala/pull/1335#discussion_r1628670,2012-09-18T13:20:37Z,2012-09-19T10:17:24Z,xeno-by,CONTRIBUTOR,src/library/scala/reflect/base/Annotations.scala,,,,,1,"@@ -3,42 +3,103 @@ package base
+ 
+ import scala.collection.immutable.ListMap
+ 
++/**
++ * Defines the type hierarchy for annotations.
++ */
+ trait Annotations { self: Universe =>
+ 
++  /** Typed information about an annotation. It can be attached to either a symbol or an annotated type. 
++   *
++   *  Annotations are either ''Scala annotations'', which conform to [[scala.annotation.Annotation]] or [[scala.annotation.StaticAnnotation]]
++   *  but not [[scala.annotation.ClassfileAnnotation]] or ''Java annotations'', which conform to [[scala.annotation.ClassfileAnnotation]].
++   *  Trait `ClassfileAnnotation` is automatically added to every Java annotation by the scalac classfile parser. 
++   */
+   type Annotation >: Null <: AnyRef
++ 
++  /** A tag that preserves the identity of the `Annotation` abstract type from erasure.
++   *  Can be used for pattern matching, instance tests, serialization and likes.
++   */
+   implicit val AnnotationTag: ClassTag[Annotation]
+-  val Annotation: AnnotationExtractor
+ 
++  /** The constructor/deconstructor for `Annotation` instances. */
++   val Annotation: AnnotationExtractor
++
++  /** An extractor class to create and pattern match with syntax `Annotation(atp, args, javaArgs)`.
++   *  Here, `atp` is the annotation type, `args` the arguments, and `javaArgs` the annotation's key-value 
++   *  pairs.
++   *
++   *  Annotations are written to the classfile as Java annotations if `atp` conforms to 
++   *  `ClassfileAnnotation`. Annotations are pickled, i.e., written to scala symtab attribute in the classfile, 
++   *  if `atp` inherits from `StaticAnnotation` but not `ClassfileAnnotation`.","Well, it looks like classfile annotations are pickled as well.
+
+`class W extends scala.annotation.ClassfileAnnotation; @W trait X`
+
+Decompilation shows:
+
+```
+@ScalaSignature(bytes=""\006\001M1q!\001\002\021\002G\005QAA\001Y\025\005\031\021a\002\037f[B$\030PP\002\001'\t\001a\001\005\002\b\0315\t\001B\003\002\n\025\005!A.\0318h\025\005Y\021\001\0026bm\006L!!\004\005\003\r=\023'.Z2uQ\t\001q\002\005\002\021#5\t!!\003\002\023\005\t\tq\013"")
+public abstract interface X
+{
+}
+```
+
+Note there are no java annotations on X, so all the info is to be stored in the pickle.
+",ecbb25a311daee09be6ec67bd482d5d6e1ee0fea
+1613340,0,"Where is the source for this? (I'm not familiar with tests having binary dependencies like this.)""",2012-09-14 19:09:17,retronym,scala,scala,,https://github.com/scala/scala/pull/1306#discussion_r1613340,2012-09-15T07:09:17Z,2012-09-16T17:57:54Z,retronym,MEMBER,test/files/run/reflection-java-annotations.jar.desired.sha1,,1.0,,,1,"@@ -0,0 +1 @@
++c35876a529c6be33bdda7b3f48ac8ae800d2f36a ?reflection-java-annotations.jar","Where is the source for this? (I'm not familiar with tests having binary dependencies like this.)
+",cf819b7756de917912807322259ebb993a52ce57
+1626047,0,"This needs because `FlatHashTable#iterator` became protected""",2012-09-17 18:15:03,pavelpavlov,scala,scala,,https://github.com/scala/scala/pull/1298#discussion_r1626047,2012-09-18T06:15:03Z,2012-09-18T06:15:03Z,pavelpavlov,CONTRIBUTOR,src/library/scala/collection/mutable/HashSet.scala,,,,,1,"@@ -69,6 +69,8 @@ extends AbstractSet[A]
+ 
+   override def clear() = clearTable()
+ 
++  override def iterator = super[FlatHashTable].iterator","This needs because `FlatHashTable#iterator` became protected
+",dbd641f592310d7243f675e27ecc8b9d47684309
+1233272,1,"it's okay to leave this for a future commit, but it would be great to restructure this method so we don't need these returns""",2012-07-24 21:04:27,adriaanm,scala,scala,,https://github.com/scala/scala/pull/987#discussion_r1233272,2012-07-25T09:04:27Z,2012-07-25T09:04:27Z,adriaanm,CONTRIBUTOR,src/continuations/plugin/scala/tools/selectivecps/CPSAnnotationChecker.scala,,173.0,,,8,"@@ -166,10 +166,25 @@ abstract class CPSAnnotationChecker extends CPSUtils with Modes {
+               return true
+             //}
+           }
++        } else if (!hasPlusMarker(tree.tpe) && annots1.isEmpty && !annots2.isEmpty && ((mode & global.analyzer.RETmode) != 0)) {
++ 	  vprintln(""checking enclosing method's result type without annotations"")
++          if (tree.tpe <:< pt.withoutAnnotations) {
++            vprintln(""yes we can!! (return)"")
++            return true","it's okay to leave this for a future commit, but it would be great to restructure this method so we don't need these returns
+",ae2dbf4656193e04b046479e1dddd1c1efe1e5e4
+943397,0,"Looks good.  Mind if I add a CityHash implementation in here?""",2012-06-07 00:55:41,jsuereth,scala,scala,,https://github.com/scala/scala/pull/675#discussion_r943397,2012-06-07T12:55:41Z,2012-06-07T13:14:09Z,jsuereth,CONTRIBUTOR,src/library/scala/util/hashing/package.scala,,16.0,,,16,"@@ -0,0 +1,35 @@
++/*                     __                                               *\
++**     ________ ___   / /  ___     Scala API                            **
++**    / __/ __// _ | / /  / _ |    (c) 2006-2011, LAMP/EPFL             **
++**  __\ \/ /__/ __ |/ /__/ __ |    http://www.scala-lang.org/           **
++** /____/\___/_/ |_/____/_/ | |                                         **
++**                          |/                                          **
++\*                                                                      */
++
++package scala.util
++
++
++
++
++
++
++package object hashing {","Looks good.  Mind if I add a CityHash implementation in here?
+",2ff537c397625a8f65d71896c57ac7545831fcf5
+916399,0,"You have a point there, it would be good to get rid of this.  However, the opposing constraint is that when there is no custom Hashing object, some objects produce poor hashcodes for typical object ranges - for example (n: Int).hashCode == n. The problem """,2012-06-01 05:52:14,axel22,scala,scala,,https://github.com/scala/scala/pull/652#discussion_r916399,2012-06-01T17:52:14Z,2012-06-01T19:09:52Z,axel22,CONTRIBUTOR,src/library/scala/collection/concurrent/TrieMap.scala,,,,,1,"@@ -807,7 +823,16 @@ extends scala.collection.concurrent.Map[K, V]
+     val r = RDCSS_READ_ROOT()
+     if (!RDCSS_ROOT(r, r.gcasRead(this), INode.newRootNode[K, V])) clear()
+   }
++  
++  @inline private def mangle(hc: Int): Int = {","You have a point there, it would be good to get rid of this.
+
+However, the opposing constraint is that when there is no custom Hashing object, some objects produce poor hashcodes for typical object ranges - for example (n: Int).hashCode == n.
+The problem with this is that the upper bits of the hash code are usually always 0. In both concurrent and immutable tries this can cause a slowdown due to several collision levels. In parallel hash tables it causes a similar problem with parallel hash table construction.
+
+So, ideally, we want to mangle the bits when a default is provided, and otherwise not mangle them and hope the user knows what he's doing.
+",ddaf6c5235acbf808ffd5ded710f513f4df3882e
+859739,0,"Yes I will. Documentation will come in the RC phase.""",2012-05-22 00:39:23,vjovanov,scala,scala,,https://github.com/scala/scala/pull/575#discussion_r859739,2012-05-22T12:39:23Z,2012-05-23T07:47:04Z,vjovanov,CONTRIBUTOR,src/actors-migration/scala/actors/Pattern.scala,,18.0,,,18,"@@ -0,0 +1,25 @@
++package scala.actors
++
++import scala.concurrent.util.Duration
++
++object pattern {
++
++  implicit def askSupport(ar: ActorRef): AskableActorRef =
++    new AskableActorRef(ar)
++}
++
++/**
++ * ActorRef with support for ask(?) operation.
++ */
++class AskableActorRef(val ar: ActorRef) extends ActorRef {
++
++  def !(message: Any)(implicit sender: ActorRef = null): Unit = ar.!(message)(sender)
++
++  def ?(message: Any)(timeout: Timeout): Future[Any] = ar.?(message, timeout.duration)","Yes I will. Documentation will come in the RC phase.
+",033463f87fe71e8f6d5b17f7cb82b8c2ea5f5271
+595467,0,"Typo: """"The _names_ of the groups""""""",2012-03-22 23:28:41,phaller,scala,scala,,https://github.com/scala/scala/pull/136#discussion_r595467,2012-03-23T10:28:41Z,2012-03-23T12:56:53Z,phaller,CONTRIBUTOR,src/library/scala/collection/immutable/StringLike.scala,,,,,1,"@@ -207,9 +207,20 @@ self =>
+ 
+   /** You can follow a string with `.r`, turning it into a `Regex`. E.g.
+    *
+-   *  """"""A\w*"""""".r   is the regular expression for identifiers starting with `A`.
++   *  `""""""A\w*"""""".r`   is the regular expression for identifiers starting with `A`.
+    */
+-  def r: Regex = new Regex(toString)
++  def r: Regex = r()
++
++  /** You can follow a string with `.r(g1, ... , gn)`, turning it into a `Regex`,
++   *  with group names g1 through gn.
++   *
++   *  `""""""(\d\d)-(\d\d)-(\d\d\d\d)"""""".r(""month"", ""day"", ""year"")` matches dates
++   *  and provides its subcomponents through groups named ""month"", ""day"" and
++   *  ""year"".
++   *
++   *  @param groupNames The name of the groups in the pattern, in the order they appear.","Typo: ""The _names_ of the groups""
+",fccbe33e8e0b2c335fe71027b4761e166e4bbfba
+3321311,0,"Whichever way you slice it, it would be good to see unit tests for equals/hashCode consistency of this class, in addition to the functional tests like `blame-aye-triple-eee.scala`.""",2013-03-11 06:32:35,retronym,scala,scala,,https://github.com/scala/scala/pull/2214#discussion_r3321311,2013-03-11T17:32:35Z,2013-03-14T17:20:32Z,retronym,MEMBER,src/compiler/scala/tools/nsc/backend/opt/ConstantOptimization.scala,,90.0,,,1,"@@ -0,0 +1,639 @@
++/* NSC -- new Scala compiler
++ * Copyright 2005-2013 LAMP/EPFL
++ * @author  James Iry
++ */
++
++package scala.tools.nsc
++package backend.opt
++
++import scala.tools.nsc.backend.icode.analysis.LubException
++import scala.annotation.tailrec
++
++/**
++ * ConstantOptimization uses abstract interpretation to approximate for
++ * each instruction what constants a variable or stack slot might hold
++ * or cannot hold. From this it will eliminate unreachable conditionals
++ * where only one branch is reachable, e.g. to eliminate unnecessary
++ * null checks.
++ *
++ * With some more work it could be extended to
++ * - cache stable values (final fields, modules) in locals 
++ * - replace the copy propagation in ClosureElilmination
++ * - fold constants
++ * - eliminate unnecessary stores and loads
++ * - propagate knowledge gathered from conditionals for further optimization
++ */
++abstract class ConstantOptimization extends SubComponent {
++  import global._
++  import icodes._
++  import icodes.opcodes._
++
++  val phaseName = ""constopt""
++
++  /** Create a new phase */
++  override def newPhase(p: Phase) = new ConstantOptimizationPhase(p)
++
++  /**
++   * The constant optimization phase.
++   */
++  class ConstantOptimizationPhase(prev: Phase) extends ICodePhase(prev) {
++
++    def name = phaseName
++
++    override def apply(c: IClass) {
++      if (settings.YconstOptimization.value) {
++        val analyzer = new ConstantOptimizer
++        analyzer optimizeClass c
++      }
++    }
++  }
++
++  class ConstantOptimizer {
++    def optimizeClass(cls: IClass) {
++      log(s""Analyzing ${cls.methods.size} methods in $cls."")
++      cls.methods foreach { m =>
++        optimizeMethod(m)
++      }
++    }
++
++    def optimizeMethod(m: IMethod) {
++      if (m.hasCode) {
++        log(s""Analyzing ${m.symbol}"")
++        val replacementInstructions = interpretMethod(m)
++        for (block <- m.blocks) {
++          if (replacementInstructions contains block) {
++            val instructions = replacementInstructions(block)
++            block.replaceInstruction(block.lastInstruction, instructions)
++          }
++        }
++      }
++    }
++
++    /**
++     * A single possible (or impossible) datum that can be held in Contents
++     */
++    private sealed abstract class Datum
++    /**
++     * A constant datum
++     */
++    private case class Const(c: Constant) extends Datum {
++      def isIntAssignable = c.tag >= BooleanTag && c.tag <= IntTag
++      def toInt = c.tag match {
++        case BooleanTag => if (c.booleanValue) 1 else 0
++        case _ => c.intValue
++      }
++
++      /**
++       * True if this constant has the same representation (and therefore would compare true under eq) as another constant
++       */
++      override def equals(other: Any) = (other match {
++        case oc @ Const(o) => (this eq oc) || (if (this.isIntAssignable && oc.isIntAssignable) this.toInt == oc.toInt else c.value == o.value)","Whichever way you slice it, it would be good to see unit tests for equals/hashCode consistency of this class, in addition to the functional tests like `blame-aye-triple-eee.scala`.
+",3a17ff00067f8f11288b1ddc778e193bed3ea017
+2790158,0,"If the value is base64 encoded it may end with a string like this:      UVNIn0=""""  In that case the last = sign is stripped from the token value, which causes problems downstream. Wondering if you have suggestions on how to fix or work around this probl""",2013-01-27 23:10:09,retronym,scala,scala,,https://github.com/scala/scala/pull/1923#discussion_r2790158,2013-01-28T10:10:09Z,2013-01-28T12:11:23Z,retronym,MEMBER,src/library/scala/collection/immutable/List.scala,,,,,1,"@@ -343,29 +343,92 @@ case object Nil extends List[Nothing] {
+  */
+ @SerialVersionUID(0L - 8476791151983527571L)
+ final case class ::[B](private var hd: B, private[scala] var tl: List[B]) extends List[B] {
+-  override def head : B = hd
+-  override def tail : List[B] = tl
++  override def head: B = hd
++  override def tail: List[B] = tl
+   override def isEmpty: Boolean = false
+ 
+   private def writeObject(out: ObjectOutputStream) {
+-    out.writeObject(ListSerializeStart) // needed to differentiate with the legacy `::` serialization
+-    out.writeObject(this.hd)
+-    out.writeObject(this.tl)
++    val currentCtrl = List.SerializeCtrl.tl.get
++    if (currentCtrl == null) {
++      val ctrl = new List.SerializeCtrl
++      try {
++        List.SerializeCtrl.tl.set(ctrl)
++        writeObject_2_10_1(out, ctrl)
++      } finally List.SerializeCtrl.tl.set(null)
++    } else writeObject_2_10_1(out, currentCtrl)
++  }
++
++  private def writeObject_2_10_1(out: ObjectOutputStream, ctrl: List.SerializeCtrl) {
++    if (ctrl.inLoop) {
++      ctrl.writeAsSeen(out, hd)
++    } else {
++      // needed to differentiate with the legacy `::` serialization
++      out.writeObject(ListSerializeStart_2_10_1)
++      out.writeObject(hd)
++      var current: List[B] = this
++      do {
++        current = current.tail
++        ctrl.writeInLoop(out, current)
++      } while (ctrl.seen)
++    }
+   }
+ 
+   private def readObject(in: ObjectInputStream) {
+-    val obj = in.readObject()
+-    if (obj == ListSerializeStart) {
++    val currentCtrl = List.SerializeCtrl.tl.get
++    if (currentCtrl == null) {
++      val ctrl = new List.SerializeCtrl
++      try {
++        List.SerializeCtrl.tl.set(ctrl)
++        readObject_2_10_1(in, ctrl)
++      } finally List.SerializeCtrl.tl.set(null)
++    } else readObject_2_10_1(in, currentCtrl)","I would prefer not to abreviate `Control` to `ctrl`; if we have to repeat the identifier so often we should address the real duplication.
+
+Can you please extract the following?
+
+``` scala
+@inline def withSerializationControl[A](SerializationControl => A): A = {
+  tl.get match {
+    case null =>
+      val control = new List.SerializeControl
+      tl set control
+      try f(control) finally tl set null
+   case control => f(control)
+}
+```
+
+I'm pretty sure the closure will be eliminated, but you might want to convince yourself by checking the bytecode.
+",239a539f7f464a07a27690f29a41c3811b0f5390
+1584645,0,"It seems that `time` is in fact required to be a `FiniteDuration`, because e.g. `isOverdue` fails if `time` is not a `FiniteDuration`; if so, this should be checked statically by making `time`'s type `FiniteDuration`. Consequently, you'd have to move `fro""",2012-09-11 20:59:04,Blaisorblade,scala,scala,,https://github.com/scala/scala/pull/1261#discussion_r1584645,2012-09-12T08:59:04Z,2012-09-12T12:44:51Z,Blaisorblade,CONTRIBUTOR,src/library/scala/concurrent/util/Duration.scala,,,,,1,"@@ -10,36 +10,121 @@ package scala.concurrent.util
+ 
+ import java.util.concurrent.TimeUnit
+ import TimeUnit._
+-import java.lang.{ Double => JDouble }
++import java.lang.{ Double => JDouble, Long => JLong }
+ import language.implicitConversions
+ 
+-case class Deadline private (time: Duration) {
++/**
++ * This class stores a deadline, as obtained via `Deadline.now` or the
++ * duration DSL:
++ *
++ * {{{
++ * import scala.concurrent.util.duration._
++ * 3.seconds.fromNow
++ * }}}
++ *
++ * Its main purpose is to manage repeated attempts to achieve something (like
++ * awaiting a condition) by offering the methods `hasTimeLeft` and `timeLeft`.  All
++ * durations are measured according to `System.nanoTime` aka wall-time; this
++ * does not take into account changes to the system clock (such as leap
++ * seconds).
++ */
++case class Deadline private (time: Duration) extends Ordered[Deadline] {","It seems that `time` is in fact required to be a `FiniteDuration`, because e.g. `isOverdue` fails if `time` is not a `FiniteDuration`; if so, this should be checked statically by making `time`'s type `FiniteDuration`. Consequently, you'd have to move `fromNow` into `FiniteDuration` to make it typecheck.
+If instead `Inf.fromNow` is supposed to be legal, then `isOverdue` is buggy.
+",37cced5769e218e805cdcb1f87846f0f2548c8bb
+1366598,0,"Ok.  When we see the """"WHY ISN'T THIS WORKING"""" email, I'll cc you.""",2012-08-13 09:03:26,jsuereth,scala,scala,,https://github.com/scala/scala/pull/1102#discussion_r1366598,2012-08-13T21:03:26Z,2012-08-13T21:03:26Z,jsuereth,CONTRIBUTOR,src/partest/scala/tools/partest/nest/CompileManager.scala,,102.0,,,17,"@@ -94,7 +95,17 @@ class DirectCompiler(val fileManager: FileManager) extends SimpleCompiler {
+     val logFile = basename(log.getName)
+     val flagsFileName = ""%s.flags"" format (logFile.substring(0, logFile.lastIndexOf(""-"")))
+     val argString = (io.File(log).parent / flagsFileName) ifFile (x => updatePluginPath(x.slurp())) getOrElse """"
+-    val allOpts = fileManager.SCALAC_OPTS.toList ::: argString.split(' ').toList.filter(_.length > 0)
++
++    // slurp local flags (e.g., ""A_1.flags"")
++    val fstFile = SFile(files(0))
++    def isInGroup(num: Int) = fstFile.stripExtension endsWith (""_"" + num)
++    val inGroup = (1 to 9) flatMap (group => if (isInGroup(group)) List(group) else List())","Ok.  When we see the ""WHY ISN'T THIS WORKING"" email, I'll cc you.
+",f07501e6f975aa578112327daf68d47b40fc542f
+1221945,0,"It also uses formals to take BYVALmode off when typing by-name arguments .""",2012-07-23 15:15:49,paulp,scala,scala,,https://github.com/scala/scala/pull/979#discussion_r1221945,2012-07-24T03:15:49Z,2012-07-24T07:48:41Z,paulp,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/Typers.scala,,,,,1,"@@ -2749,6 +2749,7 @@ trait Typers extends Modes with Adaptations with Tags {
+     def typedArgs(args: List[Tree], mode: Int) =
+       args mapConserve (arg => typedArg(arg, mode, 0, WildcardType))
+ 
++    // [adriaan] as far as I can tell, formals0 is only supplied to detect whether the last formal was originally a vararg","It also uses formals to take BYVALmode off when typing by-name arguments .
+",98a5f06e3841ac988a819a4928ffd827efec221e
+943423,2,"AH.. I hate to be annoying, but why not just call it 'hash' if we're going to change it.   Either one is fine really.""",2012-06-07 01:01:56,jsuereth,scala,scala,,https://github.com/scala/scala/pull/675#discussion_r943423,2012-06-07T13:01:56Z,2012-06-07T13:14:10Z,jsuereth,CONTRIBUTOR,src/library/scala/util/hashing/Hashing.scala,,,,,1,"@@ -22,7 +22,7 @@ package scala.util.hashing
+ @annotation.implicitNotFound(msg = ""No implicit Hashing defined for ${T}."")
+ trait Hashing[T] extends Serializable {
+   
+-  def hashCode(x: T): Int
++  def hashOf(x: T): Int","AH.. I hate to be annoying, but why not just call it 'hash' if we're going to change it.   Either one is fine really.
+",2ff537c397625a8f65d71896c57ac7545831fcf5
+916404,0,"Note:  `MurmurHash`  exists in `scala.util`.   (a) Should we provide a default `MurmurHash` instance?  It's an instance of `T => Int` (b) Should we adapt `MurmurHash` to extends `Hashing`? (c) Given that we have two classes, should they both be in the sam""",2012-06-01 05:53:03,jsuereth,scala,scala,,https://github.com/scala/scala/pull/652#discussion_r916404,2012-06-01T17:53:03Z,2012-06-01T19:09:52Z,jsuereth,CONTRIBUTOR,src/library/scala/math/Hashing.scala,,,,,1,"@@ -0,0 +1,40 @@
++/*                     __                                               *\
++**     ________ ___   / /  ___     Scala API                            **
++**    / __/ __// _ | / /  / _ |    (c) 2003-2011, LAMP/EPFL             **
++**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
++** /____/\___/_/ |_/____/_/ | |                                         **
++**                          |/                                          **
++\*                                                                      */
++
++package scala.math
++
++/** `Hashing` is a trait whose instances each represent a strategy for hashing
++  * instances of a type.
++  *
++  * `Hashing`'s companion object defines a default hashing strategy for all
++  * objects - it calls their `##` method.
++  *
++  * Note: when using a custom `Hashing`, make sure to use it with the `Equiv`
++  * such that if any two objects are equal, then their hash codes must be equal.
++  * 
++  * @since 2.10
++  */
++@annotation.implicitNotFound(msg = ""No implicit Hashing defined for ${T}."")
++trait Hashing[T] extends Serializable {
++  
++  def hashCode(x: T): Int
++  
++}
++
++
++object Hashing {","Note:  `MurmurHash`  exists in `scala.util`. 
+
+(a) Should we provide a default `MurmurHash` instance?  It's an instance of `T => Int`
+(b) Should we adapt `MurmurHash` to extends `Hashing`?
+(c) Given that we have two classes, should they both be in the same location?  `scala.math.hash`? `scala.util.hash`? `scala.math`? `scala.util`?
+
+We don't have to move anything round in this CL, but we should make a decision on where we want hashing utilities.
+",ddaf6c5235acbf808ffd5ded710f513f4df3882e
+2658991,2,"Yeah! I didn't pour half my life into stupid old pattern matcher so you kids today could forget about isIntRange!""",2013-01-15 13:01:21,paulp,scala,scala,,https://github.com/scala/scala/pull/1905#discussion_r2658991,2013-01-16T00:01:21Z,2013-01-16T22:26:46Z,paulp,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/PatternMatching.scala,,,,,1,"@@ -3494,8 +3494,10 @@ trait PatternMatching extends Transform with TypingTransformers with ast.TreeDSL
+       val alternativesSupported = true
+       val canJump = true
+ 
+-      object SwitchablePattern { def unapply(pat: Tree): Option[Tree] = pat match {
+-        case Literal(const@Constant((_: Byte ) | (_: Short) | (_: Int  ) | (_: Char ))) =>
++      // Constant folding sets the type of a constant tree to `ConstantType(Constant(folded))`
++      // The tree itself can be a literal, an ident, a selection, ...
++      object SwitchablePattern { def unapply(pat: Tree): Option[Tree] = pat.tpe match {
++        case ConstantType(const@Constant((_: Byte ) | (_: Short) | (_: Int  ) | (_: Char ))) =>","Yeah! I didn't pour half my life into stupid old pattern matcher so you kids today could forget about isIntRange!
+",ce563164a3e64d8a7a5ca1f49dd62377d603b5d9
+2554701,2,"Sorry about the TODO. I feel lost sometimes, because I worry about too much """"ticket noise"""" but at the same time signature changes do break binary compatibility, so I don't feel ok just unilaterally making the change myself.""",2013-01-04 09:36:37,non,scala,scala,,https://github.com/scala/scala/pull/1785#discussion_r2554701,2013-01-04T20:36:37Z,2013-01-04T20:36:37Z,non,CONTRIBUTOR,src/library/scala/collection/Iterator.scala,,1119.0,,,13,"@@ -1109,12 +1109,14 @@ trait Iterator[+A] extends TraversableOnce[A] {
+    *    $willNotTerminateInf
+    */
+   def copyToArray[B >: A](xs: Array[B], start: Int, len: Int): Unit = {
++    require(start >= 0 && start < xs.length, s""start $start out of range ${xs.length}"")
+     var i = start
+-    val end = start + math.min(len, xs.length)
+-    while (hasNext && i < end) {
++    val end = start + math.min(len, xs.length - start)
++    while (i < end && hasNext) {
+       xs(i) = next()
+       i += 1
+     }
++    // TODO: return i - start so the caller knows how many values read?","Sorry about the TODO. I feel lost sometimes, because I worry about too much ""ticket noise"" but at the same time signature changes do break binary compatibility, so I don't feel ok just unilaterally making the change myself.
+",cf7b51db3b289d2b1782ffb863912217936dcccb
+2162365,0,"I believe it should be InetAddress.getByName(null).""",2012-11-18 13:39:10,paulp,scala,scala,,https://github.com/scala/scala/pull/1646#discussion_r2162365,2012-11-19T00:39:10Z,2012-11-19T00:39:10Z,paulp,CONTRIBUTOR,src/compiler/scala/tools/nsc/io/Socket.scala,,38.0,,,4,"@@ -35,7 +35,7 @@ object Socket {
+ 
+   def newIPv4Server(port: Int = 0)        = new Box(() => preferringIPv4(new ServerSocket(0)))
+   def newServer(port: Int = 0)            = new Box(() => new ServerSocket(0))
+-  def localhost(port: Int)                = apply(InetAddress.getLocalHost(), port)","I believe it should be InetAddress.getByName(null).
+",ca4ae045e128f123708bb9fa94d40194000e68ca
+1592941,0,"lobounds, why is it a list an not a Set (or LinkedHashSet if needing insertion ordering)?""",2012-09-12 10:57:34,viktorklang,scala,scala,,https://github.com/scala/scala/pull/1294#discussion_r1592941,2012-09-12T22:57:34Z,2012-09-12T22:57:34Z,viktorklang,CONTRIBUTOR,src/reflect/scala/reflect/internal/Types.scala,,3938.0,,,9,"@@ -3935,13 +3935,15 @@ trait Types extends api.Types { self: SymbolTable =>
+     def avoidWiden: Boolean = avoidWidening
+ 
+     def addLoBound(tp: Type, isNumericBound: Boolean = false) {
+-      if (isNumericBound && isNumericValueType(tp)) {
+-        if (numlo == NoType || isNumericSubType(numlo, tp))
+-          numlo = tp
+-        else if (!isNumericSubType(tp, numlo))
+-          numlo = numericLoBound
++      if (!lobounds.contains(tp)) {","lobounds, why is it a list an not a Set (or LinkedHashSet if needing insertion ordering)?
+",6fbb4ac42a3fa00689a6c3bbde2be273b7c36b2d
+1557495,0,"good point, you found a missing test case; your UPDATE is not enough, though, due to the `-0d` sickness it needs to use `compare` instead of `<`.  BTW: is Double (and Float?) the only example of a violation of the equals/compareTo contract on the JVM whic""",2012-09-07 06:36:39,rkuhn,scala,scala,,https://github.com/scala/scala/pull/1261#discussion_r1557495,2012-09-07T18:36:39Z,2012-09-12T12:44:50Z,rkuhn,CONTRIBUTOR,src/library/scala/concurrent/util/Duration.scala,,,,,1,"@@ -80,124 +164,217 @@ object Duration {
+   protected[util] val timeUnit: Map[String, TimeUnit] =
+     timeUnitLabels flatMap { case (unit, names) => expandLabels(names) map (_ -> unit) } toMap
+ 
++  /**
++   * Extract length and time unit out of a string, where the format must match the description for [[Duration$.apply(String):Duration apply(String)]].
++   * The extractor will not match for malformed strings or non-finite durations.
++   */
+   def unapply(s: String): Option[(Long, TimeUnit)] =
+     ( try Some(apply(s)) catch { case _: RuntimeException => None } ) flatMap unapply
+ 
++  /**
++   * Extract length and time unit out of a duration, if it is finite.
++   */
+   def unapply(d: Duration): Option[(Long, TimeUnit)] =
+     if (d.isFinite) Some((d.length, d.unit)) else None
+ 
+-  def fromNanos(nanos: Double): FiniteDuration =
+-    fromNanos((nanos + 0.5).toLong)
++  /**
++   * Construct a possibly infinite or undefined Duration from the given number of nanoseconds.
++   * 
++   *  - `Double.PositiveInfinity` is mapped to [[Duration.Inf]]
++   *  - `Double.NegativeInfinity` is mapped to [[Duration.MinusInf]]
++   *  - `Double.NaN` is mapped to [[Duration.Undefined]]
++   *  - `-0d` is mapped to [[Duration.Zero]] (exactly like `0d`)
++   *
++   * The semantics of the resulting Duration objects matches the semantics of their Double 
++   * counterparts with respect to arithmetic operations.
++   */
++  def fromNanos(nanos: Double): Duration = {
++    if (nanos.isInfinite)
++      if (nanos > 0) Inf else MinusInf
++    else if (nanos.isNaN)
++      Undefined
++    else if (nanos > Long.MaxValue || nanos < Long.MinValue)
++      throw new IllegalArgumentException(""trying to construct too large duration with "" + nanos + ""ns"")
++    else
++      fromNanos((nanos + 0.5).toLong)
++  }
++
++  private val  µs_per_ns = 1000L
++  private val  ms_per_ns =  µs_per_ns * 1000
++  private val   s_per_ns =  ms_per_ns * 1000
++  private val min_per_ns =   s_per_ns * 60
++  private val   h_per_ns = min_per_ns * 60
++  private val   d_per_ns =   h_per_ns * 24
+ 
++  /**
++   * Construct a finite duration from the given number of nanoseconds. This will throw an 
++   * exception for `Long.MinValue` since that would lead to inconsistent behavior afterwards 
++   * (cannot be negated). The result will have the coarsest possible time unit which can
++   * exactly express this duration.
++   */
+   def fromNanos(nanos: Long): FiniteDuration = {
+-    if (nanos % 86400000000000L == 0) {
+-      Duration(nanos / 86400000000000L, DAYS)
+-    } else if (nanos % 3600000000000L == 0) {
+-      Duration(nanos / 3600000000000L, HOURS)
+-    } else if (nanos % 60000000000L == 0) {
+-      Duration(nanos / 60000000000L, MINUTES)
+-    } else if (nanos % 1000000000L == 0) {
+-      Duration(nanos / 1000000000L, SECONDS)
+-    } else if (nanos % 1000000L == 0) {
+-      Duration(nanos / 1000000L, MILLISECONDS)
+-    } else if (nanos % 1000L == 0) {
+-      Duration(nanos / 1000L, MICROSECONDS)
+-    } else {
+-      Duration(nanos, NANOSECONDS)
+-    }
++         if (nanos %   d_per_ns == 0) Duration(nanos /   d_per_ns, DAYS)
++    else if (nanos %   h_per_ns == 0) Duration(nanos /   h_per_ns, HOURS)
++    else if (nanos % min_per_ns == 0) Duration(nanos / min_per_ns, MINUTES)
++    else if (nanos %   s_per_ns == 0) Duration(nanos /   s_per_ns, SECONDS)
++    else if (nanos %  ms_per_ns == 0) Duration(nanos /  ms_per_ns, MILLISECONDS)
++    else if (nanos %  µs_per_ns == 0) Duration(nanos /  µs_per_ns, MICROSECONDS)
++    else Duration(nanos, NANOSECONDS)
+   }
+ 
+   /**
+-   * Parse TimeUnit from string representation.
++   * Preconstructed value of `0.days`.
+    */
++  // unit as coarse as possible to keep (_ + Zero) sane unit-wise
++  val Zero: FiniteDuration = new FiniteDuration(0, DAYS)
+ 
+-  val Zero: FiniteDuration = new FiniteDuration(0, NANOSECONDS)
+-
+-  object Undefined extends Infinite {
+-    private def fail(what: String) = throw new IllegalArgumentException(s""cannot $what Undefined duration"")
+-
++  /**
++   * The Undefined value corresponds closely to Double.NaN:
++   *
++   *  - it is the result of otherwise invalid operations
++   *  - it does not equal itself (according to `equals()`)
++   *  - it compares greater than any other Duration apart from itself (for which `compare` returns 0)
++   *
++   * The particular comparison semantics mirror those of Double.NaN.
++   *
++   * '''''Use `eq` when checking an input of a method against this value.'''''
++   */
++  val Undefined: Infinite = new Infinite {
+     override def toString = ""Duration.Undefined""
+-    override def equals(other: Any) = this eq other.asInstanceOf[AnyRef]
+-    override def +(other: Duration): Duration = fail(""add"")
+-    override def -(other: Duration): Duration = fail(""subtract"")
+-    override def *(factor: Double): Duration  = fail(""multiply"")
+-    override def /(factor: Double): Duration  = fail(""divide"")
+-    override def /(other: Duration): Double   = fail(""divide"")
+-    def compare(other: Duration) = fail(""compare"")
+-    def unary_- : Duration = fail(""negate"")
++    override def equals(other: Any) = false
++    override def +(other: Duration): Duration = this
++    override def -(other: Duration): Duration = this
++    override def *(factor: Double): Duration  = this
++    override def /(factor: Double): Duration  = this
++    override def /(other: Duration): Double   = Double.NaN
++    def compare(other: Duration) = if (other eq this) 0 else 1
++    def unary_- : Duration = this
++    def toUnit(unit: TimeUnit): Double = Double.NaN
+   }
+ 
+   sealed abstract class Infinite extends Duration {
+     def +(other: Duration): Duration = other match {
+-      case x: Infinite if x ne this => throw new IllegalArgumentException(""illegal addition of infinities"")
++      case x if x eq Undefined      => Undefined
++      case x: Infinite if x ne this => Undefined
++      case _                        => this
++    }
++    def -(other: Duration): Duration = other match {
++      case x if x eq Undefined      => Undefined
++      case x: Infinite if x eq this => Undefined
+       case _                        => this
+     }
+-    // Is this really intended to throw if the argument is ""this"" but otherwise return this?
+-    def -(other: Duration): Duration =
+-      if (other ne this) this
+-      else throw new IllegalArgumentException(""illegal subtraction of infinities"")
+ 
+-    def *(factor: Double): Duration = this
+-    def /(factor: Double): Duration = this
++    def *(factor: Double): Duration =
++      if (factor == 0d || factor.isNaN) Undefined
++      else if (factor < 0d) -this
++      else this
++    def /(factor: Double): Duration =
++      if (factor == 0d || factor.isNaN || factor.isInfinite) Undefined","good point, you found a missing test case; your UPDATE is not enough, though, due to the `-0d` sickness it needs to use `compare` instead of `<`.
+
+BTW: is Double (and Float?) the only example of a violation of the equals/compareTo contract on the JVM which actually ships as part of the platform?
+",37cced5769e218e805cdcb1f87846f0f2548c8bb
+1400009,0,"I'm not sure what this is doing, but isn't it going to be misled by    (x)(y, z)  vs.   (x, y)(z)  Those flatten to the same list, and have the same number of sublists, but do not correspond.  Maybe this is handled somewhere else.""",2012-08-16 14:49:49,paulp,scala,scala,,https://github.com/scala/scala/pull/1151#discussion_r1400009,2012-08-17T02:49:49Z,2012-08-17T09:58:07Z,paulp,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/Macros.scala,,459.0,,,1,"@@ -460,167 +360,79 @@ trait Macros extends scala.tools.reflect.FastTrack with Traces {
+               result
+           }
+         }
++        val typecheckedWithErrors = (rhs1 exists (_.isErroneous)) || reporter.ERROR.count != prevNumErrors
++        if (typecheckedWithErrors) MacroDefUntypeableBodyError()
+         rhs1
+       } catch {
+         case ex: TypeError =>
+           typer.reportTypeError(context, rhs.pos, ex)
+-          typer.infer.setError(rhs)
++          MacroDefUntypeableBodyError()
+       }
+     }
+ 
+-    val prevNumErrors = reporter.ERROR.count // funnily enough, the isErroneous check is not enough
+-    var rhs1 = typecheckRhs(rhs)
+-    val macroImpl = rhs1.symbol
+-    def typecheckedWithErrors = (rhs1 exists (_.isErroneous)) || reporter.ERROR.count != prevNumErrors
+-    if (typecheckedWithErrors) {
+-      setError()
+-      macroTraceVerbose(""body of a macro def failed to typecheck: "")(ddef)
+-    } else {
+-      if (!hasError) {
+-        if (macroImpl == null) invalidBodyError()
+-        else {
+-          if (!macroImpl.isMethod) invalidBodyError()
+-          if (!macroImpl.isPublic) reportError(implpos, ""macro implementation must be public"")
+-          if (macroImpl.isOverloaded) reportError(implpos, ""macro implementation cannot be overloaded"")
+-          if (!macroImpl.typeParams.isEmpty && !rhs1.isInstanceOf[TypeApply]) reportError(implpos, ""macro implementation reference needs type arguments"")
+-          if (!hasError) validatePostTyper(rhs1)
+-        }
+-      }
+-      if (!hasError) {
+-        bindMacroImpl(macroDef, rhs1) // we must bind right over here, because return type inference needs this info
+-      }
++    // Phase II: typecheck the right-hand side of the macro def
++    val typed = typecheckRhs(macroDdef.rhs)
++    typed match {
++      case MacroImplReference(owner, meth, targs) =>
++        if (!meth.isMethod) MacroDefInvalidBodyError()
++        if (!meth.isPublic) MacroImplNotPublicError()
++        if (meth.isOverloaded) MacroImplOverloadedError()
++        if (meth.typeParams.nonEmpty && targs.isEmpty) MacroImplNeedsTypeArgumentsError()
++        if (meth.typeParams.isEmpty && targs.nonEmpty) MacroImplDoesntNeedTypeArgumentsError()
++        if (!owner.isStaticOwner && !owner.moduleClass.isStaticOwner) MacroImplNotStaticError()
++        bindMacroImpl(macroDef, typed)
++      case _ =>
++        MacroDefInvalidBodyError()
+     }
+ 
+-    if (!hasError) {
+-      def checkCompatibility(reqparamss: List[List[Symbol]], actparamss: List[List[Symbol]], reqres: Type, actres: Type): List[String] = {
+-        var hasError = false
+-        var errors = List[String]()
+-        def compatibilityError(msg: String) {
+-          hasError = true
+-          errors :+= msg
+-        }
+-
+-        val flatreqparams = reqparamss.flatten
+-        val flatactparams = actparamss.flatten
+-        val tparams = macroImpl.typeParams
+-        val tvars = tparams map freshVar
+-        def lengthMsg(which: String, extra: Symbol) =
+-          ""parameter lists have different length, ""+which+"" extra parameter ""+extra.defString
+-        if (actparamss.length != reqparamss.length)
+-          compatibilityError(""number of parameter sections differ"")
+-
+-        def checkSubType(slot: String, reqtpe: Type, acttpe: Type): Unit = {
+-          val ok = if (macroDebugVerbose) {
+-            if (reqtpe eq acttpe) println(reqtpe + "" <: "" + acttpe + ""?"" + EOL + ""true"")
+-            withTypesExplained(reqtpe <:< acttpe)
+-          } else reqtpe <:< acttpe
+-          if (!ok) {
+-            compatibilityError(""type mismatch for %s: %s does not conform to %s"".format(slot, reqtpe.toString.abbreviateCoreAliases, acttpe.toString.abbreviateCoreAliases))
+-          }
+-        }
++    // Phase III: check compatibility between the macro def and its macro impl
++    // aXXX (e.g. aparamss) => characteristics of the macro impl (""a"" stands for ""actual"")
++    // rXXX (e.g. rparamss) => characteristics of a reference macro impl signature synthesized from the macro def (""r"" stands for ""reference"")
++    val macroImpl = typed.symbol
++    val aparamss = transformTypeTagEvidenceParams(macroImpl.paramss, (param, tparam) => NoSymbol)
++    val aret = macroImpl.tpe.finalResultType
++    val macroDefRet =
++      if (!macroDdef.tpt.isEmpty) typer.typedType(macroDdef.tpt).tpe
++      else computeMacroDefTypeFromMacroImpl(macroDdef, macroImpl)
++    val (rparamss, rret) = macroImplSig(macroDef, macroDdef.tparams, macroDdef.vparamss, macroDefRet)
++
++    val implicitParams = aparamss.flatten filter (_.isImplicit)
++    if (implicitParams.nonEmpty) MacroImplNonTagImplicitParameters(implicitParams)
++    if (aparamss.length != rparamss.length) MacroImplParamssMismatchError()
++
++    val atparams = macroImpl.typeParams
++    val atvars = atparams map freshVar
++    def atpeToRtpe(atpe: Type) = atpe.substSym(aparamss.flatten, rparamss.flatten).instantiateTypeParams(atparams, atvars)
+ 
+-        if (!hasError) {
+-          try {
+-            for ((rparams, aparams) <- reqparamss zip actparamss) {
+-              if (rparams.length < aparams.length)
+-                compatibilityError(lengthMsg(""found"", aparams(rparams.length)))
+-              if (aparams.length < rparams.length)
+-                compatibilityError(lengthMsg(""required"", rparams(aparams.length)).abbreviateCoreAliases)
+-            }
+-            // if the implementation signature is already deemed to be incompatible, we bail out
+-            // otherwise, high-order type magic employed below might crash in weird ways
+-            if (!hasError) {
+-              for ((rparams, aparams) <- reqparamss zip actparamss) {
+-                for ((rparam, aparam) <- rparams zip aparams) {
+-                  def isRepeated(param: Symbol) = param.tpe.typeSymbol == RepeatedParamClass
+-                  if (rparam.name != aparam.name && !rparam.isSynthetic) {
+-                    val rparam1 = rparam
+-                    val aparam1 = aparam
+-                    compatibilityError(""parameter names differ: ""+rparam.name+"" != ""+aparam.name)
+-                  }
+-                  if (isRepeated(rparam) && !isRepeated(aparam))
+-                    compatibilityError(""types incompatible for parameter ""+rparam.name+"": corresponding is not a vararg parameter"")
+-                  if (!isRepeated(rparam) && isRepeated(aparam))
+-                    compatibilityError(""types incompatible for parameter ""+aparam.name+"": corresponding is not a vararg parameter"")
+-                  if (!hasError) {
+-                    var atpe = aparam.tpe.substSym(flatactparams, flatreqparams).instantiateTypeParams(tparams, tvars)
+-                    atpe = atpe.dealias // SI-5706
+-                    // strip the { type PrefixType = ... } refinement off the Context or otherwise we get compatibility errors
+-                    atpe = atpe match {
+-                      case RefinedType(List(tpe), Scope(sym)) if tpe == MacroContextClass.tpe && sym.allOverriddenSymbols.contains(MacroContextPrefixType) => tpe
+-                      case _ => atpe
+-                    }
+-                    checkSubType(""parameter "" + rparam.name, rparam.tpe, atpe)
+-                  }
+-                }
+-              }
+-            }
+-            if (!hasError) {
+-              val atpe = actres.substSym(flatactparams, flatreqparams).instantiateTypeParams(tparams, tvars)
+-              checkSubType(""return type"", atpe, reqres)
+-            }
+-            if (!hasError) {
+-              val targs = solvedTypes(tvars, tparams, tparams map varianceInType(actres), false,
+-                lubDepth(flatactparams map (_.tpe)) max lubDepth(flatreqparams map (_.tpe)))
+-              val boundsOk = typer.silent(_.infer.checkBounds(ddef, NoPrefix, NoSymbol, tparams, targs, """"))
+-              boundsOk match {
+-                case SilentResultValue(true) => ;
+-                case SilentResultValue(false) | SilentTypeError(_) =>
+-                  val bounds = tparams map (tp => tp.info.instantiateTypeParams(tparams, targs).bounds)
+-                  compatibilityError(""type arguments "" + targs.mkString(""["", "","", ""]"") +
+-                                     "" do not conform to "" + tparams.head.owner + ""'s type parameter bounds "" +
+-                                     (tparams map (_.defString)).mkString(""["", "","", ""]""))
+-              }
+-            }
+-          } catch {
+-            case ex: NoInstance =>
+-              compatibilityError(
+-                ""type parameters ""+(tparams map (_.defString) mkString "", "")+"" cannot be instantiated\n""+
+-                ex.getMessage)
+-          }
+-        }
+-
+-        errors.toList
+-      }
++    try {
++      map2(aparamss, rparamss)((aparams, rparams) => {
++        if (aparams.length < rparams.length) MacroImplMissingParamsError(aparams, rparams)
++        if (rparams.length < aparams.length) MacroImplExtraParamsError(aparams, rparams)
++      })
+ 
+-      var actparamss = macroImpl.paramss
+-      actparamss = transformTypeTagEvidenceParams(actparamss, (param, tparam) => NoSymbol)
+-      val actres = macroImpl.tpe.finalResultType
+-      val implicitParams = actparamss.flatten filter (_.isImplicit)
+-      if (implicitParams.length > 0) {
+-        // prohibit implicit params on macro implementations
+-        // we don't have to do this, but it appears to be more clear than allowing them
+-        reportError(implicitParams.head.pos, ""macro implementations cannot have implicit parameters other than AbsTypeTag evidences"")
+-        macroTraceVerbose(""macro def failed to satisfy trivial preconditions: "")(macroDef)
+-      }
++      // cannot fuse these loops because if aparamss.flatten != rparamss.flatten
++      // then `atpeToRtpe` is going to fail with an unsound substitution
++      map2(aparamss.flatten, rparamss.flatten)((aparam, rparam) => {","I'm not sure what this is doing, but isn't it going to be misled by
+
+  (x)(y, z)  vs.   (x, y)(z)
+
+Those flatten to the same list, and have the same number of sublists, but do not correspond.  Maybe this is handled somewhere else.
+",ddf27a1e0e4b9eae521651704e74298c33c9af6c
+921592,0,"No `$outer` pointers as far as I can see - the class is defined in a top-level companion object:        Compiled from """"TrieMap.scala""""     public class scala.collection.concurrent.TrieMap$MangledHashing extends java.lang.Object implements scala.util.hashin""",2012-06-03 23:13:20,axel22,scala,scala,,https://github.com/scala/scala/pull/655#discussion_r921592,2012-06-04T11:13:20Z,2012-06-04T11:14:36Z,axel22,CONTRIBUTOR,src/library/scala/collection/concurrent/TrieMap.scala,,917.0,,,199,"@@ -894,14 +913,15 @@ object TrieMap extends MutableMapFactory[TrieMap] {
+   implicit def canBuildFrom[K, V]: CanBuildFrom[Coll, (K, V), TrieMap[K, V]] = new MapCanBuildFrom[K, V]
+ 
+   def empty[K, V]: TrieMap[K, V] = new TrieMap[K, V]
+-
+-  @inline final def computeHash[K](k: K): Int = {
+-    var hcode = k.hashCode
+-    hcode = hcode * 0x9e3775cd
+-    hcode = java.lang.Integer.reverseBytes(hcode)
+-    hcode * 0x9e3775cd
++  
++  class MangledHashing[K] extends Hashing[K] {","No `$outer` pointers as far as I can see - the class is defined in a top-level companion object:
+
+```
+Compiled from ""TrieMap.scala""
+public class scala.collection.concurrent.TrieMap$MangledHashing extends java.lang.Object implements scala.util.hashing.Hashing
+  SourceFile: ""TrieMap.scala""
+  Scala: length = 0x
+
+  Signature: length = 0x2
+   00 27 
+  InnerClass: 
+   public #45= #42 of #44; //MangledHashing=class scala/collection/concurrent/TrieMap$MangledHashing of class scala/collection/concurrent/TrieMap
+  minor version: 0
+  major version: 49
+  Constant pool:
+const #1 = Asciz    SourceFile;
+const #2 = Asciz    TrieMap.scala;
+...
+const #39 = Asciz   <K:Ljava/lang/Object;>Ljava/lang/Object;Lscala/util/hashing/Hashing<TK;>;;
+const #40 = Asciz   InnerClasses;
+const #41 = Asciz   scala/collection/concurrent/TrieMap$MangledHashing;
+const #42 = class   #41;    //  scala/collection/concurrent/TrieMap$MangledHashing
+const #43 = Asciz   scala/collection/concurrent/TrieMap;
+const #44 = class   #43;    //  scala/collection/concurrent/TrieMap
+const #45 = Asciz   MangledHashing;
+const #46 = Asciz   scala/util/hashing/Hashing;
+const #47 = class   #46;    //  scala/util/hashing/Hashing
+
+{
+public int hashCode(java.lang.Object);
+  LineNumberTable: 
+   line 919: 3
+   line 920: 11
+   line 921: 16
+
+  LocalVariableTable: 
+   Start  Length  Slot  Name   Signature
+   0      21      0    this       Lscala/collection/concurrent/TrieMap$MangledHashing;
+   0      21      1    k       Ljava/lang/Object;
+   11      9      2    hcode       I
+
+
+  Code:
+   Stack=2, Locals=3, Args_size=2
+   0:   getstatic   #11; //Field scala/runtime/ScalaRunTime$.MODULE$:Lscala/runtime/ScalaRunTime$;
+   3:   aload_1
+   4:   invokevirtual   #15; //Method scala/runtime/ScalaRunTime$.hash:(Ljava/lang/Object;)I
+   7:   ldc #16; //int -1640532531
+   9:   imul
+   10:  istore_2
+   11:  iload_2
+   12:  invokestatic    #22; //Method java/lang/Integer.reverseBytes:(I)I
+   15:  istore_2
+   16:  iload_2
+   17:  ldc #16; //int -1640532531
+   19:  imul
+   20:  ireturn
+  LineNumberTable: 
+   line 919: 3
+   line 920: 11
+   line 921: 16
+
+  LocalVariableTable: 
+   Start  Length  Slot  Name   Signature
+   0      21      0    this       Lscala/collection/concurrent/TrieMap$MangledHashing;
+   0      21      1    k       Ljava/lang/Object;
+   11      9      2    hcode       I
+
+  Signature: length = 0x2
+   00 1E 
+
+public scala.collection.concurrent.TrieMap$MangledHashing();
+  LineNumberTable: 
+   line 917: 0
+
+
+
+  Code:
+   Stack=1, Locals=1, Args_size=1
+   0:   aload_0
+   1:   invokespecial   #37; //Method java/lang/Object.""<init>"":()V
+   4:   return
+  LineNumberTable: 
+   line 917: 0
+
+  Signature: length = 0x2
+   00 21 
+
+}
+```
+",ddaf6c5235acbf808ffd5ded710f513f4df3882e
+916537,0,"To avoid `isInstanceOf` on every `computeHash`, I could replace the `hashingobj` with a custom internal `Hashing` which does the mangling if it's a class returned by `Hashing.default`, yes.""",2012-06-01 06:05:38,axel22,scala,scala,,https://github.com/scala/scala/pull/652#discussion_r916537,2012-06-01T18:05:38Z,2012-06-01T19:09:52Z,axel22,CONTRIBUTOR,src/library/scala/collection/concurrent/TrieMap.scala,,,,,1,"@@ -807,7 +823,16 @@ extends scala.collection.concurrent.Map[K, V]
+     val r = RDCSS_READ_ROOT()
+     if (!RDCSS_ROOT(r, r.gcasRead(this), INode.newRootNode[K, V])) clear()
+   }
++  
++  @inline private def mangle(hc: Int): Int = {","To avoid `isInstanceOf` on every `computeHash`, I could replace the `hashingobj` with a custom internal `Hashing` which does the mangling if it's a class returned by `Hashing.default`, yes.
+",ddaf6c5235acbf808ffd5ded710f513f4df3882e
+461111,2,"It deviates quite a bit from the Akka version, and Akka is in RC1 now.  We should sync before it's too late.  https://github.com/jboner/akka/blob/master/akka-actor/src/main/scala/akka/dispatch/Future.scala#L25""",2012-02-16 23:11:43,viktorklang,scala,scala,,https://github.com/scala/scala/pull/200#discussion_r461111,2012-02-17T10:11:43Z,2012-02-17T10:11:43Z,viktorklang,CONTRIBUTOR,src/library/scala/concurrent/package.scala,,127.0,,,127,"@@ -0,0 +1,150 @@
++/*                     __                                               *\
++**     ________ ___   / /  ___     Scala API                            **
++**    / __/ __// _ | / /  / _ |    (c) 2003-2011, LAMP/EPFL             **
++**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
++** /____/\___/_/ |_/____/_/ | |                                         **
++**                          |/                                          **
++\*                                                                      */
++
++package scala
++
++
++
++import scala.util.{ Duration, Try, Success, Failure }
++
++
++
++/** This package object contains primitives for concurrent and parallel programming.
++ */
++package object concurrent {
++  
++  type ExecutionException =    java.util.concurrent.ExecutionException
++  type CancellationException = java.util.concurrent.CancellationException
++  type TimeoutException =      java.util.concurrent.TimeoutException
++  
++  /** A global execution environment for executing lightweight tasks.
++   */
++  lazy val executionContext =
++    new impl.ExecutionContextImpl(java.util.concurrent.Executors.newCachedThreadPool())
++  
++  /** A global service for scheduling tasks for execution.
++   */
++  // lazy val scheduler =
++  //   new default.SchedulerImpl
++  
++  val handledFutureException: PartialFunction[Throwable, Throwable] = {
++    case t: Throwable if isFutureThrowable(t) => t
++  }
++  
++  // TODO rename appropriately and make public
++  private[concurrent] def isFutureThrowable(t: Throwable) = t match {
++    case e: Error => false
++    case t: scala.util.control.ControlThrowable => false
++    case i: InterruptedException => false
++    case _ => true
++  }
++  
++  private[concurrent] def resolve[T](source: Try[T]): Try[T] = source match {
++    case Failure(t: scala.runtime.NonLocalReturnControl[_]) => Success(t.value.asInstanceOf[T])
++    case Failure(t: scala.util.control.ControlThrowable) => Failure(new ExecutionException(""Boxed ControlThrowable"", t))
++    case Failure(t: InterruptedException) => Failure(new ExecutionException(""Boxed InterruptedException"", t))
++    case Failure(e: Error) => Failure(new ExecutionException(""Boxed Error"", e))
++    case _ => source
++  }
++  
++  // TODO, docs, return type
++  private val resolverFunction: PartialFunction[Throwable, Try[_]] = {
++    case t: scala.runtime.NonLocalReturnControl[_] => Success(t.value)
++    case t: scala.util.control.ControlThrowable => Failure(new ExecutionException(""Boxed ControlThrowable"", t))
++    case t: InterruptedException => Failure(new ExecutionException(""Boxed InterruptedException"", t))
++    case e: Error => Failure(new ExecutionException(""Boxed Error"", e))
++    case t => Failure(t)
++  }
++  
++  private[concurrent] def resolver[T] = resolverFunction.asInstanceOf[PartialFunction[Throwable, Try[T]]]
++  
++  /* concurrency constructs */
++  
++  def future[T](body: =>T)(implicit execCtx: ExecutionContext = executionContext): Future[T] =
++    execCtx future body
++  
++  def promise[T]()(implicit execCtx: ExecutionContext = executionContext): Promise[T] =
++    execCtx promise
++  
++  /** Wraps a block of code into an awaitable object. */
++  def body2awaitable[T](body: =>T) = new Awaitable[T] {
++    def await(atMost: Duration)(implicit cb: CanAwait) = body
++  }
++  
++  /** Used to block on a piece of code which potentially blocks.
++   *  
++   *  @param body         A piece of code which contains potentially blocking or long running calls.
++   *  
++   *  Calling this method may throw the following exceptions:
++   *  - CancellationException - if the computation was cancelled
++   *  - InterruptedException - in the case that a wait within the blockable object was interrupted
++   *  - TimeoutException - in the case that the blockable object timed out
++   */
++  def blocking[T](atMost: Duration)(body: =>T)(implicit execCtx: ExecutionContext): T =
++    executionContext.blocking(atMost)(body)
++  
++  /** Blocks on an awaitable object.
++   *  
++   *  @param awaitable    An object with a `block` method which runs potentially blocking or long running calls.
++   *  
++   *  Calling this method may throw the following exceptions:
++   *  - CancellationException - if the computation was cancelled
++   *  - InterruptedException - in the case that a wait within the blockable object was interrupted
++   *  - TimeoutException - in the case that the blockable object timed out
++   */
++  def blocking[T](awaitable: Awaitable[T], atMost: Duration)(implicit execCtx: ExecutionContext = executionContext): T =
++    executionContext.blocking(awaitable, atMost)
++  
++  object await {
++    def ready[T](atMost: Duration)(awaitable: Awaitable[T])(implicit execCtx: ExecutionContext = executionContext): Awaitable[T] = {
++      try blocking(awaitable, atMost)
++      catch { case _ => }
++      awaitable
++    }
++    
++    def result[T](atMost: Duration)(awaitable: Awaitable[T])(implicit execCtx: ExecutionContext = executionContext): T = {
++      blocking(awaitable, atMost)
++    }
++  }
++  
++  /** Importing this object allows using some concurrency primitives
++   *  on futures and promises that can yield nondeterministic programs.
++   *  
++   *  While program determinism is broken when using these primitives,
++   *  some programs cannot be written without them (e.g. multiple client threads
++   *  cannot send requests to a server thread through regular promises and futures).
++   */
++  object nondeterministic {
++  }
++  
++  @inline implicit final def int2durationops(x: Int) = new DurationOps(x)
++  
++}","It deviates quite a bit from the Akka version, and Akka is in RC1 now.
+
+We should sync before it's too late.
+
+https://github.com/jboner/akka/blob/master/akka-actor/src/main/scala/akka/dispatch/Future.scala#L25
+",ab84c8d9a97b41728e77f7808eda2748d052ca06
+461409,0,"These 2 methods in the await object can be refactored to a different signature if needed.  I'm not sure if the Awaitable trait should live in the Await object, but if you insist, it can also be done.""",2012-02-17 00:53:57,axel22,scala,scala,,https://github.com/scala/scala/pull/200#discussion_r461409,2012-02-17T11:53:57Z,2012-02-17T11:53:57Z,axel22,CONTRIBUTOR,src/library/scala/concurrent/package.scala,,127.0,,,127,"@@ -0,0 +1,150 @@
++/*                     __                                               *\
++**     ________ ___   / /  ___     Scala API                            **
++**    / __/ __// _ | / /  / _ |    (c) 2003-2011, LAMP/EPFL             **
++**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
++** /____/\___/_/ |_/____/_/ | |                                         **
++**                          |/                                          **
++\*                                                                      */
++
++package scala
++
++
++
++import scala.util.{ Duration, Try, Success, Failure }
++
++
++
++/** This package object contains primitives for concurrent and parallel programming.
++ */
++package object concurrent {
++  
++  type ExecutionException =    java.util.concurrent.ExecutionException
++  type CancellationException = java.util.concurrent.CancellationException
++  type TimeoutException =      java.util.concurrent.TimeoutException
++  
++  /** A global execution environment for executing lightweight tasks.
++   */
++  lazy val executionContext =
++    new impl.ExecutionContextImpl(java.util.concurrent.Executors.newCachedThreadPool())
++  
++  /** A global service for scheduling tasks for execution.
++   */
++  // lazy val scheduler =
++  //   new default.SchedulerImpl
++  
++  val handledFutureException: PartialFunction[Throwable, Throwable] = {
++    case t: Throwable if isFutureThrowable(t) => t
++  }
++  
++  // TODO rename appropriately and make public
++  private[concurrent] def isFutureThrowable(t: Throwable) = t match {
++    case e: Error => false
++    case t: scala.util.control.ControlThrowable => false
++    case i: InterruptedException => false
++    case _ => true
++  }
++  
++  private[concurrent] def resolve[T](source: Try[T]): Try[T] = source match {
++    case Failure(t: scala.runtime.NonLocalReturnControl[_]) => Success(t.value.asInstanceOf[T])
++    case Failure(t: scala.util.control.ControlThrowable) => Failure(new ExecutionException(""Boxed ControlThrowable"", t))
++    case Failure(t: InterruptedException) => Failure(new ExecutionException(""Boxed InterruptedException"", t))
++    case Failure(e: Error) => Failure(new ExecutionException(""Boxed Error"", e))
++    case _ => source
++  }
++  
++  // TODO, docs, return type
++  private val resolverFunction: PartialFunction[Throwable, Try[_]] = {
++    case t: scala.runtime.NonLocalReturnControl[_] => Success(t.value)
++    case t: scala.util.control.ControlThrowable => Failure(new ExecutionException(""Boxed ControlThrowable"", t))
++    case t: InterruptedException => Failure(new ExecutionException(""Boxed InterruptedException"", t))
++    case e: Error => Failure(new ExecutionException(""Boxed Error"", e))
++    case t => Failure(t)
++  }
++  
++  private[concurrent] def resolver[T] = resolverFunction.asInstanceOf[PartialFunction[Throwable, Try[T]]]
++  
++  /* concurrency constructs */
++  
++  def future[T](body: =>T)(implicit execCtx: ExecutionContext = executionContext): Future[T] =
++    execCtx future body
++  
++  def promise[T]()(implicit execCtx: ExecutionContext = executionContext): Promise[T] =
++    execCtx promise
++  
++  /** Wraps a block of code into an awaitable object. */
++  def body2awaitable[T](body: =>T) = new Awaitable[T] {
++    def await(atMost: Duration)(implicit cb: CanAwait) = body
++  }
++  
++  /** Used to block on a piece of code which potentially blocks.
++   *  
++   *  @param body         A piece of code which contains potentially blocking or long running calls.
++   *  
++   *  Calling this method may throw the following exceptions:
++   *  - CancellationException - if the computation was cancelled
++   *  - InterruptedException - in the case that a wait within the blockable object was interrupted
++   *  - TimeoutException - in the case that the blockable object timed out
++   */
++  def blocking[T](atMost: Duration)(body: =>T)(implicit execCtx: ExecutionContext): T =
++    executionContext.blocking(atMost)(body)
++  
++  /** Blocks on an awaitable object.
++   *  
++   *  @param awaitable    An object with a `block` method which runs potentially blocking or long running calls.
++   *  
++   *  Calling this method may throw the following exceptions:
++   *  - CancellationException - if the computation was cancelled
++   *  - InterruptedException - in the case that a wait within the blockable object was interrupted
++   *  - TimeoutException - in the case that the blockable object timed out
++   */
++  def blocking[T](awaitable: Awaitable[T], atMost: Duration)(implicit execCtx: ExecutionContext = executionContext): T =
++    executionContext.blocking(awaitable, atMost)
++  
++  object await {
++    def ready[T](atMost: Duration)(awaitable: Awaitable[T])(implicit execCtx: ExecutionContext = executionContext): Awaitable[T] = {
++      try blocking(awaitable, atMost)
++      catch { case _ => }
++      awaitable
++    }
++    
++    def result[T](atMost: Duration)(awaitable: Awaitable[T])(implicit execCtx: ExecutionContext = executionContext): T = {
++      blocking(awaitable, atMost)
++    }
++  }
++  
++  /** Importing this object allows using some concurrency primitives
++   *  on futures and promises that can yield nondeterministic programs.
++   *  
++   *  While program determinism is broken when using these primitives,
++   *  some programs cannot be written without them (e.g. multiple client threads
++   *  cannot send requests to a server thread through regular promises and futures).
++   */
++  object nondeterministic {
++  }
++  
++  @inline implicit final def int2durationops(x: Int) = new DurationOps(x)
++  
++}","These 2 methods in the await object can be refactored to a different signature if needed.
+
+I'm not sure if the Awaitable trait should live in the Await object, but if you insist, it can also be done.
+",ab84c8d9a97b41728e77f7808eda2748d052ca06
+595405,0,"Typo: """"will be interpreted as _an_ escape character""""""",2012-03-22 23:06:15,phaller,scala,scala,,https://github.com/scala/scala/pull/139#discussion_r595405,2012-03-23T10:06:15Z,2012-03-23T13:09:36Z,phaller,CONTRIBUTOR,src/library/scala/util/matching/Regex.scala,,,,,1,"@@ -133,6 +133,15 @@ import java.util.regex.{ Pattern, Matcher }
+  *
+  *  @param regex      A string representing a regular expression
+  *  @param groupNames A mapping from names to indices in capture groups
++ *
++ *  @define replacementString
++ *  In the replacement String, a dollar sign (`$`) followed by a number will be
++ *  interpreted as a reference to a group in the matched pattern, with numbers
++ *  1 through 9 corresponding to the first nine groups, and 0 standing for the
++ *  whole match. Any other character is an error. The backslash (`\`) character
++ *  will be interpreted as a escape character, and can be used to escape the","Typo: ""will be interpreted as _an_ escape character""
+",81971d818774270a613140e6b948632963936818
+323869,0,"On Tue, Jan 3, 2012 at 6:50 AM, Josh Suereth < reply@reply.github.com > wrote:  > I saw it in the sample.  It's not enforced though.  I really wish git > commit hooks could be attached to remote repositories and mandated to each > member so we *could* enf""",2012-01-03 04:35:59,paulp,scala,scala,,https://github.com/scala/scala/pull/85#discussion_r323869,2012-01-03T15:35:59Z,2012-01-03T15:35:59Z,paulp,CONTRIBUTOR,.gitignore,,1.0,,,1,"@@ -1,5 +0,0 @@
+-*.jar","On Tue, Jan 3, 2012 at 6:50 AM, Josh Suereth <
+reply@reply.github.com
+
+> wrote:
+> 
+> I saw it in the sample.  It's not enforced though.  I really wish git
+> commit hooks could be attached to remote repositories and mandated to each
+> member so we _could_ enforce certain rules about commits.....
+> 
+> Oh well, I'll try to focus on the automation side of things when I get
+> back.
+
+A .gitignore file offers little in the way of insurance that jars won't get
+committed.  If most humans can't commit to master, then it will be easy to
+enforce it with a robot, and if most humans can then they'll get us anyway.
+ DESTROY THE HUMANS
+
+But having a .gitignore checked in means that it's an ongoing chore to have
+my own, different .gitignore there.
+",471a63a9e6618f25feb3a5266c38ad98ea2a5ac7
+2861791,0,"You're still repeating yourself here: the expression `new ParHashMap[A, B](hashTableContents)` is copied verbatim. Why? Method `par` already does that.""",2013-02-01 06:01:34,phaller,scala,scala,,https://github.com/scala/scala/pull/1937#discussion_r2861791,2013-02-01T17:01:34Z,2013-02-01T17:01:34Z,phaller,CONTRIBUTOR,src/library/scala/collection/mutable/HashMap.scala,,62.0,,,16,"@@ -56,6 +58,9 @@ extends AbstractMap[A, B]
+ 
+   override def par = new ParHashMap[A, B](hashTableContents)
+ 
++  override def parWith(implicit taskSupport: TaskSupport) =
++    setTaskSupport(new ParHashMap[A, B](hashTableContents), taskSupport)","You're still repeating yourself here: the expression `new ParHashMap[A, B](hashTableContents)` is copied verbatim. Why? Method `par` already does that.
+",6b88596625001b9da97364a9c1ca50cc95b6b6e1
+1409183,0,"Or you meant """"swallow NonFatal, rethrow Fatal""""?""",2012-08-18 07:48:50,xeno-by,scala,scala,,https://github.com/scala/scala/pull/1159#discussion_r1409183,2012-08-18T19:48:50Z,2012-08-19T07:37:34Z,xeno-by,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/ContextErrors.scala,,,,,1,"@@ -636,6 +628,105 @@ trait ContextErrors {
+ 
+       def CyclicReferenceError(errPos: Position, lockedSym: Symbol) =
+         issueTypeError(PosAndMsgTypeError(errPos, ""illegal cyclic reference involving "" + lockedSym))
++
++      // macro-related errors (also see MacroErrors below)
++
++      def MacroEtaError(tree: Tree) = {
++        issueNormalTypeError(tree, ""macros cannot be eta-expanded"")
++        setError(tree)
++      }
++
++      // same reason as for MacroBodyTypecheckException
++      case object MacroExpansionException extends Exception with scala.util.control.ControlThrowable
++
++      private def macroExpansionError(expandee: Tree, msg: String = null, pos: Position = NoPosition) = {
++        def msgForLog = if (msg != null && (msg contains ""exception during macro expansion"")) msg.split(EOL).drop(1).headOption.getOrElse(""?"") else msg
++        macroLogLite(""macro expansion has failed: %s"".format(msgForLog))
++        val errorPos = if (pos != NoPosition) pos else (if (expandee.pos != NoPosition) expandee.pos else enclosingMacroPosition)
++        if (msg != null) context.error(pos, msg) // issueTypeError(PosAndMsgTypeError(..)) won't work => swallows positions
++        setError(expandee)
++        throw MacroExpansionException
++      }
++
++      def MacroPartialApplicationError(expandee: Tree) = {
++        // macroExpansionError won't work => swallows positions, hence needed to do issueTypeError
++        // kinda contradictory to the comment in `macroExpansionError`, but this is how it works
++        issueNormalTypeError(expandee, ""macros cannot be partially applied"")
++        setError(expandee)
++        throw MacroExpansionException
++      }
++
++      def MacroGeneratedAbort(expandee: Tree, ex: AbortMacroException) = {
++        // errors have been reported by the macro itself, so we do nothing here
++        macroLogVerbose(""macro expansion has been aborted"")
++        macroExpansionError(expandee, ex.msg, ex.pos)
++      }
++
++      def MacroGeneratedTypeError(expandee: Tree, err: TypeError = null) =
++        if (err == null) {
++          // errors have been reported by the macro itself, so we do nothing here
++          macroExpansionError(expandee, null)
++        } else {
++          macroLogLite(""macro expansion has failed: %s at %s"".format(err.msg, err.pos))
++          throw err // this error must be propagated, don't report
++        }
++
++      def MacroGeneratedException(expandee: Tree, ex: Throwable) = {
++        val realex = ReflectionUtils.unwrapThrowable(ex)
++        val message = {
++          try {
++            // [Eugene] is there a better way?
++            // [Paul] See Exceptional.scala and Origins.scala.
++            val relevancyThreshold = realex.getStackTrace().indexWhere(_.getMethodName endsWith ""macroExpand1"")
++            if (relevancyThreshold == -1) None
++            else {
++              var relevantElements = realex.getStackTrace().take(relevancyThreshold + 1)
++              def isMacroInvoker(este: StackTraceElement) = este.isNativeMethod || (este.getClassName != null && (este.getClassName contains ""fastTrack""))
++              var threshold = relevantElements.reverse.indexWhere(isMacroInvoker) + 1
++              while (threshold != relevantElements.length && isMacroInvoker(relevantElements(relevantElements.length - threshold - 1))) threshold += 1
++              relevantElements = relevantElements dropRight threshold
++
++              realex.setStackTrace(relevantElements)
++              val message = new java.io.StringWriter()
++              realex.printStackTrace(new java.io.PrintWriter(message))
++              Some(EOL + message)
++            }
++          } catch {
++            // if the magic above goes boom, just fall back to uninformative, but better than nothing, getMessage
++            case ex: Throwable =>","Or you meant ""swallow NonFatal, rethrow Fatal""?
+",a3735fdbbf93128874d93da5c69af0f777220313
+1140058,0,"`scala.Cloneable` is a subtype of `java.lang.Cloneable`. Both would work, I think it doesn't matter too much in the end: anyway the `@cloneable` annotation is deprecated now.""",2012-07-11 00:54:48,lrytz,scala,scala,,https://github.com/scala/scala/pull/859#discussion_r1140058,2012-07-11T12:54:48Z,2012-07-11T12:54:48Z,lrytz,MEMBER,src/compiler/scala/tools/nsc/backend/jvm/GenASM.scala,,1371.0,,,4,"@@ -1368,7 +1368,7 @@ abstract class GenASM extends SubComponent with BytecodeWriters {
+         // Additional interface parents based on annotations and other cues
+         def newParentForAttr(attr: Symbol): Option[Symbol] = attr match {
+           case SerializableAttr => Some(SerializableClass)
+-          case CloneableAttr    => Some(JavaCloneableClass)","`scala.Cloneable` is a subtype of `java.lang.Cloneable`. Both would work, I think it doesn't matter too much in the end: anyway the `@cloneable` annotation is deprecated now.
+",2008e72a96d5e3930fc4e67ef94d63f204db1a04
+2596721,0,"could we change this (and `inAny` / `inAll`) into vararg methods?      def inNone(x: Mode, xs: Mode*) = this & (xs :\ x)(_ | _) == NoMode""",2013-01-09 10:16:23,lrytz,scala,scala,,https://github.com/scala/scala/pull/1874#discussion_r2596721,2013-01-09T21:16:23Z,2013-01-09T21:16:23Z,lrytz,MEMBER,src/reflect/scala/reflect/internal/Mode.scala,,133.0,,,166,"@@ -134,8 +113,37 @@ trait Modes {
+     (1 << 14) -> ""HKmode"",
+     (1 << 15) -> ""BYVALmode"",
+     (1 << 16) -> ""TYPEPATmode""
+-  )
+-  def modeString(mode: Int): String =
+-    if (mode == 0) ""NOmode""
+-    else (modeNameMap filterKeys (bit => inAllModes(mode, bit))).values mkString "" ""
++  ).map({ case (k, v) => Mode(k) -> v })
++}
++import Mode._
++
++final class Mode private (val bits: Int) extends AnyVal {
++  def &(other: Mode): Mode = new Mode(bits & other.bits)
++  def |(other: Mode): Mode = new Mode(bits | other.bits)
++  def &~(other: Mode): Mode = new Mode(bits & ~(other.bits))
++
++  def onlySticky = this & Mode.StickyModes
++  def forFunMode = this & (Mode.StickyModes | SCCmode) | FUNmode | POLYmode | BYVALmode
++  def forTypeMode =
++    if (inAny(PATTERNmode | TYPEPATmode)) TYPEmode | TYPEPATmode
++    else TYPEmode
++
++  def inAll(required: Mode)              = (this & required) == required
++  def inAny(required: Mode)              = (this & required) !=NOmode
++  def inNone(prohibited: Mode)           = (this & prohibited) == NOmode","could we change this (and `inAny` / `inAll`) into vararg methods?
+
+```
+def inNone(x: Mode, xs: Mode*) = this & (xs :\ x)(_ | _) == NoMode
+```
+",198d5229967367493960a6b4e0f9c382d7122a25
+2116750,0,"From what I understood, if `tryTupleApply` returns true, then the subsequent logic in `tryNamesDefaults` will choose tuple application and won't go for named or default argument applications. Right?""",2012-11-13 10:48:38,xeno-by,scala,scala,,https://github.com/scala/scala/pull/1617#discussion_r2116750,2012-11-13T21:48:38Z,2012-11-13T21:48:38Z,xeno-by,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/Typers.scala,,3040.0,,,5,"@@ -3037,7 +3037,7 @@ trait Typers extends Modes with Adaptations with Tags {
+ 
+             def checkNotMacro() = {
+               if (fun.symbol != null && fun.symbol.filter(sym => sym != null && sym.isTermMacro && !sym.isErroneous) != NoSymbol)
+-                duplErrorTree(NamedAndDefaultArgumentsNotSupportedForMacros(tree, fun))
++                tryTupleApply getOrElse duplErrorTree(NamedAndDefaultArgumentsNotSupportedForMacros(tree, fun))","From what I understood, if `tryTupleApply` returns true, then the subsequent logic in `tryNamesDefaults` will choose tuple application and won't go for named or default argument applications. Right?
+",5d5a6f2a17b515af7f9e746c8d7982fd7d2e87d9
+1804680,0,"Maybe """"to properly detect blocking and ensure that there are no deadlocks.""""?""",2012-10-09 21:12:23,axel22,scala,scala,,https://github.com/scala/scala/pull/1485#discussion_r1804680,2012-10-10T09:12:23Z,2012-10-10T09:12:23Z,axel22,CONTRIBUTOR,src/library/scala/concurrent/package.scala,,93.0,,,87,"@@ -87,19 +87,21 @@ package concurrent {
+       blocking(awaitable.ready(atMost)(AwaitPermission))
+     
+     /**
+-     * Await and return the result of this Awaitable, which is either of type T or a thrown exception (any Throwable).
+-     * Invokes result() on the awaitable, properly wrapped by a call to `scala.concurrent.blocking`.
+-     *
+-     * @param awaitable
+-     *        the `Awaitable` on which `result` is to be called
+-     * @param atMost
+-     *        maximum wait time, which may be negative (no waiting is done),
+-     *        [[Duration.Inf]] for unbounded waiting, or a finite positive
+-     *        duration
+-     * @return the value if the Awaitable was successful within the specific maximum wait time
+-     * @throws InterruptedException     if the wait call was interrupted
+-     * @throws TimeoutException         if after waiting for the specified time this Awaitable is still not ready
+-     * @throws IllegalArgumentException if `atMost` is [[Duration.Undefined]]
++     * Await and return the result (of type `T`) of an `Awaitable`.
++     * 
++     * Although this method is blocking, the internal use of [[scala.concurrent.blocking blocking]] ensures that
++     * the underlying [[ExecutionContext]] is prepared to properly manage the blocking.","Maybe ""to properly detect blocking and ensure that there are no deadlocks.""?
+",147dd1d294a2430f5bdd9f3b58392588ecdb1420
+1613880,0,"Because `getMethods` returns stuff like `toString` and `getHashCode`""",2012-09-15 06:46:26,xeno-by,scala,scala,,https://github.com/scala/scala/pull/1306#discussion_r1613880,2012-09-15T18:46:26Z,2012-09-16T17:57:54Z,xeno-by,CONTRIBUTOR,src/reflect/scala/reflect/runtime/JavaMirrors.scala,,,,,1,"@@ -573,7 +574,36 @@ trait JavaMirrors extends internal.SymbolTable with api.JavaUniverse { self: Sym
+      *  Note: If `sym` is a method or constructor, its parameter annotations are copied as well.
+      */
+     private def copyAnnotations(sym: Symbol, jann: AnnotatedElement) {
+-      // to do: implement
++      case class JavaAnnotationProxy(jann: jAnnotation) extends AnnotationInfo {
++        override val atp: Type = classToScala(jann.annotationType).toType
++        override val args: List[Tree] = Nil
++        override def original: Tree = EmptyTree
++        override def setOriginal(t: Tree): this.type = throw new Exception(""setOriginal inapplicable for "" + this)
++        override def pos: Position = NoPosition
++        override def setPos(pos: Position): this.type = throw new Exception(""setPos inapplicable for "" + this)
++        override def toString = completeAnnotationToString(this)
++        override def assocs: List[(Name, ClassfileAnnotArg)] =
++          // todo. find out the exact order of assocs as they are written in the class file
++          // currently I'm simply sorting the methods to guarantee stability of the output
++          jann.annotationType.getDeclaredMethods.sortBy(_.getName).toList map (m => {","Because `getMethods` returns stuff like `toString` and `getHashCode`
+",cf819b7756de917912807322259ebb993a52ce57
+1526813,2,"This code again! Will this hack never tire of creating new issues.""",2012-09-04 07:42:00,paulp,scala,scala,,https://github.com/scala/scala/pull/1251#discussion_r1526813,2012-09-04T19:42:00Z,2012-09-04T19:42:00Z,paulp,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/Typers.scala,,582.0,,,5,"@@ -579,7 +579,7 @@ trait Typers extends Modes with Adaptations with Tags {
+           // to notice exhaustiveness and to generate good code when
+           // List extractors are mixed with :: patterns. See Test5 in lists.scala.
+           def dealias(sym: Symbol) =
+-            (atPos(tree.pos) {gen.mkAttributedRef(sym)}, sym.owner.thisType)
++            (atPos(tree.pos.makeTransparent) {gen.mkAttributedRef(sym)} setPos tree.pos, sym.owner.thisType)","This code again! Will this hack never tire of creating new issues.
+",3415436b67ae7889a11ce2537576ca49b328aecc
+1259053,0,"Not being bound by the collections, I'd rather this had the signature      final def contains[A1 >: A](elem: A): Boolean  The difference is invisible at the user level but significant internally.  With an Any parameter it won't infer anything; with a boun""",2012-07-28 14:59:36,paulp,scala,scala,,https://github.com/scala/scala/pull/1007#discussion_r1259053,2012-07-29T02:59:36Z,2012-07-29T15:15:52Z,paulp,CONTRIBUTOR,src/library/scala/Option.scala,,,,,1,"@@ -209,6 +209,15 @@ sealed abstract class Option[+A] extends Product with Serializable {
+     def withFilter(q: A => Boolean): WithFilter = new WithFilter(x => p(x) && q(x))
+   }
+ 
++  /** Tests whether the option contains a given value as an element.
++   * 
++   *  @param elem the element to test.
++   *  @return `true` if the option has an element that is equal (as
++   *  determined by `==`) to `elem`, `false` otherwise.
++   */
++  @inline final def contains(elem: Any): Boolean =","Not being bound by the collections, I'd rather this had the signature
+
+```
+final def contains[A1 >: A](elem: A): Boolean
+```
+
+The difference is invisible at the user level but significant internally.  With an Any parameter it won't infer anything; with a bounded type parameter it will infer a type, the actual type of the parameter, which can then be checked.
+
+Also, I don't think it particularly benefits from inlining.
+",855f01b30b37ee8f07612d8e568eda5d408fd2df
+1111422,0,"The problem that I see with putting """"internal"""" in the name is that some of the `Throwable`s that are ruled out are not necessarily internal, for example, `InterruptedException` or `OutOfMemoryError` (like other `VirtualMachineError`s). I don't have an ide""",2012-07-05 20:18:28,phaller,scala,scala,,https://github.com/scala/scala/pull/830#discussion_r1111422,2012-07-06T08:18:28Z,2012-07-06T09:42:39Z,phaller,CONTRIBUTOR,src/library/scala/util/control/NonFatal.scala,,34.0,,,39,"@@ -24,14 +23,13 @@ package impl
+  *   }
+  * }}}
+  */
+-private[concurrent] object NonFatal {
++object NonFatal {
+ 
+   def unapply(t: Throwable): Option[Throwable] = t match {
+     case e: StackOverflowError ⇒ Some(e) // StackOverflowError ok even though it is a VirtualMachineError
+     // VirtualMachineError includes OutOfMemoryError and other fatal errors
+-    case _: VirtualMachineError | _: ThreadDeath | _: InterruptedException | _: LinkageError ⇒ None
++    case _: VirtualMachineError | _: ThreadDeath | _: InterruptedException | _: LinkageError | _: ControlThrowable | _: NotImplementedError => None","The problem that I see with putting ""internal"" in the name is that some of the `Throwable`s that are ruled out are not necessarily internal, for example, `InterruptedException` or `OutOfMemoryError` (like other `VirtualMachineError`s). I don't have an idea for a better name, though. Maybe just keep `NonFatal`?
+",ab87bbe8a5728d198057824d3a8c32cfbe20978a
+943978,0,"Did we loose something here?""",2012-06-07 02:30:50,jsuereth,scala,scala,,https://github.com/scala/scala/pull/676#discussion_r943978,2012-06-07T14:30:50Z,2012-06-07T14:30:50Z,jsuereth,CONTRIBUTOR,test/files/run/t5880.scala,,38.0,,,5,"@@ -35,7 +35,7 @@ object Test {
+     }
+     // println(hits.toBuffer)
+     // println(ChiSquare)
+-    assert(ChiSquare < 2.0)
++    assert(ChiSquare < 4.0, ChiSquare + "" -> "" + hits.mkString("", ""))","Did we loose something here?
+",be8ae1f8a1c823410c41e4d861039ff9b6db6c28
+944041,0,"The problem previously in `Wrappers` was that the byteswap-hash magic number constant in `improve` was missing a digit - the hash worked ok still, but with a lower chi-square for this test-case. When I refactored and fixed the missing digit, chi-square in""",2012-06-07 02:42:21,axel22,scala,scala,,https://github.com/scala/scala/pull/676#discussion_r944041,2012-06-07T14:42:21Z,2012-06-07T14:42:21Z,axel22,CONTRIBUTOR,test/files/run/t5880.scala,,38.0,,,5,"@@ -35,7 +35,7 @@ object Test {
+     }
+     // println(hits.toBuffer)
+     // println(ChiSquare)
+-    assert(ChiSquare < 2.0)
++    assert(ChiSquare < 4.0, ChiSquare + "" -> "" + hits.mkString("", ""))","The problem previously in `Wrappers` was that the byteswap-hash magic number constant in `improve` was missing a digit - the hash worked ok still, but with a lower chi-square for this test-case.
+When I refactored and fixed the missing digit, chi-square increased slightly. Currently it's 2.7, which is still pretty ok.
+",be8ae1f8a1c823410c41e4d861039ff9b6db6c28
+943393,0,"Should this chain into another Hashing instance?  I can see that being useful potentially.""",2012-06-07 00:54:45,jsuereth,scala,scala,,https://github.com/scala/scala/pull/675#discussion_r943393,2012-06-07T12:54:45Z,2012-06-07T13:14:09Z,jsuereth,CONTRIBUTOR,src/library/scala/util/hashing/ByteswapHashing.scala,,18.0,,,1,"@@ -0,0 +1,20 @@
++/*                     __                                               *\
++**     ________ ___   / /  ___     Scala API                            **
++**    / __/ __// _ | / /  / _ |    (c) 2006-2011, LAMP/EPFL             **
++**  __\ \/ /__/ __ |/ /__/ __ |    http://www.scala-lang.org/           **
++** /____/\___/_/ |_/____/_/ | |                                         **
++**                          |/                                          **
++\*                                                                      */
++
++package scala.util.hashing
++
++
++
++
++
++
++final class ByteswapHashing[T] extends Hashing[T] {","Should this chain into another Hashing instance?  I can see that being useful potentially.
+",2ff537c397625a8f65d71896c57ac7545831fcf5
+3009765,0,"> and you need the erasure to match the inherited implementation  Isn't that what bridge methods are for? The erased signature in the superclass can be more specific than the corresponding signature in the superclass.""",2013-02-13 21:35:09,retronym,scala,scala,,https://github.com/scala/scala/pull/2125#discussion_r3009765,2013-02-14T08:35:09Z,2013-02-14T08:35:09Z,retronym,MEMBER,src/reflect/scala/reflect/internal/transform/Erasure.scala,,133.0,,,5,"@@ -130,7 +130,7 @@ trait Erasure {
+         else if (sym.isRefinementClass) apply(mergeParents(tp.parents))
+         else if (sym.isDerivedValueClass) eraseDerivedValueClassRef(tref)
+         else if (sym.isClass) eraseNormalClassRef(pre, sym)
+-        else apply(sym.info) // alias type or abstract type
++        else apply(sym.info asSeenFrom (pre, sym.owner)) // alias type or abstract type","> and you need the erasure to match the inherited implementation
+
+Isn't that what bridge methods are for? The erased signature in the superclass can be more specific than the corresponding signature in the superclass.
+",c11cf0b6c55cc2ec15820dceb6ba825726deed88
+3010040,0,"It is what bridge methods are for; we don't have enough bridges. The erased signature can only differ between the subclass and the implementing class if the backend will handle the calls and forwarding correctly; it is not a pretty picture when you get to""",2013-02-13 22:10:57,paulp,scala,scala,,https://github.com/scala/scala/pull/2125#discussion_r3010040,2013-02-14T09:10:57Z,2013-02-14T09:10:57Z,paulp,CONTRIBUTOR,src/reflect/scala/reflect/internal/transform/Erasure.scala,,133.0,,,5,"@@ -130,7 +130,7 @@ trait Erasure {
+         else if (sym.isRefinementClass) apply(mergeParents(tp.parents))
+         else if (sym.isDerivedValueClass) eraseDerivedValueClassRef(tref)
+         else if (sym.isClass) eraseNormalClassRef(pre, sym)
+-        else apply(sym.info) // alias type or abstract type
++        else apply(sym.info asSeenFrom (pre, sym.owner)) // alias type or abstract type","It is what bridge methods are for; we don't have enough bridges. The erased signature can only differ between the subclass and the implementing class if the backend will handle the calls and forwarding correctly; it is not a pretty picture when you get too close. (See SI-3452, etc - I would be curious to know if this change has any effect on it.)
+",c11cf0b6c55cc2ec15820dceb6ba825726deed88
+916462,0,"What if we figure out if a default is provided?   We can control the default typeclass, so let's give it a real class name and throw an isInstanceOf before mangling?   Either that or we can wrap the typeclass on the way *in* to the hash map if it's an ins""",2012-06-01 05:58:15,jsuereth,scala,scala,,https://github.com/scala/scala/pull/652#discussion_r916462,2012-06-01T17:58:15Z,2012-06-01T19:09:52Z,jsuereth,CONTRIBUTOR,src/library/scala/collection/concurrent/TrieMap.scala,,,,,1,"@@ -807,7 +823,16 @@ extends scala.collection.concurrent.Map[K, V]
+     val r = RDCSS_READ_ROOT()
+     if (!RDCSS_ROOT(r, r.gcasRead(this), INode.newRootNode[K, V])) clear()
+   }
++  
++  @inline private def mangle(hc: Int): Int = {","What if we figure out if a default is provided?   We can control the default typeclass, so let's give it a real class name and throw an isInstanceOf before mangling?   Either that or we can wrap the typeclass on the way _in_ to the hash map if it's an instance of default....
+
+I agree, keeping the mangling is good for the default.
+",ddaf6c5235acbf808ffd5ded710f513f4df3882e
+2517020,0,"Yes, readability suffers somewhat. On the plus side, shorter methods are favored by the JIT compiler. In fact, that was a consideration that led to Range.validateRangeBoundaries, but on closer inspection it brought its own disadvantages (basically, making""",2012-12-28 07:22:12,magarciaEPFL,scala,scala,,https://github.com/scala/scala/pull/1825#discussion_r2517020,2012-12-28T18:22:12Z,2012-12-28T18:22:12Z,magarciaEPFL,CONTRIBUTOR,src/library/scala/collection/immutable/Range.scala,,145.0,,,27,"@@ -134,14 +135,19 @@ extends scala.collection.AbstractSeq[Int]
+   }
+ 
+   @inline final override def foreach[@specialized(Unit) U](f: Int => U) {
+-    if (validateRangeBoundaries(f)) {
+-      var i = start
+-      val terminal = terminalElement
+-      val step = this.step
+-      while (i != terminal) {
+-        f(i)
+-        i += step
+-      }
++    validateMaxLength()
++    val isCommonCase = (start != Int.MinValue || end != Int.MinValue)
++    var i = start
++    var count = 0
++    val terminal = terminalElement
++    val step = this.step
++    while(
++      if(isCommonCase) { i != terminal }","Yes, readability suffers somewhat. On the plus side, shorter methods are favored by the JIT compiler. In fact, that was a consideration that led to Range.validateRangeBoundaries, but on closer inspection it brought its own disadvantages (basically, making closure elimination less likely).
+",7abb0c911a7c3d60057fbcab6fc3687322a67082
+1570072,0,"why does it matter?""",2012-09-10 08:15:05,rkuhn,scala,scala,,https://github.com/scala/scala/pull/1279#discussion_r1570072,2012-09-10T20:15:05Z,2012-09-11T17:11:06Z,rkuhn,CONTRIBUTOR,src/library/scala/concurrent/impl/Promise.scala,,,,,1,"@@ -65,29 +65,44 @@ private[concurrent] object Promise {
+     protected final def tryAwait(atMost: Duration): Boolean = {
+       @tailrec
+       def awaitUnsafe(waitTimeNanos: Long): Boolean = {
+-        if (value.isEmpty && waitTimeNanos > 0) {
++        if (!isCompleted && waitTimeNanos > 0) {
+           val ms = NANOSECONDS.toMillis(waitTimeNanos)
+           val ns = (waitTimeNanos % 1000000l).toInt // as per object.wait spec
+           val start = System.nanoTime()
+-          try {
+-            synchronized {
+-              if (!isCompleted) wait(ms, ns) // previously - this was a `while`, ending up in an infinite loop
+-            }
+-          } catch {
+-            case e: InterruptedException =>
++          synchronized {
++            if (!isCompleted) wait(ms, ns) // previously - this was a `while`, ending up in an infinite loop
+           }
+ 
+           awaitUnsafe(waitTimeNanos - (System.nanoTime() - start))
+         } else
+           isCompleted
+       }
+-      awaitUnsafe(if (atMost.isFinite) atMost.toNanos else Long.MaxValue)
++      @tailrec
++      def awaitUnbounded(): Boolean = {
++        if (isCompleted) true
++        else {
++          synchronized {
++            if (!isCompleted) wait()
++          }
++          awaitUnbounded()
++        }
++      }
++
++      if (atMost <= Duration.Zero)
++        isCompleted
++      else if (atMost eq Duration.Undefined)","why does it matter?
+",ad6c261eafbe72e014d005d0452c8a628a07f123
+1628429,0,"I believe we should retain the `Ordering` evidence here. If we decide that we need to compare elements for some reason later during a minor release, we can then do so without changing the signature of this method.""",2012-09-18 00:55:20,axel22,scala,scala,,https://github.com/scala/scala/pull/1204#discussion_r1628429,2012-09-18T12:55:20Z,2012-09-18T18:19:08Z,axel22,CONTRIBUTOR,src/library/scala/collection/immutable/RedBlackTree.scala,,260.0,,,21,"@@ -248,27 +257,27 @@ object RedBlackTree {
+     else rebalance(tree, newLeft, newRight)
+   }
+ 
+-  private[this] def doDrop[A: Ordering, B](tree: Tree[A, B], n: Int): Tree[A, B] = {
++  private[this] def doDrop[A, B](tree: Tree[A, B], n: Int): Tree[A, B] = {","I believe we should retain the `Ordering` evidence here. If we decide that we need to compare elements for some reason later during a minor release, we can then do so without changing the signature of this method.
+",8a690b58467f5b6b0810c9bbacf47da7e6b1f46d
+1205823,0,"On Fri, Jul 20, 2012 at 4:43 PM, Vlad Ureche <reply@reply.github.com> wrote: >> @@ -242,7 +242,7 @@ trait ModelFactoryImplicitSupport { >> >>            available = Some(search.tree != EmptyTree) >>          } catch { >> -          case _ => >> +         """,2012-07-20 02:45:43,odersky,scala,scala,,https://github.com/scala/scala/pull/955#discussion_r1205823,2012-07-20T14:45:43Z,2012-07-20T14:45:43Z,odersky,CONTRIBUTOR,src/compiler/scala/tools/nsc/doc/model/ModelFactoryImplicitSupport.scala,,245.0,,,5,"@@ -242,7 +242,7 @@ trait ModelFactoryImplicitSupport {
+ 
+           available = Some(search.tree != EmptyTree)
+         } catch {
+-          case _ =>
++          case _ => // !!! [Martin]: One should never silently catch all Throwables. Please sharpen the exception type.","On Fri, Jul 20, 2012 at 4:43 PM, Vlad Ureche
+reply@reply.github.com
+wrote:
+
+> > @@ -242,7 +242,7 @@ trait ModelFactoryImplicitSupport {
+> > 
+> > ```
+> >        available = Some(search.tree != EmptyTree)
+> >      } catch {
+> > ```
+> > -          case _ =>
+> > -          case _ => // !!! [Martin]: One should never silently catch all Throwables. Please sharpen the exception type.
+> 
+> It should be case _: TypeError =>. Should I do another pull request with this?
+
+Yes, please do! Thanks - Martin
+
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> https://github.com/scala/scala/pull/955/files#r1205800
+
+## 
+
+Martin Odersky
+Prof., EPFL and Chairman, Typesafe
+PSED, 1015 Lausanne, Switzerland
+Tel. EPFL: +41 21 693 6863
+Tel. Typesafe: +41 21 691 4967
+",15171b10315d747810d12057e57094c1d132be38
+943400,0,"It seems useful, yes. Maybe we should have a separate class in that case which composes 2 `Hashing`s together.""",2012-06-07 00:56:37,axel22,scala,scala,,https://github.com/scala/scala/pull/675#discussion_r943400,2012-06-07T12:56:37Z,2012-06-07T13:14:09Z,axel22,CONTRIBUTOR,src/library/scala/util/hashing/ByteswapHashing.scala,,18.0,,,1,"@@ -0,0 +1,20 @@
++/*                     __                                               *\
++**     ________ ___   / /  ___     Scala API                            **
++**    / __/ __// _ | / /  / _ |    (c) 2006-2011, LAMP/EPFL             **
++**  __\ \/ /__/ __ |/ /__/ __ |    http://www.scala-lang.org/           **
++** /____/\___/_/ |_/____/_/ | |                                         **
++**                          |/                                          **
++\*                                                                      */
++
++package scala.util.hashing
++
++
++
++
++
++
++final class ByteswapHashing[T] extends Hashing[T] {","It seems useful, yes.
+Maybe we should have a separate class in that case which composes 2 `Hashing`s together.
+",2ff537c397625a8f65d71896c57ac7545831fcf5
+866443,0,"Fixed. """,2012-05-22 21:17:23,vjovanov,scala,scala,,https://github.com/scala/scala/pull/575#discussion_r866443,2012-05-23T09:17:23Z,2012-05-23T09:17:23Z,vjovanov,CONTRIBUTOR,src/actors-migration/scala/actors/StashingActor.scala,,,,,1,"@@ -0,0 +1,261 @@
++package scala.actors
++
++import scala.collection._
++import scala.concurrent.util.Duration
++import java.util.concurrent.TimeUnit
++
++object StashingActor extends Combinators {
++  implicit def mkBody[A](body: => A) = new InternalActor.Body[A] {
++    def andThen[B](other: => B): Unit = Actor.rawSelf.seq(body, other)
++  }
++}
++
++@deprecated(""Scala Actors are beeing removed from the standard library. Please refer to the migration guide."", ""2.10"")","Fixed.
+",033463f87fe71e8f6d5b17f7cb82b8c2ea5f5271
+2118606,0,"one way to whack the mole more reliably and get more encapsulation to boot: leave this intact and provide failing implementations of all Symbol methods in the StubSymbol subclasses  I'm figuring out whether this is doable. There's also risk with missin""",2012-11-13 13:16:04,adriaanm,scala,scala,,https://github.com/scala/scala/pull/1607#discussion_r2118606,2012-11-14T00:16:04Z,2012-11-14T00:16:04Z,adriaanm,CONTRIBUTOR,src/reflect/scala/reflect/internal/Types.scala,,1388.0,,,4,"@@ -1385,7 +1385,12 @@ trait Types extends api.Types { self: SymbolTable =>
+   /** A class for this-types of the form <sym>.this.type
+    */
+   abstract case class ThisType(sym: Symbol) extends SingletonType with ThisTypeApi {
+-    assert(sym.isClass, sym)","one way to whack the mole more reliably and get more encapsulation to boot:
+leave this intact and provide failing implementations of all Symbol methods in the StubSymbol subclasses
+
+I'm figuring out whether this is doable. There's also risk with missing an override of course.
+",079296632d8ef5ecc40aafa83757231599c78783
+2639864,0,"Care to elaborate? Enclosing method here is `doTypedUnapply` which is very large method and I don't see why it should be inlineable.  Calling small methods that do not allocate objects is totally fine and recommended practice. JIT will take care of that""",2013-01-14 08:46:40,gkossakowski,scala,scala,,https://github.com/scala/scala/pull/1887#discussion_r2639864,2013-01-14T19:46:40Z,2013-01-28T12:28:39Z,gkossakowski,CONTRIBUTOR,src/compiler/scala/tools/nsc/typechecker/Typers.scala,,3497.0,,,39,"@@ -3478,11 +3479,26 @@ trait Typers extends Modes with Adaptations with Tags {
+           arg.tpe = pt1    // restore type (arg is a dummy tree, just needs to pass typechecking)
+           val unapply = UnApply(fun1, args1) setPos tree.pos setType itype
+ 
++          // SI-6951 Use the inferred type arguments of unapply to recheck and recreate
++          //         the class tag based extractor wrapper; we might have inferred a
++          //         checkable type. If we don't do this, we can lose track of singleton types.
++          val uncheckedTypeExtractor = {
++            val inferredScrutineeType: Option[Type] = unappType.paramTypes.headOption.map { tp =>
++              val applied = treeInfo.dissectApplied(fun1)
++              val unapplyFunTpe = applied.core.tpe
++              unapplyFunTpe.paramTypes.head.subst(unapplyFunTpe.typeParams, applied.targs.map(_.tpe))
++            }
++            inferredScrutineeType flatMap (extractorForUncheckedType(tree.pos, _))
++          }
++
+           // if the type that the unapply method expects for its argument is uncheckable, wrap in classtag extractor
+           // skip if the unapply's type is not a method type with (at least, but really it should be exactly) one argument
+           // also skip if we already wrapped a classtag extractor (so we don't keep doing that forever)
+-          if (uncheckedTypeExtractor.isEmpty || fun1.symbol.owner.isNonBottomSubClass(ClassTagClass)) unapply
+-          else wrapClassTagUnapply(unapply, uncheckedTypeExtractor.get, unappType.paramTypes.head)
++          val isClassTagMember = fun1.symbol.owner isNonBottomSubClass ClassTagClass","Care to elaborate? Enclosing method here is `doTypedUnapply` which is very large method and I don't see why it should be inlineable.
+
+Calling small methods that do not allocate objects is totally fine and recommended practice. JIT will take care of that very easily.
+",b9ab9ad57dfbcfeaeba30d53402226aaf6cbb3a7
+2047622,0,"We could probably go either route here successfully.  """,2012-11-06 09:00:59,jsuereth,scala,scala,,https://github.com/scala/scala/pull/1578#discussion_r2047622,2012-11-06T20:00:59Z,2012-11-06T20:00:59Z,jsuereth,CONTRIBUTOR,CONTRIBUTING.md,,52.0,,,52,"@@ -0,0 +1,66 @@
++# Scala Project & Developer Guidelines
++
++These guidelines are meant to be a living document that should be changed and adapted as needed. We encourage changes that make it easier to achieve our goals in an efficient way. 
++
++## General Workflow
++
++This is the process for committing code to the Scala project. There are of course exceptions to these rules, for example minor changes to comments and documentation, fixing a broken build etc.
++
++1. Make sure you have signed the [Scala CLA](http://www.scala-lang.org/sites/default/files/contributor_agreement.pdf), if not, sign it.
++2. Before starting to work on a feature or a fix, it's good practice to ensure that:
++    1. There is a ticket for your work in the project's issue tracker. If not, create it first (perhaps given a thumbs up from the scala-internals mailing list first).
++    2. The ticket has been discussed and prioritized by the team.
++3. You should always perform your work in its own Git branch. The branch should be given a descriptive name that explains its intent. Some teams also like adding the ticket number and/or the [GitHub](http://github.com) user ID to the branch name, these details is up to each of the individual teams. (See below for more details on branch naming.)
++4. When the feature or fix is completed you should open a [Pull Request](https://help.github.com/articles/using-pull-requests) on GitHub.
++5. The Pull Request should be reviewed by other maintainers (as many as feasible/practical). Note that a reviewer can also be an outside contributor-- members of Typesafe and independent contributors are encouraged to participate in the review process. It is not a closed process.
++6. After the review, you should resolve issues brought up by the reviewers as needed (pushing a new commit to address reviewers' comments), iterating until the reviewers give their thumbs up, the ""LGTM"" (acronym for ""Looks Good To Me"").
++7. Once the code has passed review the Pull Request can be merged into the distribution.
++
++## Pull Request Requirements
++
++Fist, please have a look at and follow the [Pull Request Policy](https://github.com/scala/scala/wiki/Pull-Request-Policy) for guidelines on submitting a pull request to the Scala project.
++
++In order for a Pull Request to be considered, it has to meet these requirements:
++
++1. Live up to the current code standard:
++   - Not violate [DRY](http://programmer.97things.oreilly.com/wiki/index.php/Don%27t_Repeat_Yourself).
++   - [Boy Scout Rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule) should be applied.
++2. Tests are of paramount importance. 
++3. The code must be well documented in the project's standard documentation format (see the ‘Documentation’ section below).
++
++If *all* of these requirements are not met then the code should **not** be merged into the distribution, and need not even be reviewed.
++
++## Documentation
++
++All contributed code should come accompanied with documentation. Pull requests containing undocumented code will not be accepted. Both user-facing Scaladoc comments, as well as committer-facing internal documentation (i.e. important design decisions that other maintainers should know about should be placed inline with line comments `//`) should be accompanying all contributed code where possible.
++
++
++## Work In Progress
++
++It is ok to work on a public feature branch in the GitHub repository. Something that can sometimes be useful for early feedback etc. If so, then it is preferable to name the branch accordingly. This can be done by either prefixing the name with ``wip-`` as in ‘Work In Progress’, or use hierarchical names like ``wip/..``, ``feature/..`` or ``topic/..``. Either way is fine as long as it is clear that it is work in progress and not ready for merge. This work can temporarily have a lower standard. However, to be merged into master it will have to go through the regular process outlined above, with Pull Request, review etc.. 
++
++Also, to facilitate both well-formed commits and working together, the ``wip`` and ``feature``/``topic`` identifiers also have special meaning.   Any branch labelled with ``wip`` is considered “git-unstable” and may be rebased and have its history rewritten.   Any branch with ``feature``/``topic`` in the name is considered “stable” enough for others to depend on when a group is working on a feature.
++
++## Creating Commits And Writing Commit Messages
++
++Follow these guidelines when creating public commits and writing commit messages.
++
++1. If your work spans multiple local commits (for example; if you do safe point commits while working in a feature branch or work in a branch for long time doing merges/rebases etc.) then please do not commit it all but rewrite the history by squashing the commits into a single big commit which you write a good commit message for (like discussed in the following sections). For more info read this article: [Git Workflow](http://sandofsky.com/blog/git-workflow.html). Every commit should be able to be used in isolation-- that is, each commit must build and pass all tests.
++2. The first line should be a descriptive sentence what the commit is doing. It should be possible to fully understand what the commit does by just reading this single line. It is **not ok** to only list the ticket number, type ""minor fix"" or similar. Include reference to ticket number, prefixed with ""SI-"", at the beginning of the first line followed by the title of the ticket, assuming it aptly and concisely summarizes the commit in a single line. If the commit is a small fix, then you are done. If not, go to 3.
++3. Following the single line description should be a blank line followed by an enumerated list with the details of the commit.
++4. Add keywords for your commit (depending on the degree of automation we reach, the list may change over time):
++    * ``Review by @gituser`` - if you want to notify someone on the team. The others can, and are encouraged to participate.","We could probably go either route here successfully.  
+",84007ac908a36ce2c47c8044852892876c6aa826
+1613889,0,"`lazy val`, I agree.""",2012-09-15 06:50:06,xeno-by,scala,scala,,https://github.com/scala/scala/pull/1306#discussion_r1613889,2012-09-15T18:50:06Z,2012-09-16T17:57:54Z,xeno-by,CONTRIBUTOR,src/reflect/scala/reflect/runtime/JavaMirrors.scala,,,,,1,"@@ -573,7 +574,36 @@ trait JavaMirrors extends internal.SymbolTable with api.JavaUniverse { self: Sym
+      *  Note: If `sym` is a method or constructor, its parameter annotations are copied as well.
+      */
+     private def copyAnnotations(sym: Symbol, jann: AnnotatedElement) {
+-      // to do: implement
++      case class JavaAnnotationProxy(jann: jAnnotation) extends AnnotationInfo {
++        override val atp: Type = classToScala(jann.annotationType).toType
++        override val args: List[Tree] = Nil
++        override def original: Tree = EmptyTree
++        override def setOriginal(t: Tree): this.type = throw new Exception(""setOriginal inapplicable for "" + this)
++        override def pos: Position = NoPosition
++        override def setPos(pos: Position): this.type = throw new Exception(""setPos inapplicable for "" + this)
++        override def toString = completeAnnotationToString(this)
++        override def assocs: List[(Name, ClassfileAnnotArg)] =","`lazy val`, I agree.
+",cf819b7756de917912807322259ebb993a52ce57
+1178632,0,"What about literals such as $null, $true and $false?""",2012-07-17 02:13:32,xeno-by,scala,scala,,https://github.com/scala/scala/pull/927#discussion_r1178632,2012-07-17T14:13:32Z,2012-07-17T15:27:43Z,xeno-by,CONTRIBUTOR,src/compiler/scala/tools/nsc/ast/parser/Parsers.scala,,1173.0,,,6,"@@ -1169,7 +1169,12 @@ self =>
+           if (inPattern) dropAnyBraces(pattern())
+           else {
+             if (in.token == IDENTIFIER) atPos(in.offset)(Ident(ident()))
+-            else expr()
++            else if(in.token == LBRACE) expr()
++            else if(in.token == THIS) { in.nextToken(); atPos(in.offset)(This(tpnme.EMPTY)) }","What about literals such as $null, $true and $false?
+",d06c73c1f381c346b46ca9499fbec8677d3fab5e
+963856,2,"Yeah, I'm capable of working around it.  A setting which disables swing would be thrilling, way ahead of what I'm currently doing, """"git merge origin/java7"""" with periodic annoying failures on swing if I forget.""",2012-06-11 11:23:03,paulp,scala,scala,,https://github.com/scala/scala/pull/700#discussion_r963856,2012-06-11T23:23:03Z,2012-06-11T23:23:03Z,paulp,CONTRIBUTOR,build.xml,,346.0,,,39,"@@ -342,6 +333,16 @@ INITIALISATION
+ 
+   <target name=""init.version.done"" depends=""init.version.release, init.version.snapshot""/>
+ 
++  <target name=""init.testjava6"">
++    <fail message=""This build requires JDK 1.6"">
++      <condition>
++        <not>
++          <equals arg1=""${ant.java.version}"" arg2=""1.6""/>
++        </not>
++      </condition>
++    </fail>
++  </target>
++
+   <target name=""init"" depends=""init.jars, init.maven.jars, init.version.done"">","Yeah, I'm capable of working around it.  A setting which disables swing would be thrilling, way ahead of what I'm currently doing, ""git merge origin/java7"" with periodic annoying failures on swing if I forget.
+",949c5caba25f6273bd87b09a8aa568227bd44240
+944055,0,"I was actually thinking it might be useful to also have a class corresponding to each hash function which is mutable and allows cumulative hashing, as is the case with the old `MurmurHash`.""",2012-06-07 02:45:00,axel22,scala,scala,,https://github.com/scala/scala/pull/676#discussion_r944055,2012-06-07T14:45:00Z,2012-06-07T14:45:00Z,axel22,CONTRIBUTOR,src/library/scala/util/hashing/MurmurHash3.scala,,13.0,,,29,"@@ -6,30 +6,11 @@
+ **                          |/                                          **
+ \*                                                                      */
+ 
+-package scala.util
++package scala.util.hashing
+ 
+ import java.lang.Integer.{ rotateLeft => rotl }
+ 
+-/**
+- * An implementation of Austin Appleby's MurmurHash 3 algorithm
+- * (MurmurHash3_x86_32).
+- *
+- * An algorithm designed to generate well-distributed non-cryptographic
+- * hashes. It is designed to hash data in 32 bit chunks (ints).
+- *
+- * The mix method needs to be called at each step to update the intermediate
+- * hash value. For the last chunk to incorporate into the hash mixLast may
+- * be used instead, which is slightly faster. Finally finalizeHash needs to
+- * be called to compute the final hash value.
+- *
+- * This is based on the earlier MurmurHash3 code by Rex Kerr, but the
+- * MurmurHash3 algorithm was since changed by its creator Austin Appleby
+- * to remedy some weaknesses and improve performance. This represents the
+- * latest and supposedly final version of the algortihm (revision 136).
+- *
+- * @see [[http://code.google.com/p/smhasher]]
+- */
+-class MurmurHash3 {
++private[hashing] class MurmurHash3 {","I was actually thinking it might be useful to also have a class corresponding to each hash function which is mutable and allows cumulative hashing, as is the case with the old `MurmurHash`.
+",be8ae1f8a1c823410c41e4d861039ff9b6db6c28

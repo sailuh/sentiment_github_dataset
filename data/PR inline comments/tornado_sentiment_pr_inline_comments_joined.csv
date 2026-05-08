@@ -1,0 +1,155 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+6045753,2,"Whoops! Looks like something I added as a temporary hack during debugging, and then accidentially left in place. This explains why I had two places stripping quotation marks: this one and my own line 452. I guess I'd better remove lines 442 through 444. M""",2013-08-28 08:41:29,gagern,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/869#discussion_r6045753,2013-08-28T20:41:29Z,2013-08-28T20:43:05Z,gagern,CONTRIBUTOR,tornado/httputil.py,,,,,1,"@@ -420,23 +420,37 @@ def _parseparam(s):
+ 
+ 
+ def _parse_header(line):
+-    """"""Parse a Content-type like header.
++    r""""""Parse a Content-type like header.
+ 
+     Return the main content-type and a dictionary of options.
+ 
++    >>> d = _parse_header(""CD: fd; foo=\""bar\""; file*=utf-8''T%C3%A4st"")[1]
++    >>> d['file'] == r'T\u00e4st'.encode('ascii').decode('unicode_escape')
++    True
++    >>> d['foo']
++    'bar'
+     """"""
+     parts = _parseparam(';' + line)
+     key = next(parts)
+-    pdict = {}
++    # decode_params treats first argument special, but we already stripped key
++    params = [('Dummy', 'value')]
+     for p in parts:
+         i = p.find('=')
+         if i >= 0:
+             name = p[:i].strip().lower()
+             value = p[i + 1:].strip()
+-            if len(value) >= 2 and value[0] == value[-1] == '""':
++            if len(value) >= 2 and value[0] == value[-1] == '""' and False:","Whoops! Looks like something I added as a temporary hack during debugging, and then accidentially left in place. This explains why I had two places stripping quotation marks: this one and my own line 452. I guess I'd better remove lines 442 through 444. My code doesn't provide a replacement for line 444, though. That came from f249ee3ea9a2a6a4b479da3b34be29af5d1a0a63, which copied it from cpython, where it was added in http://hg.python.org/cpython/rev/846ba2972d7c. But that line can be safely removed, since `email.utils` will [remove quotes](http://hg.python.org/cpython/file/7a125913a375/Lib/email/utils.py#l234) and later on [add quotes without escaping existing ones](http://hg.python.org/cpython/file/7a125913a375/Lib/email/utils.py#l317). To play it safe, I'll include backslashes and quotation marks in my doctest.
+",5b8189023622c1849f6615e61b72b929d72d91d1
+19556,2,"@paulrosania: In fact the twitter worm did exactly what NoKarma is describing.  XSS is the stack-smashing of web attacks, if you're attacked you're done.  Nothing can save you """,2011-04-15 08:21:51,jparise,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/246#discussion_r19556,2011-04-15T20:21:51Z,2011-04-15T20:21:51Z,jparise,CONTRIBUTOR,tornado/simple_httpclient.py,,200.0,,,5,"@@ -197,7 +197,7 @@ class _HTTPConnection(object):
+         if username is not None:
+             auth = ""%s:%s"" % (username, password)
+             self.request.headers[""Authorization""] = (""Basic %s"" %
+-                                                     auth.encode(""base64""))
++                                                     auth.encode(""base64"").strip())","Because this is intended to attack the newline added by the base64 encoding, perhaps `rstrip()` would be slightly more explicit/efficient?
+",86a38a8b5bf87a6d9fb6473a2502db36d64dfe6a
+6114381,0,"Yes, I think it does make sense to add scope and response_type (and more generally, anything from the oauth2 spec) to the base class.    (and in case you missed it I had another comment in the diff from before, about the use of parse_qs_bytes vs json)""",2013-09-02 06:55:01,bdarnell,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/858#discussion_r6114381,2013-09-02T18:55:01Z,2013-09-04T12:42:17Z,bdarnell,MEMBER,tornado/auth.py,,,,,1,"@@ -945,6 +945,88 @@ def _oauth_get_user_future(self, access_token):
+         return OpenIdMixin.get_authenticated_user(self)
+ 
+ 
++class GoogleOAuth2Mixin(OAuth2Mixin):
++    """"""Google authentication using OAuth2.""""""
++    _OAUTH_AUTHORIZE_URL = ""https://accounts.google.com/o/oauth2/auth""
++    _OAUTH_ACCESS_TOKEN_URL = ""https://accounts.google.com/o/oauth2/token""
++    _OAUTH_NO_CALLBACKS = False
++
++    def authorize_redirect(self, redirect_uri=None, client_id=None, 
++                          scope=['openid', 'email'], response_type=""code"", overwrites={}):
++        """"""Redirect the user to Google to authenticate them.
++
++        The API itself defaults some of these values that cna be overwritten by the overwrites object.
++        They are:
++        approval_prompt = auto
++        access_type = online
++        """"""
++        extra_params = {
++            ""scope"": ' '.join(scope),
++            ""response_type"": response_type,
++        }
++
++        extra_params.update(overwrites)
++
++        OAuth2Mixin.authorize_redirect(self,
++            self.request.protocol + '://' + self.request.host + (redirect_uri or self.request.uri),","Yes, I think it does make sense to add scope and response_type (and more generally, anything from the oauth2 spec) to the base class.  
+
+(and in case you missed it I had another comment in the diff from before, about the use of parse_qs_bytes vs json)
+",13c149a596d6c5bc68a80ce2cf508b11ee5d2555
+912950,0,"Shouldn't this always be `""""1.0""""`?  The rest of the `tornado.auth` code is pretty much hardwired to handle either version 1.0 or 1.0a, and if we always need to send 1.0 in the 1.0a case, all cases are covered.  This also makes the `_oauth_version_to_send()""",2012-05-31 17:13:53,jparise,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/236#discussion_r912950,2012-06-01T05:13:53Z,2012-06-01T05:13:53Z,jparise,CONTRIBUTOR,tornado/auth.py,,272.0,,,16,"@@ -270,7 +269,7 @@ def _oauth_request_token_url(self, callback_uri= None, extra_params=None):
+             oauth_signature_method=""HMAC-SHA1"",
+             oauth_timestamp=str(int(time.time())),
+             oauth_nonce=binascii.b2a_hex(uuid.uuid4().bytes),
+-            oauth_version=getattr(self, ""_OAUTH_VERSION"", ""1.0a""),
++            oauth_version=self._oauth_version_to_send()","Shouldn't this always be `""1.0""`?  The rest of the `tornado.auth` code is pretty much hardwired to handle either version 1.0 or 1.0a, and if we always need to send 1.0 in the 1.0a case, all cases are covered.
+
+This also makes the `_oauth_version_to_send()` method unnecessary.
+",264c6c9a61b019044d0d5a14eaafbf84d9db8d52
+4310666,0,"According to http://tools.ietf.org/html/draft-ietf-httpbis-p5-range-22#section-4.2, Content-Range is undefined on response codes other than 206 and 416.  Unless chrome needs the Content-Range header to be present on this 200 response, this set_header call""",2013-05-20 16:43:54,bdarnell,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/794#discussion_r4310666,2013-05-21T04:43:54Z,2013-05-21T04:47:19Z,bdarnell,MEMBER,tornado/web.py,,,,,1,"@@ -1809,7 +1810,12 @@ def get(self, path, include_body=True):
+             size = self.get_content_size()
+             if start < 0:
+                 start += size
+-            self.set_status(206)  # Partial Content
++            # Note: only return HTTP 206 if less than the entire range has been
++            # requested. Not only is this semantically correct, but Chrome
++            # refuses to play audio if it gets an HTTP 206 in response to
++            # ``Range: bytes=0-``.
++            if size != (end or size) - (start or 0):
++                self.set_status(206)  # Partial Content
+             self.set_header(""Content-Range"",","According to http://tools.ietf.org/html/draft-ietf-httpbis-p5-range-22#section-4.2, Content-Range is undefined on response codes other than 206 and 416.  Unless chrome needs the Content-Range header to be present on this 200 response, this set_header call should be moved into the if block as well.
+",55ae667b48aaf1f888b3a0b38055eee4b94c9944
+3731681,0,"Look át. Line 91.   Enviado via iPad  Em 10/04/2013, às 07:05, Brian Jones <notifications@github.com> escreveu:  > In tornado/auth.py: >  > > @@ -1096,6 +1096,7 @@ class FacebookGraphMixin(OAuth2Mixin): > >      _OAUTH_AUTHORIZE_URL = """"https://gr""",2013-04-09 23:13:05,wsantos,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/720#discussion_r3731681,2013-04-10T11:13:05Z,2013-04-10T11:13:05Z,wsantos,CONTRIBUTOR,tornado/auth.py,,1100.0,,,5,"@@ -1096,6 +1096,7 @@ class FacebookGraphMixin(OAuth2Mixin):
+     _OAUTH_AUTHORIZE_URL = ""https://graph.facebook.com/oauth/authorize?""
+     _OAUTH_NO_CALLBACKS = False
+ 
++    @_auth_return_future
+     def get_authenticated_user(self, redirect_uri, client_id, client_secret,","Look át. Line 91. 
+
+Enviado via iPad
+
+Em 10/04/2013, às 07:05, Brian Jones notifications@github.com escreveu:
+
+> In tornado/auth.py:
+> 
+> > @@ -1096,6 +1096,7 @@ class FacebookGraphMixin(OAuth2Mixin):
+> >      _OAUTH_AUTHORIZE_URL = ""https://graph.facebook.com/oauth/authorize?""
+> >      _OAUTH_NO_CALLBACKS = False
+> > -    @_auth_return_future
+> >    def get_authenticated_user(self, redirect_uri, client_id, client_secret,
+> >   Sorry I know that this is a bit of a newbie comment, but what does this line do? It does not look like a future statement, I can't find the documentation for the @ decorator.
+> 
+> —
+> Reply to this email directly or view it on GitHub.
+",5a42c4b9733e5e68055a639c7115f4592a181bb2
+19558,0,"base64.b64encode would be even more efficient, I was simply reporting the bug""",2011-04-15 08:24:29,kzahel,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/246#discussion_r19558,2011-04-15T20:24:29Z,2011-04-15T20:24:29Z,kzahel,NONE,tornado/simple_httpclient.py,,200.0,,,5,"@@ -197,7 +197,7 @@ class _HTTPConnection(object):
+         if username is not None:
+             auth = ""%s:%s"" % (username, password)
+             self.request.headers[""Authorization""] = (""Basic %s"" %
+-                                                     auth.encode(""base64""))
++                                                     auth.encode(""base64"").strip())","base64.b64encode would be even more efficient, I was simply reporting the bug
+",86a38a8b5bf87a6d9fb6473a2502db36d64dfe6a
+5966813,0,"`GoogleOAuth2Mixin.authorize_redirect` should differ from `OAuth2Mixin.authorize_redirect` only in google-specific ways.  We don't construct absolute urls in the base class or in the facebook mixin, so we shouldn't here either (I think this may mean that """,2013-08-24 08:09:18,bdarnell,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/858#discussion_r5966813,2013-08-24T20:09:18Z,2013-09-04T12:42:17Z,bdarnell,MEMBER,tornado/auth.py,,,,,1,"@@ -945,6 +945,88 @@ def _oauth_get_user_future(self, access_token):
+         return OpenIdMixin.get_authenticated_user(self)
+ 
+ 
++class GoogleOAuth2Mixin(OAuth2Mixin):
++    """"""Google authentication using OAuth2.""""""
++    _OAUTH_AUTHORIZE_URL = ""https://accounts.google.com/o/oauth2/auth""
++    _OAUTH_ACCESS_TOKEN_URL = ""https://accounts.google.com/o/oauth2/token""
++    _OAUTH_NO_CALLBACKS = False
++
++    def authorize_redirect(self, redirect_uri=None, client_id=None, 
++                          scope=['openid', 'email'], response_type=""code"", overwrites={}):
++        """"""Redirect the user to Google to authenticate them.
++
++        The API itself defaults some of these values that cna be overwritten by the overwrites object.
++        They are:
++        approval_prompt = auto
++        access_type = online
++        """"""
++        extra_params = {
++            ""scope"": ' '.join(scope),
++            ""response_type"": response_type,
++        }
++
++        extra_params.update(overwrites)
++
++        OAuth2Mixin.authorize_redirect(self,
++            self.request.protocol + '://' + self.request.host + (redirect_uri or self.request.uri),","`GoogleOAuth2Mixin.authorize_redirect` should differ from `OAuth2Mixin.authorize_redirect` only in google-specific ways.  We don't construct absolute urls in the base class or in the facebook mixin, so we shouldn't here either (I think this may mean that some doc examples are wrong).  `overwrites` should probably be named `extra_params` for consistency.  Are scope and response_type standard enough to include in the base class?  If so then I'd rather just get rid of this method so callers won't have to think about the inheritance relationship and what's different between the two.
+",13c149a596d6c5bc68a80ce2cf508b11ee5d2555
+6676708,0,"This is a public method so we shouldn't casually change its signature.  It should continue to take a single `arguments` parameter, and then `_on_request_body` should merge `body_arguments` and `query_arguments` into `arguments`.""",2013-09-30 13:47:54,bdarnell,facebook,tornado,,https://github.com/tornadoweb/tornado/pull/907#discussion_r6676708,2013-10-01T01:47:54Z,2013-10-05T17:26:13Z,bdarnell,MEMBER,tornado/httputil.py,,,,,1,"@@ -310,7 +310,7 @@ def _int_or_none(val):
+     return int(val)
+ 
+ 
+-def parse_body_arguments(content_type, body, arguments, files):
++def parse_body_arguments(content_type, body, arguments, body_arguments, files):","This is a public method so we shouldn't casually change its signature.  It should continue to take a single `arguments` parameter, and then `_on_request_body` should merge `body_arguments` and `query_arguments` into `arguments`.
+",010728adbdaeb96838e3e6f547504eb41b257eb3

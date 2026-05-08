@@ -1,0 +1,7 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1737851,0,"Would you mind porting this back to evaluate?  """,2012-08-20 02:53:43,hadley,yihui,knitr,c99ae837511776b1beeb97a4877ae22c2d3d99c0,hadley,4196,"Would you mind porting this back to evaluate?  
+",2012-08-20T14:53:43Z,2012-08-20T14:53:43Z
+3831593,1,"Have  great trip, @yihui .""",2013-08-09 12:42:16,gfinak,yihui,knitr,889d287b49633c15aade33da4fee9793d376db86,gfinak,1385593,"Have  great trip, @yihui .
+",2013-08-10T00:42:16Z,2013-08-10T00:42:16Z
+1417529,1,"it works on r-devel for me.  woo-hoo! """,2012-06-05 02:17:05,bbolker,yihui,knitr,c99ae837511776b1beeb97a4877ae22c2d3d99c0,bbolker,78918,"it works on r-devel for me.  woo-hoo!
+",2012-06-05T14:17:05Z,2012-06-05T14:17:05Z

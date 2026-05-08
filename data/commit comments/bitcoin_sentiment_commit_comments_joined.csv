@@ -1,0 +1,10 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3984764,1,"Nice catch, didn't know we have such a function, while working on the Qt5 patch :).""",2013-08-30 05:27:48,Diapolo,bitcoin,bitcoin,9d2fee17e08fce89e46f4502fd28e974e81c19a1,Diapolo,1419649,"Nice catch, didn't know we have such a function, while working on the Qt5 patch :).
+",2013-08-30T17:27:48Z,2013-08-30T17:27:48Z
+1759894,1,"Thank you so much!""",2012-08-23 18:53:50,Diapolo,bitcoin,bitcoin,bdab0cf58c2ac1b90ba2723e8f9ddc1817b3d811,Diapolo,1419649,"Thank you so much!
+",2012-08-24T06:53:50Z,2012-08-24T06:53:50Z
+1809478,0,"It's an unsigned int, so %u would be right. I wonder if we can somehow get the gcc type checks/warnings for printf to work for strprintf.""",2012-09-04 18:09:13,laanwj,bitcoin,bitcoin,42613c97d5dd8581d8dfd2cbe443736f8c539973,laanwj,126646,"It's an unsigned int, so %u would be right. I wonder if we can somehow get the gcc type checks/warnings for printf to work for strprintf.
+",2012-09-05T06:09:13Z,2012-09-05T06:09:13Z
+1806390,1,"Why init this one (with true)? The next call ``pwalletMain->LoadWallet(fFirstRun);`` set's it to false after a check anyway? Forget that one, seems true is the correct init value here :).""",2012-09-04 04:58:51,Diapolo,bitcoin,bitcoin,dcb14198bb2b55a673aa27bc5fa036d809556dbe,Diapolo,1419649,"Why init this one (with true)? The next call `pwalletMain->LoadWallet(fFirstRun);` set's it to false after a check anyway?
+Forget that one, seems true is the correct init value here :).
+",2012-09-04T16:58:51Z,2012-09-04T17:02:31Z

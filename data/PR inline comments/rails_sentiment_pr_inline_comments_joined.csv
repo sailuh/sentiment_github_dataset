@@ -1,0 +1,123 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+45461,1,"Thanks for this fix. Its definitely better than the actual way. """,2010-02-03 05:27:23,alanandrade,rails,rails,,https://github.com/rails/rails/pull/1713#discussion_r45461,2011-06-15T11:25:31Z,2011-06-15T11:25:31Z,pixeltrix,CONTRIBUTOR,actionpack/test/dispatch/uploaded_file_test.rb,,15.0,,,4,"@@ -12,6 +12,13 @@ module ActionDispatch
+       uf = Http::UploadedFile.new(:filename => 'foo', :tempfile => Object.new)
+       assert_equal 'foo', uf.original_filename
+     end
++    ","In future when cherry picking a bunch of small edits like this it's cleaner to git cherry-pick -x them all and then git rebase --interactive to squash them into a single commit with the original commits referenced in the squashed commit message.
+",055a88d345e85234dc01c6e0fc5a2d181bf05a0f
+50610,0,"But there can be just one role. It's actually role(s).""",2011-06-22 19:31:48,wildchild,rails,rails,,https://github.com/rails/rails/pull/1829#discussion_r50610,2011-06-23T07:31:48Z,2011-06-23T17:08:27Z,wildchild,CONTRIBUTOR,activemodel/lib/active_model/mass_assignment_security.rb,,112.0,,,8,"@@ -111,7 +111,10 @@ module ActiveModel
+         role = options[:as] || :default","But there can be just one role. It's actually role(s).
+",ee044ea5477b4af41d2c0cebb13e47600da7493a
+38000,0,"Do you mind adding another comment before this line saying something like """"JRuby will returns the value before typecast as integer"""" or something like that? I think we might forget why this condition has to be exists at later date.""",2011-05-31 16:10:58,sikachu,rails,rails,,https://github.com/rails/rails/pull/1430#discussion_r38000,2011-06-01T04:10:58Z,2011-06-01T10:28:32Z,sikachu,MEMBER,activerecord/test/cases/attribute_methods_test.rb,,129.0,,,1,"@@ -124,7 +124,11 @@ class AttributeMethodsTest < ActiveRecord::TestCase
+   if current_adapter?(:MysqlAdapter)
+     def test_read_attributes_before_type_cast_on_boolean
+       bool = Boolean.create({ ""value"" => false })
+-      assert_equal ""0"", bool.reload.attributes_before_type_cast[""value""]
++      if RUBY_PLATFORM =~ /java/
++        assert_equal 0, bool.reload.attributes_before_type_cast[""value""]","Do you mind adding another comment before this line saying something like ""JRuby will returns the value before typecast as integer"" or something like that? I think we might forget why this condition has to be exists at later date.
+",bddf9ad3a9ab91c63119c5f28f1a2aafebb65693
+166709,1,"Yeah - that was related, I just landed a variation of it. Thanks for the catch!""",2011-10-12 03:19:15,dcrec1,rails,rails,,https://github.com/rails/rails/pull/3299#discussion_r166709,2011-10-12T15:19:15Z,2011-10-12T15:19:15Z,dcrec1,CONTRIBUTOR,actionpack/lib/action_controller/metal/renderers.rb,,41.0,,,9,"@@ -34,7 +34,11 @@ module ActionController
+       _renderers.each do |name, value|
+         if options.key?(name.to_sym)
+           _process_options(options)
+-          return send(""_render_option_#{name}"", options.delete(name.to_sym), options)
++          if name == :text
++            self.content_type ||= Mime::TEXT
++          else
++            return send(""_render_option_#{name}"", options.delete(name.to_sym), options)
++          end","I tried first to use _render_option_text but the layout test was failing, this way it works correctly with the layout.
+",2a6dea586727d7b17c64aaff187952f9fb56dba8
+116470,0,"I agree it would be better assigned to an ivar on a separate line, but I don't find it so offensive that I think it's worth deviating given I already applied to master.""",2011-09-07 09:34:55,jonleighton,rails,rails,,https://github.com/rails/rails/pull/2918#discussion_r116470,2011-09-07T21:34:55Z,2011-09-07T21:34:55Z,jonleighton,MEMBER,actionpack/lib/action_dispatch/testing/assertions/selector.rb,,572.0,,,5,"@@ -569,9 +569,9 @@ module ActionDispatch
+         assert !deliveries.empty?, ""No e-mail in delivery list""
+ 
+         for delivery in deliveries
+-          for part in delivery.parts
++          for part in (delivery.parts.empty? ? [delivery] : delivery.parts)","I agree it would be better assigned to an ivar on a separate line, but I don't find it so offensive that I think it's worth deviating given I already applied to master.
+",c7f3429c2fcff729f9aff1ce36fe03f97a04b976
+75712,0,"It's not much, but there is http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#follow-the-coding-conventions""",2011-07-27 08:40:53,nertzy,rails,rails,,https://github.com/rails/rails/pull/1637#discussion_r75712,2011-07-27T20:40:53Z,2011-07-27T20:40:53Z,nertzy,CONTRIBUTOR,activerecord/lib/active_record/relation/calculations.rb,,,,,1,"@@ -158,27 +168,43 @@ module ActiveRecord
+ 
+     private
+ 
+-    def perform_calculation(operation, column_name, options = {})
+-      operation = operation.to_s.downcase
++    def normalize_column_names_and_options(operations, column_names)
++      operations, column_names = [*operations], [*column_names]
++      li = [operations.length, column_names.length].max - 1
++
++      if li > 0
++        for i in 0..li do","It's not much, but there is http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#follow-the-coding-conventions
+",eecd98e1d80fd5aa6feef26497597c4004bc55b7
+36137,1,"It's """"supposed"""" :-)""",2011-05-26 07:30:39,dasch,rails,rails,,https://github.com/rails/rails/pull/1334#discussion_r36137,2011-05-26T19:30:39Z,2011-05-26T19:30:39Z,dasch,CONTRIBUTOR,activemodel/lib/active_model/mass_assignment_security/permission_set.rb,,16.0,,,16,"@@ -14,6 +12,10 @@ module ActiveModel
+         super(remove_multiparameter_id(key))
+       end
+ 
++      def deny?(key)
++        raise NotImplementedError, ""#deny?(key) suppose to be overwritten""","It's ""supposed"" :-)
+",c7567c9a6dee1380432beaf88c1854a4ed6bb15b
+98216,0,"Yup, adding such a call to `debug_param_given?` is preferable. `rescue` blocks should be reserved for catching exceptional conditions, not as part of the standard application flow.  But using `respond_to?` here feels like a hack. I'll look at refactoring """,2011-08-21 12:20:38,dasch,rails,rails,,https://github.com/rails/rails/pull/2411#discussion_r98216,2011-08-22T00:20:38Z,2011-08-22T00:20:38Z,dasch,CONTRIBUTOR,actionpack/lib/sprockets/helpers/rails_helper.rb,,77.0,,,12,"@@ -70,10 +70,12 @@ module Sprockets
+ 
+     private
+       def debug_assets?
+-        Rails.env.development? || Rails.env.test? ||
+-          params[:debug_assets] == '1' || params[:debug_assets] == 'true'
+-      rescue NoMethodError
+-        false
++        begin
++          params[:debug_assets] == '1' ||
++            params[:debug_assets] == 'true'
++        rescue NoMethodError
++          false","Yup, adding such a call to `debug_param_given?` is preferable. `rescue` blocks should be reserved for catching exceptional conditions, not as part of the standard application flow.
+
+But using `respond_to?` here feels like a hack. I'll look at refactoring it later on. Will you add the proposed changes?
+",18b2223b3290c4b3daa310edfc06b4d51161c312
+109599,2,"Ugh, right. I haven't noticed this small detail. :(""",2011-08-31 19:46:15,josevalim,rails,rails,,https://github.com/rails/rails/pull/2785#discussion_r109599,2011-09-01T07:46:15Z,2011-09-01T07:46:15Z,josevalim,CONTRIBUTOR,actionpack/lib/sprockets/helpers/rails_helper.rb,,85.0,,,19,"@@ -83,6 +85,14 @@ module Sprockets
+         Rails.application.config.assets.digests","Ugh, right. I haven't noticed this small detail. :(
+",6bc6978e2ad90e6546f18452a8423116c4935a88
+112580,0,"Please write the exact method signature, e.g.  ``` ruby def first_or_create(attributes = nil, options = {}, &block)  ```""",2011-09-04 00:31:12,jonleighton,rails,rails,,https://github.com/rails/rails/pull/2757#discussion_r112580,2011-09-04T12:31:12Z,2011-09-06T07:47:06Z,jonleighton,MEMBER,activerecord/lib/active_record/relation.rb,,,,,1,"@@ -94,6 +94,49 @@ module ActiveRecord
+       scoping { @klass.create!(*args, &block) }
+     end
+ 
++    # Tries to load the first record; if it fails, then <tt>create</tt> is called with the same arguments as this method.
++    #
++    # Expects arguments in the same format as <tt>Base.create</tt>.
++    #
++    # ==== Examples
++    #   # Find the first user named Scarlett or create a new one.
++    #   User.where(:first_name => 'Scarlett').first_or_create(:last_name => 'Johansson')
++    #   # => <User id: 1, first_name: 'Scarlett', last_name: 'Johansson'>
++    #
++    #   # Find the first user named Scarlett or create one with a different last name.
++    #   # We already have one Scarlett, so she'll be returned.
++    #   User.where(:first_name => 'Scarlett').first_or_create do |user|
++    #     user.last_name = ""O'Hara""
++    #   end
++    #   # => <User id: 1, first_name: 'Scarlett', last_name: 'Johansson'>
++    #
++    #   # Find the first user named Andy or create several at a time.
++    #   User.where(:first_name => 'Andy').first_or_create([{:last_name => 'García'}, {:last_name => 'Mejía'}])
++    #   # => [#<User id: 2, first_name: 'Andy', last_name: 'García'>,
++    #         #<User id: 3, first_name: 'Andy', last_name: 'Mejía'>]
++    #
++    #   # Find the first user with last name García or create several at a time.
++    #   User.where(:last_name => 'García').first_or_create([{:first_name => 'Jorge'}, {:first_name => 'Andy'}])
++    #   # => <User id: 2, first_name: 'Andy', last_name: 'García'>
++    def first_or_create(*args, &block)","Please write the exact method signature, e.g.
+
+``` ruby
+def first_or_create(attributes = nil, options = {}, &block) 
+```
+",72317883ed3fd035a94ca1536def364d2d00a6c6
+94492,0,"yes, I see""",2011-08-16 22:13:07,german,rails,rails,,https://github.com/rails/rails/pull/2555#discussion_r94492,2011-08-17T10:13:07Z,2011-12-23T19:51:37Z,german,CONTRIBUTOR,railties/lib/rails/generators/named_base.rb,,,,,1,"@@ -154,8 +154,8 @@ module Rails
+         # Convert attributes array into GeneratedAttribute objects.
+         def parse_attributes! #:nodoc:
+           self.attributes = (attributes || []).map do |key_value|
+-            name, type = key_value.split(':')
+-            Rails::Generators::GeneratedAttribute.new(name, type)
++            name, type, has_index = key_value.split(':')","yes, I see
+",51eded92ea974ca0acb9e19c8fa32c3bcdbbc30b
+48062,0,"Why not a use a hash in the test?""",2011-06-19 23:36:51,josevalim,rails,rails,,https://github.com/rails/rails/pull/1778#discussion_r48062,2011-06-20T11:36:51Z,2011-06-22T01:26:14Z,josevalim,CONTRIBUTOR,actionpack/test/template/form_helper_test.rb,,1692.0,,,4,"@@ -1689,6 +1689,24 @@ class FormHelperTest < ActionView::TestCase
+     assert_dom_equal expected, output_buffer
+   end
+ 
++  def test_nested_fields_for_with_hash_like_model","Why not a use a hash in the test?
+",237f87089cbb01da50408cc07dffc89a7ebf6854
