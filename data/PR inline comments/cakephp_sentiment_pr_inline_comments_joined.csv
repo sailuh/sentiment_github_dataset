@@ -1,5 +1,5 @@
-comment_id,polarity_gold,text_gold,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,text_kaiaulu,polarity_kaiaulu,commit_id
-6044242,0,"I had it implemented that way originally. The `rijndael` function uses substrings so I decided to make this the same. Being more strict is an option though.""",2013-08-28 07:51:55,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6044242,2013-08-28T19:51:55Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,text_kaiaulu,polarity_kaiaulu,commit_id
+6044242,0,"I had it implemented that way originally. The `rijndael` function uses substrings so I decided to make this the same. Being more strict is an option though.""",8/28/13 7:51,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6044242,2013-08-28T19:51:55Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
  		return crypt($password, $salt);
  	}
  
@@ -22,7 +22,7 @@ comment_id,polarity_gold,text_gold,created_at_gold,author_login,owner,repo,revie
 +		}
 +		$key = substr($key, 0, 32);","I had it implemented that way originally. The `rijndael` function uses substrings so I decided to make this the same. Being more strict is an option though.
 ",0,13b870d7e183375822eea4ffd66aaacaeec760ff
-5949747,0,"This block of code is repeated 3 times in Hash now. Perhaps it would be best extracted into a helper method that does something like:  ```php list($token, $conditions) = self::_splitConditions($token); ```  That would address the duplication in the """,2013-08-23 01:02:48,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1549#discussion_r5949747,2013-08-23T13:02:48Z,2013-08-23T23:04:34Z,markstory,MEMBER,lib/Cake/Utility/Hash.php,,149.0,,,30,"@@ -222,16 +222,36 @@ protected static function _matches(array $data, $selector) {
+5949747,0,"This block of code is repeated 3 times in Hash now. Perhaps it would be best extracted into a helper method that does something like:  ```php list($token, $conditions) = self::_splitConditions($token); ```  That would address the duplication in the """,8/23/13 1:02,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1549#discussion_r5949747,2013-08-23T13:02:48Z,2013-08-23T23:04:34Z,markstory,MEMBER,lib/Cake/Utility/Hash.php,,149,,,30,"@@ -222,16 +222,36 @@ protected static function _matches(array $data, $selector) {
   * @return array The data with $values inserted.
   */
  	public static function insert(array $data, $path, $values = null) {
@@ -54,7 +54,7 @@ list($token, $conditions) = self::_splitConditions($token);
 
 That would address the duplication in the code.
 ",0,a0014e7a303067bb9c36d438de5a70fe819d22a7
-4288367,0,"This looks good, but makes me think we should have originally added methods like `Security::blowfish($input)` and `Security::matchBlowfish($input, $hashedPassword)` or made a separate utility class for Bcrypt that didn't have as difficult to remember meth""",2013-05-18 04:31:19,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288367,2013-05-18T16:31:19Z,2013-05-26T05:59:44Z,markstory,MEMBER,lib/Cake/Controller/Component/Auth/BlowfishPasswordHasher.php,,44.0,,,44,"@@ -0,0 +1,58 @@
+4288367,0,"This looks good, but makes me think we should have originally added methods like `Security::blowfish($input)` and `Security::matchBlowfish($input, $hashedPassword)` or made a separate utility class for Bcrypt that didn't have as difficult to remember meth""",5/18/13 4:31,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288367,2013-05-18T16:31:19Z,2013-05-26T05:59:44Z,markstory,MEMBER,lib/Cake/Controller/Component/Auth/BlowfishPasswordHasher.php,,44,,,44,"@@ -0,0 +1,58 @@
 +<?php
 +/**
 + * PHP 5
@@ -111,7 +111,7 @@ That would address the duplication in the code.
 +	public function check($password, $hashedPassword) {
 +		return $hashedPassword === Security::hash($password, 'blowfish', $hashedPassword);","This looks good, but makes me think we should have originally added methods like `Security::blowfish($input)` and `Security::matchBlowfish($input, $hashedPassword)` or made a separate utility class for Bcrypt that didn't have as difficult to remember method signatures.
 ",0,dd2892ad8d0e3a0b09990b0a9ef26c320f1901fa
-4288664,0,"Hmm, my thinking was all password hasher classes would extend the base class if we are not going to have an interface.""",2013-05-18 07:00:03,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288664,2013-05-18T19:00:03Z,2013-05-26T05:59:44Z,ADmad,MEMBER,lib/Cake/Controller/Component/Auth/BlowfishPasswordHasher.php,,,,,1,"@@ -0,0 +1,58 @@
+4288664,0,"Hmm, my thinking was all password hasher classes would extend the base class if we are not going to have an interface.""",5/18/13 7:00,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288664,2013-05-18T19:00:03Z,2013-05-26T05:59:44Z,ADmad,MEMBER,lib/Cake/Controller/Component/Auth/BlowfishPasswordHasher.php,,,,,1,"@@ -0,0 +1,58 @@
 +<?php
 +/**
 + * PHP 5
@@ -138,7 +138,7 @@ That would address the duplication in the code.
 + */
 +class BlowfishPasswordHasher extends BasePasswordHasher {","Hmm, my thinking was all password hasher classes would extend the base class if we are not going to have an interface.
 ",0,dd2892ad8d0e3a0b09990b0a9ef26c320f1901fa
-3122764,2,"I totally missed that, my bad. I'll get that fixed.""",2013-02-22 10:12:40,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1154#discussion_r3122764,2013-02-22T21:12:40Z,2013-02-25T03:17:59Z,markstory,MEMBER,lib/Cake/Utility/ViewVarsTrait.php,,,,,1,"@@ -0,0 +1,55 @@
+3122764,2,"I totally missed that, my bad. I'll get that fixed.""",2/22/13 10:12,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1154#discussion_r3122764,2013-02-22T21:12:40Z,2013-02-25T03:17:59Z,markstory,MEMBER,lib/Cake/Utility/ViewVarsTrait.php,,,,,1,"@@ -0,0 +1,55 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -182,13 +182,13 @@ That would address the duplication in the code.
 + */
 +	public function set($one, $two = null) {","I totally missed that, my bad. I'll get that fixed.
 ",0,955889c6c731a56f9cbe6f572cea4594fd887d3a
-3059333,2,"Resetting validation after it finishes will just break it :(""",2013-02-18 23:08:08,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1149#discussion_r3059333,2013-02-19T10:08:08Z,2013-02-19T11:12:18Z,lorenzo,MEMBER,lib/Cake/Model/Validator/CakeValidationSet.php,,124.0,,,4,"@@ -121,7 +121,6 @@ public function setValidationDomain($validationDomain) {
+3059333,2,"Resetting validation after it finishes will just break it :(""",2/18/13 23:08,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1149#discussion_r3059333,2013-02-19T10:08:08Z,2013-02-19T11:12:18Z,lorenzo,MEMBER,lib/Cake/Model/Validator/CakeValidationSet.php,,124,,,4,"@@ -121,7 +121,6 @@ public function setValidationDomain($validationDomain) {
   * @return array list of validation errors for this field
   */
  	public function validate($data, $isUpdate = false) {
 -		$this->reset();","Resetting validation after it finishes will just break it :(
 ",0,1224ed595adb3286a6d94ddee2dab18b3a83d7ae
-2427846,0,"as @ADmad and I pointed out, you need to respect the coding conventions. too many whitespaces here inside () for example.""",2012-12-14 15:18:31,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1026#discussion_r2427846,2012-12-15T02:18:31Z,2012-12-17T21:25:05Z,dereuromark,MEMBER,lib/Cake/View/Helper/TextHelper.php,,,,,1,"@@ -228,6 +228,29 @@ public function highlight($text, $phrase, $options = array()) {
+2427846,0,"as @ADmad and I pointed out, you need to respect the coding conventions. too many whitespaces here inside () for example.""",12/14/12 15:18,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1026#discussion_r2427846,2012-12-15T02:18:31Z,2012-12-17T21:25:05Z,dereuromark,MEMBER,lib/Cake/View/Helper/TextHelper.php,,,,,1,"@@ -228,6 +228,29 @@ public function highlight($text, $phrase, $options = array()) {
  	}
  
  /**
@@ -203,7 +203,7 @@ That would address the duplication in the code.
 +  public static function autoParagraph($text) {
 +    if ( trim($text) !== '' ) {","as @ADmad and I pointed out, you need to respect the coding conventions. too many whitespaces here inside () for example.
 ",0,03fdd4a14bfed87d35452b5c24c67fdb9f41b6fb
-2385747,0,"`return $readyFds > 0` would suffice here. also, never forget the {} for if statements""",2012-12-11 11:12:22,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1017#discussion_r2385747,2012-12-11T22:12:22Z,2012-12-12T17:24:00Z,dereuromark,MEMBER,lib/Cake/Console/ConsoleInput.php,,,,,1,"@@ -48,4 +48,20 @@ public function read() {
+2385747,0,"`return $readyFds > 0` would suffice here. also, never forget the {} for if statements""",12/11/12 11:12,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1017#discussion_r2385747,2012-12-11T22:12:22Z,2012-12-12T17:24:00Z,dereuromark,MEMBER,lib/Cake/Console/ConsoleInput.php,,,,,1,"@@ -48,4 +48,20 @@ public function read() {
  		return fgets($this->_input);
  	}
  
@@ -222,7 +222,7 @@ That would address the duplication in the code.
 +		else
 +			return false;","`return $readyFds > 0` would suffice here. also, never forget the {} for if statements
 ",0,d6579a983819a5a9e9209928a241bec48f3e2733
-2217916,1,"yup.  i thought of that too but wanted to avoid introducing a new option. but i agree it's cleaner and less hacky.  I'll adjust the PR.  Thanks.""",2012-11-25 15:17:09,rchavik,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/974#discussion_r2217916,2012-11-26T02:17:09Z,2012-11-28T03:11:43Z,rchavik,MEMBER,lib/Cake/View/Helper/FormHelper.php,,,,,1,"@@ -1094,6 +1071,48 @@ public function input($fieldName, $options = array()) {
+2217916,1,"yup.  i thought of that too but wanted to avoid introducing a new option. but i agree it's cleaner and less hacky.  I'll adjust the PR.  Thanks.""",11/25/12 15:17,rchavik,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/974#discussion_r2217916,2012-11-26T02:17:09Z,2012-11-28T03:11:43Z,rchavik,MEMBER,lib/Cake/View/Helper/FormHelper.php,,,,,1,"@@ -1094,6 +1071,48 @@ public function input($fieldName, $options = array()) {
  			unset($options['dateFormat'], $options['timeFormat']);
  		}
  
@@ -272,7 +272,7 @@ I'll adjust the PR.
 
 Thanks.
 ",0,6670997283431c81fc687b79bf2c57e62d9992f4
-1942196,0,"fixed (i will install code sniffer quite soon!)""",2012-10-25 03:37:54,thepeg,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r1942196,2012-10-25T15:37:54Z,2013-01-20T08:13:46Z,marcopeg,NONE,lib/Cake/Model/Validator/CakeValidationRule.php,,,,,1,"@@ -271,6 +274,17 @@ public function process($field, &$data, &$methods) {
+1942196,0,"fixed (i will install code sniffer quite soon!)""",10/25/12 3:37,thepeg,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r1942196,2012-10-25T15:37:54Z,2013-01-20T08:13:46Z,marcopeg,NONE,lib/Cake/Model/Validator/CakeValidationRule.php,,,,,1,"@@ -271,6 +274,17 @@ public function process($field, &$data, &$methods) {
  			$this->_valid = call_user_func_array($methods[$rule], $this->_ruleParams);
  		} elseif (class_exists('Validation') && method_exists('Validation', $this->_rule)) {
  			$this->_valid = call_user_func_array(array('Validation', $this->_rule), $this->_ruleParams);
@@ -282,7 +282,7 @@ Thanks.
 +			$location = 'Model/Validation';
 +			if ( $plugin ) $location = $plugin . '.' . $location;","fixed (i will install code sniffer quite soon!)
 ",0,b2cbeeeb501285431bdc7fb2a5b37f260b792261
-1616452,0,"it is for adding fields to a query or to the whitelist?""",2012-09-16 19:45:13,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1616452,2012-09-17T07:45:13Z,2012-11-02T09:54:30Z,lorenzo,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
+1616452,0,"it is for adding fields to a query or to the whitelist?""",9/16/12 19:45,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1616452,2012-09-17T07:45:13Z,2012-11-02T09:54:30Z,lorenzo,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
  	}
  
  /**
@@ -294,12 +294,12 @@ Thanks.
 + */
 +	public function addToFieldList($key, $options) {","it is for adding fields to a query or to the whitelist?
 ",0,7007dba0eb836f852aaca95fada103bc4ba993a9
-1518476,2,"Ah, true. I forgot about that. Browsers... :(""",2012-09-03 09:02:57,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/811#discussion_r1518476,2012-09-03T21:02:57Z,2012-09-03T21:02:57Z,jrbasso,MEMBER,lib/Cake/View/Helper/FormHelper.php,,1614.0,,,24,"@@ -1607,7 +1612,7 @@ public function postLink($title, $url = null, $options = array(), $confirmMessag
+1518476,2,"Ah, true. I forgot about that. Browsers... :(""",9/3/12 9:02,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/811#discussion_r1518476,2012-09-03T21:02:57Z,2012-09-03T21:02:57Z,jrbasso,MEMBER,lib/Cake/View/Helper/FormHelper.php,,1614,,,24,"@@ -1607,7 +1612,7 @@ public function postLink($title, $url = null, $options = array(), $confirmMessag
  		$formName = uniqid('post_');
  		$formUrl = $this->url($url);
  		$out = $this->Html->useTag('form', $formUrl, array('name' => $formName, 'id' => $formName, 'style' => 'display:none;', 'method' => 'post'));","Ah, true. I forgot about that. Browsers... :(
 ",0,fca98e39f9041c1aee915968e0523dfc83e0c2c8
-1221562,0,"Exceptions should include a useful description based on what the failure is.  Perhaps 'Invalid encryption scheme chosen'.""",2012-07-23 13:29:22,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/734#discussion_r1221562,2012-07-24T01:29:22Z,2012-07-25T18:21:05Z,markstory,MEMBER,lib/Cake/Network/CakeSocket.php,,,,,1,"@@ -277,4 +298,34 @@ public function reset($state = null) {
+1221562,0,"Exceptions should include a useful description based on what the failure is.  Perhaps 'Invalid encryption scheme chosen'.""",7/23/12 13:29,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/734#discussion_r1221562,2012-07-24T01:29:22Z,2012-07-25T18:21:05Z,markstory,MEMBER,lib/Cake/Network/CakeSocket.php,,,,,1,"@@ -277,4 +298,34 @@ public function reset($state = null) {
  		return true;
  	}
  
@@ -318,13 +318,13 @@ Thanks.
 +		if (!array_key_exists($type . '_' . $clientOrServer, $this->_encryptMethods)) {
 +			throw new InvalidArgumentException();","Exceptions should include a useful description based on what the failure is.  Perhaps 'Invalid encryption scheme chosen'.
 ",0,7418be04d3fd24bd7cef09527bd40e55783c28c6
-157669,1,"lol, I left that variable in there and forgot about it :P""",2011-10-06 02:08:38,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/229#discussion_r157669,2011-10-06T14:08:38Z,2011-10-06T14:08:38Z,lorenzo,MEMBER,lib/Cake/Model/Datasource/Database/Postgres.php,,784.0,,,16,"@@ -781,7 +778,12 @@ class Postgres extends DboSource {
+157669,1,"lol, I left that variable in there and forgot about it :P""",10/6/11 2:08,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/229#discussion_r157669,2011-10-06T14:08:38Z,2011-10-06T14:08:38Z,lorenzo,MEMBER,lib/Cake/Model/Datasource/Database/Postgres.php,,784,,,16,"@@ -781,7 +778,12 @@ class Postgres extends DboSource {
   * @return string The database encoding
   */
  	public function getEncoding() {
 -		$cosa = $this->_execute('SHOW client_encoding')->fetch();","lol, I left that variable in there and forgot about it :P
 ",0,ce8ece85aad66f2ad2c38614cd6deba173d43c21
-6432269,0,"sprintf is not necessary here.""",2013-09-18 00:59:49,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1654#discussion_r6432269,2013-09-18T12:59:49Z,2013-10-04T04:05:07Z,dereuromark,MEMBER,lib/Cake/Cache/Engine/MemcachedEngine.php,,,,,1,"@@ -113,14 +127,41 @@ public function init($settings = array()) {
+6432269,0,"sprintf is not necessary here.""",9/18/13 0:59,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1654#discussion_r6432269,2013-09-18T12:59:49Z,2013-10-04T04:05:07Z,dereuromark,MEMBER,lib/Cake/Cache/Engine/MemcachedEngine.php,,,,,1,"@@ -113,14 +127,41 @@ public function init($settings = array()) {
  /**
   * Settings the memcached instance
   *
@@ -339,7 +339,7 @@ Thanks.
 +			throw new CacheException(
 +				__d('cake_dev', sprintf('%s is not a valid serializer engine for Memcached', $this->settings['serializer']))","sprintf is not necessary here.
 ",0,5d30cb15591af89b33fcbb61c10e4b96452f4ff6
-851797,0,"This is not very readable plus has unnecessary merge with empty array. Better to replace with this: ```php if ($merge) {  $this->_inputDefaults = array_merge($this->_inputDefaults, $defaults); } else {  $this->_inputDefaults = $defaults; } ```""",2012-05-20 19:52:51,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/659#discussion_r851797,2012-05-21T07:52:51Z,2012-05-21T07:52:51Z,ADmad,MEMBER,lib/Cake/View/Helper/FormHelper.php,,2595.0,,,22,"@@ -2583,4 +2583,18 @@ protected function _initInputField($field, $options = array()) {
+851797,0,"This is not very readable plus has unnecessary merge with empty array. Better to replace with this: ```php if ($merge) {  $this->_inputDefaults = array_merge($this->_inputDefaults, $defaults); } else {  $this->_inputDefaults = $defaults; } ```""",5/20/12 19:52,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/659#discussion_r851797,2012-05-21T07:52:51Z,2012-05-21T07:52:51Z,ADmad,MEMBER,lib/Cake/View/Helper/FormHelper.php,,2595,,,22,"@@ -2583,4 +2583,18 @@ protected function _initInputField($field, $options = array()) {
  		return $result;
  	}
  
@@ -362,14 +362,14 @@ if ($merge) {
 }
 ```
 ",0,57ad5e2573198781deb1586242f62a5b62fe26f9
-4976178,2,"This is going to end poorly. I don't like overloading conditions like this, it will break eventually for someone somewhere.""",2013-07-01 13:23:40,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1392#discussion_r4976178,2013-07-02T01:23:40Z,2013-07-11T12:35:45Z,markstory,MEMBER,lib/Cake/Model/Datasource/Database/Mysql.php,,353.0,,,5,"@@ -349,6 +349,12 @@ public function describe($model) {
+4976178,2,"This is going to end poorly. I don't like overloading conditions like this, it will break eventually for someone somewhere.""",7/1/13 13:23,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1392#discussion_r4976178,2013-07-02T01:23:40Z,2013-07-11T12:35:45Z,markstory,MEMBER,lib/Cake/Model/Datasource/Database/Mysql.php,,353,,,5,"@@ -349,6 +349,12 @@ public function describe($model) {
   * @return array
   */
  	public function update(Model $model, $fields = array(), $values = null, $conditions = null) {
 +		$query = array('joins' => array());
 +		if (isset($conditions['joins'])) {","This is going to end poorly. I don't like overloading conditions like this, it will break eventually for someone somewhere.
 ",0,096f5f13eedd763c81e186d024110e32e3e01afd
-6052285,0,"Do you mean run the key through pbkdf2 before using it as the key on the AES-256 stage?""",2013-08-28 15:22:08,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6052285,2013-08-29T03:22:08Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
+6052285,0,"Do you mean run the key through pbkdf2 before using it as the key on the AES-256 stage?""",8/28/13 15:22,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6052285,2013-08-29T03:22:08Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
  		return crypt($password, $salt);
  	}
  
@@ -392,7 +392,7 @@ if ($merge) {
 +		}
 +		$key = substr($key, 0, 32);","Do you mean run the key through pbkdf2 before using it as the key on the AES-256 stage?
 ",0,13b870d7e183375822eea4ffd66aaacaeec760ff
-5181780,1,"Models is fine, they can be isolated, and are easy to talk to directly though the class registry anyway  If a normal request has the same event manager for everything but models, then I'm a happy man for a crud plugin perspective :)""",2013-07-14 01:22:44,jippi,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1418#discussion_r5181780,2013-07-14T13:22:44Z,2013-07-27T21:17:13Z,jippi,CONTRIBUTOR,lib/Cake/Controller/ComponentCollection.php,,55.0,,,71,"@@ -39,20 +41,23 @@ class ComponentCollection extends ObjectCollection implements EventListener {
+5181780,1,"Models is fine, they can be isolated, and are easy to talk to directly though the class registry anyway  If a normal request has the same event manager for everything but models, then I'm a happy man for a crud plugin perspective :)""",7/14/13 1:22,jippi,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1418#discussion_r5181780,2013-07-14T13:22:44Z,2013-07-27T21:17:13Z,jippi,CONTRIBUTOR,lib/Cake/Controller/ComponentCollection.php,,55,,,71,"@@ -39,20 +41,23 @@ class ComponentCollection extends ObjectCollection implements EventListener {
  	protected $_Controller = null;
  
  /**
@@ -423,13 +423,13 @@ if ($merge) {
 
 If a normal request has the same event manager for everything but models, then I'm a happy man for a crud plugin perspective :)
 ",0,c8f6c84285080bfc9020401522b01bb7d50777ab
-4604911,2,"nooo, why you hate on Wooohoo ! :(""",2013-06-09 08:21:09,jippi,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1342#discussion_r4604911,2013-06-09T20:21:09Z,2013-06-09T20:21:09Z,jippi,CONTRIBUTOR,lib/Cake/Model/Datasource/DboSource.php,,1330.0,,,4,"@@ -1327,7 +1327,7 @@ public function queryAssociation(Model $model, &$linkModel, $type, $association,
+4604911,2,"nooo, why you hate on Wooohoo ! :(""",6/9/13 8:21,jippi,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1342#discussion_r4604911,2013-06-09T20:21:09Z,2013-06-09T20:21:09Z,jippi,CONTRIBUTOR,lib/Cake/Model/Datasource/DboSource.php,,1330,,,4,"@@ -1327,7 +1327,7 @@ public function queryAssociation(Model $model, &$linkModel, $type, $association,
  	}
  
  /**
 - * A more efficient way to fetch associations.	Woohoo!","nooo, why you hate on Wooohoo ! :(
 ",0,42777b7809061116a9162cb0f51398999f5bc826
-4394619,0,"I was thinking the upgrade shell might be better as well. Munging the fixtures might be simpler in terms of long term maintainability and correctness.  Would updating a the upgrade shell to include a munger, and issuing warnings/exceptions when old styl""",2013-05-26 03:52:40,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1303#discussion_r4394619,2013-05-26T15:52:40Z,2013-05-29T02:13:15Z,markstory,MEMBER,lib/Cake/Test/Fixture/PostFixture.php,,,,,1,"@@ -41,13 +41,16 @@ class PostFixture extends TestFixture {
+4394619,0,"I was thinking the upgrade shell might be better as well. Munging the fixtures might be simpler in terms of long term maintainability and correctness.  Would updating a the upgrade shell to include a munger, and issuing warnings/exceptions when old styl""",5/26/13 3:52,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1303#discussion_r4394619,2013-05-26T15:52:40Z,2013-05-29T02:13:15Z,markstory,MEMBER,lib/Cake/Test/Fixture/PostFixture.php,,,,,1,"@@ -41,13 +41,16 @@ class PostFixture extends TestFixture {
   * @var array
   */
  	public $fields = array(
@@ -446,7 +446,7 @@ If a normal request has the same event manager for everything but models, then I
 
 Would updating a the upgrade shell to include a munger, and issuing warnings/exceptions when old style fixtures are found sound reasonable?
 ",0,2b90e7dbc75cccae5f7b1fc76eba57bf6fcbe049
-2011137,0,"Extra space after `array(`""",2012-11-01 11:15:03,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r2011137,2012-11-01T22:15:03Z,2013-01-20T08:13:46Z,ADmad,MEMBER,lib/Cake/Test/test_app/Controller/CustomValidationObjectController.php,,,,,1,"@@ -0,0 +1,28 @@
+2011137,0,"Extra space after `array(`""",11/1/12 11:15,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r2011137,2012-11-01T22:15:03Z,2013-01-20T08:13:46Z,ADmad,MEMBER,lib/Cake/Test/test_app/Controller/CustomValidationObjectController.php,,,,,1,"@@ -0,0 +1,28 @@
 +<?php
 +/**
 + * CustomValidationObjectController
@@ -465,14 +465,14 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 +	public function index() {
 +		$data = array( 'CustomValidationModel' => array(","Extra space after `array(`
 ",0,b2cbeeeb501285431bdc7fb2a5b37f260b792261
-1723748,2,"Oh that is a bit silly.""",2012-09-29 06:36:55,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/875#discussion_r1723748,2012-09-29T18:36:55Z,2012-12-10T10:10:06Z,markstory,MEMBER,lib/Cake/Test/Case/View/Helper/FormHelperTest.php,,6120.0,,,5,"@@ -5966,7 +5966,7 @@ public function testTextAreaWithStupidCharacters() {
+1723748,2,"Oh that is a bit silly.""",9/29/12 6:36,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/875#discussion_r1723748,2012-09-29T18:36:55Z,2012-12-10T10:10:06Z,markstory,MEMBER,lib/Cake/Test/Case/View/Helper/FormHelperTest.php,,6120,,,5,"@@ -5966,7 +5966,7 @@ public function testTextAreaWithStupidCharacters() {
  			'label' => 'Current Text', 'value' => ""GREAT®"", 'rows' => '15', 'cols' => '75'
  		));
  		$expected = array(
 -			'div' => array('class' => 'input text'),
 +			'div' => array('class' => 'input textarea'),","Oh that is a bit silly.
 ",0,2d908885c86de68f0e0c4cbfd88bce811d23aa54
-1624729,0,"But isn't `fieldList` a copy of the whitelist? I think that is what @lorenzo and I are trying to get at.  Perhaps this doesn't need to be a public method?  It is just a helper method after all.""",2012-09-17 12:24:15,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1624729,2012-09-18T00:24:15Z,2012-11-02T09:54:30Z,markstory,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
+1624729,0,"But isn't `fieldList` a copy of the whitelist? I think that is what @lorenzo and I are trying to get at.  Perhaps this doesn't need to be a public method?  It is just a helper method after all.""",9/17/12 12:24,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1624729,2012-09-18T00:24:15Z,2012-11-02T09:54:30Z,markstory,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
  	}
  
  /**
@@ -484,7 +484,7 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 + */
 +	public function addToFieldList($key, $options) {","But isn't `fieldList` a copy of the whitelist? I think that is what @lorenzo and I are trying to get at.  Perhaps this doesn't need to be a public method?  It is just a helper method after all.
 ",0,7007dba0eb836f852aaca95fada103bc4ba993a9
-1231261,0,"Same about the translation.""",2012-07-24 12:25:55,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/734#discussion_r1231261,2012-07-25T00:25:55Z,2012-07-25T18:21:05Z,jrbasso,MEMBER,lib/Cake/Network/CakeSocket.php,,,,,1,"@@ -277,4 +298,34 @@ public function reset($state = null) {
+1231261,0,"Same about the translation.""",7/24/12 12:25,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/734#discussion_r1231261,2012-07-25T00:25:55Z,2012-07-25T18:21:05Z,jrbasso,MEMBER,lib/Cake/Network/CakeSocket.php,,,,,1,"@@ -277,4 +298,34 @@ public function reset($state = null) {
  		return true;
  	}
  
@@ -516,7 +516,7 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 +		} else {
 +			$errorMessage = __('Unable to perform enableCrypto operation on CakeSocket');","Same about the translation.
 ",0,7418be04d3fd24bd7cef09527bd40e55783c28c6
-2561154,0,"I guess it should. I was more concerned about the hostnames as sharing cookies between domains is going to cause problems. I forgot about path based cookies though.  Both Client::_storeCookies() & Client::_addCookies() will need to be updated.""",2013-01-06 14:03:47,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2561154,2013-01-07T01:03:47Z,2013-01-24T02:45:59Z,markstory,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,515 @@
+2561154,0,"I guess it should. I was more concerned about the hostnames as sharing cookies between domains is going to cause problems. I forgot about path based cookies though.  Both Client::_storeCookies() & Client::_addCookies() will need to be updated.""",1/6/13 14:03,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2561154,2013-01-07T01:03:47Z,2013-01-24T02:45:59Z,markstory,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,515 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -840,7 +840,7 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 + */
 +	protected function _storeCookies(Response $response, $host) {","I guess it should. I was more concerned about the hostnames as sharing cookies between domains is going to cause problems. I forgot about path based cookies though.  Both Client::_storeCookies() & Client::_addCookies() will need to be updated.
 ",0,c0865001dc9b44d763aba9eaa00720fa4e485ddc
-2628259,0,"@markstory To follow the [RFC 2109](http://www.ietf.org/rfc/rfc2109.txt) (section 4.3.1) the path should be the base path of the requested URL when not specified.  > Defaults to the path of the request URL that generated the > Set-Cookie response, up t""",2013-01-12 13:23:22,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2628259,2013-01-13T00:23:22Z,2013-01-24T02:45:59Z,jrbasso,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,527 @@
+2628259,0,"@markstory To follow the [RFC 2109](http://www.ietf.org/rfc/rfc2109.txt) (section 4.3.1) the path should be the base path of the requested URL when not specified.  > Defaults to the path of the request URL that generated the > Set-Cookie response, up t""",1/12/13 13:23,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2628259,2013-01-13T00:23:22Z,2013-01-24T02:45:59Z,jrbasso,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,527 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -1185,7 +1185,7 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 > Set-Cookie response, up to, but not including, the
 > right-most /.
 ",0,c0865001dc9b44d763aba9eaa00720fa4e485ddc
-6224808,0,"@markstory Agree about the usage and expectations of support of those options...""",2013-09-07 02:25:24,ravage84,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1606#discussion_r6224808,2013-09-07T14:25:24Z,2013-09-09T14:49:11Z,ravage84,MEMBER,App/App/Config/bootstrap.php,,,,,1,"@@ -14,9 +14,11 @@
+6224808,0,"@markstory Agree about the usage and expectations of support of those options...""",9/7/13 2:25,ravage84,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1606#discussion_r6224808,2013-09-07T14:25:24Z,2013-09-09T14:49:11Z,ravage84,MEMBER,App/App/Config/bootstrap.php,,,,,1,"@@ -14,9 +14,11 @@
   */
  namespace App\Config;
  
@@ -1194,7 +1194,7 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 +if (!file_exists(dirname(dirname(__DIR__)) . '/vendor/autoload.php')) {
 +	die('Could not find vendor/autoload.php. You need to install dependencies with `php composer.phar install` first.');","@markstory Agree about the usage and expectations of support of those options...
 ",0,5bdb78603590331da86f3aea10ab718e0a29a0b9
-6060638,0,"Another possible good idea is to add an hmac to detect tampering. I know zf2 does this as do a few other implementations I've seen.""",2013-08-29 01:52:47,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6060638,2013-08-29T13:52:47Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
+6060638,0,"Another possible good idea is to add an hmac to detect tampering. I know zf2 does this as do a few other implementations I've seen.""",8/29/13 1:52,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6060638,2013-08-29T13:52:47Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
  		return crypt($password, $salt);
  	}
  
@@ -1217,7 +1217,7 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 +		}
 +		$key = substr($key, 0, 32);","Another possible good idea is to add an hmac to detect tampering. I know zf2 does this as do a few other implementations I've seen.
 ",0,13b870d7e183375822eea4ffd66aaacaeec760ff
-5912764,2,"That was the reason I started to extract stuff into a Trait, found out the hard way it was not possible :(""",2013-08-21 11:27:35,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5912764,2013-08-21T23:27:35Z,2013-08-24T16:35:52Z,lorenzo,MEMBER,lib/Cake/ORM/ResultCollectionTrait.php,,27.0,,,27,"@@ -0,0 +1,72 @@
+5912764,2,"That was the reason I started to extract stuff into a Trait, found out the hard way it was not possible :(""",8/21/13 11:27,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5912764,2013-08-21T23:27:35Z,2013-08-24T16:35:52Z,lorenzo,MEMBER,lib/Cake/ORM/ResultCollectionTrait.php,,27,,,27,"@@ -0,0 +1,72 @@
 +<?php
 +/**
 + * PHP Version 5.4
@@ -1246,7 +1246,7 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 + */
 +trait ResultCollectionTrait {","That was the reason I started to extract stuff into a Trait, found out the hard way it was not possible :(
 ",0,65cc26318d4c4fe3e0e590442a746385e46c152a
-5444095,2,"This actually have a pattern name, but it is ugly and confusing: Flyweight factory""",2013-07-28 19:37:52,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1457#discussion_r5444095,2013-07-29T07:37:52Z,2013-07-29T07:37:52Z,lorenzo,MEMBER,lib/Cake/Utility/ObjectRegistry.php,,17.0,,,17,"@@ -0,0 +1,178 @@
+5444095,2,"This actually have a pattern name, but it is ugly and confusing: Flyweight factory""",7/28/13 19:37,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1457#discussion_r5444095,2013-07-29T07:37:52Z,2013-07-29T07:37:52Z,lorenzo,MEMBER,lib/Cake/Utility/ObjectRegistry.php,,17,,,17,"@@ -0,0 +1,178 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -1265,13 +1265,13 @@ Would updating a the upgrade shell to include a munger, and issuing warnings/exc
 +/**
 + * Acts as a registry/factory for objects.","This actually have a pattern name, but it is ugly and confusing: Flyweight factory
 ",0,999aef929c438155985a9991e9ed158fafaaa33e
-5181782,1,"yes, I wanted to listen to a view render in a crud listener, but couldn't access the view to attach an event, since the view isn't created until render() is called - had to hack around it to make it work :) I expected a View.beforeRender event in any cla""",2013-07-14 01:24:06,jippi,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1418#discussion_r5181782,2013-07-14T13:24:06Z,2013-07-27T21:17:13Z,jippi,CONTRIBUTOR,lib/Cake/Controller/Controller.php,,637.0,,,115,"@@ -600,13 +623,23 @@ public function constructClasses() {
+5181782,1,"yes, I wanted to listen to a view render in a crud listener, but couldn't access the view to attach an event, since the view isn't created until render() is called - had to hack around it to make it work :) I expected a View.beforeRender event in any cla""",7/14/13 1:24,jippi,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1418#discussion_r5181782,2013-07-14T13:24:06Z,2013-07-27T21:17:13Z,jippi,CONTRIBUTOR,lib/Cake/Controller/Controller.php,,637,,,115,"@@ -600,13 +623,23 @@ public function constructClasses() {
  	public function getEventManager() {
  		if (empty($this->_eventManager)) {
  			$this->_eventManager = new EventManager();","yes, I wanted to listen to a view render in a crud listener, but couldn't access the view to attach an event, since the view isn't created until render() is called - had to hack around it to make it work :)
 I expected a View.beforeRender event in any class attaching to the controller event manager would have worked, but alas it did not :)
 ",0,c8f6c84285080bfc9020401522b01bb7d50777ab
-4464918,0,"This permits SQL injection. User data should never be interpolated into the keys of a find condition.""",2013-05-30 07:37:21,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1319#discussion_r4464918,2013-05-30T19:37:21Z,2013-05-30T19:37:21Z,markstory,MEMBER,lib/Cake/Console/Templates/default/actions/controller_actions.ctp,,182.0,,,26,"@@ -157,3 +157,62 @@
+4464918,0,"This permits SQL injection. User data should never be interpolated into the keys of a find condition.""",5/30/13 7:37,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1319#discussion_r4464918,2013-05-30T19:37:21Z,2013-05-30T19:37:21Z,markstory,MEMBER,lib/Cake/Console/Templates/default/actions/controller_actions.ctp,,182,,,26,"@@ -157,3 +157,62 @@
  <?php endif; ?>
  		$this->redirect(array('action' => 'index'));
  	}
@@ -1299,7 +1299,7 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 +						$conditions[] = array(
 +							'<?php echo $currentModelName;?>.'.$key."" LIKE"" => str_replace('*', '%', $value)","This permits SQL injection. User data should never be interpolated into the keys of a find condition.
 ",0,221f95f0af250cf48c90c350282af33478e5c15f
-4394900,2,"Odd, it might be the test being wrong... I remember spending some time fixing the multi insert in sqlite so I was quite surprised it did not work.""",2013-05-26 06:58:24,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1303#discussion_r4394900,2013-05-26T18:58:24Z,2013-05-29T02:13:15Z,lorenzo,MEMBER,lib/Cake/Database/Dialect/SqliteDialectTrait.php,,,,,1,"@@ -102,28 +102,33 @@ protected function _insertQueryTranslator($query) {
+4394900,2,"Odd, it might be the test being wrong... I remember spending some time fixing the multi insert in sqlite so I was quite surprised it did not work.""",5/26/13 6:58,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1303#discussion_r4394900,2013-05-26T18:58:24Z,2013-05-29T02:13:15Z,lorenzo,MEMBER,lib/Cake/Database/Dialect/SqliteDialectTrait.php,,,,,1,"@@ -102,28 +102,33 @@ protected function _insertQueryTranslator($query) {
  			return $query;
  		}
  
@@ -1316,7 +1316,7 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 +			}
 +			// TODO this doesn't work all columns are inserted as null.","Odd, it might be the test being wrong... I remember spending some time fixing the multi insert in sqlite so I was quite surprised it did not work.
 ",0,2b90e7dbc75cccae5f7b1fc76eba57bf6fcbe049
-3613646,0,"10, integers in postgres are signed so one of the bits is used for the sign. It is actually the same in Mysql, unless it is declared as unsigned""",2013-04-01 19:44:51,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1212#discussion_r3613646,2013-04-02T07:44:51Z,2013-04-03T21:35:55Z,lorenzo,MEMBER,lib/Cake/Model/Datasource/Database/Dialect/PostgresDialectTrait.php,,205.0,,,58,"@@ -148,4 +148,128 @@ protected function _transformFunctionExpression(FunctionExpression $expression)
+3613646,0,"10, integers in postgres are signed so one of the bits is used for the sign. It is actually the same in Mysql, unless it is declared as unsigned""",4/1/13 19:44,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1212#discussion_r3613646,2013-04-02T07:44:51Z,2013-04-03T21:35:55Z,lorenzo,MEMBER,lib/Cake/Model/Datasource/Database/Dialect/PostgresDialectTrait.php,,205,,,58,"@@ -148,4 +148,128 @@ protected function _transformFunctionExpression(FunctionExpression $expression)
  		}
  	}
  
@@ -1376,7 +1376,7 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 +		if ($col === 'serial' || $col === 'integer') {
 +			return ['integer', 10];","10, integers in postgres are signed so one of the bits is used for the sign. It is actually the same in Mysql, unless it is declared as unsigned
 ",0,caec717bce20e06429dd54bafe39b4b0ee6682bb
-3622375,2,"Derp, I missed that sorry.""",2013-04-02 05:23:11,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1212#discussion_r3622375,2013-04-02T17:23:11Z,2013-04-03T21:35:55Z,markstory,MEMBER,lib/Cake/Test/TestCase/Model/Datasource/Database/Driver/PostgresTest.php,,343.0,,,225,"@@ -126,4 +129,218 @@ public function testConnectionConfigCustom() {
+3622375,2,"Derp, I missed that sorry.""",4/2/13 5:23,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1212#discussion_r3622375,2013-04-02T17:23:11Z,2013-04-03T21:35:55Z,markstory,MEMBER,lib/Cake/Test/TestCase/Model/Datasource/Database/Driver/PostgresTest.php,,343,,,225,"@@ -126,4 +129,218 @@ public function testConnectionConfigCustom() {
  		$driver->connect($config);
  	}
  
@@ -1593,7 +1593,7 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 +		];
 +		$this->assertEquals($expected, $result);","Derp, I missed that sorry.
 ",0,caec717bce20e06429dd54bafe39b4b0ee6682bb
-1941298,0,"Extra space after `(` and before `)`. If block should always have braces `{}` even for single lines.""",2012-10-25 02:34:46,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r1941298,2012-10-25T14:34:46Z,2013-01-20T08:13:45Z,ADmad,MEMBER,lib/Cake/Model/Validator/CakeValidationRule.php,,,,,1,"@@ -271,6 +274,13 @@ public function process($field, &$data, &$methods) {
+1941298,0,"Extra space after `(` and before `)`. If block should always have braces `{}` even for single lines.""",10/25/12 2:34,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r1941298,2012-10-25T14:34:46Z,2013-01-20T08:13:45Z,ADmad,MEMBER,lib/Cake/Model/Validator/CakeValidationRule.php,,,,,1,"@@ -271,6 +274,13 @@ public function process($field, &$data, &$methods) {
  			$this->_valid = call_user_func_array($methods[$rule], $this->_ruleParams);
  		} elseif (class_exists('Validation') && method_exists('Validation', $this->_rule)) {
  			$this->_valid = call_user_func_array(array('Validation', $this->_rule), $this->_ruleParams);
@@ -1603,13 +1603,13 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 +			$location = 'Model/Validation';
 +			if ( $plugin ) $location = $plugin . '.' . $location;","Extra space after `(` and before `)`. If block should always have braces `{}` even for single lines.
 ",0,b2cbeeeb501285431bdc7fb2a5b37f260b792261
-1714815,0,"Indentation is still incorrect, better use the code sniffer.""",2012-09-27 17:55:21,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/872#discussion_r1714815,2012-09-28T05:55:21Z,2012-09-28T06:07:43Z,ADmad,MEMBER,lib/Cake/Cache/Engine/WincacheEngine.php,,,,,1,"@@ -183,6 +183,7 @@ public function groups() {
+1714815,0,"Indentation is still incorrect, better use the code sniffer.""",9/27/12 17:55,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/872#discussion_r1714815,2012-09-28T05:55:21Z,2012-09-28T06:07:43Z,ADmad,MEMBER,lib/Cake/Cache/Engine/WincacheEngine.php,,,,,1,"@@ -183,6 +183,7 @@ public function groups() {
   * @return boolean success
   **/
  	public function clearGroup($group) {
 +	        $success = null;","Indentation is still incorrect, better use the code sniffer.
 ",0,f4565d51fad4ba81906f085cd5abf043d4852365
-1460045,2,"Having a destructive get() seems like a bad idea.  Why not just call set() afterwards to clear the block.  I'd like to avoid duplicated functionality.""",2012-08-25 09:11:14,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/795#discussion_r1460045,2012-08-25T21:11:14Z,2012-08-25T21:19:27Z,markstory,MEMBER,lib/Cake/View/ViewBlock.php,,125.0,,,8,"@@ -119,13 +119,18 @@ public function set($name, $value) {
+1460045,2,"Having a destructive get() seems like a bad idea.  Why not just call set() afterwards to clear the block.  I'd like to avoid duplicated functionality.""",8/25/12 9:11,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/795#discussion_r1460045,2012-08-25T21:11:14Z,2012-08-25T21:19:27Z,markstory,MEMBER,lib/Cake/View/ViewBlock.php,,125,,,8,"@@ -119,13 +119,18 @@ public function set($name, $value) {
   * Get the content for a block.
   *
   * @param string $name Name of the block
@@ -1619,7 +1619,7 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 -	public function get($name) {
 +	public function get($name, $clear = false) {","Having a destructive get() seems like a bad idea.  Why not just call set() afterwards to clear the block.  I'd like to avoid duplicated functionality.
 ",0,123a59baa20c336a089956e00a4f88b6f8d95860
-408211,1,"Yeah, true, But I dunno if it would break userland code if init() would not register the Behavior in the Collection, but instead do nothing. But I trust your judgement in these things :-)""",2012-02-01 11:02:29,tPl0ch,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/455#discussion_r408211,2012-02-01T22:02:29Z,2012-02-03T18:33:39Z,tPl0ch,NONE,lib/Cake/Model/BehaviorCollection.php,,82.0,,,1,"@@ -70,6 +69,18 @@ public function init($modelName, $behaviors = array()) {
+408211,1,"Yeah, true, But I dunno if it would break userland code if init() would not register the Behavior in the Collection, but instead do nothing. But I trust your judgement in these things :-)""",2/1/12 11:02,tPl0ch,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/455#discussion_r408211,2012-02-01T22:02:29Z,2012-02-03T18:33:39Z,tPl0ch,NONE,lib/Cake/Model/BehaviorCollection.php,,82,,,1,"@@ -70,6 +69,18 @@ public function init($modelName, $behaviors = array()) {
  	}
  
  /**
@@ -1636,7 +1636,7 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 +
 +/**","Yeah, true, But I dunno if it would break userland code if init() would not register the Behavior in the Collection, but instead do nothing. But I trust your judgement in these things :-)
 ",0,ea4f39c13bb80524ad470196be75d5a6a6964048
-54071,2,"Yeah, that's right. My bad. Commit 788a7e4 corrects this issue.""",2011-06-28 11:01:01,luisarmando,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/136#discussion_r54071,2011-06-28T23:01:01Z,2011-07-01T10:19:38Z,labianchin,CONTRIBUTOR,lib/Cake/Console/Command/UpgradeShell.php,,,,,1,"@@ -74,16 +74,22 @@ class UpgradeShell extends Shell {
+54071,2,"Yeah, that's right. My bad. Commit 788a7e4 corrects this issue.""",6/28/11 11:01,luisarmando,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/136#discussion_r54071,2011-06-28T23:01:01Z,2011-07-01T10:19:38Z,labianchin,CONTRIBUTOR,lib/Cake/Console/Command/UpgradeShell.php,,,,,1,"@@ -74,16 +74,22 @@ class UpgradeShell extends Shell {
  	public function locations() {
  		$cwd = getcwd();
  
@@ -1660,7 +1660,7 @@ I expected a View.beforeRender event in any class attaching to the controller ev
 +					chdir($cwd . DS . 'plugins' . DS . $plugin);","Yeah, that's right. My bad.
 Commit 788a7e4 corrects this issue.
 ",0,b22e30c5a31fb8a7ff95f6670193bc7697de0e9a
-6630638,0,"You can also use the official [code sniffer](https://github.com/cakephp/cakephp-codesniffer).""",2013-09-27 03:27:07,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1688#discussion_r6630638,2013-09-27T15:27:07Z,2013-09-27T15:27:07Z,ADmad,MEMBER,lib/Cake/TestSuite/ControllerTestCase.php,,,,,1,"@@ -219,7 +219,8 @@ protected function _testAction($url = '', $options = array()) {
+6630638,0,"You can also use the official [code sniffer](https://github.com/cakephp/cakephp-codesniffer).""",9/27/13 3:27,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1688#discussion_r6630638,2013-09-27T15:27:07Z,2013-09-27T15:27:07Z,ADmad,MEMBER,lib/Cake/TestSuite/ControllerTestCase.php,,,,,1,"@@ -219,7 +219,8 @@ protected function _testAction($url = '', $options = array()) {
  		$options = array_merge(array(
  			'data' => array(),
  			'method' => 'POST',
@@ -1668,7 +1668,7 @@ Commit 788a7e4 corrects this issue.
 +			'return' => 'result',
 +            'named'  => array()","You can also use the official [code sniffer](https://github.com/cakephp/cakephp-codesniffer).
 ",0,9faf3ca5d46ad908974d590249083b5dd75971b9
-2671628,0,"Just as curiosity, I was looking the [`DateTime` documentation](http://us2.php.net/manual/en/class.datetime.php) today and they have the constant for the RFC formats.  Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it could be """,2013-01-16 09:19:39,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2671628,2013-01-16T20:19:39Z,2013-01-24T02:45:59Z,jrbasso,MEMBER,lib/Cake/Network/Http/Cookies.php,,,,,1,"@@ -0,0 +1,117 @@
+2671628,0,"Just as curiosity, I was looking the [`DateTime` documentation](http://us2.php.net/manual/en/class.datetime.php) today and they have the constant for the RFC formats.  Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it could be """,1/16/13 9:19,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2671628,2013-01-16T20:19:39Z,2013-01-24T02:45:59Z,jrbasso,MEMBER,lib/Cake/Network/Http/Cookies.php,,,,,1,"@@ -0,0 +1,117 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -1733,7 +1733,7 @@ Commit 788a7e4 corrects this issue.
 
 Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it could be ISO 1123 (most used and the same you used), RFC 1036 or asctime().
 ",0,c0865001dc9b44d763aba9eaa00720fa4e485ddc
-2676081,0,"I ended up using `strtotime()` as the various formats that I saw in the wild and in the specs resulted in icky code. However, strtotime() seems to be able to sort everything out.""",2013-01-16 15:06:50,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2676081,2013-01-17T02:06:50Z,2013-01-24T02:45:59Z,markstory,MEMBER,lib/Cake/Network/Http/Cookies.php,,,,,1,"@@ -0,0 +1,117 @@
+2676081,0,"I ended up using `strtotime()` as the various formats that I saw in the wild and in the specs resulted in icky code. However, strtotime() seems to be able to sort everything out.""",1/16/13 15:06,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2676081,2013-01-17T02:06:50Z,2013-01-24T02:45:59Z,markstory,MEMBER,lib/Cake/Network/Http/Cookies.php,,,,,1,"@@ -0,0 +1,117 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -1796,7 +1796,7 @@ Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it coul
 +			if ($expires) {
 +				$expires = \DateTime::createFromFormat('D, j-M-Y H:i:s e', $expires);","I ended up using `strtotime()` as the various formats that I saw in the wild and in the specs resulted in icky code. However, strtotime() seems to be able to sort everything out.
 ",0,c0865001dc9b44d763aba9eaa00720fa4e485ddc
-4778220,1,"Yes you right""",2013-06-19 05:36:15,bhiv,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1364#discussion_r4778220,2013-06-19T17:36:15Z,2013-06-19T17:36:15Z,np42,NONE,lib/Cake/Model/Behavior/ContainableBehavior.php,,163.0,,,19,"@@ -152,6 +157,12 @@ public function beforeFind(Model $Model, $query) {
+4778220,1,"Yes you right""",6/19/13 5:36,bhiv,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1364#discussion_r4778220,2013-06-19T17:36:15Z,2013-06-19T17:36:15Z,np42,NONE,lib/Cake/Model/Behavior/ContainableBehavior.php,,163,,,19,"@@ -152,6 +157,12 @@ public function beforeFind(Model $Model, $query) {
  						if (!$reset && empty($instance->__backOriginalAssociation)) {
  							$instance->__backOriginalAssociation = $backupBindings;
  						}
@@ -1805,7 +1805,7 @@ Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it coul
 +							( 'model' => $instance, 'type' => $type
 +							, 'className' => $className, 'link' => &$instance->{$type}[$className]","Yes you right
 ",0,8e500c33349a5dbd05d1846c17538102669a5c51
-6103651,0,"One could default this to false and only enable it dynamically inside the code.""",2013-09-01 10:55:17,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1594#discussion_r6103651,2013-09-01T22:55:17Z,2013-09-01T22:55:17Z,dereuromark,MEMBER,lib/Cake/Console/ConsoleInput.php,,44.0,,,12,"@@ -33,11 +33,23 @@ class ConsoleInput {
+6103651,0,"One could default this to false and only enable it dynamically inside the code.""",9/1/13 10:55,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1594#discussion_r6103651,2013-09-01T22:55:17Z,2013-09-01T22:55:17Z,dereuromark,MEMBER,lib/Cake/Console/ConsoleInput.php,,44,,,12,"@@ -33,11 +33,23 @@ class ConsoleInput {
  	protected $_input;
  
  /**
@@ -1819,7 +1819,7 @@ Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it coul
 + */
 +	protected $_canReadline;","One could default this to false and only enable it dynamically inside the code.
 ",0,bb98ac761fad08204cb7ad9fac9e6b22e283f5e0
-6060336,0,"One problem with pbkdf is the general lack of support. Prior to 5.5 I'm not aware of any commonly installed extension that provides pbkdf2. An alternative to length checks and pbkdf2 is to use sha256. That would mask the original key and ensure the correc""",2013-08-29 01:40:49,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6060336,2013-08-29T13:40:49Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
+6060336,0,"One problem with pbkdf is the general lack of support. Prior to 5.5 I'm not aware of any commonly installed extension that provides pbkdf2. An alternative to length checks and pbkdf2 is to use sha256. That would mask the original key and ensure the correc""",8/29/13 1:40,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1568#discussion_r6060336,2013-08-29T13:40:49Z,2013-09-02T01:44:56Z,markstory,MEMBER,lib/Cake/Utility/Security.php,,,,,1,"@@ -289,4 +289,69 @@ protected static function _crypt($password, $salt = false) {
  		return crypt($password, $salt);
  	}
  
@@ -1842,7 +1842,7 @@ Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it coul
 +		}
 +		$key = substr($key, 0, 32);","One problem with pbkdf is the general lack of support. Prior to 5.5 I'm not aware of any commonly installed extension that provides pbkdf2. An alternative to length checks and pbkdf2 is to use sha256. That would mask the original key and ensure the correct key length.
 ",0,13b870d7e183375822eea4ffd66aaacaeec760ff
-5034403,2,"Sounds like hack, but with that difference I wonder if the `call_user_func_array` could be replaced until certain level by the same strategy used in [`Configure::write()` of 1.x version](https://github.com/cakephp/cakephp/blob/1.3/cake/libs/configure.php#""",2013-07-04 05:25:21,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1397#discussion_r5034403,2013-07-04T17:25:21Z,2013-07-05T03:45:44Z,jrbasso,MEMBER,lib/Cake/Event/EventManager.php,,,,,1,"@@ -243,8 +235,10 @@ public function dispatch($event) {
+5034403,2,"Sounds like hack, but with that difference I wonder if the `call_user_func_array` could be replaced until certain level by the same strategy used in [`Configure::write()` of 1.x version](https://github.com/cakephp/cakephp/blob/1.3/cake/libs/configure.php#""",7/4/13 5:25,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1397#discussion_r5034403,2013-07-04T17:25:21Z,2013-07-05T03:45:44Z,jrbasso,MEMBER,lib/Cake/Event/EventManager.php,,,,,1,"@@ -243,8 +235,10 @@ public function dispatch($event) {
  			if ($event->isStopped()) {
  				break;
  			}
@@ -1855,7 +1855,7 @@ Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it coul
  			} else {
  				$result = call_user_func($listener['callable'], $event);","Sounds like hack, but with that difference I wonder if the `call_user_func_array` could be replaced until certain level by the same strategy used in [`Configure::write()` of 1.x version](https://github.com/cakephp/cakephp/blob/1.3/cake/libs/configure.php#L93-L107)
 ",0,3040dbe0c36960df4b3d20fd0cad8a570a98cdff
-4288375,0,"It is needed and is set in [constructor](https://github.com/ADmad/cakephp/blob/8ae3934378e75b2bdc7ac850f7593467fa7e7fc3/lib/Cake/Controller/Component/Auth/BasicAuthenticate.php#L55). I removed the overriding of `$settings` property so that if its keys are""",2013-05-18 04:35:27,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288375,2013-05-18T16:35:27Z,2013-05-26T05:59:44Z,ADmad,MEMBER,lib/Cake/Controller/Component/Auth/BasicAuthenticate.php,,68.0,,,25,"@@ -44,31 +44,6 @@
+4288375,0,"It is needed and is set in [constructor](https://github.com/ADmad/cakephp/blob/8ae3934378e75b2bdc7ac850f7593467fa7e7fc3/lib/Cake/Controller/Component/Auth/BasicAuthenticate.php#L55). I removed the overriding of `$settings` property so that if its keys are""",5/18/13 4:35,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288375,2013-05-18T16:35:27Z,2013-05-26T05:59:44Z,ADmad,MEMBER,lib/Cake/Controller/Component/Auth/BasicAuthenticate.php,,68,,,25,"@@ -44,31 +44,6 @@
  class BasicAuthenticate extends BaseAuthenticate {
  
  /**
@@ -1882,7 +1882,7 @@ Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it coul
 -		'contain' => null,
 -		'realm' => '',","It is needed and is set in [constructor](https://github.com/ADmad/cakephp/blob/8ae3934378e75b2bdc7ac850f7593467fa7e7fc3/lib/Cake/Controller/Component/Auth/BasicAuthenticate.php#L55). I removed the overriding of `$settings` property so that if its keys are updated in `BaseAuthenticate` they are easily inherited and you don't have to update this class too. 
 ",0,dd2892ad8d0e3a0b09990b0a9ef26c320f1901fa
-2930599,0,"should the regex then consider the following?   ```html      <br/>, <br />, <br>, <br > ```   Mark, I'm not sure if I follow the tag formatting that you've created and how it would account for the 4 versions of 'br' above?""",2013-02-07 07:07:30,TeckniX,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1107#discussion_r2930599,2013-02-07T18:07:30Z,2013-03-25T15:01:22Z,TeckniX,CONTRIBUTOR,lib/Cake/View/Helper/TextHelper.php,,,,,1,"@@ -228,6 +228,29 @@ public function highlight($text, $phrase, $options = array()) {
+2930599,0,"should the regex then consider the following?   ```html      <br/>, <br />, <br>, <br > ```   Mark, I'm not sure if I follow the tag formatting that you've created and how it would account for the 4 versions of 'br' above?""",2/7/13 7:07,TeckniX,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1107#discussion_r2930599,2013-02-07T18:07:30Z,2013-03-25T15:01:22Z,TeckniX,CONTRIBUTOR,lib/Cake/View/Helper/TextHelper.php,,,,,1,"@@ -228,6 +228,29 @@ public function highlight($text, $phrase, $options = array()) {
  	}
  
  /**
@@ -1904,7 +1904,7 @@ Form the [cookie RFC](http://tools.ietf.org/html/rfc2616#section-3.3.1), it coul
 
 Mark, I'm not sure if I follow the tag formatting that you've created and how it would account for the 4 versions of 'br' above?
 ",0,d260f4a5b3c4e057355397da65ab7f8a3088d5a7
-1616412,0,"Can you please rename it to addToWhitelist ? First time I read this I thought it was ment to add fields to a query""",2012-09-16 19:33:50,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1616412,2012-09-17T07:33:50Z,2012-11-02T09:54:29Z,lorenzo,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
+1616412,0,"Can you please rename it to addToWhitelist ? First time I read this I thought it was ment to add fields to a query""",9/16/12 19:33,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1616412,2012-09-17T07:33:50Z,2012-11-02T09:54:29Z,lorenzo,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
  	}
  
  /**
@@ -1916,7 +1916,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 + */
 +	public function addToFieldList($key, $options) {","Can you please rename it to addToWhitelist ? First time I read this I thought it was ment to add fields to a query
 ",0,7007dba0eb836f852aaca95fada103bc4ba993a9
-1620325,0,"fieldList == whiteList though.""",2012-09-17 04:39:36,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1620325,2012-09-17T16:39:36Z,2012-11-02T09:54:30Z,markstory,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
+1620325,0,"fieldList == whiteList though.""",9/17/12 4:39,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1620325,2012-09-17T16:39:36Z,2012-11-02T09:54:30Z,markstory,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
  	}
  
  /**
@@ -1928,7 +1928,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 + */
 +	public function addToFieldList($key, $options) {","fieldList == whiteList though.
 ",0,7007dba0eb836f852aaca95fada103bc4ba993a9
-1616459,2,"Can we add a default return? throwing an exception sounds a bit too much for view related code""",2012-09-16 19:47:21,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/850#discussion_r1616459,2012-09-17T07:47:21Z,2012-09-17T11:22:15Z,lorenzo,MEMBER,lib/Cake/Utility/CakeNumber.php,,127.0,,,1,"@@ -102,6 +102,28 @@ public static function toReadableSize($size) {
+1616459,2,"Can we add a default return? throwing an exception sounds a bit too much for view related code""",9/16/12 19:47,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/850#discussion_r1616459,2012-09-17T07:47:21Z,2012-09-17T11:22:15Z,lorenzo,MEMBER,lib/Cake/Utility/CakeNumber.php,,127,,,1,"@@ -102,6 +102,28 @@ public static function toReadableSize($size) {
  	}
  
  /**
@@ -1952,7 +1952,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +		}
 +		throw new CakeException(__d('cake_dev', 'No unit type.'));","Can we add a default return? throwing an exception sounds a bit too much for view related code
 ",0,9530e68ae62dc9cb49b00e61814165c46009f56e
-1560837,0,"Why not have the _setupFilesystem() method return a list of variables that you can unpack with list().  That solves the duplication and variable scoping issues.""",2012-09-08 05:35:24,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/626#discussion_r1560837,2012-09-08T17:35:24Z,2012-09-08T17:35:24Z,markstory,MEMBER,lib/Cake/Test/Case/Utility/FolderTest.php,,1023.0,,,62,"@@ -848,14 +973,76 @@ public function testCopy() {
+1560837,0,"Why not have the _setupFilesystem() method return a list of variables that you can unpack with list().  That solves the duplication and variable scoping issues.""",9/8/12 5:35,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/626#discussion_r1560837,2012-09-08T17:35:24Z,2012-09-08T17:35:24Z,markstory,MEMBER,lib/Cake/Test/Case/Utility/FolderTest.php,,1023,,,62,"@@ -848,14 +973,76 @@ public function testCopy() {
  		file_put_contents($folderThree . DS . 'folder2' . DS . 'file2.php', 'untouched');
  
  		$Folder = new Folder($folderOne);
@@ -2006,7 +2006,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +		touch($file3);
 +		touch($file4);","Why not have the _setupFilesystem() method return a list of variables that you can unpack with list().  That solves the duplication and variable scoping issues.
 ",0,0a35f514cb07b016ac7bd1b904a273b6a0026d05
-165826,1,"I think the mask config option is useful.  I just think that chmod() has no chance of side effects in a multi-threaded webserver unlike umask()""",2011-10-11 13:29:24,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/240#discussion_r165826,2011-10-12T01:29:24Z,2011-10-12T08:20:12Z,markstory,MEMBER,lib/Cake/Cache/Engine/FileEngine.php,,,,,1,"@@ -288,9 +283,10 @@ class FileEngine extends CacheEngine {
+165826,1,"I think the mask config option is useful.  I just think that chmod() has no chance of side effects in a multi-threaded webserver unlike umask()""",10/11/11 13:29,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/240#discussion_r165826,2011-10-12T01:29:24Z,2011-10-12T08:20:12Z,markstory,MEMBER,lib/Cake/Cache/Engine/FileEngine.php,,,,,1,"@@ -288,9 +283,10 @@ class FileEngine extends CacheEngine {
  		if (!$createKey && !$path->isFile()) {
  			return false;
  		}
@@ -2014,11 +2014,11 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +
 +		$old = umask(0666 & ~$this->settings['mask']);","I think the mask config option is useful.  I just think that chmod() has no chance of side effects in a multi-threaded webserver unlike umask()
 ",0,40aeabe03afb523261c36d3da690d1527207412b
-6632562,1,"Returning early for `if (Configure::read('Cache.check') === true) {` would be great too!""",2013-09-27 04:41:53,renan,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1687#discussion_r6632562,2013-09-27T16:41:53Z,2013-09-28T08:19:33Z,renan,CONTRIBUTOR,lib/Cake/Model/Model.php,,,,,1,"@@ -3501,17 +3501,20 @@ public function onError() {
+6632562,1,"Returning early for `if (Configure::read('Cache.check') === true) {` would be great too!""",9/27/13 4:41,renan,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1687#discussion_r6632562,2013-09-27T16:41:53Z,2013-09-28T08:19:33Z,renan,CONTRIBUTOR,lib/Cake/Model/Model.php,,,,,1,"@@ -3501,17 +3501,20 @@ public function onError() {
  	protected function _clearCache($type = null) {
  		if ($type === null) {","Returning early for `if (Configure::read('Cache.check') === true) {` would be great too!
 ",0,be61a5023f6052b7765bddfb3b29e52407d0df85
-4779589,0,"beeing => being and singup => signup ?""",2013-06-19 06:22:19,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1352#discussion_r4779589,2013-06-19T18:22:19Z,2013-06-19T18:22:19Z,dereuromark,MEMBER,lib/Cake/Test/Case/View/Helper/FormHelperTest.php,,6636.0,,,8,"@@ -6629,6 +6629,31 @@ public function testYearAutoExpandRange() {
+4779589,0,"beeing => being and singup => signup ?""",6/19/13 6:22,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1352#discussion_r4779589,2013-06-19T18:22:19Z,2013-06-19T18:22:19Z,dereuromark,MEMBER,lib/Cake/Test/Case/View/Helper/FormHelperTest.php,,6636,,,8,"@@ -6629,6 +6629,31 @@ public function testYearAutoExpandRange() {
  	}
  
  /**
@@ -2028,7 +2028,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 + * 2006 to 2008 to register
 + * This beeing the first singup page, we still don't have any data","beeing => being and singup => signup ?
 ",0,2c2f357f30afb956187d89f84313ea268ff22ea9
-6374521,0,"If you want you can, if not I can go through and fix the old code. There isn't a phpcs test for this which is why it is inconsistent.""",2013-09-15 23:55:27,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1638#discussion_r6374521,2013-09-16T11:55:27Z,2013-09-16T12:06:12Z,markstory,MEMBER,lib/Cake/Test/Case/Event/CakeEventManagerTest.php,,,,,1,"@@ -414,4 +422,63 @@ public function testStopPropagation() {
+6374521,0,"If you want you can, if not I can go through and fix the old code. There isn't a phpcs test for this which is why it is inconsistent.""",9/15/13 23:55,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1638#discussion_r6374521,2013-09-16T11:55:27Z,2013-09-16T12:06:12Z,markstory,MEMBER,lib/Cake/Test/Case/Event/CakeEventManagerTest.php,,,,,1,"@@ -414,4 +422,63 @@ public function testStopPropagation() {
  		$expected = array('secondListenerFunction');
  		$this->assertEquals($expected, $listener->callStack);
  	}
@@ -2043,7 +2043,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +		$manager = new CakeEventManager;
 +		$listener = new CustomTestEventListerner;","If you want you can, if not I can go through and fix the old code. There isn't a phpcs test for this which is why it is inconsistent.
 ",0,8a87f7e1b56af69b3ac9b2df52ace9caad45e9f5
-6101204,2,":(""",2013-08-31 11:25:29,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1584#discussion_r6101204,2013-08-31T23:25:29Z,2013-09-01T02:33:40Z,jrbasso,MEMBER,lib/Cake/ORM/Query.php,,,,,1,"@@ -558,6 +558,29 @@ public function mapReduce(callable $mapper = null, callable $reducer = null, $ov
+6101204,2,":(""",8/31/13 11:25,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1584#discussion_r6101204,2013-08-31T23:25:29Z,2013-09-01T02:33:40Z,jrbasso,MEMBER,lib/Cake/ORM/Query.php,,,,,1,"@@ -558,6 +558,29 @@ public function mapReduce(callable $mapper = null, callable $reducer = null, $ov
  	}
  
  /**
@@ -2065,7 +2065,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +		// Calls foreach so we cursor is rewinded automatically
 +		foreach ($this->_results as $row) {",":(
 ",0,88c0ab3a2f5be7840d559e8873b0b6562e915416
-5829535,2,"I'm glad I'm not the only person who hates Cache::set(). That method is all sorts of silly. I'm on board for removing it if others are. It adds a pile of complexity to Cache for almost no benefit other than making the calling code more complicated as well""",2013-08-17 06:44:30,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1534#discussion_r5829535,2013-08-17T18:44:30Z,2013-08-17T21:09:51Z,markstory,MEMBER,lib/Cake/Cache/Cache.php,,181.0,,,71,"@@ -125,25 +132,62 @@ class Cache {
+5829535,2,"I'm glad I'm not the only person who hates Cache::set(). That method is all sorts of silly. I'm on board for removing it if others are. It adds a pile of complexity to Cache for almost no benefit other than making the calling code more complicated as well""",8/17/13 6:44,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1534#discussion_r5829535,2013-08-17T18:44:30Z,2013-08-17T21:09:51Z,markstory,MEMBER,lib/Cake/Cache/Cache.php,,181,,,71,"@@ -125,25 +132,62 @@ class Cache {
  
  /**
   * This method can be used to define cache adapters for an application
@@ -2124,7 +2124,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +		if (isset(static::$_config[$key])) {
 +			throw new Error\Exception(__d('cake_dev', 'Cannot reconfigure existing adapter ""%s""', $key));","I'm glad I'm not the only person who hates Cache::set(). That method is all sorts of silly. I'm on board for removing it if others are. It adds a pile of complexity to Cache for almost no benefit other than making the calling code more complicated as well.
 ",0,0ecdd6f5b831281d144abd821e93f9157897709d
-5591330,0,"There are a number of classname checks throughout the new code. Would it make sense to have a simple class that implemented the ExpressionInterface that we could use to wrap other values with? That might help remove the various `instanceof` checks through""",2013-08-05 09:50:16,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1479#discussion_r5591330,2013-08-05T21:50:16Z,2013-08-10T09:37:05Z,markstory,MEMBER,lib/Cake/Database/Query.php,,1209.0,,,196,"@@ -1157,8 +1182,27 @@ protected function _buildInsertPart($parts) {
+5591330,0,"There are a number of classname checks throughout the new code. Would it make sense to have a simple class that implemented the ExpressionInterface that we could use to wrap other values with? That might help remove the various `instanceof` checks through""",8/5/13 9:50,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1479#discussion_r5591330,2013-08-05T21:50:16Z,2013-08-10T09:37:05Z,markstory,MEMBER,lib/Cake/Database/Query.php,,1209,,,196,"@@ -1157,8 +1182,27 @@ protected function _buildInsertPart($parts) {
   * @param array $parts
   * @return string SQL fragment.
   */
@@ -2149,7 +2149,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +				$expression = '(' . $expression->sql($generator) . ')';
 +			}","There are a number of classname checks throughout the new code. Would it make sense to have a simple class that implemented the ExpressionInterface that we could use to wrap other values with? That might help remove the various `instanceof` checks throughout the code as all values would implement the ExpressionInterface.
 ",0,8962e041fb4d9c46bb7cd809418d8f6f92cb2daf
-5609729,2,"Blerg. Do we need/want to support that syntax?""",2013-08-06 05:06:40,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1479#discussion_r5609729,2013-08-06T17:06:40Z,2013-08-10T09:37:05Z,markstory,MEMBER,lib/Cake/Database/Query.php,,,,,1,"@@ -1453,6 +1497,48 @@ public function defaultTypes(array $types = null) {
+5609729,2,"Blerg. Do we need/want to support that syntax?""",8/6/13 5:06,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1479#discussion_r5609729,2013-08-06T17:06:40Z,2013-08-10T09:37:05Z,markstory,MEMBER,lib/Cake/Database/Query.php,,,,,1,"@@ -1453,6 +1497,48 @@ public function defaultTypes(array $types = null) {
  	}
  
  /**
@@ -2169,7 +2169,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 + */
 +	public function bind($param, $value, $type) {","Blerg. Do we need/want to support that syntax?
 ",0,8962e041fb4d9c46bb7cd809418d8f6f92cb2daf
-4604322,0,"Yes, please.""",2013-06-09 03:19:14,Phally,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1340#discussion_r4604322,2013-06-09T15:19:14Z,2013-06-16T04:10:38Z,Phally,CONTRIBUTOR,lib/Cake/Database/Expression/QueryExpression.php,,,,,1,"@@ -551,9 +551,12 @@ protected function _parseCondition($field, $value, $types) {
+4604322,0,"Yes, please.""",6/9/13 3:19,Phally,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1340#discussion_r4604322,2013-06-09T15:19:14Z,2013-06-16T04:10:38Z,Phally,CONTRIBUTOR,lib/Cake/Database/Expression/QueryExpression.php,,,,,1,"@@ -551,9 +551,12 @@ protected function _parseCondition($field, $value, $types) {
  		$type = isset($types[$expression]) ? $types[$expression] : null;
  		$multi = false;
  
@@ -2182,7 +2182,7 @@ Mark, I'm not sure if I follow the tag formatting that you've created and how it
 +			$operator = $operator == '=' ? 'in' : $operator;
 +			$operator = $operator == '!=' ? 'not in' : $operator;","Yes, please.
 ",0,adb78e6c3992279bb0dcede982f7ba86db765a25
-4412256,1,"I like.  It's not obvious in the diff, but does this allow setting the value 'once' like so:  ```php $this->Html->pathPrefix = '//cakephp.org/css'; $this->Html->css('foo'); // http://cakephp.org/css/foo.css $this->Html->css(array('bar', 'spam'); //""",2013-05-28 01:15:40,rchavik,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1305#discussion_r4412256,2013-05-28T13:15:40Z,2013-08-07T02:45:05Z,rchavik,MEMBER,lib/Cake/Test/Case/View/Helper/HtmlHelperTest.php,,421.0,,,21,"@@ -386,6 +386,15 @@ public function testImageTag() {
+4412256,1,"I like.  It's not obvious in the diff, but does this allow setting the value 'once' like so:  ```php $this->Html->pathPrefix = '//cakephp.org/css'; $this->Html->css('foo'); // http://cakephp.org/css/foo.css $this->Html->css(array('bar', 'spam'); //""",5/28/13 1:15,rchavik,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1305#discussion_r4412256,2013-05-28T13:15:40Z,2013-08-07T02:45:05Z,rchavik,MEMBER,lib/Cake/Test/Case/View/Helper/HtmlHelperTest.php,,421,,,21,"@@ -386,6 +386,15 @@ public function testImageTag() {
  
  		$result = $this->Html->image('test.gif?one=two&three=four');
  		$this->assertTags($result, array('img' => array('src' => 'img/test.gif?one=two&amp;three=four', 'alt' => '')));
@@ -2203,7 +2203,7 @@ $this->Html->css('foo'); // http://cakephp.org/css/foo.css
 $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://cakephp.org/css/spam.css
 ```
 ",0,cda1a1e6c996ac91d7f0794b4134889f7f711024
-4288362,0,"Could you not use array_merge() here? None of the built-in hashers have nested settings.""",2013-05-18 04:27:10,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288362,2013-05-18T16:27:10Z,2013-05-26T05:59:44Z,markstory,MEMBER,lib/Cake/Controller/Component/Auth/BasePasswordHasher.php,,,,,1,"@@ -0,0 +1,66 @@
+4288362,0,"Could you not use array_merge() here? None of the built-in hashers have nested settings.""",5/18/13 4:27,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1275#discussion_r4288362,2013-05-18T16:27:10Z,2013-05-26T05:59:44Z,markstory,MEMBER,lib/Cake/Controller/Component/Auth/BasePasswordHasher.php,,,,,1,"@@ -0,0 +1,66 @@
 +<?php
 +/**
 + * PHP 5
@@ -2245,14 +2245,14 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 +	public function __construct($settings = array()) {
 +		$this->settings = Hash::merge($this->settings, $settings);","Could you not use array_merge() here? None of the built-in hashers have nested settings.
 ",0,dd2892ad8d0e3a0b09990b0a9ef26c320f1901fa
-2741043,0,"Better to use the `cake.power.gif` image from `Test/test_app/`. Also as per cake's coding standard there should be a space before and after each `.`. You can use https://github.com/cakephp/cakephp-codesniffer """,2013-01-23 01:44:24,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1080#discussion_r2741043,2013-01-23T12:44:24Z,2013-01-23T12:53:25Z,ADmad,MEMBER,lib/Cake/Test/Case/BasicsTest.php,,,,,1,"@@ -242,6 +242,10 @@ public function testH() {
+2741043,0,"Better to use the `cake.power.gif` image from `Test/test_app/`. Also as per cake's coding standard there should be a space before and after each `.`. You can use https://github.com/cakephp/cakephp-codesniffer """,1/23/13 1:44,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1080#discussion_r2741043,2013-01-23T12:44:24Z,2013-01-23T12:53:25Z,ADmad,MEMBER,lib/Cake/Test/Case/BasicsTest.php,,,,,1,"@@ -242,6 +242,10 @@ public function testH() {
  		$obj = new CakeResponse(array('body' => 'Body content'));
  		$result = h($obj);
  		$this->assertEquals('Body content', $result);
 +		
 +		$invalidString = file_get_contents(CAKE.'..'.DS.'..'.DS.'app'.DS.'webroot'.DS.'favicon.ico');","Better to use the `cake.power.gif` image from `Test/test_app/`. Also as per cake's coding standard there should be a space before and after each `.`. You can use https://github.com/cakephp/cakephp-codesniffer 
 ",0,29326d77308437c1557843c090ef7ab77ac94c88
-2521324,0,"That's quite the selection in behaviour. This is all to handle the case where the referring URL & loginRedirect are inaccessible to the user who is logged in?""",2012-12-30 04:17:59,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1053#discussion_r2521324,2012-12-30T15:17:59Z,2013-01-12T05:57:49Z,markstory,MEMBER,lib/Cake/Controller/Component/AuthComponent.php,,222.0,,,1,"@@ -215,11 +215,13 @@ class AuthComponent extends Component {
+2521324,0,"That's quite the selection in behaviour. This is all to handle the case where the referring URL & loginRedirect are inaccessible to the user who is logged in?""",12/30/12 4:17,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1053#discussion_r2521324,2012-12-30T15:17:59Z,2013-01-12T05:57:49Z,markstory,MEMBER,lib/Cake/Controller/Component/AuthComponent.php,,222,,,1,"@@ -215,11 +215,13 @@ class AuthComponent extends Component {
  	public $authError = null;
  
  /**
@@ -2265,7 +2265,7 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 + * - If set to a string or array the value is used as an url to redirect to.
 + * - If set to false a ForbiddenException exception is thrown instead of redirecting.","That's quite the selection in behaviour. This is all to handle the case where the referring URL & loginRedirect are inaccessible to the user who is logged in?
 ",0,676872d623753db5f748a696582d7298a9a28914
-1940999,0,"Missing spaces after `,`.  Please use the code sniffer for these types of errors.""",2012-10-25 02:11:27,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/912#discussion_r1940999,2012-10-25T14:11:27Z,2012-10-25T15:15:54Z,markstory,MEMBER,lib/Cake/Model/Validator/CakeValidationRule.php,,263.0,,,7,"@@ -257,6 +257,9 @@ public function isUpdate($exists = null) {
+1940999,0,"Missing spaces after `,`.  Please use the code sniffer for these types of errors.""",10/25/12 2:11,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/912#discussion_r1940999,2012-10-25T14:11:27Z,2012-10-25T15:15:54Z,markstory,MEMBER,lib/Cake/Model/Validator/CakeValidationRule.php,,263,,,7,"@@ -257,6 +257,9 @@ public function isUpdate($exists = null) {
  /**
   * Dispatches the validation rule to the given validator method
   *
@@ -2274,7 +2274,7 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 + *
   * @return boolean True if the rule could be dispatched, false otherwise","Missing spaces after `,`.  Please use the code sniffer for these types of errors.
 ",0,b843eda89dc380108a48e5c6fc84036170edc3a2
-1735942,0,"I would name it Logger instead. Or at least I would try to avoid exposing the name trait on it as it is different from interfaces in that they act very much like a class""",2012-10-01 18:36:06,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/885#discussion_r1735942,2012-10-02T06:36:06Z,2012-10-03T03:00:37Z,lorenzo,MEMBER,lib/Cake/Log/LogTrait.php,,22.0,,,22,"@@ -0,0 +1,41 @@
+1735942,0,"I would name it Logger instead. Or at least I would try to avoid exposing the name trait on it as it is different from interfaces in that they act very much like a class""",10/1/12 18:36,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/885#discussion_r1735942,2012-10-02T06:36:06Z,2012-10-03T03:00:37Z,lorenzo,MEMBER,lib/Cake/Log/LogTrait.php,,22,,,22,"@@ -0,0 +1,41 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -2300,13 +2300,13 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 + */
 +trait LogTrait {","I would name it Logger instead. Or at least I would try to avoid exposing the name trait on it as it is different from interfaces in that they act very much like a class
 ",0,dbcc0c104aa46a8df553d97c4fe50c0a2164bc94
-1050070,0,"Should be `if (`and `) {` as per the [coding conventions](http://book.cakephp.org/2.0/en/contributing/cakephp-coding-conventions.html)""",2012-06-25 23:42:15,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/700#discussion_r1050070,2012-06-26T11:42:15Z,2012-06-26T14:56:27Z,markstory,MEMBER,lib/Cake/Model/Datasource/DboSource.php,,,,,1,"@@ -1077,6 +1082,10 @@ public function read(Model $model, $queryData = array(), $recursive = null) {
+1050070,0,"Should be `if (`and `) {` as per the [coding conventions](http://book.cakephp.org/2.0/en/contributing/cakephp-coding-conventions.html)""",6/25/12 23:42,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/700#discussion_r1050070,2012-06-26T11:42:15Z,2012-06-26T14:56:27Z,markstory,MEMBER,lib/Cake/Model/Datasource/DboSource.php,,,,,1,"@@ -1077,6 +1082,10 @@ public function read(Model $model, $queryData = array(), $recursive = null) {
  			}
  		}
  
 +        if(!empty($joins)){","Should be `if (`and `) {` as per the [coding conventions](http://book.cakephp.org/2.0/en/contributing/cakephp-coding-conventions.html)
 ",0,dbdc183fbf878b48f8368c8ee46dcb825cb7d708
-6647248,0,"Perhaps this method should not directly tested if you need to use reflection hacks to test it.""",2013-09-29 01:56:48,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1693#discussion_r6647248,2013-09-29T13:56:48Z,2013-10-05T22:23:27Z,markstory,MEMBER,Cake/Test/TestCase/Database/Schema/MysqlSchemaTest.php,,,,,1,"@@ -119,13 +119,14 @@ public static function columnProvider() {
+6647248,0,"Perhaps this method should not directly tested if you need to use reflection hacks to test it.""",9/29/13 1:56,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1693#discussion_r6647248,2013-09-29T13:56:48Z,2013-10-05T22:23:27Z,markstory,MEMBER,Cake/Test/TestCase/Database/Schema/MysqlSchemaTest.php,,,,,1,"@@ -119,13 +119,14 @@ public static function columnProvider() {
  /**
   * Test parsing MySQL column types.
   *
@@ -2323,14 +2323,14 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 +		$this->assertEquals($expected, $method->invoke($dialect, $input));
  	}","Perhaps this method should not directly tested if you need to use reflection hacks to test it.
 ",0,e88556e91540fd24aba8a434b351897153e56a13
-6698205,0,"Could simple unset them in CommandTask::getShellList from listing. TBH that is hacky at best. Using reflection to check for a attribute marking it as hidden would slow it down considerably but could be a clean way to do it.""",2013-10-01 08:22:36,WyriHaximus,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1644#discussion_r6698205,2013-10-01T20:22:36Z,2013-10-02T20:32:13Z,WyriHaximus,CONTRIBUTOR,lib/Cake/Test/Case/Console/Command/CommandListShellTest.php,,108.0,,,26,"@@ -98,7 +105,7 @@ public function testMain() {
+6698205,0,"Could simple unset them in CommandTask::getShellList from listing. TBH that is hacky at best. Using reflection to check for a attribute marking it as hidden would slow it down considerably but could be a clean way to do it.""",10/1/13 8:22,WyriHaximus,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1644#discussion_r6698205,2013-10-01T20:22:36Z,2013-10-02T20:32:13Z,WyriHaximus,CONTRIBUTOR,lib/Cake/Test/Case/Console/Command/CommandListShellTest.php,,108,,,26,"@@ -98,7 +105,7 @@ public function testMain() {
  		$expected = ""/\[.*TestPluginTwo.*\] example, welcome/"";
  		$this->assertRegExp($expected, $output);
  
 -		$expected = ""/\[.*CORE.*\] acl, api, bake, command_list, console, i18n, schema, server, test, testsuite, upgrade/"";
 +		$expected = ""/\[.*CORE.*\] acl, api, bake, command_list, completion, console, i18n, schema, server, test, testsuite, upgrade/"";","Could simple unset them in CommandTask::getShellList from listing. TBH that is hacky at best. Using reflection to check for a attribute marking it as hidden would slow it down considerably but could be a clean way to do it.
 ",0,ac9b7f3882ba5ba8ab240508e46fc8d0ff30b056
-6101145,2,"@jrbasso I tried that, does not work :(""",2013-08-31 11:06:08,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1584#discussion_r6101145,2013-08-31T23:06:08Z,2013-09-01T02:33:40Z,lorenzo,MEMBER,lib/Cake/ORM/Query.php,,,,,1,"@@ -558,6 +558,29 @@ public function mapReduce(callable $mapper = null, callable $reducer = null, $ov
+6101145,2,"@jrbasso I tried that, does not work :(""",8/31/13 11:06,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1584#discussion_r6101145,2013-08-31T23:06:08Z,2013-09-01T02:33:40Z,lorenzo,MEMBER,lib/Cake/ORM/Query.php,,,,,1,"@@ -558,6 +558,29 @@ public function mapReduce(callable $mapper = null, callable $reducer = null, $ov
  	}
  
  /**
@@ -2352,7 +2352,7 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 +		// Calls foreach so we cursor is rewinded automatically
 +		foreach ($this->_results as $row) {","@jrbasso I tried that, does not work :(
 ",0,88c0ab3a2f5be7840d559e8873b0b6562e915416
-5895963,1,"Well the current code sniffs complain about it. We could always change the rules :smile:""",2013-08-21 02:07:47,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5895963,2013-08-21T14:07:47Z,2013-08-24T16:35:52Z,markstory,MEMBER,lib/Cake/Test/TestCase/ORM/QueryTest.php,,,,,1,"@@ -888,4 +903,105 @@ public function testApplyOptions() {
+5895963,1,"Well the current code sniffs complain about it. We could always change the rules :smile:""",8/21/13 2:07,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5895963,2013-08-21T14:07:47Z,2013-08-24T16:35:52Z,markstory,MEMBER,lib/Cake/Test/TestCase/ORM/QueryTest.php,,,,,1,"@@ -888,4 +903,105 @@ public function testApplyOptions() {
  		$this->assertEquals($expected, $query->contain());
  	}
  
@@ -2450,7 +2450,7 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 +
 +		$query->mapReduce(function($k, $v, $mr) { $mr->emit($v['a']); });","Well the current code sniffs complain about it. We could always change the rules :smile:
 ",0,65cc26318d4c4fe3e0e590442a746385e46c152a
-5575758,0,"A cleaner way could be to json_encode the string casted $message variable.""",2013-08-04 22:08:45,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1477#discussion_r5575758,2013-08-05T10:08:45Z,2013-08-05T11:11:30Z,lorenzo,MEMBER,lib/Cake/View/Helper/FormHelper.php,,,,,1,"@@ -1796,6 +1795,18 @@ public function postLink($title, $url = null, $options = array(), $confirmMessag
+5575758,0,"A cleaner way could be to json_encode the string casted $message variable.""",8/4/13 22:08,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1477#discussion_r5575758,2013-08-05T10:08:45Z,2013-08-05T11:11:30Z,lorenzo,MEMBER,lib/Cake/View/Helper/FormHelper.php,,,,,1,"@@ -1796,6 +1795,18 @@ public function postLink($title, $url = null, $options = array(), $confirmMessag
  	}
  
  /**
@@ -2462,7 +2462,7 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 +	protected function getConfirmHandler($message, $action) {
 +		$message = str_replace(array(""'"", '""'), array(""\'"", '\""'), $message);","A cleaner way could be to json_encode the string casted $message variable.
 ",0,560e4dc93b177f2ca5b522c2ca01dcb8d7b53018
-5436927,2,"This is bad, returning early is a good thing.""",2013-07-26 17:31:55,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1455#discussion_r5436927,2013-07-27T05:31:55Z,2013-07-27T05:31:55Z,ADmad,MEMBER,lib/Cake/Controller/Controller.php,,426.0,,,26,"@@ -422,15 +422,20 @@ public function __set($name, $value) {
+5436927,2,"This is bad, returning early is a good thing.""",7/26/13 17:31,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1455#discussion_r5436927,2013-07-27T05:31:55Z,2013-07-27T05:31:55Z,ADmad,MEMBER,lib/Cake/Controller/Controller.php,,426,,,26,"@@ -422,15 +422,20 @@ public function __set($name, $value) {
  			case 'here':
  			case 'webroot':
  			case 'data':
@@ -2470,7 +2470,7 @@ $this->Html->css(array('bar', 'spam'); // http://cakephp.org/css/bar.css http://
 +				$this->request->{$name} = $value;
 +				break;","This is bad, returning early is a good thing.
 ",0,340847c19786d301a71ad5a34b9401258d7cc067
-3597681,0,"You could use an interface, I don't have a good grasp of whether an interface is better, or whether the current approach is better. I thought that the if statements that were added wouldn't be required if it were a 'pure' decorator. Something like:  ```""",2013-03-31 13:30:56,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1210#discussion_r3597681,2013-04-01T01:30:56Z,2013-04-03T22:16:21Z,markstory,MEMBER,lib/Cake/Model/Datasource/Database/Log/LoggingStatement.php,,,,,1,"@@ -0,0 +1,95 @@
+3597681,0,"You could use an interface, I don't have a good grasp of whether an interface is better, or whether the current approach is better. I thought that the if statements that were added wouldn't be required if it were a 'pure' decorator. Something like:  ```""",3/31/13 13:30,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1210#discussion_r3597681,2013-04-01T01:30:56Z,2013-04-03T22:16:21Z,markstory,MEMBER,lib/Cake/Model/Datasource/Database/Log/LoggingStatement.php,,,,,1,"@@ -0,0 +1,95 @@
 +<?php
 +/**
 + * PHP Version 5.4
@@ -2502,7 +2502,7 @@ new LoggingStatement(new Statement($pdoStatement));
 
 Where LoggingStatement and Statement offer the same interface. This way if we needed to add more decorators later we could re-use the same pattern.  Most methods in Statement/LoggingStatement would just proxy to the decorated object.
 ",0,24e5481bc0204765ce15bcf8a104c8e8cde88507
-2356979,0,"It is trivial, it can be changed if you consider it appropriate... in fact, I just added this here for consistency I suppose.   Cause the easiest way to 'hack' into generating enum values was to use PHPMyAdmin's approach: to use the (already available) """,2012-12-08 05:32:36,bar,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1011#discussion_r2356979,2012-12-08T16:32:36Z,2012-12-09T16:43:11Z,bar,CONTRIBUTOR,lib/Cake/Model/Datasource/Database/Mysql.php,,701.0,,,111,"@@ -676,13 +684,103 @@ public function column($real) {
+2356979,0,"It is trivial, it can be changed if you consider it appropriate... in fact, I just added this here for consistency I suppose.   Cause the easiest way to 'hack' into generating enum values was to use PHPMyAdmin's approach: to use the (already available) """,12/8/12 5:32,bar,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1011#discussion_r2356979,2012-12-08T16:32:36Z,2012-12-09T16:43:11Z,bar,CONTRIBUTOR,lib/Cake/Model/Datasource/Database/Mysql.php,,701,,,111,"@@ -676,13 +684,103 @@ public function column($real) {
  		if (strpos($col, 'float') !== false || strpos($col, 'double') !== false || strpos($col, 'decimal') !== false) {
  			return 'float';
  		}
@@ -2529,7 +2529,7 @@ Cause the easiest way to 'hack' into generating enum values was to use PHPMyAdmi
 
 Because there was a need to understand the enum values and later validate (and handle) them, it was better if they were an array instead, so `enumerationValues()` and `isEnumeration()` were born, and the [test](https://github.com/cakephp/cakephp/pull/1011/files#L1R325) inside `describe()` was done.
 ",0,8ce174647e132787676a237dd4c84e31895da335
-2098343,1,"Sorry, you are right about that, i think we should always unset it in BaseAuthenticate if present in the userdata, not only if its in the conditions.""",2012-11-12 04:25:54,ceeram,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/949#discussion_r2098343,2012-11-12T15:25:54Z,2012-11-12T15:25:54Z,ceeram,CONTRIBUTOR,lib/Cake/Controller/Component/Auth/DirectAuthenticate.php,,79.0,,,79,"@@ -0,0 +1,85 @@
+2098343,1,"Sorry, you are right about that, i think we should always unset it in BaseAuthenticate if present in the userdata, not only if its in the conditions.""",11/12/12 4:25,ceeram,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/949#discussion_r2098343,2012-11-12T15:25:54Z,2012-11-12T15:25:54Z,ceeram,CONTRIBUTOR,lib/Cake/Controller/Component/Auth/DirectAuthenticate.php,,79,,,79,"@@ -0,0 +1,85 @@
 +<?php
 +App::uses('BaseAuthenticate', 'Controller/Component/Auth');
 +
@@ -2610,14 +2610,14 @@ Because there was a need to understand the enum values and later validate (and h
 +		$user = parent::_findUser($conditions);
 +		if (isset($user[$fields['password']])) {","Sorry, you are right about that, i think we should always unset it in BaseAuthenticate if present in the userdata, not only if its in the conditions.
 ",0,0be9ccd832417a542f3903e0371986a2d6c748de
-2015276,2,"I disagree. Passing """"::somestring"""" would be invalid either way and the developers fault (you cant possibly cover all mistakes possible here). But using the type safe check we would at least result in a meaningful exception: """"trigger_error(__d('cake_dev'",2012-11-02 00:52:48,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r2015276,2012-11-02T11:52:48Z,2013-01-20T08:13:47Z,dereuromark,MEMBER,lib/Cake/Model/Validator/CakeValidationRule.php,,,,,1,"@@ -271,6 +274,17 @@ public function process($field, &$data, &$methods) {
+2015276,2,"I disagree. Passing """"::somestring"""" would be invalid either way and the developers fault (you cant possibly cover all mistakes possible here). But using the type safe check we would at least result in a meaningful exception: """"trigger_error(__d('cake_dev'",11/2/12 0:52,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/913#discussion_r2015276,2012-11-02T11:52:48Z,2013-01-20T08:13:47Z,dereuromark,MEMBER,lib/Cake/Model/Validator/CakeValidationRule.php,,,,,1,"@@ -271,6 +274,17 @@ public function process($field, &$data, &$methods) {
  			$this->_valid = call_user_func_array($methods[$rule], $this->_ruleParams);
  		} elseif (class_exists('Validation') && method_exists('Validation', $this->_rule)) {
  			$this->_valid = call_user_func_array(array('Validation', $this->_rule), $this->_ruleParams);
 +		} elseif (strpos($this->_rule, '::')) {","I disagree. Passing ""::somestring"" would be invalid either way and the developers fault (you cant possibly cover all mistakes possible here).
 But using the type safe check we would at least result in a meaningful exception: ""trigger_error(__d('cake_dev', 'Could not find custom validation rule %s'"" instead of trying to execute it as a preg match string.
 ",0,b2cbeeeb501285431bdc7fb2a5b37f260b792261
-6377811,0,"Makes sense, I haven't tested getters/setters yet""",2013-09-16 02:30:34,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1639#discussion_r6377811,2013-09-16T14:30:34Z,2013-10-19T14:50:16Z,lorenzo,MEMBER,Cake/ORM/Entity.php,,,,,1,"@@ -0,0 +1,139 @@
+6377811,0,"Makes sense, I haven't tested getters/setters yet""",9/16/13 2:30,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1639#discussion_r6377811,2013-09-16T14:30:34Z,2013-10-19T14:50:16Z,lorenzo,MEMBER,Cake/ORM/Entity.php,,,,,1,"@@ -0,0 +1,139 @@
 +<?php
 +
 +namespace Cake\ORM;
@@ -2695,7 +2695,7 @@ But using the type safe check we would at least result in a meaningful exception
 +		if (method_exists($this, $method)) {
 +			$value =& $this->{$method}();","Makes sense, I haven't tested getters/setters yet
 ",0,299e7b81cf0f0f975497454d75a8e191ce1e3c88
-2827387,0,"This is not something you can just do. It will break every encoded cookie out in the wild.""",2013-01-30 04:13:44,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1100#discussion_r2827387,2013-01-30T15:13:44Z,2013-01-30T18:06:50Z,markstory,MEMBER,lib/Cake/Controller/Component/CookieComponent.php,,,,,1,"@@ -131,11 +131,11 @@ class CookieComponent extends Component {
+2827387,0,"This is not something you can just do. It will break every encoded cookie out in the wild.""",1/30/13 4:13,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1100#discussion_r2827387,2013-01-30T15:13:44Z,2013-01-30T18:06:50Z,markstory,MEMBER,lib/Cake/Controller/Component/CookieComponent.php,,,,,1,"@@ -131,11 +131,11 @@ class CookieComponent extends Component {
   * Type of encryption to use.
   *
   * Currently two methods are available: cipher and rijndael
@@ -2707,7 +2707,7 @@ But using the type safe check we would at least result in a meaningful exception
 -	protected $_type = 'cipher';
 +	protected $_type = 'rijndael';","This is not something you can just do. It will break every encoded cookie out in the wild.
 ",0,c9b14115bf619f0585524e431fae2ac9577a1b98
-5912524,2,"It is too bad a trait cannot implement an interface :(""",2013-08-21 11:17:48,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5912524,2013-08-21T23:17:48Z,2013-08-24T16:35:52Z,markstory,MEMBER,lib/Cake/ORM/ResultCollectionTrait.php,,27.0,,,27,"@@ -0,0 +1,72 @@
+5912524,2,"It is too bad a trait cannot implement an interface :(""",8/21/13 11:17,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5912524,2013-08-21T23:17:48Z,2013-08-24T16:35:52Z,markstory,MEMBER,lib/Cake/ORM/ResultCollectionTrait.php,,27,,,27,"@@ -0,0 +1,72 @@
 +<?php
 +/**
 + * PHP Version 5.4
@@ -2736,7 +2736,7 @@ But using the type safe check we would at least result in a meaningful exception
 + */
 +trait ResultCollectionTrait {","It is too bad a trait cannot implement an interface :(
 ",0,65cc26318d4c4fe3e0e590442a746385e46c152a
-5576286,2,"Oh noes, code style. :( I'll be super careful about that in the future. Too many projects here.""",2013-08-04 22:50:38,aleho,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1477#discussion_r5576286,2013-08-05T10:50:38Z,2013-08-05T11:11:30Z,aleho,NONE,lib/Cake/View/Helper/FormHelper.php,,,,,1,"@@ -1796,6 +1795,18 @@ public function postLink($title, $url = null, $options = array(), $confirmMessag
+5576286,2,"Oh noes, code style. :( I'll be super careful about that in the future. Too many projects here.""",8/4/13 22:50,aleho,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1477#discussion_r5576286,2013-08-05T10:50:38Z,2013-08-05T11:11:30Z,aleho,NONE,lib/Cake/View/Helper/FormHelper.php,,,,,1,"@@ -1796,6 +1795,18 @@ public function postLink($title, $url = null, $options = array(), $confirmMessag
  	}
  
  /**
@@ -2748,7 +2748,7 @@ But using the type safe check we would at least result in a meaningful exception
 +	protected function getConfirmHandler($message, $action) {","Oh noes, code style. :(
 I'll be super careful about that in the future. Too many projects here.
 ",0,560e4dc93b177f2ca5b522c2ca01dcb8d7b53018
-5421890,2,"I did... in this case just don't write anything in the docblock. I've encountered too many times where the ``@return void`` annotation was wrong.  I guess that's one of those things where opinions just differ. Like coding standards in general. I leave""",2013-07-26 01:04:10,ravage84,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1451#discussion_r5421890,2013-07-26T13:04:10Z,2013-07-26T13:21:42Z,ravage84,MEMBER,lib/Cake/Test/Case/Controller/Component/AuthComponentTest.php,,,,,1,"@@ -1269,6 +1269,39 @@ public function testRedirectSessionReadEqualToLoginAction() {
+5421890,2,"I did... in this case just don't write anything in the docblock. I've encountered too many times where the ``@return void`` annotation was wrong.  I guess that's one of those things where opinions just differ. Like coding standards in general. I leave""",7/26/13 1:04,ravage84,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1451#discussion_r5421890,2013-07-26T13:04:10Z,2013-07-26T13:21:42Z,ravage84,MEMBER,lib/Cake/Test/Case/Controller/Component/AuthComponentTest.php,,,,,1,"@@ -1269,6 +1269,39 @@ public function testRedirectSessionReadEqualToLoginAction() {
  	}
  
  /**
@@ -2760,26 +2760,26 @@ I've encountered too many times where the `@return void` annotation was wrong.
 I guess that's one of those things where opinions just differ. Like coding standards in general.
 I leave it to @Phally 
 ",0,f7eab23a5c03b4f323e1445e3129b54da56793d3
-4676740,1,"It seems you are right. I've just checked and indeed it has overwritten my own Return-Path.""",2013-06-12 23:29:09,Phally,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1349#discussion_r4676740,2013-06-13T11:29:09Z,2013-06-13T11:29:09Z,Phally,CONTRIBUTOR,lib/Cake/Test/Case/Network/Email/SmtpTransportTest.php,,293.0,,,33,"@@ -290,7 +312,6 @@ public function testSendData() {
+4676740,1,"It seems you are right. I've just checked and indeed it has overwritten my own Return-Path.""",6/12/13 23:29,Phally,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1349#discussion_r4676740,2013-06-13T11:29:09Z,2013-06-13T11:29:09Z,Phally,CONTRIBUTOR,lib/Cake/Test/Case/Network/Email/SmtpTransportTest.php,,293,,,33,"@@ -290,7 +312,6 @@ public function testSendData() {
  		$email->expects($this->any())->method('message')->will($this->returnValue(array('First Line', 'Second Line', '.Third Line', '')));
  
  		$data = ""From: CakePHP Test <noreply@cakephp.org>\r\n"";
 -		$data .= ""Return-Path: CakePHP Return <pleasereply@cakephp.org>\r\n"";","It seems you are right. I've just checked and indeed it has overwritten my own Return-Path.
 ",0,796e4b45dd092c7eb1a0ab128280578523191ef3
-3507806,0,"Moving the `!empty($config['log'])` check also inside the `_skipLogging()` function sounds good to me.""",2013-03-24 21:23:39,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1186#discussion_r3507806,2013-03-25T08:23:39Z,2013-03-26T14:10:02Z,ADmad,MEMBER,lib/Cake/Error/ErrorHandler.php,,,,,1,"@@ -110,7 +110,7 @@ class ErrorHandler {
+3507806,0,"Moving the `!empty($config['log'])` check also inside the `_skipLogging()` function sounds good to me.""",3/24/13 21:23,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1186#discussion_r3507806,2013-03-25T08:23:39Z,2013-03-26T14:10:02Z,ADmad,MEMBER,lib/Cake/Error/ErrorHandler.php,,,,,1,"@@ -110,7 +110,7 @@ class ErrorHandler {
   */
  	public static function handleException(Exception $exception) {
  		$config = Configure::read('Exception');
 -		if (!empty($config['log'])) {
 +		if (!empty($config['log']) && !self::_skipLogging($exception, $config)) {","Moving the `!empty($config['log'])` check also inside the `_skipLogging()` function sounds good to me.
 ",0,6bf9363217137b6deb1dccb44ecc7d93875d49a3
-1714707,0,"Indentation is not correct here. Also there should be space before and after `=`. You can use the [codesniffer](https://github.com/cakephp/cakephp-codesniffer) to avoid such errors.""",2012-09-27 17:27:22,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/872#discussion_r1714707,2012-09-28T05:27:22Z,2012-09-28T06:07:43Z,ADmad,MEMBER,lib/Cake/Cache/Engine/WincacheEngine.php,,,,,1,"@@ -183,6 +183,7 @@ public function groups() {
+1714707,0,"Indentation is not correct here. Also there should be space before and after `=`. You can use the [codesniffer](https://github.com/cakephp/cakephp-codesniffer) to avoid such errors.""",9/27/12 17:27,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/872#discussion_r1714707,2012-09-28T05:27:22Z,2012-09-28T06:07:43Z,ADmad,MEMBER,lib/Cake/Cache/Engine/WincacheEngine.php,,,,,1,"@@ -183,6 +183,7 @@ public function groups() {
   * @return boolean success
   **/
  	public function clearGroup($group) {
 +	        $success=0;","Indentation is not correct here. Also there should be space before and after `=`. You can use the [codesniffer](https://github.com/cakephp/cakephp-codesniffer) to avoid such errors.
 ",0,f4565d51fad4ba81906f085cd5abf043d4852365
-1625821,0,"Indeed the fieldList is a whitelist. I too think it should be a protected method.""",2012-09-17 17:05:16,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1625821,2012-09-18T05:05:16Z,2012-11-02T09:54:30Z,ADmad,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
+1625821,0,"Indeed the fieldList is a whitelist. I too think it should be a protected method.""",9/17/12 17:05,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/851#discussion_r1625821,2012-09-18T05:05:16Z,2012-11-02T09:54:30Z,ADmad,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -2299,6 +2302,29 @@ public function saveAssociated($data = null, $options = array()) {
  	}
  
  /**
@@ -2791,32 +2791,32 @@ I leave it to @Phally
 + */
 +	public function addToFieldList($key, $options) {","Indeed the fieldList is a whitelist. I too think it should be a protected method.
 ",0,7007dba0eb836f852aaca95fada103bc4ba993a9
-1611246,0,"Isn't this a behavior change as well, the count could be > 1 now and pass.""",2012-09-14 07:58:35,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/846#discussion_r1611246,2012-09-14T19:58:35Z,2012-10-01T01:08:06Z,markstory,MEMBER,lib/Cake/View/Helper.php,,530.0,,,14,"@@ -526,12 +526,11 @@ public function setEntity($entity, $setScope = false) {
+1611246,0,"Isn't this a behavior change as well, the count could be > 1 now and pass.""",9/14/12 7:58,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/846#discussion_r1611246,2012-09-14T19:58:35Z,2012-10-01T01:08:06Z,markstory,MEMBER,lib/Cake/View/Helper.php,,530,,,14,"@@ -526,12 +526,11 @@ public function setEntity($entity, $setScope = false) {
  
  		$isHabtm = (
  			isset($this->fieldset[$this->_modelScope]['fields'][$parts[0]]['type']) &&
 -			$this->fieldset[$this->_modelScope]['fields'][$parts[0]]['type'] === 'multiple' &&
 -			$count == 1","Isn't this a behavior change as well, the count could be > 1 now and pass.
 ",0,408e619c9fa6f114ca0531713e1df996165637eb
-808124,0,"Missing `{` and `}` as per the [coding standards](http://book.cakephp.org/2.0/en/contributing/cakephp-coding-conventions.html)""",2012-05-11 00:00:17,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/647#discussion_r808124,2012-05-11T12:00:17Z,2012-05-11T12:00:17Z,markstory,MEMBER,lib/Cake/Network/CakeResponse.php,,378.0,,,4,"@@ -375,6 +375,8 @@ public function send() {
+808124,0,"Missing `{` and `}` as per the [coding standards](http://book.cakephp.org/2.0/en/contributing/cakephp-coding-conventions.html)""",5/11/12 0:00,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/647#discussion_r808124,2012-05-11T12:00:17Z,2012-05-11T12:00:17Z,markstory,MEMBER,lib/Cake/Network/CakeResponse.php,,378,,,4,"@@ -375,6 +375,8 @@ public function send() {
  		$this->_setContentLength();
  		$this->_setContentType();
  		foreach ($this->_headers as $header => $value) {
 +			if (is_array($value))","Missing `{` and `}` as per the [coding standards](http://book.cakephp.org/2.0/en/contributing/cakephp-coding-conventions.html)
 ",0,5324365d94c7f598bc133adb0cc64217108efd9a
-374831,2,"Sure that makes sense. I also broke the build - AllTests fails because of classnames - so I'm fixing that as well.""",2012-01-22 10:01:47,josegonzalez,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/437#discussion_r374831,2012-01-22T21:01:47Z,2012-01-22T21:01:47Z,josegonzalez,MEMBER,lib/Cake/View/View.php,,308.0,,,17,"@@ -299,6 +305,9 @@ public function __construct($controller) {
+374831,2,"Sure that makes sense. I also broke the build - AllTests fails because of classnames - so I'm fixing that as well.""",1/22/12 10:01,josegonzalez,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/437#discussion_r374831,2012-01-22T21:01:47Z,2012-01-22T21:01:47Z,josegonzalez,MEMBER,lib/Cake/View/View.php,,308,,,17,"@@ -299,6 +305,9 @@ public function __construct($controller) {
  				$this->{$var} = $controller->{$var};
  			}
  			$this->_eventManager = $controller->getEventManager();
 +			if (!empty($controller->theme)) {","Sure that makes sense. I also broke the build - AllTests fails because of classnames - so I'm fixing that as well.
 ",0,c2519e702d26845654e25125412a8ad1485ed73f
-284853,1,"Thanks! Fixed. You think after all those code standards commits I would have caught this. :)""",2011-12-10 06:07:31,shama,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/371#discussion_r284853,2011-12-10T17:07:31Z,2011-12-10T17:07:31Z,shama,CONTRIBUTOR,lib/Cake/TestSuite/CakeTestSuite.php,,,,,1,"@@ -52,6 +52,9 @@ public function addTestDirectoryRecursive($directory = '.') {
+284853,1,"Thanks! Fixed. You think after all those code standards commits I would have caught this. :)""",12/10/11 6:07,shama,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/371#discussion_r284853,2011-12-10T17:07:31Z,2011-12-10T17:07:31Z,shama,CONTRIBUTOR,lib/Cake/TestSuite/CakeTestSuite.php,,,,,1,"@@ -52,6 +52,9 @@ public function addTestDirectoryRecursive($directory = '.') {
  		$files = $Folder->tree(null, false, 'files');
  
  		foreach ($files as $file) {
 +			if (strpos($file, DS.'.') !== false) {","Thanks! Fixed. You think after all those code standards commits I would have caught this. :)
 ",0,17fcd0534fac8f672ef03b126faebb73f1edcfe1
-112620,2,"I really don't care much if PHP4 people can't run tests.  I'd rather be able to ensure code isn't buggy than ensure compatibility with PHP4.""",2011-09-04 02:39:31,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/182#discussion_r112620,2011-09-04T14:39:31Z,2011-09-04T14:39:31Z,markstory,MEMBER,cake/tests/cases/libs/view/helpers/time.test.php,,414.0,,,6,"@@ -409,6 +409,16 @@ class TimeHelperTest extends CakeTestCase {
+112620,2,"I really don't care much if PHP4 people can't run tests.  I'd rather be able to ensure code isn't buggy than ensure compatibility with PHP4.""",9/4/11 2:39,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/182#discussion_r112620,2011-09-04T14:39:31Z,2011-09-04T14:39:31Z,markstory,MEMBER,cake/tests/cases/libs/view/helpers/time.test.php,,414,,,6,"@@ -409,6 +409,16 @@ class TimeHelperTest extends CakeTestCase {
   */
  	function testToRss() {
  		$this->assertEqual(date('r'), $this->Time->toRss(time()));
@@ -2824,7 +2824,7 @@ I leave it to @Phally
 +		if (!$this->skipIf(!class_exists('DateTimeZone'), '%s DateTimeZone class not available.')) {
 +			$timezones = array('Europe/London', 'Europe/Brussels', 'UTC', 'America/Denver', 'America/Caracas', 'Asia/Kathmandu');","I really don't care much if PHP4 people can't run tests.  I'd rather be able to ensure code isn't buggy than ensure compatibility with PHP4.
 ",0,da4b75c99383957b3974b019a28dd1777765fe6d
-6485024,1,"Perhaps reversing the previous decision is best. Having isset() and the ArrayAccess interface work as expected is more important than handling null values. Perhaps a separate method could be used to see if a property is defined?""",2013-09-20 00:14:52,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1639#discussion_r6485024,2013-09-20T12:14:52Z,2013-10-19T14:50:16Z,markstory,MEMBER,Cake/ORM/Entity.php,,,,,1,"@@ -0,0 +1,250 @@
+6485024,1,"Perhaps reversing the previous decision is best. Having isset() and the ArrayAccess interface work as expected is more important than handling null values. Perhaps a separate method could be used to see if a property is defined?""",9/20/13 0:14,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1639#discussion_r6485024,2013-09-20T12:14:52Z,2013-10-19T14:50:16Z,markstory,MEMBER,Cake/ORM/Entity.php,,,,,1,"@@ -0,0 +1,250 @@
 +<?php
 +
 +namespace Cake\ORM;
@@ -2996,7 +2996,7 @@ I leave it to @Phally
 +		$set = array_key_exists($property, $this->_properties);
 +		return $set || method_exists($this, 'get' . ucFirst($property));","Perhaps reversing the previous decision is best. Having isset() and the ArrayAccess interface work as expected is more important than handling null values. Perhaps a separate method could be used to see if a property is defined?
 ",0,299e7b81cf0f0f975497454d75a8e191ce1e3c88
-6687028,0,"What if you had 2 fields:  * 1 string with 1$-dollar signs * 1 string with 1€-euro signs  would these 2 not get the same id?""",2013-10-01 02:07:17,kimegede,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1635#discussion_r6687028,2013-10-01T14:07:17Z,2013-12-24T14:20:46Z,kimegede,CONTRIBUTOR,lib/Cake/Test/Case/View/HelperTest.php,,,,,1,"@@ -854,6 +854,32 @@ public function testClean() {
+6687028,0,"What if you had 2 fields:  * 1 string with 1$-dollar signs * 1 string with 1€-euro signs  would these 2 not get the same id?""",10/1/13 2:07,kimegede,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1635#discussion_r6687028,2013-10-01T14:07:17Z,2013-12-24T14:20:46Z,kimegede,CONTRIBUTOR,lib/Cake/Test/Case/View/HelperTest.php,,,,,1,"@@ -854,6 +854,32 @@ public function testClean() {
  	}
  
  /**
@@ -3022,7 +3022,7 @@ I leave it to @Phally
 
 would these 2 not get the same id?
 ",0,b392254c9211aa521f44f4a4b61bb5b11e4b2b81
-6307484,2,"What IDE do you guys use? Mine has spelling correction so I never run into these mistakes!""",2013-09-11 09:21:57,milesj,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1621#discussion_r6307484,2013-09-11T21:21:57Z,2013-09-12T01:23:58Z,milesj,NONE,lib/Cake/Core/Plugin.php,,,,,1,"@@ -36,37 +34,73 @@ class Plugin {
+6307484,2,"What IDE do you guys use? Mine has spelling correction so I never run into these mistakes!""",9/11/13 9:21,milesj,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1621#discussion_r6307484,2013-09-11T21:21:57Z,2013-09-12T01:23:58Z,milesj,NONE,lib/Cake/Core/Plugin.php,,,,,1,"@@ -36,37 +34,73 @@ class Plugin {
   *
   * @var array
   */
@@ -3037,7 +3037,7 @@ would these 2 not get the same id?
 + * Plugins only need to be loaded if you want bootstrapping/routes/cli commands to
 + * be exposed. If your plugin doese not expose any of these features you do not need","What IDE do you guys use? Mine has spelling correction so I never run into these mistakes!
 ",0,0480325e8404f7792144aef7bd1e2b681b24d983
-6189897,0,"@ADmad Very true! testing with ```array_key_exists()``` now.  @markstory @ravage84 It does, but I targeted master because I considered a bug: . throwing undefined index when a key is not in the ```viewVars``` array . returning a JSON encoded array whe""",2013-09-05 06:36:15,bar,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1613#discussion_r6189897,2013-09-05T18:36:15Z,2013-09-07T05:39:06Z,bar,CONTRIBUTOR,lib/Cake/View/JsonView.php,,,,,1,"@@ -130,13 +130,15 @@ public function render($view = null, $layout = null) {
+6189897,0,"@ADmad Very true! testing with ```array_key_exists()``` now.  @markstory @ravage84 It does, but I targeted master because I considered a bug: . throwing undefined index when a key is not in the ```viewVars``` array . returning a JSON encoded array whe""",9/5/13 6:36,bar,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1613#discussion_r6189897,2013-09-05T18:36:15Z,2013-09-07T05:39:06Z,bar,CONTRIBUTOR,lib/Cake/View/JsonView.php,,,,,1,"@@ -130,13 +130,15 @@ public function render($view = null, $layout = null) {
   */
  	protected function _serialize($serialize) {
  		if (is_array($serialize)) {
@@ -3053,7 +3053,7 @@ would these 2 not get the same id?
 . throwing undefined index when a key is not in the `viewVars` array
 . returning a JSON encoded array when no key is found and array is given to `_serialize`
 ",0,c3ee9a20586eed65edb3fa9b7e6107178bba1b8e
-6186448,0,"Won't these changes cause strict errors in applications? Their code might have previously conformed to the old method signatures but will not anymore.""",2013-09-05 04:33:49,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1610#discussion_r6186448,2013-09-05T16:33:49Z,2013-09-05T16:33:49Z,markstory,MEMBER,lib/Cake/Model/ModelBehavior.php,,172.0,,,22,"@@ -163,9 +165,11 @@ public function afterValidate(Model $model) {
+6186448,0,"Won't these changes cause strict errors in applications? Their code might have previously conformed to the old method signatures but will not anymore.""",9/5/13 4:33,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1610#discussion_r6186448,2013-09-05T16:33:49Z,2013-09-05T16:33:49Z,markstory,MEMBER,lib/Cake/Model/ModelBehavior.php,,172,,,22,"@@ -163,9 +165,11 @@ public function afterValidate(Model $model) {
   * will abort the save operation.
   *
   * @param Model $model Model using this behavior
@@ -3064,7 +3064,7 @@ would these 2 not get the same id?
 -	public function beforeSave(Model $model) {
 +	public function beforeSave(Model $model, $options = array()) {","Won't these changes cause strict errors in applications? Their code might have previously conformed to the old method signatures but will not anymore.
 ",0,c524645738e666bf4a298d15e6fd6f39d7c6992e
-5891580,0,"Should it still be a early-return or something in the lines of:  ```php if ($this->_useBufferedResults) {     $resultSet = new BufferedResultSet($this, $this->executeStatement()); } else {     $resultSet = new ResultSet($this, $this->executeStatemen""",2013-08-20 22:08:44,renansaddam,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5891580,2013-08-21T10:08:44Z,2013-08-24T16:35:52Z,renan,CONTRIBUTOR,lib/Cake/ORM/Query.php,,393.0,,,28,"@@ -375,16 +383,18 @@ public function setResult($results) {
+5891580,0,"Should it still be a early-return or something in the lines of:  ```php if ($this->_useBufferedResults) {     $resultSet = new BufferedResultSet($this, $this->executeStatement()); } else {     $resultSet = new ResultSet($this, $this->executeStatemen""",8/20/13 22:08,renansaddam,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1544#discussion_r5891580,2013-08-21T10:08:44Z,2013-08-24T16:35:52Z,renan,CONTRIBUTOR,lib/Cake/ORM/Query.php,,393,,,28,"@@ -375,16 +383,18 @@ public function setResult($results) {
   * Resulting object is traversable, so it can be used in any loop as you would
   * with an array.
   *
@@ -3095,7 +3095,7 @@ $resultSetClass = ($this->_useBufferedResults) ? 'BufferedResultSet' : 'ResultSe
 return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatement()));
 ```
 ",0,65cc26318d4c4fe3e0e590442a746385e46c152a
-5621790,2,"Because I hadn't seen that, this is very out of place :( Will fix in a few.""",2013-08-06 13:23:24,tigrang,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1483#discussion_r5621790,2013-08-07T01:23:24Z,2013-08-07T01:31:13Z,tigrang,CONTRIBUTOR,lib/Cake/Utility/Debugger.php,,,,,1,"@@ -576,6 +576,11 @@ protected static function _object($var, $depth, $indent) {
+5621790,2,"Because I hadn't seen that, this is very out of place :( Will fix in a few.""",8/6/13 13:23,tigrang,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1483#discussion_r5621790,2013-08-07T01:23:24Z,2013-08-07T01:31:13Z,tigrang,CONTRIBUTOR,lib/Cake/Utility/Debugger.php,,,,,1,"@@ -576,6 +576,11 @@ protected static function _object($var, $depth, $indent) {
  		$out = '';
  		$props = array();
  
@@ -3104,7 +3104,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 +			return $type;
 +		}","Because I hadn't seen that, this is very out of place :( Will fix in a few.
 ",0,2150e8dce51c485808dafe67b9a415d4e9131ef6
-4604177,0,"Do you mean that some association types don't implement more than one strategy to fetch records?""",2013-06-09 02:21:56,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1340#discussion_r4604177,2013-06-09T14:21:56Z,2013-06-16T04:10:38Z,markstory,MEMBER,lib/Cake/ORM/Association.php,,124.0,,,124,"@@ -0,0 +1,406 @@
+4604177,0,"Do you mean that some association types don't implement more than one strategy to fetch records?""",6/9/13 2:21,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1340#discussion_r4604177,2013-06-09T14:21:56Z,2013-06-16T04:10:38Z,markstory,MEMBER,lib/Cake/ORM/Association.php,,124,,,124,"@@ -0,0 +1,406 @@
 +<?php
 +/**
 + * PHP Version 5.4
@@ -3231,7 +3231,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 + * The strategy name to be used to fetch associated records. Some association
 + * types might not implement but one strategy to fetch records.","Do you mean that some association types don't implement more than one strategy to fetch records?
 ",0,adb78e6c3992279bb0dcede982f7ba86db765a25
-4604658,0,"Yes, they are""",2013-06-09 06:39:19,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1340#discussion_r4604658,2013-06-09T18:39:19Z,2013-06-16T04:10:38Z,lorenzo,MEMBER,lib/Cake/ORM/Association.php,,269.0,,,269,"@@ -0,0 +1,406 @@
+4604658,0,"Yes, they are""",6/9/13 6:39,lorenzo,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1340#discussion_r4604658,2013-06-09T18:39:19Z,2013-06-16T04:10:38Z,lorenzo,MEMBER,lib/Cake/ORM/Association.php,,269,,,269,"@@ -0,0 +1,406 @@
 +<?php
 +/**
 + * PHP Version 5.4
@@ -3503,7 +3503,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 + */
 +	public function canBeJoined($options = []) {","Yes, they are
 ",0,adb78e6c3992279bb0dcede982f7ba86db765a25
-4520550,0,"You can use the official [codesniffer](https://github.com/cakephp/cakephp-codesniffer).""",2013-06-03 23:58:28,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1323#discussion_r4520550,2013-06-04T11:58:28Z,2013-06-04T14:39:15Z,ADmad,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -1497,6 +1497,14 @@ public function create($data = array(), $filterKey = false) {
+4520550,0,"You can use the official [codesniffer](https://github.com/cakephp/cakephp-codesniffer).""",6/3/13 23:58,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1323#discussion_r4520550,2013-06-04T11:58:28Z,2013-06-04T14:39:15Z,ADmad,MEMBER,lib/Cake/Model/Model.php,,,,,1,"@@ -1497,6 +1497,14 @@ public function create($data = array(), $filterKey = false) {
  		}
  		return $this->data;
  	}
@@ -3516,7 +3516,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 + */
 +	public function clear() { return $this->create(false); }","You can use the official [codesniffer](https://github.com/cakephp/cakephp-codesniffer).
 ",0,1a164c21422136bbd432574c3a7fc8e7e4ead41a
-3788818,2,"I too dislike having huge lists in classes and the memory overhead. Can't we come up with a better way to avoid the extra memory cost for those who don't need this feature by having the list load conditionally from a config file and/or through `Configure:""",2013-04-14 18:27:20,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1229#discussion_r3788818,2013-04-15T06:27:20Z,2013-04-15T06:27:20Z,ADmad,MEMBER,lib/Cake/Network/CakeRequest.php,,992.0,,,355,"@@ -646,7 +986,13 @@ public function host() {
+3788818,2,"I too dislike having huge lists in classes and the memory overhead. Can't we come up with a better way to avoid the extra memory cost for those who don't need this feature by having the list load conditionally from a config file and/or through `Configure:""",4/14/13 18:27,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1229#discussion_r3788818,2013-04-15T06:27:20Z,2013-04-15T06:27:20Z,ADmad,MEMBER,lib/Cake/Network/CakeRequest.php,,992,,,355,"@@ -646,7 +986,13 @@ public function host() {
  	public function domain($tldLength = 1) {
  		$segments = explode('.', $this->host());
  		$domain = array_slice($segments, -1 * ($tldLength + 1));
@@ -3526,7 +3526,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 +		if (in_array('.' . $domain, $this->_slds)) {
 +			return $this->domain($tldLength + 1);","I too dislike having huge lists in classes and the memory overhead. Can't we come up with a better way to avoid the extra memory cost for those who don't need this feature by having the list load conditionally from a config file and/or through `Configure::load()/write()`?
 ",0,db927fd419f56f733eb8106ea0a0f423e2993006
-3503370,0,"All right, I'll fix it up.""",2013-03-23 23:07:34,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1191#discussion_r3503370,2013-03-24T10:07:34Z,2013-03-24T10:09:06Z,dereuromark,MEMBER,lib/Cake/Utility/Validation.php,,624.0,,,1,"@@ -617,8 +617,8 @@ public static function phone($check, $regex = null, $country = 'all') {
+3503370,0,"All right, I'll fix it up.""",3/23/13 23:07,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1191#discussion_r3503370,2013-03-24T10:07:34Z,2013-03-24T10:09:06Z,dereuromark,MEMBER,lib/Cake/Utility/Validation.php,,624,,,1,"@@ -617,8 +617,8 @@ public static function phone($check, $regex = null, $country = 'all') {
  		if (is_null($regex)) {
  			switch ($country) {
  				case 'us':
@@ -3535,7 +3535,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 -				case 'can':
  					// includes all NANPA members.","All right, I'll fix it up.
 ",0,f633e59091c41e42741971df7aeb6aa4c21c8d58
-2869489,0,"Should probably also add the solution. i.e. you should either copy or symlink the plugin assets into webroot""",2013-02-02 08:24:28,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1113#discussion_r2869489,2013-02-02T19:24:28Z,2013-02-03T15:37:15Z,ADmad,MEMBER,app/Config/core.php,,97.0,,,7,"@@ -92,7 +92,9 @@
+2869489,0,"Should probably also add the solution. i.e. you should either copy or symlink the plugin assets into webroot""",2/2/13 8:24,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1113#discussion_r2869489,2013-02-02T19:24:28Z,2013-02-03T15:37:15Z,ADmad,MEMBER,app/Config/core.php,,97,,,7,"@@ -92,7 +92,9 @@
   * /app/.htaccess
   * /app/webroot/.htaccess
   *
@@ -3544,14 +3544,14 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 + * that plugin assets such as images, CSS and Javascript files 
 + * will not work without url rewriting!","Should probably also add the solution. i.e. you should either copy or symlink the plugin assets into webroot
 ",0,804753ff6c5c5c5acc73952ae8511f5af0ba2217
-2020462,1,"Better not give the code sniffer reasons to complain :smile: """,2012-11-02 08:46:04,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/934#discussion_r2020462,2012-11-02T19:46:04Z,2012-11-03T21:14:08Z,ADmad,MEMBER,lib/Cake/Test/Case/View/XmlViewTest.php,,,,,5,"@@ -64,6 +64,14 @@ public function testRenderWithoutView() {
+2020462,1,"Better not give the code sniffer reasons to complain :smile: """,11/2/12 8:46,ADmad,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/934#discussion_r2020462,2012-11-02T19:46:04Z,2012-11-03T21:14:08Z,ADmad,MEMBER,lib/Cake/Test/Case/View/XmlViewTest.php,,,,,5,"@@ -64,6 +64,14 @@ public function testRenderWithoutView() {
  
  		$expected = Xml::build(array('response' => array('users' => $data)))->asXML();
  		$this->assertSame($expected, $output);
 +
 +","Better not give the code sniffer reasons to complain :smile: 
 ",0,c3af467476a9a1b2e46f69e5cef76c3dfa2e205b
-2628267,0,"@markstory Why do you trim the dot from the domain? It can cause security issue. The `cakephp.org` cookie domain is accessible only by the `http://cakephp.org`, but the `.cakephp.org` cookie can be accessed by `http://cakephp.org` and `http://bakery.cakep""",2013-01-12 13:26:23,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2628267,2013-01-13T00:26:23Z,2013-01-24T02:45:59Z,jrbasso,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,527 @@
+2628267,0,"@markstory Why do you trim the dot from the domain? It can cause security issue. The `cakephp.org` cookie domain is accessible only by the `http://cakephp.org`, but the `.cakephp.org` cookie can be accessed by `http://cakephp.org` and `http://bakery.cakep""",1/12/13 13:26,jrbasso,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2628267,2013-01-13T00:26:23Z,2013-01-24T02:45:59Z,jrbasso,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,527 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -3890,7 +3890,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 +			}
 +			$cookie['domain'] = trim($cookie['domain'], '.');","@markstory Why do you trim the dot from the domain? It can cause security issue. The `cakephp.org` cookie domain is accessible only by the `http://cakephp.org`, but the `.cakephp.org` cookie can be accessed by `http://cakephp.org` and `http://bakery.cakephp.org` and all others subdomains.
 ",0,c0865001dc9b44d763aba9eaa00720fa4e485ddc
-2629304,0,"In RFC 2109 an explicitly set domain must always start with a `.` (section 4.2.2). Only if the domain is omitted will the  leading `.` be missing (section 4.3.1). Based on the domain matching examples, the rules seem like a cookie's inclusion in a request""",2013-01-13 05:26:02,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2629304,2013-01-13T16:26:02Z,2013-01-24T02:45:59Z,markstory,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,527 @@
+2629304,0,"In RFC 2109 an explicitly set domain must always start with a `.` (section 4.2.2). Only if the domain is omitted will the  leading `.` be missing (section 4.3.1). Based on the domain matching examples, the rules seem like a cookie's inclusion in a request""",1/13/13 5:26,markstory,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1057#discussion_r2629304,2013-01-13T16:26:02Z,2013-01-24T02:45:59Z,markstory,MEMBER,lib/Cake/Network/Http/Client.php,,,,,1,"@@ -0,0 +1,527 @@
 +<?php
 +/**
 + * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -4234,7 +4234,7 @@ return $this->_applyFormatters(new $resultSetClass($this, $this->executeStatemen
 - Path matching the request path at the beginning of the path.
 - Cookie not being expired.
 ",0,c0865001dc9b44d763aba9eaa00720fa4e485ddc
-5700222,0,"Is this good to go then?""",2013-08-11 02:44:08,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1493#discussion_r5700222,2013-08-11T14:44:08Z,2013-08-11T14:44:08Z,dereuromark,MEMBER,lib/Cake/View/Helper/HtmlHelper.php,,921.0,,,5,"@@ -918,13 +918,10 @@ public function tag($name, $text = null, $options = array()) {
+5700222,0,"Is this good to go then?""",8/11/13 2:44,dereuromark,cakephp,cakephp,,https://github.com/cakephp/cakephp/pull/1493#discussion_r5700222,2013-08-11T14:44:08Z,2013-08-11T14:44:08Z,dereuromark,MEMBER,lib/Cake/View/Helper/HtmlHelper.php,,921,,,5,"@@ -918,13 +918,10 @@ public function tag($name, $text = null, $options = array()) {
  		if (empty($name)) {
  			return $text;
  		}
