@@ -1,0 +1,143 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+516857,0,"Same problem here.""",2012-03-04 21:24:31,detro,ariya,phantomjs,,https://github.com/ariya/phantomjs/pull/210#discussion_r516857,2012-03-05T08:24:31Z,2012-03-05T08:24:31Z,detro,COLLABORATOR,src/config.cpp,,65.0,,,12,"@@ -58,12 +58,12 @@ void Config::processArgs(const QStringList &args)
+     while (it.hasNext()) {
+         const QString &arg = it.next();
+ 
+-        if (arg == ""--help"") {
+-            setHelpFlag(true);
++        if (arg == ""--version"" || arg == ""-v"") {
++            setVersionFlag(true);
+             return;
+         }
+-        if (arg == ""--version"") {
+-            setVersionFlag(true);
++        if (arg == ""--help"" || arg == ""-h"") {","Same problem here.
+",e6b0ddd4904efeeef1c882d54a1feb11d908ad6e
+2476317,1,"yes, yes and YES!  Code reuse for the win! :)""",2012-12-20 00:37:38,detro,ariya,phantomjs,,https://github.com/ariya/phantomjs/pull/371#discussion_r2476317,2012-12-20T11:37:38Z,2012-12-24T15:22:10Z,detro,COLLABORATOR,src/system.cpp,,,,,1,"@@ -120,6 +120,11 @@
+     m_os.insert(""name"", ""unknown"");
+     m_os.insert(""version"", ""unknown"");
+ #endif
++
++    // Initialize standard streams
++    m_stdout = (File *)NULL;","yes, yes and YES!
+
+Code reuse for the win! :)
+",295503dc42ea33e390a91a799c1a3138a6b52a9e
+346428,1,"That's a good point! I'll update the name to just `System`.""",2012-01-11 23:09:40,execjosh,ariya,phantomjs,,https://github.com/ariya/phantomjs/pull/192#discussion_r346428,2012-01-12T10:09:40Z,2012-02-19T17:16:20Z,execjosh,CONTRIBUTOR,src/modules/systemmodule.h,,,,,1,"@@ -0,0 +1,84 @@
++/*
++  This file is part of the PhantomJS project from Ofi Labs.
++
++  Copyright (C) 2012 execjosh, http://execjosh.blogspot.com
++
++  Redistribution and use in source and binary forms, with or without
++  modification, are permitted provided that the following conditions are met:
++
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    * Neither the name of the <organization> nor the
++      names of its contributors may be used to endorse or promote products
++      derived from this software without specific prior written permission.
++
++  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ""AS IS""
++  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
++  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++*/
++
++#ifndef SYSTEMMODULE_H
++#define SYSTEMMODULE_H
++
++#include <QObject>
++#include <QStringList>
++#include <QVariantMap>
++#include <QTextStream>
++
++#include ""../textstream.h""
++
++// This class implements the CommonJS System/1.0 spec.
++// See: http://wiki.commonjs.org/wiki/System/1.0
++class SystemModule : public QObject","That's a good point! I'll update the name to just `System`.
+",9c883e1dd1583e7eaf07494781ebe6980af298fc
+346535,1,"Hey, good catch!  I'll remove them.""",2012-01-11 23:52:12,execjosh,ariya,phantomjs,,https://github.com/ariya/phantomjs/pull/192#discussion_r346535,2012-01-12T10:52:12Z,2012-02-19T17:16:20Z,execjosh,CONTRIBUTOR,src/modules/systemmodule.cpp,,,,,1,"@@ -0,0 +1,81 @@
++/*
++  This file is part of the PhantomJS project from Ofi Labs.
++
++  Copyright (C) 2012 execjosh, http://execjosh.blogspot.com
++
++  Redistribution and use in source and binary forms, with or without
++  modification, are permitted provided that the following conditions are met:
++
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    * Neither the name of the <organization> nor the
++      names of its contributors may be used to endorse or promote products
++      derived from this software without specific prior written permission.
++
++  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ""AS IS""
++  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
++  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++*/
++
++#include ""systemmodule.h""
++
++#include ""../env.h""
++
++SystemModule::SystemModule(QObject *parent) :
++    QObject(parent),
++    m_stderr(stderr, QIODevice::WriteOnly),","Hey, good catch!  I'll remove them.
+",9c883e1dd1583e7eaf07494781ebe6980af298fc
+2387082,1,"I'm sure you didn't mean to do this :)""",2012-12-11 13:14:12,detro,ariya,phantomjs,,https://github.com/ariya/phantomjs/pull/363#discussion_r2387082,2012-12-12T00:14:12Z,2012-12-12T00:14:12Z,detro,COLLABORATOR,test/run-tests.js,,67.0,,,10,"@@ -61,10 +61,10 @@ var fs = require('fs');
+ fs.changeWorkingDirectory(phantom.libraryPath);
+ 
+ // Load specs
+-phantom.injectJs(""./phantom-spec.js"");
+-phantom.injectJs(""./webpage-spec.js"");
++//phantom.injectJs(""./phantom-spec.js"");
++//phantom.injectJs(""./webpage-spec.js"");
+ phantom.injectJs(""./webserver-spec.js"");
+-phantom.injectJs(""./fs-spec-01.js""); //< Filesystem Specs 01 (Basic)
++/*phantom.injectJs(""./fs-spec-01.js""); //< Filesystem Specs 01 (Basic)","I'm sure you didn't mean to do this :)
+",571da0676685c4ff98dd32d62826b1c803fc635b
+2387344,1,"setEncoding is what node has, so yes, I guess adding charsets support will be natural evolution of this method :) But it's out of my scope, at least for now.""",2012-12-11 13:44:54,dos1,ariya,phantomjs,,https://github.com/ariya/phantomjs/pull/363#discussion_r2387344,2012-12-12T00:44:54Z,2012-12-12T00:44:54Z,dos1,CONTRIBUTOR,src/webserver.cpp,,414.0,,,26,"@@ -399,16 +400,26 @@ void WebServerResponse::writeHead(int statusCode, const QVariantMap &headers)
+     mg_write(m_conn, ""\r\n"", 2);
+ }
+ 
+-void WebServerResponse::write(const QString &body)
++void WebServerResponse::write(const QVariant &body)
+ {
+     if (!m_headersSent) {
+         writeHead(m_statusCode, m_headers);
+     }
+-    ///TODO: encoding?!
+-    const QByteArray data = body.toUtf8();
++
++    QByteArray data = m_isBinary ? body.toByteArray() : body.toString().toUtf8();
++
+     mg_write(m_conn, data.constData(), data.size());
+ }
+ 
++void WebServerResponse::setEncoding(const QString &encoding)","setEncoding is what node has, so yes, I guess adding charsets support will be natural evolution of this method :) But it's out of my scope, at least for now.
+",571da0676685c4ff98dd32d62826b1c803fc635b
+348359,1,"Nothing about this? :) This is probably the most important point for me: keeping an eye on the code as it grows it's very important to me.""",2012-01-12 10:27:22,detro,ariya,phantomjs,,https://github.com/ariya/phantomjs/pull/192#discussion_r348359,2012-01-12T21:27:22Z,2012-02-19T17:16:20Z,detro,COLLABORATOR,src/textstream.h,,1.0,,,1,"@@ -0,0 +1,58 @@
++/*","Nothing about this? :)
+This is probably the most important point for me: keeping an eye on the code as it grows it's very important to me.
+",9c883e1dd1583e7eaf07494781ebe6980af298fc

@@ -1,0 +1,1304 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+6008563,0,"This comment also is a repetition.""",2013-08-27 03:42:09,jacobvosmaer,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4920#discussion_r6008563,2013-08-27T15:42:09Z,2013-09-03T12:28:06Z,jacobvosmaer,CONTRIBUTOR,lib/support/init.d/gitlab,,41.0,,,1,"@@ -14,102 +15,198 @@
+ # Description:       GitLab git repository management
+ ### END INIT INFO
+ 
++### Environment variables
++RAILS_ENV=""production""
+ 
+-APP_ROOT=""/home/git/gitlab""
+-APP_USER=""git""
+-DAEMON_OPTS=""-c $APP_ROOT/config/unicorn.rb -E production""
+-PID_PATH=""$APP_ROOT/tmp/pids""
+-SOCKET_PATH=""$APP_ROOT/tmp/sockets""
+-WEB_SERVER_PID=""$PID_PATH/unicorn.pid""
+-SIDEKIQ_PID=""$PID_PATH/sidekiq.pid""
+-STOP_SIDEKIQ=""RAILS_ENV=production bundle exec rake sidekiq:stop""
+-START_SIDEKIQ=""RAILS_ENV=production bundle exec rake sidekiq:start""
+-NAME=""gitlab""
+-DESC=""GitLab service""
+-
+-check_pid(){
+-  if [ -f $WEB_SERVER_PID ]; then
+-    PID=`cat $WEB_SERVER_PID`
+-    SPID=`cat $SIDEKIQ_PID`
+-    STATUS=`ps aux | grep $PID | grep -v grep | wc -l`
++# Script variable names should be lower-case not to conflict with internal
++# /bin/sh variables such as PATH, EDITOR or SHELL.
++app_root=""/home/git/gitlab""
++app_user=""git""
++unicorn_conf=""$app_root/config/unicorn.rb""
++pid_path=""$app_root/tmp/pids""
++socket_path=""$app_root/tmp/sockets""
++web_server_pid_path=""$pid_path/unicorn.pid""
++sidekiq_pid_path=""$pid_path/sidekiq.pid""
++
++
++
++### Here ends user configuration ###
++
++
++# Switch to the app_user if it is not he/she who is running the script.
++if [ ""$USER"" != ""$app_user"" ]; then
++  sudo -u ""$app_user"" -H /etc/init.d/gitlab ""$@""; exit;
++fi
++
++# Switch to the gitlab path, if it fails exit with an error.","This comment also is a repetition.
+",fe8fa9a58110a70645edfa3ce0320a292da39fce
+4239503,2,"Sorry, that's my fault.  I'll revert this cleanup and add few more tests for those cases.""",2013-05-15 05:28:21,AlexDenisov,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3956#discussion_r4239503,2013-05-15T17:28:21Z,2013-05-16T10:32:53Z,AlexDenisov,CONTRIBUTOR,app/contexts/issues/bulk_update_context.rb,,,,,1,"@@ -8,6 +8,13 @@ def execute
+       assignee_id  = update_data[:assignee_id]
+       status       = update_data[:status]
+ 
++      unless status.present?","Sorry, that's my fault. 
+I'll revert this cleanup and add few more tests for those cases.
+",6e8cb844499dfcc77bd92f3daf0f7890400ec072
+3998158,0,"Also it makes sense to `return false unless Gitlab.config.ldap.enabled` before ldap_auth call.  It makes more sense then call ldap method and check for ldap enabled there""",2013-04-29 01:25:15,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3758#discussion_r3998158,2013-04-29T13:25:15Z,2013-04-29T20:27:03Z,dzaporozhets,CONTRIBUTOR,lib/gitlab/backend/grack_auth.rb,,42.0,,,1,"@@ -32,8 +33,14 @@ def valid?
+         # Authentication with username and password
+         login, password = @auth.credentials
+         self.user = User.find_by_email(login) || User.find_by_username(login)
+-        return false unless user.try(:valid_password?, password)
+ 
++        if user.nil?
++          ldap_auth(login,password)","Also it makes sense to `return false unless Gitlab.config.ldap.enabled` before ldap_auth call. 
+It makes more sense then call ldap method and check for ldap enabled there
+",20a88f5c43efa3ab0af80d26c90268132e6f7997
+4014638,2,"allowing fork project for guest role is bad. Guest role does not have access to source code""",2013-04-29 20:45:32,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3597#discussion_r4014638,2013-04-30T08:45:32Z,2013-05-02T20:44:04Z,dzaporozhets,CONTRIBUTOR,app/models/ability.rb,,,,,1,"@@ -60,7 +60,8 @@ def project_guest_rules
+         :read_note,
+         :write_project,
+         :write_issue,
+-        :write_note
++        :write_note,
++        :fork_project","allowing fork project for guest role is bad. Guest role does not have access to source code
+",ec63804831d1a55171abfb7fc0894af20d4298e8
+2305120,0,"`if event.target.nodeName isnt 'A'`""",2012-12-04 00:56:39,NARKOZ,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/2150#discussion_r2305120,2012-12-04T11:56:39Z,2012-12-04T11:57:35Z,NARKOZ,CONTRIBUTOR,app/assets/javascripts/commits.js.coffee,,16.0,,,16,"@@ -0,0 +1,54 @@
++class CommitsList
++  @data =
++    ref: null
++    limit: 0
++    offset: 0
++  @disable = false
++  
++  @showProgress: ->
++    $('.loading').show()
++    
++  @hideProgress: ->
++    $('.loading').hide()
++  
++  @init: (ref, limit) ->
++    $("".day-commits-table li.commit"").live 'click', (event) ->
++      if event.target.nodeName != ""A""","`if event.target.nodeName isnt 'A'`
+",13de6b31356753b2d95c5bf09720d1884a3fd7ce
+1815732,0,"please fix indentation""",2012-10-10 19:41:26,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1675#discussion_r1815732,2012-10-11T07:41:26Z,2012-10-11T15:05:52Z,dzaporozhets,CONTRIBUTOR,app/observers/merge_request_observer.rb,,,,,1,"@@ -0,0 +1,31 @@
++class MergeRequestObserver < ActiveRecord::Observer
++  cattr_accessor :current_user
++
++  def after_create(merge_request)
++    if merge_request.assignee && merge_request.assignee != current_user
++      Notify.new_merge_request_email(merge_request.id).deliver
++    end
++  end
++
++  def after_update(merge_request)
++    send_reassigned_email(merge_request) if merge_request.is_being_reassigned?
++
++    status = nil
++    status = 'closed' if merge_request.is_being_closed?
++    status = 'reopened' if merge_request.is_being_reopened?
++    if status
++      Note.create_status_change_note(merge_request, current_user, status)
++    end
++  end
++
++  protected
++
++  def send_reassigned_email(merge_request)
++      recipients_ids = merge_request.assignee_id_was, merge_request.assignee_id","please fix indentation
+",d32a5d7eef9e06629e849fb8adbab7a9d584814f
+1388352,0,"Maybe we should add the dependency as you said and assume an installed version from bundler as a backport. I can't see a better solution.  @rsampaio, ideas?""",2012-08-15 10:56:12,PotHix,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1094#discussion_r1388352,2012-08-15T22:56:12Z,2012-09-14T19:16:44Z,PotHix,CONTRIBUTOR,debian/control,,5.0,,,1,"@@ -0,0 +1,15 @@
++Source: gitlabhq
++Section: ruby
++Priority: extra
++Maintainer: root <root@squeezao>
++Build-Depends: debhelper, libicu-dev, ruby1.9.1-dev, libmysqlclient-dev, libsqlite3-dev","Maybe we should add the dependency as you said and assume an installed version from bundler as a backport. I can't see a better solution. 
+@rsampaio, ideas?
+",a42d32c50ea418a91e349b5cb16e32fec92ed038
+1610710,2,"This pseudo-maintainer is kinda confusing.""",2012-09-14 07:00:13,gittex,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1094#discussion_r1610710,2012-09-14T19:00:13Z,2012-09-14T19:16:44Z,dominikschulz,NONE,debian/control,,,,,1,"@@ -0,0 +1,15 @@
++Source: gitlabhq
++Section: ruby
++Priority: extra
++Maintainer: root <root@squeezao>","This pseudo-maintainer is kinda confusing.
+",a42d32c50ea418a91e349b5cb16e32fec92ed038
+6396935,0,"I think both if statements are related so it is better to bundle them. In the second statement you already expect a params[:password] to be set if there is no force_random. It seems better to put the exception handling there as well. This will also reduce""",2013-09-16 17:51:24,dosire,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4805#discussion_r6396935,2013-09-17T05:51:24Z,2013-10-23T15:10:57Z,dosire,MEMBER,lib/api/users.rb,,,,,1,"@@ -40,13 +41,36 @@ class Users < Grape::API
+       #   extern_uid                        - External authentication provider UID
+       #   provider                          - External provider
+       #   bio                               - Bio
++      #   expired_password                  - password is set expired
++      #   force_random_password             - generate random password for user
+       # Example Request:
+       #   POST /users
+       post do
+         authenticated_as_admin!
+-        required_attributes! [:email, :password, :name, :username]
+-        attrs = attributes_for_keys [:email, :name, :password, :skype, :linkedin, :twitter, :projects_limit, :username, :extern_uid, :provider, :bio]
+-        user = User.build_user(attrs, as: :admin)
++        required_attributes! [:email, :name, :username]
++
++        attrs = attributes_for_keys [:email, :name, :skype, :linkedin, :twitter, :projects_limit, :username, :extern_uid, :provider, :bio]
++
++        #parse password strategy params
++        expired = params[:expired_password] && (params[:expired_password].to_i > 0)
++        force_random =  params[:force_random_password] && (params[:force_random_password].to_i > 0)
++
++        #check params set properly
++        if !(force_random ^ params[:password].present?)","I think both if statements are related so it is better to bundle them. In the second statement you already expect a params[:password] to be set if there is no force_random. It seems better to put the exception handling there as well. This will also reduce the paths through the code (on first sight) from 4 to 3 (from two if/else statements to one if/elsif/else statement).
+",22fc1fe4a69552f6f40659db7791dd517061f862
+4186097,2,"I'm no native speaker but the last part feels odd: """"and are working to keep..""""""",2013-05-12 06:17:04,senny,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3909#discussion_r4186097,2013-05-12T18:17:04Z,2013-05-16T07:42:56Z,senny,CONTRIBUTOR,MAINTENANCE.md,,,,,1,"@@ -20,5 +20,5 @@ The current stable release will receive security patches and bug fixes
+ release where the minor version is increased numerically by increments of one
+ (eg. `5.0 -> 5.1`).
+ 
+-We encourage everyone to run this release and are trying to keep the update
+-procedures simple and reliable.
++We encourage everyone to run the latest stable release and are working to keep","I'm no native speaker but the last part feels odd: ""and are working to keep..""
+",1df9deb21343434c3de69b32a3bd63486bcec6c0
+2023968,0,"1. maybe admin_users_path 2. too long string with condition at the end. Please make it more readable""",2012-11-03 08:58:02,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1906#discussion_r2023968,2012-11-03T19:58:02Z,2012-11-16T13:47:17Z,dzaporozhets,CONTRIBUTOR,app/controllers/admin/users_controller.rb,,,,,1,"@@ -98,6 +98,7 @@ def update
+ 
+   def destroy
+     @admin_user = User.find(params[:id])
++    redirect_to admin_users_url, notice: 'User is a project owner, cannot be removed.' and return if @admin_user.my_own_projects.count > 0","1. maybe admin_users_path
+2. too long string with condition at the end. Please make it more readable
+",19e8473eb7dd456b64315b1b9e62c780ace98fef
+6382901,0,"Why not integrate this as the else clause of an adapted clause stating at line 65  if force_random  elsif params[:password].present?   ... else   render_api_error end""",2013-09-16 05:30:39,dosire,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4805#discussion_r6382901,2013-09-16T17:30:39Z,2013-10-23T15:10:57Z,dosire,MEMBER,lib/api/users.rb,,,,,1,"@@ -40,13 +41,36 @@ class Users < Grape::API
+       #   extern_uid                        - External authentication provider UID
+       #   provider                          - External provider
+       #   bio                               - Bio
++      #   expired_password                  - password is set expired
++      #   force_random_password             - generate random password for user
+       # Example Request:
+       #   POST /users
+       post do
+         authenticated_as_admin!
+-        required_attributes! [:email, :password, :name, :username]
+-        attrs = attributes_for_keys [:email, :name, :password, :skype, :linkedin, :twitter, :projects_limit, :username, :extern_uid, :provider, :bio]
+-        user = User.build_user(attrs, as: :admin)
++        required_attributes! [:email, :name, :username]
++
++        attrs = attributes_for_keys [:email, :name, :skype, :linkedin, :twitter, :projects_limit, :username, :extern_uid, :provider, :bio]
++
++        #parse password strategy params
++        expired = params[:expired_password] && (params[:expired_password].to_i > 0)
++        force_random =  params[:force_random_password] && (params[:force_random_password].to_i > 0)
++
++        #check params set properly
++        if !(force_random ^ params[:password].present?)","Why not integrate this as the else clause of an adapted clause stating at line 65
+
+if force_random
+
+elsif params[:password].present?
+  ...
+else
+  render_api_error
+end
+",22fc1fe4a69552f6f40659db7791dd517061f862
+2850885,0,"ah, """"forgot password"""" mail couldn't send, but reading it via `postcat -q` I can see the proper RAILS_RELATIVE_URL_ROOT is there.""",2013-01-31 10:03:32,mikew,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/2162#discussion_r2850885,2013-01-31T21:03:32Z,2013-01-31T21:03:32Z,mikew,CONTRIBUTOR,config/initializers/1_settings.rb,,49.0,,,14,"@@ -45,6 +46,7 @@ def build_gitlab_url
+ Settings.gitlab['host']       ||= 'localhost'
+ Settings.gitlab['https']      ||= false
+ Settings.gitlab['port']       ||= Settings.gitlab.https ? 443 : 80
++Settings.gitlab['relative_url_root'] ||= ''","ah, ""forgot password""
+mail couldn't send, but reading it via `postcat -q` I can see the proper RAILS_RELATIVE_URL_ROOT is there.
+",21e55ca318bb829399c85b10e678b596d6fd414e
+694321,0,"move it to namespaces like `lib/tasks/gitlab/update_hooks.rake` and also include it to gitlab:app:setup""",2012-04-17 00:30:02,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/618#discussion_r694321,2012-04-17T12:30:02Z,2012-04-17T12:30:02Z,dzaporozhets,CONTRIBUTOR,lib/tasks/gitlab_enable_automerge.rake,,2.0,,,2,"@@ -0,0 +1,9 @@
++desc ""Give gitlab user full access to every repo""
++task :gitlab_enable_automerge => :environment  do","move it to namespaces like `lib/tasks/gitlab/update_hooks.rake` and also include it to gitlab:app:setup
+",3a6694b5516f4c5015a7745cf8182e74597b39ad
+3436136,1,"This is sooo much better than the `ldap_prefix = ldap ? '(LDAP)' : ''` line of code :)""",2013-03-19 06:24:08,sodabrew,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r3436136,2013-03-19T17:24:08Z,2013-03-25T15:57:29Z,sodabrew,CONTRIBUTOR,lib/gitlab/auth.rb,,46.0,,,63,"@@ -1,35 +1,51 @@
+ module Gitlab
+   class Auth
+-    def find_for_ldap_auth(auth, signed_in_resource = nil)
+-      uid = auth.info.uid
+-      provider = auth.provider
+-      email = auth.info.email.downcase unless auth.info.email.nil?
+-      raise OmniAuth::Error, ""LDAP accounts must provide an uid and email address"" if uid.nil? or email.nil?
++    class Error < StandardError; end
+ 
+-      if @user = User.find_by_extern_uid_and_provider(uid, provider)
++    def find_or_new_for_omniauth(auth)
++      provider, uid = auth.provider, auth.uid.to_s.force_encoding(""utf-8"")
++      provider_configs = Devise.omniauth_configs[provider.to_sym]
++      email = auth.info.email.to_s.downcase unless auth.info.email.nil?
++      # we can workaround missing emails in omniauth provider
++      # by setting email_domain option for that provider
++      if email.nil?
++        email_domain = provider_configs.strategy[:email_domain]
++        email_user = auth.info.nickname
++        email = ""#{email_user}@#{email_domain}"" unless email_user.nil? or email_domain.nil?
++      end
++
++      raise Error, ""Omniauth provider must provide uid"" if uid.nil?
++
++      if @user = User.find_by_provider_and_extern_uid(provider, uid)
+         @user
+       elsif @user = User.find_by_email(email)
+-        log.info ""Updating legacy LDAP user #{email} with extern_uid => #{uid}""
++        log.info ""Updating user {email: #{email}, provider: #{@user.provider}, extern_uid: #{@user.extern_uid}} with {provider: #{provider}, extern_uid: #{uid}}""
+         @user.update_attributes(:extern_uid => uid, :provider => provider)
+         @user
+       else
+-        create_from_omniauth(auth, true)
++        allow_sso = provider_configs.options['allow_single_sign_on']
++        allow_sso = Gitlab.config.omniauth['allow_single_sign_on'] if allow_sso.nil?
++        if allow_sso
++          @user = create_from_omniauth(auth)
++          @user
++        end
+       end
+     end
+ 
+-    def create_from_omniauth(auth, ldap = false)
+-      provider = auth.provider
+-      uid = auth.info.uid || auth.uid
+-      uid = uid.to_s.force_encoding(""utf-8"")
++    private
++
++    def log
++      Gitlab::AppLogger
++    end
++
++    def create_from_omniauth(auth)
++      provider, uid = auth.provider, auth.uid.to_s.force_encoding(""utf-8"")
+       name = auth.info.name.to_s.force_encoding(""utf-8"")
+       email = auth.info.email.to_s.downcase unless auth.info.email.nil?
+ 
+-      ldap_prefix = ldap ? '(LDAP) ' : ''
+-      raise OmniAuth::Error, ""#{ldap_prefix}#{provider} does not provide an email""\
+-        "" address"" if auth.info.email.blank?
++      raise Error, ""#{provider} does not provide an email address"" if email.nil? || email.blank?
+ 
+-      log.info ""#{ldap_prefix}Creating user from #{provider} login""\
+-        "" {uid => #{uid}, name => #{name}, email => #{email}}""
++      log.info ""Creating user from #{provider} login {uid => #{uid}, name => #{name}, email => #{email}}""","This is sooo much better than the `ldap_prefix = ldap ? '(LDAP)' : ''` line of code :)
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+4169503,0,"Why do you do this either way, ```options['login_form']``` is ```true``` or ```false```? Shouldn't this depend on ```icon```, instead? Something like: ```ruby if icon   Gitlab.config.omniauth.form_providers << provider end ```""",2013-05-09 23:55:09,TiagoTT,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r4169503,2013-05-10T11:55:09Z,2013-05-10T11:55:09Z,TiagoTT,NONE,config/initializers/devise.rb,,237.0,,,52,"@@ -205,27 +205,44 @@
+   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
+   # end
+ 
+-  if Gitlab.config.ldap.enabled
+-    config.omniauth :ldap,
+-      :host     => Gitlab.config.ldap['host'],
+-      :base     => Gitlab.config.ldap['base'],
+-      :uid      => Gitlab.config.ldap['uid'],
+-      :port     => Gitlab.config.ldap['port'],
+-      :method   => Gitlab.config.ldap['method'],
+-      :bind_dn  => Gitlab.config.ldap['bind_dn'],
+-      :password => Gitlab.config.ldap['password']
++  # For good reason omniauth-pam requires gecos_map to be symbols
++  if !Gitlab.config.omniauth.providers['pam'].nil? && !Gitlab.config.omniauth.providers.pam['gecos_map'].nil?
++    Gitlab.config.omniauth.providers.pam.gecos_map.map! { |item| item.to_sym }
+   end
+ 
+-  Gitlab.config.omniauth.providers.each do |provider|
+-    case provider['args']
+-    when Array
+-      # An Array from the configuration will be expanded.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], *provider['args']
+-    when Hash
+-      # A Hash from the configuration will be passed as is.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], provider['args']
+-    else
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret']
++  Gitlab.config.omniauth['icon_providers'] = []
++  Gitlab.config.omniauth['form_providers'] = []
++  Gitlab.config.omniauth.providers.each_pair do |provider, options|
++    options['enabled'] = true if options['enabled'].nil?
++    if options['enabled']
++      # use symbols...
++      provider = provider.to_sym
++
++      # leave options in config stucture as they are -> make a clone
++      options = options.clone
++      options.delete('enabled')
++
++      # Construct login_form options
++      icon = !options['app_id'].nil? && !options['app_secret'].nil?
++      options['login_form'] = !icon if options['login_form'].nil?
++      if options['login_form']
++        options['login_form'] = {} if options['login_form'] == true
++        options['login_form']['fields'] = {username: '%{title}', password: '*Password'} if\
++            options['login_form']['fields'].nil? || options['login_form']['fields'] == true
++        if options['login_form']['always_show'].nil?
++          options['login_form']['always_show'] = options['login_form']['fields'].empty?
++        end
++        Gitlab.config.omniauth.form_providers << provider
++      else
++        Gitlab.config.omniauth.icon_providers << provider","Why do you do this either way, `options['login_form']` is `true` or `false`?
+Shouldn't this depend on `icon`, instead?
+Something like:
+
+``` ruby
+if icon
+  Gitlab.config.omniauth.form_providers << provider
+end
+```
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+6784983,0,"I don't see the problem - it is restricted to the admin role due to the """"as: :admin"""" on the next line. This change whitelists the attribute for code that is executed with the admin role only.  Where could this be abused? Using it still requires an expl""",2013-10-05 09:09:20,duk3luk3,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/5271#discussion_r6784983,2013-10-05T21:09:20Z,2013-10-05T21:09:20Z,duk3luk3,CONTRIBUTOR,app/models/user.rb,,50.0,,,5,"@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
+                   :extern_uid, :provider, :password_expires_at,
+                   as: [:default, :admin]
+ 
+-  attr_accessible :projects_limit, :can_create_group,
++  attr_accessible :projects_limit, :can_create_group, :admin,","I don't see the problem - it is restricted to the admin role due to the ""as: :admin"" on the next line.
+This change whitelists the attribute for code that is executed with the admin role only.
+
+Where could this be abused? Using it still requires an explicit "":as => :admin"" in the code doing the mass assignment. If code that can be triggered by non-admins is executed with the :admin role, mass-assignment from user-controlled data should never be used.
+
+By your logic, the projects_limit and can_create_group should not be set as attr_accessible either.
+",d35f0f65c6e1688b67c6d901952851e33781db01
+6504858,0,"in case of thousand projects its not a best idea.  Maybe do 2 queries? current_user.authorized_projects.search && Project.public.search""",2013-09-21 21:19:13,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/5146#discussion_r6504858,2013-09-22T09:19:13Z,2013-09-24T13:23:12Z,dzaporozhets,CONTRIBUTOR,lib/api/projects.rb,,,,,1,"@@ -262,6 +261,22 @@ def handle_project_member_errors(errors)
+           {message: ""Access revoked"", id: params[:user_id].to_i}
+         end
+       end
++
++      # search for projects current_user has access to
++      #
++      # Parameters:
++      #   query (required) - A string contained in the project name
++      # Example Request:
++      #   GET /projects/search/:query
++      get ""/search/:query"" do
++        ActiveRecord::Base.logger = Logger.new(STDOUT)
++        projects = Project.where(""name LIKE (?)"", ""%#{params[:query]}%"")
++
++        projects = projects.select { |project|","in case of thousand projects its not a best idea. 
+Maybe do 2 queries? current_user.authorized_projects.search && Project.public.search
+",04c7c262a7be469a4ae4865464b003c4b522a895
+4628690,0,"use named variables.  Ex.  ```haml   = render 'issues', title: 'Unstarted Issues (open and unassigned)', issues: @issues.opened.unassigned ```""",2013-06-10 19:39:18,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4269#discussion_r4628690,2013-06-11T07:39:18Z,2013-06-14T12:13:33Z,dzaporozhets,CONTRIBUTOR,app/views/milestones/show.html.haml,,,,,1,"@@ -56,20 +56,11 @@
+ 
+ 
+ .row
+-  .span6
+-    .ui-box.milestone-issue-filter
+-      .title
+-        %ul.nav.nav-pills
+-          %li.active= link_to('Open Issues', '#')
+-          %li=link_to('All Issues', '#')
+-      %ul.well-list
+-        - @issues.each do |issue|
+-          %li{data: {closed: issue.closed?}}
+-            = link_to [@project, issue] do
+-              %span.badge.badge-info ##{issue.id}
+-            &ndash;
+-            = link_to_gfm truncate(issue.title, length: 60), [@project, issue]
++  =render(:partial => 'issues', :object => ['Unstarted Issues (open and unassigned)', @issues.opened.unassigned])","use named variables. 
+Ex. 
+
+``` haml
+  = render 'issues', title: 'Unstarted Issues (open and unassigned)', issues: @issues.opened.unassigned
+```
+",f7ea649f4b409d5561b2bd81e46863a1f0c77e1b
+3229694,2,"this one requires a better solution. Its unsupportable code""",2013-03-04 07:52:57,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3130#discussion_r3229694,2013-03-04T18:52:57Z,2013-03-04T18:52:57Z,dzaporozhets,CONTRIBUTOR,features/steps/project/project_wiki.rb,,10.0,,,6,"@@ -6,7 +6,10 @@ class ProjectWiki < Spinach::FeatureSteps
+ 
+   Given 'I create Wiki page' do
+     fill_in ""Title"", :with => 'Test title'
+-    fill_in ""Content"", :with => '[link test](test)'
++    #fill_in ""epiceditor-editor"", :with => '[link test](test)...'
++    script=""$('#epiceditor-main-element').contents().find('#epiceditor-editor-frame').contents().find('#epiceditor-editor').contents().text('[link test](test)')""","this one requires a better solution. Its unsupportable code
+",58adc2197e737526224aecf1b314c51aa2f8d089
+1530764,1,"Use default parameter if not set by params hash. If you know less ugly way to do this, please tell me how :)""",2012-09-04 18:44:59,AlexDenisov,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1363#discussion_r1530764,2012-09-05T06:44:59Z,2012-09-05T08:46:22Z,AlexDenisov,CONTRIBUTOR,lib/api/projects.rb,,,,,1,"@@ -29,14 +29,26 @@ class Projects < Grape::API
+       #   name (required) - name for new project
+       #   code (optional) - code for new project, uses project name if not set
+       #   path (optional) - path for new project, uses project name if not set
++      #   description (optional) - short project description
++      #   default_branch (optional) - 'master' by default
++      #   issues_enabled (optional) - enabled by default
++      #   wall_enabled (optional) - enabled by default
++      #   merge_requests_enabled (optional) - enabled by default
++      #   wiki_enabled (optional) - enabled by default
+       # Example Request
+       #   POST /projects
+       post do
+-        project = {}
+-        project[:name] = params[:name]
+-        project[:code] = params[:code] || project[:name]
+-        project[:path] = params[:path] || project[:name]
+-        @project = Project.create_by_user(project, current_user)
++        @project = Project.create_by_user({
++          name: params[:name],
++          code: (params[:code] || params[:name]),
++          path: (params[:path] || params[:name]),
++          description: (params[:description] || Project.columns_hash[""description""].default),","Use default parameter if not set by params hash. If you know less ugly way to do this, please tell me how :)
+",9b9dd3f9bf62e8b116213012b766abcaef3e641e
+1561316,0,"You're not assigning something. Just use `||`.""",2012-09-08 12:44:17,tsigo,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1410#discussion_r1561316,2012-09-09T00:44:17Z,2012-09-09T02:13:01Z,rspeicher,CONTRIBUTOR,app/views/dashboard/index.html.haml,,,,,1,"@@ -24,6 +24,7 @@
+             %li.wll
+               = link_to project_path(project), class: dom_class(project) do
+                 %strong.project_name= truncate(project.name, length: 25)
++                %strong.language_name= project.language ||= ""Plain Text""","You're not assigning something. Just use `||`.
+",68713434389493ccd9d9b815b449a91d4c689cf9
+3450387,0,"Yeps. Idea is that email is required only to create new user. Authentication do not require it (if user is found).""",2013-03-20 02:44:16,raphendyr,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r3450387,2013-03-20T13:44:16Z,2013-03-25T15:57:29Z,raphendyr,CONTRIBUTOR,lib/gitlab/auth.rb,,44.0,,,59,"@@ -1,35 +1,51 @@
+ module Gitlab
+   class Auth
+-    def find_for_ldap_auth(auth, signed_in_resource = nil)
+-      uid = auth.info.uid
+-      provider = auth.provider
+-      email = auth.info.email.downcase unless auth.info.email.nil?
+-      raise OmniAuth::Error, ""LDAP accounts must provide an uid and email address"" if uid.nil? or email.nil?
++    class Error < StandardError; end
+ 
+-      if @user = User.find_by_extern_uid_and_provider(uid, provider)
++    def find_or_new_for_omniauth(auth)
++      provider, uid = auth.provider, auth.uid.to_s.force_encoding(""utf-8"")
++      provider_configs = Devise.omniauth_configs[provider.to_sym]
++      email = auth.info.email.to_s.downcase unless auth.info.email.nil?
++      # we can workaround missing emails in omniauth provider
++      # by setting email_domain option for that provider
++      if email.nil?
++        email_domain = provider_configs.strategy[:email_domain]
++        email_user = auth.info.nickname
++        email = ""#{email_user}@#{email_domain}"" unless email_user.nil? or email_domain.nil?
++      end
++
++      raise Error, ""Omniauth provider must provide uid"" if uid.nil?
++
++      if @user = User.find_by_provider_and_extern_uid(provider, uid)
+         @user
+       elsif @user = User.find_by_email(email)
+-        log.info ""Updating legacy LDAP user #{email} with extern_uid => #{uid}""
++        log.info ""Updating user {email: #{email}, provider: #{@user.provider}, extern_uid: #{@user.extern_uid}} with {provider: #{provider}, extern_uid: #{uid}}""
+         @user.update_attributes(:extern_uid => uid, :provider => provider)
+         @user
+       else
+-        create_from_omniauth(auth, true)
++        allow_sso = provider_configs.options['allow_single_sign_on']
++        allow_sso = Gitlab.config.omniauth['allow_single_sign_on'] if allow_sso.nil?
++        if allow_sso
++          @user = create_from_omniauth(auth)
++          @user
++        end
+       end
+     end
+ 
+-    def create_from_omniauth(auth, ldap = false)
+-      provider = auth.provider
+-      uid = auth.info.uid || auth.uid
+-      uid = uid.to_s.force_encoding(""utf-8"")
++    private
++
++    def log
++      Gitlab::AppLogger
++    end
++
++    def create_from_omniauth(auth)
++      provider, uid = auth.provider, auth.uid.to_s.force_encoding(""utf-8"")
+       name = auth.info.name.to_s.force_encoding(""utf-8"")
+       email = auth.info.email.to_s.downcase unless auth.info.email.nil?
+ 
+-      ldap_prefix = ldap ? '(LDAP) ' : ''
+-      raise OmniAuth::Error, ""#{ldap_prefix}#{provider} does not provide an email""\
+-        "" address"" if auth.info.email.blank?
++      raise Error, ""#{provider} does not provide an email address"" if email.nil? || email.blank?","Yeps. Idea is that email is required only to create new user. Authentication do not require it (if user is found).
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+6573082,0,"remove newline""",2013-09-25 02:07:44,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/5174#discussion_r6573082,2013-09-25T14:07:44Z,2013-09-25T14:54:40Z,dzaporozhets,CONTRIBUTOR,app/models/pivotaltracker_service.rb,,,,,1,"@@ -0,0 +1,55 @@
++# == Schema Information
++#
++# Table name: services
++#
++#  id          :integer          not null, primary key
++#  type        :string(255)
++#  title       :string(255)
++#  token       :string(255)
++#  project_id  :integer          not null
++#  created_at  :datetime         not null
++#  updated_at  :datetime         not null
++#  active      :boolean          default(FALSE), not null
++#
++
++class PivotaltrackerService < Service
++  include HTTParty
++
++  validates :token, presence: true, if: :activated?
++
++  def title
++    'PivotalTracker'
++  end
++
++  def description
++    'Project Management Software (Source Commits Endpoint)'
++  end
++
++  def to_param
++    'pivotaltracker'
++  end
++
++  def fields
++    [
++      { type: 'text', name: 'token', placeholder: '' }
++    ]
++  end
++
++  def execute(push)
++    url = 'https://www.pivotaltracker.com/services/v5/source_commits'
++    push[:commits].each do |commit|
++      message = {'source_commit' =>
++                  {'commit_id' => commit[:id],
++                   'author' => commit[:author][:name],
++                   'url' => commit[:url],
++                   'message' => commit[:message]}
++                }
++      status = PivotaltrackerService.post(url,
++                     body: message.to_json,
++                     headers: {'Content-Type' => 'application/json',
++                               'X-TrackerToken' => token}
++                    )
++    end
++  end
++","remove newline
+",fa8588827e45946464298fb7e36f4dcd24f0c4fb
+6385920,0,"I think it's better to throw an API error if both options are set at the same time. Introducing an implicit preference violates the principle of least surprise.""",2013-09-16 07:11:21,duk3luk3,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4805#discussion_r6385920,2013-09-16T19:11:21Z,2013-10-23T15:10:57Z,duk3luk3,CONTRIBUTOR,lib/api/users.rb,,,,,1,"@@ -40,13 +41,36 @@ class Users < Grape::API
+       #   extern_uid                        - External authentication provider UID
+       #   provider                          - External provider
+       #   bio                               - Bio
++      #   expired_password                  - password is set expired
++      #   force_random_password             - generate random password for user
+       # Example Request:
+       #   POST /users
+       post do
+         authenticated_as_admin!
+-        required_attributes! [:email, :password, :name, :username]
+-        attrs = attributes_for_keys [:email, :name, :password, :skype, :linkedin, :twitter, :projects_limit, :username, :extern_uid, :provider, :bio]
+-        user = User.build_user(attrs, as: :admin)
++        required_attributes! [:email, :name, :username]
++
++        attrs = attributes_for_keys [:email, :name, :skype, :linkedin, :twitter, :projects_limit, :username, :extern_uid, :provider, :bio]
++
++        #parse password strategy params
++        expired = params[:expired_password] && (params[:expired_password].to_i > 0)
++        force_random =  params[:force_random_password] && (params[:force_random_password].to_i > 0)
++
++        #check params set properly
++        if !(force_random ^ params[:password].present?)","I think it's better to throw an API error if both options are set at the same time. Introducing an implicit preference violates the principle of least surprise.
+",22fc1fe4a69552f6f40659db7791dd517061f862
+5219720,0,"1.9 hash""",2013-07-16 04:07:32,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4184#discussion_r5219720,2013-07-16T16:07:32Z,2013-07-30T20:19:35Z,dzaporozhets,CONTRIBUTOR,app/models/merge_request.rb,,,,,1,"@@ -2,30 +2,35 @@
+ #
+ # Table name: merge_requests
+ #
+-#  id            :integer          not null, primary key
+-#  target_branch :string(255)      not null
+-#  source_branch :string(255)      not null
+-#  project_id    :integer          not null
+-#  author_id     :integer
+-#  assignee_id   :integer
+-#  title         :string(255)
+-#  created_at    :datetime
+-#  updated_at    :datetime
+-#  st_commits    :text(2147483647)
+-#  st_diffs      :text(2147483647)
+-#  milestone_id  :integer
+-#  state         :string(255)
+-#  merge_status  :string(255)
++#  id             :integer          not null, primary key
++#  target_project_id :integer       not null
++#  target_branch  :string(255)      not null
++#  source_project_id :integer       not null
++#  source_branch  :string(255)      not null
++#  author_id      :integer
++#  assignee_id    :integer
++#  title          :string(255)
++#  created_at     :datetime
++#  updated_at     :datetime
++#  st_commits     :text(2147483647)
++#  st_diffs       :text(2147483647)
++#  milestone_id   :integer
++#  state          :string(255)
++#  merge_status   :string(255)
+ #
+ 
+ require Rails.root.join(""app/models/commit"")
+ require Rails.root.join(""lib/static_model"")
+ 
+ class MergeRequest < ActiveRecord::Base
++
+   include Issuable
+ 
+-  attr_accessible :title, :assignee_id, :target_branch, :source_branch, :milestone_id,
+-                  :author_id_of_changes, :state_event
++  belongs_to :target_project, :foreign_key => :target_project_id, class_name: ""Project""","1.9 hash
+",9a900dbb7104582a9d6c65e48d50cd921d009dc0
+5221353,0,"Should check if it's forked, and display old way if so, try to extract to a helper merge_request_email_helper for these displays""",2013-07-16 05:08:27,karlhungus,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4184#discussion_r5221353,2013-07-16T17:08:27Z,2013-07-30T20:19:35Z,karlhungus,CONTRIBUTOR,app/views/notify/merged_merge_request_email.html.haml,,,,,1,"@@ -1,9 +1,9 @@
+ %p
+   = ""Merge Request #{@merge_request.id} was merged""
+ %p
+-  = link_to_gfm truncate(@merge_request.title, length: 40), project_merge_request_url(@merge_request.project, @merge_request)
++  = link_to_gfm truncate(@merge_request.title, length: 40), project_merge_request_url(@merge_request.target_project, @merge_request)
+ %p
+-  Branches: #{@merge_request.source_branch} &rarr; #{@merge_request.target_branch}
++  Projects:Branches: #{@merge_request.source_project.path_with_namespace}:#{@merge_request.source_branch} &rarr; #{@merge_request.target_project.path_with_namespace}:#{@merge_request.target_branch}","Should check if it's forked, and display old way if so, try to extract to a helper merge_request_email_helper for these displays
+",9a900dbb7104582a9d6c65e48d50cd921d009dc0
+2869500,0,"Here we could make decision based on admin status or authentication provider.""",2013-02-02 08:29:56,raphendyr,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/2888#discussion_r2869500,2013-02-02T19:29:56Z,2013-02-02T19:29:56Z,raphendyr,CONTRIBUTOR,app/models/user.rb,,219.0,,,5,"@@ -215,6 +215,10 @@ def require_ssh_key?
+     keys.count == 0
+   end
+ 
++  def can_change_username?
++    Gitlab.config.gitlab.username_changing_enabled","Here we could make decision based on admin status or authentication provider.
+",fcffb4c3813d037346c7c967fcc490dc529c976b
+4185273,0,"Also this is for the purpose that you can have shibboleth as an icon (like github) or as text button (like you have it in you branch). To keep shibboleth as login button (text instead of icon) write in `gitlab.yml`: ```yaml shibboleth:   login_form:  """,2013-05-11 23:10:19,raphendyr,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r4185273,2013-05-12T11:10:19Z,2013-05-12T11:10:19Z,raphendyr,CONTRIBUTOR,config/initializers/devise.rb,,237.0,,,52,"@@ -205,27 +205,44 @@
+   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
+   # end
+ 
+-  if Gitlab.config.ldap.enabled
+-    config.omniauth :ldap,
+-      :host     => Gitlab.config.ldap['host'],
+-      :base     => Gitlab.config.ldap['base'],
+-      :uid      => Gitlab.config.ldap['uid'],
+-      :port     => Gitlab.config.ldap['port'],
+-      :method   => Gitlab.config.ldap['method'],
+-      :bind_dn  => Gitlab.config.ldap['bind_dn'],
+-      :password => Gitlab.config.ldap['password']
++  # For good reason omniauth-pam requires gecos_map to be symbols
++  if !Gitlab.config.omniauth.providers['pam'].nil? && !Gitlab.config.omniauth.providers.pam['gecos_map'].nil?
++    Gitlab.config.omniauth.providers.pam.gecos_map.map! { |item| item.to_sym }
+   end
+ 
+-  Gitlab.config.omniauth.providers.each do |provider|
+-    case provider['args']
+-    when Array
+-      # An Array from the configuration will be expanded.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], *provider['args']
+-    when Hash
+-      # A Hash from the configuration will be passed as is.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], provider['args']
+-    else
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret']
++  Gitlab.config.omniauth['icon_providers'] = []
++  Gitlab.config.omniauth['form_providers'] = []
++  Gitlab.config.omniauth.providers.each_pair do |provider, options|
++    options['enabled'] = true if options['enabled'].nil?
++    if options['enabled']
++      # use symbols...
++      provider = provider.to_sym
++
++      # leave options in config stucture as they are -> make a clone
++      options = options.clone
++      options.delete('enabled')
++
++      # Construct login_form options
++      icon = !options['app_id'].nil? && !options['app_secret'].nil?
++      options['login_form'] = !icon if options['login_form'].nil?
++      if options['login_form']
++        options['login_form'] = {} if options['login_form'] == true
++        options['login_form']['fields'] = {username: '%{title}', password: '*Password'} if\
++            options['login_form']['fields'].nil? || options['login_form']['fields'] == true
++        if options['login_form']['always_show'].nil?
++          options['login_form']['always_show'] = options['login_form']['fields'].empty?
++        end
++        Gitlab.config.omniauth.form_providers << provider
++      else
++        Gitlab.config.omniauth.icon_providers << provider","Also this is for the purpose that you can have shibboleth as an icon (like github) or as text button (like you have it in you branch). To keep shibboleth as login button (text instead of icon) write in `gitlab.yml`:
+
+``` yaml
+shibboleth:
+  login_form:
+    fields: false
+```
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+4191310,0,"As I noted below. this should be in above: ```yaml login_form:   fields: false ```""",2013-05-12 23:52:33,raphendyr,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r4191310,2013-05-13T11:52:33Z,2013-05-13T11:52:33Z,raphendyr,CONTRIBUTOR,config/gitlab.yml.example,,149.0,,,108,"@@ -65,43 +65,88 @@ production: &base
+   # 2. Auth settings
+   # ==========================
+ 
+-  ## LDAP settings
+-  ldap:
+-    enabled: false
+-    host: '_your_ldap_server'
+-    base: '_the_base_where_you_search_for_users'
+-    port: 636
+-    uid: 'sAMAccountName'
+-    method: 'ssl' # ""ssl"" or ""plain""
+-    bind_dn: '_the_full_dn_of_the_user_you_will_bind_with'
+-    password: '_the_password_of_the_bind_user'
+-
+   ## OmniAuth settings
+   omniauth:
+-    # Allow login via Twitter, Google, etc. using OmniAuth providers
+-    enabled: false
+-
+     # CAUTION!
+     # This allows users to login without having a user account first (default: false).
+     # User accounts will be created automatically when authentication was successful.
++    # NOTE: You may add this option for any provider too, to overwrite this option for that provider
+     allow_single_sign_on: false
+     # Locks down those users until they have been cleared by the admin (default: true).
++    # NOTE: You may add this option for any provider too, to overwrite this option for that provider
+     block_auto_created_users: true
+ 
+     ## Auth providers
+-    # Uncomment the following lines and fill in the data of the auth provider you want to use
++    # Enable any of following and fill in the data of the auth provider you want to use
+     # If your favorite auth provider is not listed you can use others:
+     # see https://github.com/gitlabhq/gitlabhq/wiki/Using-Custom-Omniauth-Providers
+     # The 'app_id' and 'app_secret' parameters are always passed as the first two
+-    # arguments, followed by optional 'args' which can be either a hash or an array.
++    # arguments (if present). Others are given as Hash.
++
++    # Option 'enabled'      -> Is this provider enabled? (default: true)
++    # Option 'label'        -> What is this provider called? (default: provider's name)
++    # Option 'title'        -> What is title of this provider (default: '%{label} Sign in')
++    # Option 'email_domain' -> If provider do not provide email it will be generated by ""%{nickname}@%{email_domain}"" (default: null)
++    # Option 'login_form':  -> Tells how login form is show. (for default check 'app_*' options)
++    #   * false -> show as icon (eg. twitter, github, etc)
++    #   * true  -> show login dialog (eg. ldap)
++    #   * Hash  -> you can give more complex definitions:
++    #     * always_show: false|true  -> Is form shown even when other form is selected (default: false)
++    #     * fields: Hash|true|false  -> What form fields to use (default: true)
++    #       * true  -> use fields: {username: '%label Login'. password: '*Password'} (ldap, pam)
++    #       * false -> do not show any fields (shibboleth, cas)
++    #       * Hash  -> You may define fields your self. key will be field name and value the placeholder
++    #                  Asterisk (*) in start of value will make field a password field (asterisk is removed in progress).
++    #                  %label or %title will be replaced by that
++    # If options 'app_id', 'app_secret' are present 'login_form' defaults to false, else to true
++    # Other options are passed to packend as is
+     providers:
+-      # - { name: 'google_oauth2', app_id: 'YOUR APP ID',
+-      #     app_secret: 'YOUR APP SECRET',
+-      #     args: { access_type: 'offline', approval_prompt: '' } }
+-      # - { name: 'twitter', app_id: 'YOUR APP ID',
+-      #     app_secret: 'YOUR APP SECRET'}
+-      # - { name: 'github', app_id: 'YOUR APP ID',
+-      #     app_secret: 'YOUR APP SECRET' }
++      google_oauth2:
++        enabled: false
++        app_id: 'YOUR APP ID'
++        app_secret: 'YOUR APP SECRET'
++        access_type: 'offline'
++        approval_prompt: ''
++
++      twitter:
++        enabled: false
++        app_id: 'YOUR APP ID'
++        app_secret: 'YOUR APP SECRET'
++
++      github:
++        enabled: false
++        app_id: 'YOUR APP ID'
++        app_secret: 'YOUR APP SECRET'
++
++      ldap:
++        enabled: false
++        label: 'MyCorporation'
++        # For gitlab 4.2 style login (only when only ldap is enabled), uncomment following
++        #login_form:
++        #  always_show: true
++        host: '_your_ldap_server'
++        base: '_the_base_where_you_search_for_users'
++        port: 636 # 389 for tls and plain
++        uid: 'sAMAccountName'
++        method: 'ssl' # ""ssl"", ""tls"" or ""plain""
++        bind_dn: '_the_full_dn_of_the_user_you_will_bind_with'
++        password: '_the_password_of_the_bind_user'
++        # For authentication to work as you expect, uncomment these
++        #allow_single_sign_on: true
++        #block_auto_created_users: false
++
++      pam:
++        # Currently unix_pam do not work as expected, so pam works only with modules like ldap, sssd, krb
++        # or you need to run gitlab as root (NOT RECOMMENDED!)
++        # REad more from: https://github.com/canweriotnow/rpam-ruby19/issues/5
++        enabled: false
++        label: 'MyLocalHost'
++        #email_domain: 'example.org' # if gecos do not provide email, you need to use this option
++        gecos_map: ['name', 'location', 'phone', 'home_phone', 'email']
++        service: 'gitlab' # what pam service to use
++        # For authentication to work as you expect, uncomment these
++        #allow_single_sign_on: true
++        #block_auto_created_users: false","As I noted below. this should be in above:
+
+``` yaml
+login_form:
+  fields: false
+```
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+6099119,0,"I was putting 30 in as an example that is different from the default of 10.    See https://github.com/wesgurn/gitlabhq/blob/6252951c52be7908fcb01f79af9ee39263faefbc/config/gitlab.yml.example#L43  We can change the 30 to 10, but was trying to show a di""",2013-08-30 15:20:19,wesgurn,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4954#discussion_r6099119,2013-08-31T03:20:19Z,2013-10-09T05:00:58Z,wesgurn,CONTRIBUTOR,config/gitlab.yml.example,,,,,1,"@@ -58,6 +58,9 @@ production: &base
+       wiki: true
+       wall: false
+       snippets: false
++	  
++    ## Webhook settings
++    # webhook_timeout: 30  # default: 10 - Number of seconds to wait for HTTP response after sending webhook HTTP POST request","I was putting 30 in as an example that is different from the default of 10.  
+
+See https://github.com/wesgurn/gitlabhq/blob/6252951c52be7908fcb01f79af9ee39263faefbc/config/gitlab.yml.example#L43
+
+We can change the 30 to 10, but was trying to show a difference example.
+",66990597a97124314611273349196bd94dbe93a5
+4139981,0,"use 1.9 hash syntax please""",2013-05-08 06:16:53,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3591#discussion_r4139981,2013-05-08T18:16:53Z,2013-05-13T10:28:52Z,dzaporozhets,CONTRIBUTOR,features/steps/project/project_network_graph.rb,,,,,1,"@@ -19,6 +19,10 @@ class ProjectNetworkGraph < Spinach::FeatureSteps
+     page.should have_selector '#ref_chzn span', :text => ""master""
+   end
+ 
++  And 'page should select ""v2.1.0"" in select box' do
++    page.should have_selector '#ref_chzn span', :text => ""v2.1.0""","use 1.9 hash syntax please
+",1738055dabb902b45d07839bec053bfc59fd05ee
+4189988,2,"turbolinks :(""",2013-05-12 21:22:14,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3591#discussion_r4189988,2013-05-13T09:22:14Z,2013-05-13T10:28:52Z,dzaporozhets,CONTRIBUTOR,app/views/graph/show.html.haml,,,,,1,"@@ -7,10 +7,14 @@
+ 
+ :javascript
+   var branch_graph;
+-
+-  branch_graph = new BranchGraph($(""#holder""), {
+-    url: '#{project_graph_path(@project, @ref, q: @q, format: :json)}',
+-    commit_url: '#{project_commit_path(@project, 'ae45ca32').gsub(""ae45ca32"", ""%s"")}',
+-    ref: '#{@ref}',
+-    commit_id: '#{@commit.id}'
++  $(function(){","turbolinks :(
+",1738055dabb902b45d07839bec053bfc59fd05ee
+2723341,2,"@zzet sorry, it's my fault""",2013-01-21 22:25:44,geekontheway,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/2683#discussion_r2723341,2013-01-22T09:25:44Z,2013-01-22T09:25:44Z,rubyonrailsworks,NONE,doc/install/installation.md,,263.0,,,5,"@@ -260,7 +260,7 @@ used for the `email.from` setting in `config/gitlab.yml`)
+ 
+ ## Initialise Database and Activate Advanced Features
+ 
+-    sudo -u gitlab -H bundle exec rake gitlab:setup RAILS_ENV=production
++    sudo -u gitlab -H bundle exec rake gitlab:app:setup RAILS_ENV=production","@zzet sorry, it's my fault
+",81dd40d86b4c1faefd7125c715a545407b343c50
+2216587,2,"sorry. I've understood.""",2012-11-25 00:41:43,vsizov,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/2051#discussion_r2216587,2012-11-25T11:41:43Z,2012-11-25T14:54:09Z,vsizov,CONTRIBUTOR,app/models/group.rb,,19.0,,,41,"@@ -1,36 +1,22 @@
+ # == Schema Information
+ #
+-# Table name: groups
++# Table name: namespaces
+ #
+ #  id         :integer          not null, primary key
+ #  name       :string(255)      not null
+-#  code       :string(255)      not null
++#  path       :string(255)      not null
+ #  owner_id   :integer          not null
+ #  created_at :datetime         not null
+ #  updated_at :datetime         not null
++#  type       :string(255)
+ #
+ 
+-class Group < ActiveRecord::Base
+-  attr_accessible :code, :name, :owner_id
+-
+-  has_many :projects
+-  belongs_to :owner, class_name: ""User""
+-
+-  validates :name, presence: true, uniqueness: true
+-  validates :code, presence: true, uniqueness: true
+-  validates :owner, presence: true
+-
+-  delegate :name, to: :owner, allow_nil: true, prefix: true
+-
+-  def self.search query
+-    where(""name LIKE :query OR code LIKE :query"", query: ""%#{query}%"")
+-  end
+-
+-  def to_param
+-    code
+-  end
+-
++class Group < Namespace
+   def users
+     User.joins(:users_projects).where(users_projects: {project_id: project_ids}).uniq
+   end
++
++  def human_name","sorry. I've understood.
+",1d7fdf45ff9cece4ceef46f19616e294fc0e24ee
+1900162,1,"We're running a bigger server with actually around 69 plugins and around 50-60 users tops. Before, we had an average of 5-8 ticks when it went over 50 users. Now its around 15-16 ticks and almost no lag. Thats amazing! Thanks a lot!""",2012-10-21 16:54:43,29decibel,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1741#discussion_r1900162,2012-10-22T04:54:43Z,2012-10-22T04:54:43Z,29decibel,NONE,app/models/merge_request.rb,,,,,1,"@@ -39,6 +39,10 @@ def validate_branches
+     if target_branch == source_branch
+       errors.add :base, ""You can not use same branch for source and target branches""
+     end
++    available_branches = project.heads.map(&:name)
++    unless available_branches.include?(target_branch) and available_branches.include?(source_branch)
++      errors.add :base, ""Specified source branch or target branch not exist""","thanks, done.
+",116db6b36af374a96099a5ff056850b10708d81b
+1672988,0,"It seems you forgot to also add it to the [diff inline form](https://github.com/NARKOZ/gitlabhq/blob/9c75fcbef16e68dd3898545fc5d11b1261de1a26/app/views/notes/_per_line_form.html.haml#L33)""",2012-09-24 01:35:06,riyad,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1539#discussion_r1672988,2012-09-24T13:35:06Z,2012-09-24T13:35:06Z,riyad,CONTRIBUTOR,app/views/notes/_common_form.html.haml,,44.0,,,8,"@@ -37,3 +37,8 @@
+           = f.file_field :attachment, class: ""input-file""
+         %span.hint Any file less than 10 MB
+ 
++:javascript
++  $(function(){
++    var names = #{@project.users.pluck(:name)};
++    $('.note-text').atWho('@', { data: names });
++  });","It seems you forgot to also add it to the [diff inline form](https://github.com/NARKOZ/gitlabhq/blob/9c75fcbef16e68dd3898545fc5d11b1261de1a26/app/views/notes/_per_line_form.html.haml#L33)
+",9c75fcbef16e68dd3898545fc5d11b1261de1a26
+1256515,0,"why p without .row_title? It cause unnecessary top padding """,2012-07-27 08:50:27,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1144#discussion_r1256515,2012-07-27T20:50:27Z,2012-07-27T20:54:15Z,dzaporozhets,CONTRIBUTOR,app/views/issues/_show.html.haml,,27.0,,,6,"@@ -24,8 +24,7 @@
+   - else
+     = image_tag ""no_avatar.png"", :class => ""avatar""
+ 
+-  = link_to project_issue_path(issue.project, issue) do
+-    %p.row_title= truncate(issue.title, :length => 100)
++  %p= link_to truncate(issue.title, :length => 100), project_issue_path(issue.project, issue), :class => ""row_title""","why p without .row_title? It cause unnecessary top padding 
+",f6a67ef207612b507b1facb05fc8579c5e3d3f6e
+639673,0,"Creating project in admin area should not automatically add admin user to masters""",2012-04-03 03:41:08,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/621#discussion_r639673,2012-04-03T15:41:08Z,2012-04-03T23:25:58Z,dzaporozhets,CONTRIBUTOR,app/controllers/admin/projects_controller.rb,,,,,1,"@@ -41,10 +41,31 @@ def create
+     @admin_project = Project.new(params[:project])
+     @admin_project.owner = current_user
+ 
+-    if @admin_project.save
+-      redirect_to [:admin, @admin_project], notice: 'Project was successfully created.'
+-    else
+-      render :action => ""new""
++    Project.transaction do
++      @admin_project.save!
++      @admin_project.users_projects.create!(:project_access => UsersProject::MASTER, :user => current_user)","Creating project in admin area should not automatically add admin user to masters
+",790686119d023a1c83f8e9ffd3c8cadd20f53720
+6504877,0,"What do you think about   ```ruby user = model.find_by_email(email)  # If no user found and allow_username_or_email_login is true # we look for user by extracting part of his email if !user && email && ldap_conf['allow_username_or_email_login']   """,2013-09-21 21:27:52,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/5063#discussion_r6504877,2013-09-22T09:27:52Z,2013-09-23T00:59:52Z,dzaporozhets,CONTRIBUTOR,lib/gitlab/ldap/user.rb,,,,,1,"@@ -43,6 +43,15 @@ def find_or_create(auth)
+           user
+         end
+ 
++        def find_user(email)
++          if user = model.find_by_email(email)","What do you think about 
+
+``` ruby
+user = model.find_by_email(email)
+
+# If no user found and allow_username_or_email_login is true
+# we look for user by extracting part of his email
+if !user && email && ldap_conf['allow_username_or_email_login']
+  uname = email.partition('@').first
+  user = model.find_by_username(uname)
+end
+
+user
+```
+",8a8123a3d4d3a5f991ae599e454b99fd548d47f2
+6656666,0,"@bladealslayer its a possible workaround. if you push your version to rubygems - I'm ok""",2013-09-30 01:02:32,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/5216#discussion_r6656666,2013-09-30T13:02:32Z,2013-10-03T13:40:28Z,dzaporozhets,CONTRIBUTOR,Gemfile.lock,,,,,1,"@@ -205,6 +208,10 @@ GEM
+     grape-entity (0.3.0)
+       activesupport
+       multi_json (>= 1.3.2)
++    grit (2.5.0)","@bladealslayer its a possible workaround. if you push your version to rubygems - I'm ok
+",e8b6974af3ca2835c5ef54cbffb1535ebd50aeca
+4711730,0,"I'm holding off till the auth stuff is all done refactoring.  Then I'll revisit everything.  The reason I didn't do the icon-with-link route is because this is meant to be silent SSO -- e.g. you just visit gitlab and if you're already logged into openid""",2013-06-14 10:34:47,docwhat,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3195#discussion_r4711730,2013-06-14T22:34:47Z,2013-06-14T22:34:47Z,docwhat,CONTRIBUTOR,app/controllers/sessions_controller.rb,,1.0,,,1,"@@ -0,0 +1,11 @@
++class SessionsController < Devise::SessionsController","I'm holding off till the auth stuff is all done refactoring.  Then I'll revisit everything.
+
+The reason I didn't do the icon-with-link route is because this is meant to be silent SSO -- e.g. you just visit gitlab and if you're already logged into openid you don't even notice it authenticating you.
+
+This is how I've hacked the one at work.  I still plan on pushing it upstream to you, but as I said, there is little point while the auth is being working on still.
+",4010e69d44c489fd3f56097e7b2ffc10c6398638
+4141340,0,"Instead of assigning `current_time`, couldn't you just keep `s[:backup_created_at]` as is and then just refer to that in the commands below?""",2013-05-08 07:15:01,tsigo,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3858#discussion_r4141340,2013-05-08T19:15:01Z,2013-05-08T20:43:09Z,rspeicher,CONTRIBUTOR,lib/tasks/gitlab/backup.rake,,,,,1,"@@ -11,10 +11,12 @@ namespace :gitlab do
+       Rake::Task[""gitlab:backup:repo:create""].invoke
+       Rake::Task[""gitlab:backup:uploads:create""].invoke
+ 
++      current_time = Time.now
++
+       # saving additional informations
+       s = {}
+       s[:db_version]         = ""#{ActiveRecord::Migrator.current_version}""
+-      s[:backup_created_at]  = ""#{Time.now}""
++      s[:backup_created_at]  = current_time","Instead of assigning `current_time`, couldn't you just keep `s[:backup_created_at]` as is and then just refer to that in the commands below?
+",cef76fdd17f2cb2f165900d907517857a8a73787
+3047901,0,"Use ruby 1.9 hash syntax please""",2013-02-18 02:15:42,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3023#discussion_r3047901,2013-02-18T13:15:42Z,2013-02-19T08:57:22Z,dzaporozhets,CONTRIBUTOR,app/models/issue.rb,,,,,1,"@@ -19,11 +19,29 @@
+ class Issue < ActiveRecord::Base
+   include Issuable
+ 
+-  attr_accessible :title, :assignee_id, :closed, :position, :description,
+-                  :milestone_id, :label_list, :author_id_of_changes
++  attr_accessible :title, :assignee_id, :position, :description,
++                  :milestone_id, :label_list, :author_id_of_changes,
++                  :state_event
+ 
+   acts_as_taggable_on :labels
+ 
++  state_machine :state, :initial => :opened do","Use ruby 1.9 hash syntax please
+",6e333d507565a63037e9f4142a29138efa530971
+2779860,0,"then don't you run the risk of people having an exposed default password?""",2013-01-25 08:56:21,mikew,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/2770#discussion_r2779860,2013-01-25T19:56:21Z,2013-01-31T22:08:46Z,mikew,CONTRIBUTOR,config/deploy.rb.example,,65.0,,,1,"@@ -0,0 +1,57 @@
++require 'bundler/capistrano'
++
++set :domain,         'set application domain here'
++set :db_adapter,     'mysql' # or postgres
++set :mount_point,    '/'
++set :application,    'gitlab'
++set :user,           'gitlab'
++set :rails_env,      'production'
++set :deploy_to,      ""/home/#{user}/apps/#{application}""
++set :bundle_without, %w[development test] + (%w[mysql postgres] - [db_adapter])
++set :asset_env,      ""RAILS_GROUPS=assets RAILS_RELATIVE_URL_ROOT=#{mount_point}""
++
++set :use_sudo, false
++
++# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
++set :scm,        :git
++set :repository, ""git@#{domain}:#{application}.git""
++set :deploy_via, :remote_cache
++
++# Alternatively, you can deploy via copy, if you don't have gitlab in git
++#set :scm, :none
++#set :repository, '.'
++#set :deploy_via, :copy
++
++role :web, domain
++role :app, domain
++role :db,  domain, primary: true
++
++namespace :foreman do
++  desc 'Export the Procfile to Ubuntu upstart scripts'
++  task :export, roles: :app do
++    run ""cd #{release_path} && sudo foreman export upstart /etc/init -f Procfile -a #{application} -u #{user} -l #{release_path}/log/foreman""
++  end
++
++  desc 'Start the application services'
++  task :start, roles: :app do
++    sudo ""start #{application}""
++  end
++
++  desc 'Stop the application services'
++  task :stop, roles: :app do
++    sudo ""stop #{application}""
++  end
++
++  desc 'Restart the application services'
++  task :restart, roles: :app do
++    run ""sudo start #{application} || sudo restart #{application}""
++  end
++end
++","then don't you run the risk of people having an exposed default password?
+",19b69ca9e2fab28e33d54650a902b1c19695d4b3
+2762508,0,"@AlexDenisov, I understand your confusion as to why the first to declare, and then clean up.   Ask penetrate our experience and understand that whitelisting is always better blacklists.   If we say that everything is permitted that is not forbidden, w""",2013-01-24 07:10:43,zzet,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/2746#discussion_r2762508,2013-01-24T18:10:43Z,2013-01-24T20:32:11Z,zzet,CONTRIBUTOR,app/controllers/teams_controller.rb,,10.0,,,10,"@@ -0,0 +1,92 @@
++class TeamsController < ApplicationController
++  # Authorize
++  before_filter :authorize_manage_user_team!
++  before_filter :authorize_admin_user_team!
++
++  # Skip access control on public section
++  skip_before_filter :authorize_manage_user_team!, only: [:index, :show, :new, :destroy, :create, :search, :issues, :merge_requests]
++  skip_before_filter :authorize_admin_user_team!, only: [:index, :show, :new, :create, :search, :issues, :merge_requests]
++
++  layout 'user_team',       only: [:show, :edit, :update, :destroy, :issues, :merge_requests, :search]","@AlexDenisov, I understand your confusion as to why the first to declare, and then clean up. 
+
+Ask penetrate our experience and understand that whitelisting is always better blacklists. 
+
+If we say that everything is permitted that is not forbidden, we just close our eyes to what is happening around. New `Action` immediately rules out of country, as it comes under the general rule, but this is not correct. Developer attention wasn't focused on the fact what can be resolved, and what not. 
+
+If he will do something without thinking - he would be plucked for error. He will not have access to and it will look for the problem. When he sees that he needs to explicitly allow access, he thinks, and whether to do it or not. So the security aspect is covered at 100% and there is no reason to worry. 
+
+From the point of view of the developers - can be clearly seen that the legal policy of staggered and they once again look what the developer has to say. Again, plus the side of safety. 
+
+2 line is more code, and so much profit!
+",d839f6c52571e3b873a05779b1131f7b00670b31
+1804501,1,"ok. its clear now. Also i'm glad we got rid of `@history_path`. I'll merge it now - hope it works :)""",2012-10-09 20:44:19,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/1665#discussion_r1804501,2012-10-10T08:44:19Z,2012-10-10T08:44:19Z,dzaporozhets,CONTRIBUTOR,app/views/tree/_tree.html.haml,,4.0,,,4,"@@ -1,7 +1,7 @@
+ %ul.breadcrumb
+   %li
+     %span.arrow
+-    = link_to project_tree_path(@project, @ref), remote: true do","ok. its clear now. Also i'm glad we got rid of `@history_path`. I'll merge it now - hope it works :)
+",702133c0e2ff1e9a70263ad9c01985a6279cb2db
+3450302,0,"I thought it would be easy to disable by setting enabled: to false. Though I was supposed to make it default to true.  Should it be changed to disabled?: ```yaml ldap:   key: val pam:   disabled: true   key: val ```""",2013-03-20 02:39:28,raphendyr,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r3450302,2013-03-20T13:39:28Z,2013-03-25T15:57:29Z,raphendyr,CONTRIBUTOR,app/controllers/omniauth_callbacks_controller.rb,,3.0,,,6,"@@ -1,7 +1,9 @@
+ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+-  Gitlab.config.omniauth.providers.each do |provider|
+-    define_method provider['name'] do
+-      handle_omniauth
++  Gitlab.config.omniauth.providers.each_pair do |provider, args|
++    if args['enabled']","I thought it would be easy to disable by setting enabled: to false. Though I was supposed to make it default to true.
+
+Should it be changed to disabled?:
+
+``` yaml
+ldap:
+  key: val
+pam:
+  disabled: true
+  key: val
+```
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+6363268,0,"Use 1.9 ruby hash syntax please""",2013-09-13 19:07:35,randx,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/5072#discussion_r6363268,2013-09-14T07:07:35Z,2013-09-14T11:28:52Z,dzaporozhets,CONTRIBUTOR,app/views/projects/new.html.haml,,,,,1,"@@ -53,6 +47,12 @@
+           %span.light (optional)
+         .controls
+           = f.text_area :description, placeholder: ""awesome project"", class: ""input-xlarge"", rows: 3, maxlength: 250, tabindex: 3
++      .control-group.project-public-holder
++        = f.label :public do
++          %span Public project
++        .controls
++          = f.check_box :public, { :checked => Gitlab.config.gitlab.default_projects_features.public }, true, false","Use 1.9 ruby hash syntax please
+",c71460d2d3c6b868da099f090af812e15d552bb9
+5613856,2,"Tried to follow teh link but I was unable to squash both commits into one. Will create  a new pull request, sorry for all the work :(""",2013-08-06 07:23:55,Itxaka,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/4718#discussion_r5613856,2013-08-06T19:23:55Z,2013-08-06T19:23:55Z,Itxaka,CONTRIBUTOR,doc/api/README.md,,,,,4,"@@ -87,3 +87,4 @@ When listing resources you can pass the following parameters:
+ 
+ + [php-gitlab-api](https://github.com/m4tthumphrey/php-gitlab-api) - PHP
+ + [Ruby Wrapper](https://github.com/NARKOZ/gitlab) - Ruby
+++ [python-gitlab](https://github.com/Itxaka/python-gitlab) - Python","Tried to follow teh link but I was unable to squash both commits into one. Will create  a new pull request, sorry for all the work :(
+",0d5eb932c7387333af6006b4688b1b1944619388
+3450371,0,"You can configure any provider to be icon provider by setting login_form: ```yaml pam:   login_form: false ``` Though, it the wont pass  app_id and app_secret as first parameters... Why do those providers require them to be arguments instead of bein""",2013-03-20 02:43:19,raphendyr,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r3450371,2013-03-20T13:43:19Z,2013-03-25T15:57:29Z,raphendyr,CONTRIBUTOR,config/initializers/devise.rb,,242.0,,,57,"@@ -205,27 +205,43 @@
+   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
+   # end
+ 
+-  if Gitlab.config.ldap.enabled
+-    config.omniauth :ldap,
+-      :host     => Gitlab.config.ldap['host'],
+-      :base     => Gitlab.config.ldap['base'],
+-      :uid      => Gitlab.config.ldap['uid'],
+-      :port     => Gitlab.config.ldap['port'],
+-      :method   => Gitlab.config.ldap['method'],
+-      :bind_dn  => Gitlab.config.ldap['bind_dn'],
+-      :password => Gitlab.config.ldap['password']
++  # For good reason omniauth-pam requires gecos_map to be symbols
++  if !Gitlab.config.omniauth.providers['pam'].nil? && !Gitlab.config.omniauth.providers.pam['gecos_map'].nil?
++    Gitlab.config.omniauth.providers.pam.gecos_map.map! { |item| item.to_sym }
+   end
+ 
+-  Gitlab.config.omniauth.providers.each do |provider|
+-    case provider['args']
+-    when Array
+-      # An Array from the configuration will be expanded.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], *provider['args']
+-    when Hash
+-      # A Hash from the configuration will be passed as is.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], provider['args']
+-    else
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret']
++  Gitlab.config.omniauth['icon_providers'] = []
++  Gitlab.config.omniauth['form_providers'] = []
++  Gitlab.config.omniauth.providers.each_pair do |provider, options|
++    if options['enabled']
++      # use symbols...
++      provider = provider.to_sym
++
++      # leave options in config stucture as they are -> make a clone
++      options = options.clone
++      options.delete('enabled')
++
++      # Construct login_form options
++      icon = !options['app_id'].nil? && !options['app_secret'].nil?
++      options['login_form'] = !icon if options['login_form'].nil?
++      if options['login_form']
++        options['login_form'] = {} if options['login_form'] == true
++        options['login_form']['fields'] = {username: '%{title}', password: '*Password'} if\
++            options['login_form']['fields'].nil? || options['login_form']['fields'] == true
++        if options['login_form']['always_show'].nil?
++          options['login_form']['always_show'] = options['login_form']['fields'].empty?
++        end
++        Gitlab.config.omniauth.form_providers << provider
++      else
++        Gitlab.config.omniauth.icon_providers << provider
++      end
++
++      # Configure provider to devise
++      if icon
++        config.omniauth provider, options['app_id'], options['app_secret'], options","You can configure any provider to be icon provider by setting login_form:
+
+``` yaml
+pam:
+  login_form: false
+```
+
+Though, it the wont pass  app_id and app_secret as first parameters...
+Why do those providers require them to be arguments instead of being in hash?
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+4155014,0,"To save the trouble of doing this, I just kept ```ldap_enable?``` and added a new ```shibboleth_enable?``` for the same purpose. Nevertheless, I agree with this approach as it is cleaner.""",2013-05-09 03:58:47,TiagoTT,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r4155014,2013-05-09T15:58:47Z,2013-05-09T15:58:47Z,TiagoTT,NONE,app/helpers/application_helper.rb,,123.0,,,5,"@@ -119,8 +119,30 @@ def emoji_autocomplete_source
+     Emoji.names.to_s
+   end
+ 
+-  def ldap_enable?
+-    Devise.omniauth_providers.include?(:ldap)","To save the trouble of doing this, I just kept `ldap_enable?` and added a new `shibboleth_enable?` for the same purpose.
+Nevertheless, I agree with this approach as it is cleaner.
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+4169466,0,"In shibboleth configuration, there is no ```app_id``` nor  ```app_secret```, and  ```login_form``` is  ```false```. This way, ```icon``` is ```false``` and also ```options['login_form']``` is ```false```. So the options hash will be passed to configure """,2013-05-09 23:51:08,TiagoTT,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r4169466,2013-05-10T11:51:08Z,2013-05-10T11:51:43Z,TiagoTT,NONE,config/initializers/devise.rb,,244.0,,,59,"@@ -205,27 +205,44 @@
+   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
+   # end
+ 
+-  if Gitlab.config.ldap.enabled
+-    config.omniauth :ldap,
+-      :host     => Gitlab.config.ldap['host'],
+-      :base     => Gitlab.config.ldap['base'],
+-      :uid      => Gitlab.config.ldap['uid'],
+-      :port     => Gitlab.config.ldap['port'],
+-      :method   => Gitlab.config.ldap['method'],
+-      :bind_dn  => Gitlab.config.ldap['bind_dn'],
+-      :password => Gitlab.config.ldap['password']
++  # For good reason omniauth-pam requires gecos_map to be symbols
++  if !Gitlab.config.omniauth.providers['pam'].nil? && !Gitlab.config.omniauth.providers.pam['gecos_map'].nil?
++    Gitlab.config.omniauth.providers.pam.gecos_map.map! { |item| item.to_sym }
+   end
+ 
+-  Gitlab.config.omniauth.providers.each do |provider|
+-    case provider['args']
+-    when Array
+-      # An Array from the configuration will be expanded.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], *provider['args']
+-    when Hash
+-      # A Hash from the configuration will be passed as is.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], provider['args']
+-    else
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret']
++  Gitlab.config.omniauth['icon_providers'] = []
++  Gitlab.config.omniauth['form_providers'] = []
++  Gitlab.config.omniauth.providers.each_pair do |provider, options|
++    options['enabled'] = true if options['enabled'].nil?
++    if options['enabled']
++      # use symbols...
++      provider = provider.to_sym
++
++      # leave options in config stucture as they are -> make a clone
++      options = options.clone
++      options.delete('enabled')
++
++      # Construct login_form options
++      icon = !options['app_id'].nil? && !options['app_secret'].nil?
++      options['login_form'] = !icon if options['login_form'].nil?
++      if options['login_form']
++        options['login_form'] = {} if options['login_form'] == true
++        options['login_form']['fields'] = {username: '%{title}', password: '*Password'} if\
++            options['login_form']['fields'].nil? || options['login_form']['fields'] == true
++        if options['login_form']['always_show'].nil?
++          options['login_form']['always_show'] = options['login_form']['fields'].empty?
++        end
++        Gitlab.config.omniauth.form_providers << provider
++      else
++        Gitlab.config.omniauth.icon_providers << provider
++      end
++
++      # Configure provider to devise
++      if icon
++        config.omniauth provider, options['app_id'], options['app_secret'], options
++      else
++        config.omniauth provider, options","In shibboleth configuration, there is no `app_id` nor  `app_secret`, and  `login_form` is  `false`.
+This way, `icon` is `false` and also `options['login_form']` is `false`.
+So the options hash will be passed to configure the provider in this line, right?
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2
+4185263,0,"Yes. eg. above `pam['gecos_map'']` is passed to provider here. `icon` is true only if both 'app_id' and 'app_secret'  are given. And any case, all options are passed as a hash to provider (in both cases).""",2013-05-11 23:03:09,raphendyr,gitlabhq,gitlabhq,,https://github.com/gitlabhq/gitlabhq/pull/3046#discussion_r4185263,2013-05-12T11:03:09Z,2013-05-12T11:03:09Z,raphendyr,CONTRIBUTOR,config/initializers/devise.rb,,244.0,,,59,"@@ -205,27 +205,44 @@
+   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
+   # end
+ 
+-  if Gitlab.config.ldap.enabled
+-    config.omniauth :ldap,
+-      :host     => Gitlab.config.ldap['host'],
+-      :base     => Gitlab.config.ldap['base'],
+-      :uid      => Gitlab.config.ldap['uid'],
+-      :port     => Gitlab.config.ldap['port'],
+-      :method   => Gitlab.config.ldap['method'],
+-      :bind_dn  => Gitlab.config.ldap['bind_dn'],
+-      :password => Gitlab.config.ldap['password']
++  # For good reason omniauth-pam requires gecos_map to be symbols
++  if !Gitlab.config.omniauth.providers['pam'].nil? && !Gitlab.config.omniauth.providers.pam['gecos_map'].nil?
++    Gitlab.config.omniauth.providers.pam.gecos_map.map! { |item| item.to_sym }
+   end
+ 
+-  Gitlab.config.omniauth.providers.each do |provider|
+-    case provider['args']
+-    when Array
+-      # An Array from the configuration will be expanded.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], *provider['args']
+-    when Hash
+-      # A Hash from the configuration will be passed as is.
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret'], provider['args']
+-    else
+-      config.omniauth provider['name'].to_sym, provider['app_id'], provider['app_secret']
++  Gitlab.config.omniauth['icon_providers'] = []
++  Gitlab.config.omniauth['form_providers'] = []
++  Gitlab.config.omniauth.providers.each_pair do |provider, options|
++    options['enabled'] = true if options['enabled'].nil?
++    if options['enabled']
++      # use symbols...
++      provider = provider.to_sym
++
++      # leave options in config stucture as they are -> make a clone
++      options = options.clone
++      options.delete('enabled')
++
++      # Construct login_form options
++      icon = !options['app_id'].nil? && !options['app_secret'].nil?
++      options['login_form'] = !icon if options['login_form'].nil?
++      if options['login_form']
++        options['login_form'] = {} if options['login_form'] == true
++        options['login_form']['fields'] = {username: '%{title}', password: '*Password'} if\
++            options['login_form']['fields'].nil? || options['login_form']['fields'] == true
++        if options['login_form']['always_show'].nil?
++          options['login_form']['always_show'] = options['login_form']['fields'].empty?
++        end
++        Gitlab.config.omniauth.form_providers << provider
++      else
++        Gitlab.config.omniauth.icon_providers << provider
++      end
++
++      # Configure provider to devise
++      if icon
++        config.omniauth provider, options['app_id'], options['app_secret'], options
++      else
++        config.omniauth provider, options","Yes. eg. above `pam['gecos_map'']` is passed to provider here. `icon` is true only if both 'app_id' and 'app_secret'  are given. And any case, all options are passed as a hash to provider (in both cases).
+",e1df2abc839b4ebd9d6311e13d266209f62b5db2

@@ -1,0 +1,270 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3115697,0,"Job pr-validator-per-commit failed for 7ea3044a [(results)](https://jenkins.akka.io:8498/job/pr-validator-per-commit/59/):  <br>Took 46 min.<br> to rebuild, comment """"PLS REBUILD/pr-validator-per-commit@7ea3044af87b28d654bfb955a39c8fd1d4e99e52"""" on PR 1389""",2013-04-30 01:00:28,akka-ci,akka,akka,7ea3044af87b28d654bfb955a39c8fd1d4e99e52,akka-ci,2511948,"Job pr-validator-per-commit failed for 7ea3044a [(results)](https://jenkins.akka.io:8498/job/pr-validator-per-commit/59/):
+
+<br>Took 46 min.<br> to rebuild, comment ""PLS REBUILD/pr-validator-per-commit@7ea3044af87b28d654bfb955a39c8fd1d4e99e52"" on PR 1389
+",2013-04-30T13:00:28Z,2013-04-30T13:00:28Z
+1863986,0,"Why abs if i is known to be negative?""",2012-09-17 01:49:23,drewhk,akka,akka,44f4fdb003dbf8014bef8bc2bc22c3e974815eaf,drewhk,932285,"Why abs if i is known to be negative?
+",2012-09-17T13:49:23Z,2012-09-17T13:49:23Z
+1538075,0,"I believe the correct parlance is """"instance initializer""""""",2012-07-04 00:46:47,viktorklang,akka,akka,d7bed79730c7659c4bfb375808d4959fe1249862,viktorklang,10871,"I believe the correct parlance is ""instance initializer""
+",2012-07-04T12:46:47Z,2012-07-04T12:46:47Z
+1443828,0,"Ah, didn't know that. *That* sounds like a better solution for sure. """,2012-06-11 09:41:57,jboner,akka,akka,34c9e49ee0915318e4f36c7ce33248c3072ab50c,jboner,10701,"Ah, didn't know that. _That_ sounds like a better solution for sure. 
+",2012-06-11T21:41:57Z,2012-06-11T21:41:57Z
+1301331,1,"+1, merge!""",2012-05-07 05:27:38,viktorklang,akka,akka,c3f7aac8f3342c5b47e9dac6988b422ff7cbe289,viktorklang,10871,"+1, merge!
+",2012-05-07T17:27:38Z,2012-05-07T17:27:38Z
+812038,0,"these can probably go now""",2011-12-20 22:33:43,rkuhn,akka,akka,dac0beb01b9ffe01ef85b3334c7077909321370a,rkuhn,470469,"these can probably go now
+",2011-12-21T09:33:43Z,2011-12-21T09:33:43Z
+812042,0,"true""",2011-12-20 22:34:50,henrikengstrom,akka,akka,dac0beb01b9ffe01ef85b3334c7077909321370a,henrikengstrom,506945,"true
+",2011-12-21T09:34:50Z,2011-12-21T09:34:50Z
+798278,0,"use mapTo for type coercions (casting is cheaper though)""",2011-12-15 07:37:39,viktorklang,akka,akka,3b6c3e28d3eabfdfa5c38071528f777834fa7306,viktorklang,10871,"use mapTo for type coercions (casting is cheaper though)
+",2011-12-15T18:37:39Z,2011-12-15T18:37:39Z
+798284,0,"This isn't parallel, if that should be the case""",2011-12-15 07:40:45,viktorklang,akka,akka,3b6c3e28d3eabfdfa5c38071528f777834fa7306,viktorklang,10871,"This isn't parallel, if that should be the case
+",2011-12-15T18:40:45Z,2011-12-15T18:40:45Z
+798285,0,"Might be worth adding a .. warning:: section on that""",2011-12-15 07:40:59,viktorklang,akka,akka,3b6c3e28d3eabfdfa5c38071528f777834fa7306,viktorklang,10871,"Might be worth adding a .. warning:: section on that
+",2011-12-15T18:40:59Z,2011-12-15T18:40:59Z
+774000,0,"Needs to be documented that it's blocking""",2011-12-06 10:43:25,viktorklang,akka,akka,a1d8f306698a2f61d57f696e9f69ca1b5a6fdc28,viktorklang,10871,"Needs to be documented that it's blocking
+",2011-12-06T21:43:25Z,2011-12-06T21:43:25Z
+772044,0,"I can understand your worries, the current suggestion was the least of all evils:  Actor == The behavior self    == The identity context == The context""",2011-12-06 00:15:00,viktorklang,akka,akka,3204269f6a0fb2aec94595f504e2c423d9344b5c,viktorklang,10871,"I can understand your worries, the current suggestion was the least of all evils:
+
+Actor == The behavior
+self    == The identity
+context == The context
+",2011-12-06T11:15:00Z,2011-12-06T11:15:00Z
+753694,0,"It doesn't compile even. You meant instead of using system.actorOf I suppose?""",2011-11-29 02:27:29,henrikengstrom,akka,akka,823a68ac0f77bac7c4a67f643ad50073051e0d2a,henrikengstrom,506945,"It doesn't compile even. You meant instead of using system.actorOf I suppose?
+",2011-11-29T13:27:29Z,2011-11-29T13:27:29Z
+677017,1,"Thank you. """,2011-10-26 08:08:19,jboner,akka,akka,80282d1f1de9c5a21247ad9d1b22bdb202b967ed,jboner,10701,"Thank you. 
+",2011-10-26T20:08:19Z,2011-10-26T20:08:19Z
+659240,1,"Awesomely done Roland!""",2011-10-18 07:45:49,viktorklang,akka,akka,5c823ad50d85d484a68b407279faeb173bb7c164,viktorklang,10871,"Awesomely done Roland!
+",2011-10-18T19:45:49Z,2011-10-18T19:45:49Z
+502985,0,"> Should probably use composition instead of inheritance to provide the Router-functionality, otherwise CustomRouter will never wor  That is what we talked about this morning. But to do a redesign on this part, I do not consider a part of this already to""",2011-07-29 01:47:42,pveentjer,akka,akka,4b4f38c9738b06e04b956bef669855a899118d3e,pveentjer,105243,"> Should probably use composition instead of inheritance to provide the Router-functionality, otherwise CustomRouter will never wor
+
+That is what we talked about this morning. But to do a redesign on this part, I do not consider a part of this already to big task. But we both agree upon that the current approach is not very extensible friendly. But this is the approach used in the ClusteredActorRef. 
+
+But a Akka developer that wants to provide a custom router can of course always do something like: 
+new RoutedActorRef(actorAddress, connections) with CustomRouter
+if he wants to provide his own implementation.
+",2011-07-29T13:47:42Z,2011-07-29T13:48:14Z
+484715,0,"Hi Viktor,  I'll change it back. I didn't know this was a recommended practice in Scala.  On Tue, Jul 19, 2011 at 3:12 PM, viktorklang < reply@reply.github.com>wrote:  > I definitely prefer ADT over magic value > > -- > Reply to this email directly or view""",2011-07-19 00:18:26,pveentjer,akka,akka,a145e0773cafee3825eaece65065238dd15c4c68,pveentjer,105243,"Hi Viktor,
+
+I'll change it back. I didn't know this was a recommended practice in Scala.
+
+On Tue, Jul 19, 2011 at 3:12 PM, viktorklang <
+reply@reply.github.com>wrote:
+
+> I definitely prefer ADT over magic value
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/jboner/akka/commit/a145e0773cafee3825eaece65065238dd15c4c68#commitcomment-484700
+",2011-07-19T12:18:26Z,2011-07-19T12:18:26Z
+484686,0,"But can't put it in Configuration. That is a generic parser. Put it in Deployer where the deployment parser is.  -- Jonas Bonér CTO Typesafe - Enterprise-Grade Scala from the Experts Phone: +46 733 777 123 Twitter: @jboner  On Jul 19, 2011 1:37 PM""",2011-07-18 23:59:20,jboner,akka,akka,5635c9f76a5950d6231c40c3e705648d9a5f9158,jboner,10701,"But can't put it in Configuration. That is a generic parser. Put it in
+Deployer where the deployment parser is.
+## 
+
+Jonas Bonér
+CTO
+Typesafe - Enterprise-Grade Scala from the Experts
+Phone: +46 733 777 123
+Twitter: @jboner
+ On Jul 19, 2011 1:37 PM, ""pveentjer"" <
+reply@reply.github.com>
+wrote:
+
+> He Viktor,
+> 
+> the code isn't the prettiest but it deals with the ambiguity replication
+> vs
+> replication-factor.
+> 
+> On Tue, Jul 19, 2011 at 11:25 AM, viktorklang <
+> reply@reply.github.com>wrote:
+> 
+> > Dude, this is a total hack.
+> > There _has_ to be another way
+> > ## 
+> > 
+> > Reply to this email directly or view it on GitHub:
+> > 
+> > https://github.com/jboner/akka/commit/5635c9f76a5950d6231c40c3e705648d9a5f9158#commitcomment-484440
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/jboner/akka/commit/5635c9f76a5950d6231c40c3e705648d9a5f9158#commitcomment-484664
+",2011-07-19T11:59:20Z,2011-07-19T11:59:20Z
+391354,0,"Moving CallingThreadDispatcherModelSpec.scala broke the build on my machine. Does it still work on yours?""",2011-05-19 08:55:34,derekjw,akka,akka,a48f6fdf9095180b76aa1cde433976b60d2cd0da,derekjw,7174,"Moving CallingThreadDispatcherModelSpec.scala broke the build on my machine. Does it still work on yours?
+",2011-05-19T20:55:34Z,2011-05-19T20:55:34Z
+3114686,0,"Job pr-validator-per-commit failed for 6d815216 [(results)](https://jenkins.akka.io:8498/job/pr-validator-per-commit/35/):  <br>Took 48 min.<br> to rebuild, comment """"PLS REBUILD/pr-validator-per-commit@6d815216a6af38fb13d6a6b4bcc92073ee46e03d"""" on PR 1375""",2013-04-29 22:02:52,akka-ci,akka,akka,6d815216a6af38fb13d6a6b4bcc92073ee46e03d,akka-ci,2511948,"Job pr-validator-per-commit failed for 6d815216 [(results)](https://jenkins.akka.io:8498/job/pr-validator-per-commit/35/):
+
+<br>Took 48 min.<br> to rebuild, comment ""PLS REBUILD/pr-validator-per-commit@6d815216a6af38fb13d6a6b4bcc92073ee46e03d"" on PR 1375
+",2013-04-30T10:02:52Z,2013-04-30T10:02:52Z
+2453179,0,"Right. Since it is currently fixed size anyway an array would fit perfectly.""",2013-01-17 04:42:59,jrudolph,akka,akka,7d89aefb634e6dd2c31ed8f13b6963be4f338352,jrudolph,9868,"Right. Since it is currently fixed size anyway an array would fit perfectly.
+",2013-01-17T15:42:59Z,2013-01-17T15:42:59Z
+2453486,0,"multiple releases is possible here, making the pool corrupted""",2013-01-17 05:17:14,viktorklang,akka,akka,7d89aefb634e6dd2c31ed8f13b6963be4f338352,viktorklang,10871,"multiple releases is possible here, making the pool corrupted
+",2013-01-17T16:17:14Z,2013-01-17T16:17:14Z
+2463979,0,"Still, we need a potentially unlimited number of buffers. What should we do with them if we don't need them any more if we don't let them be garbage collected?""",2013-01-18 20:20:39,jrudolph,akka,akka,7d89aefb634e6dd2c31ed8f13b6963be4f338352,jrudolph,9868,"Still, we need a potentially unlimited number of buffers. What should we do with them if we don't need them any more if we don't let them be garbage collected?
+",2013-01-19T07:20:39Z,2013-01-19T07:20:39Z
+1417038,0,"Can you make this red?""",2012-06-05 00:59:53,viktorklang,akka,akka,65aa029c2f1704e70aef90399983723d28086c7a,viktorklang,10871,"Can you make this red?
+",2012-06-05T12:59:53Z,2012-06-05T12:59:53Z
+1128670,0,"val channelFuture = connectionActor ? CreateRandomNameChild(channelActorCreator) mapTo manifest[ActorRef]""",2012-03-25 03:35:38,jxstanford,akka,akka,bd5f4930165e18dc0f3d6c9dba13d7e4a0480f5b,jxstanford,787382,"val channelFuture = connectionActor ? CreateRandomNameChild(channelActorCreator) mapTo manifest[ActorRef]
+",2012-03-25T15:35:38Z,2012-03-25T15:35:38Z
+907039,1,"@piotrga good catch ... drop the sync optimization as it will result in less confusing behavior under error conditions. Need more time to think about alternative optimizations but we can also introduce them later without breaking public contracts.""",2012-01-26 18:53:57,krasserm,akka,akka,f6646051f79f6f3c7fb3214652bce46034efed9d,krasserm,202907,"@piotrga good catch ... drop the sync optimization as it will result in less confusing behavior under error conditions. Need more time to think about alternative optimizations but we can also introduce them later without breaking public contracts.
+",2012-01-27T05:53:57Z,2012-01-27T05:53:57Z
+877477,1,"good!""",2012-01-17 21:59:36,patriknw,akka,akka,9c762dec2062f7a651363a6cc90d8105126d8f35,patriknw,336161,"good!
+",2012-01-18T08:59:36Z,2012-01-18T08:59:36Z
+834912,1,"Great that this was started!""",2012-01-03 10:25:38,viktorklang,akka,akka,97bc9734940ce658ba840944e772f2170e598796,viktorklang,10871,"Great that this was started!
+",2012-01-03T21:25:38Z,2012-01-03T21:25:38Z
+794397,0,"Yeah, looks good. Reminded me that I wanted to make Duration.Inf and Duration.MinusInf compare equally to itself.""",2011-12-14 05:39:37,rkuhn,akka,akka,04cd2adee9746ab573d0090f0f3998bebb73e37b,rkuhn,470469,"Yeah, looks good. Reminded me that I wanted to make Duration.Inf and Duration.MinusInf compare equally to itself.
+",2011-12-14T16:39:37Z,2011-12-14T16:39:37Z
+1538058,2,"oops: context fail! (I was thinking you were still commenting on the initialCommands stuff)""",2012-07-04 00:44:42,rkuhn,akka,akka,d7bed79730c7659c4bfb375808d4959fe1249862,rkuhn,470469,"oops: context fail! (I was thinking you were still commenting on the initialCommands stuff)
+",2012-07-04T12:44:42Z,2012-07-04T12:44:42Z
+945083,2,"ouch, sorry :-(""",2012-02-08 01:48:36,rkuhn,akka,akka,81451208f115dd696a17a779bf4a62cd20fdf8c9,rkuhn,470469,"ouch, sorry :-(
+",2012-02-08T12:48:36Z,2012-02-08T12:48:36Z
+1317143,2,"Sorry, my mistake. My apologies. It's as rkuhn says: it's the infinite Timeout on the `ask` that makes it fail. Still, my argument still stands. I'm """"sure"""" that I'll get an answer back, so I didn't want a timeout to occur.  And I'm sorry for using this as""",2012-05-10 07:16:27,fcristovao,akka,akka,aca5693ce688d4e5cb29473f509a965807ebbc9e,fcristovao,996235,"Sorry, my mistake. My apologies. It's as rkuhn says: it's the infinite Timeout on the `ask` that makes it fail. Still, my argument still stands. I'm ""sure"" that I'll get an answer back, so I didn't want a timeout to occur. 
+And I'm sorry for using this as ""discussion"". I was going to ask it in the mailing list.
+",2012-05-10T19:16:27Z,2012-05-10T19:19:57Z
+1320231,2,"In my experience people will fall back to never/Inf instead of thinking. So offering them that will only harm them.""",2012-05-11 01:01:53,viktorklang,akka,akka,aca5693ce688d4e5cb29473f509a965807ebbc9e,viktorklang,10871,"In my experience people will fall back to never/Inf instead of thinking. So offering them that will only harm them.
+",2012-05-11T13:01:53Z,2012-05-11T13:01:53Z
+883591,2,"When did we decide to use daemonic = on as default? It has consequences, and I'm not totally convinced of the benefits to have it default on. """,2012-01-19 09:38:41,patriknw,akka,akka,03bc15feb11a4bed8bf2efa42dde2c87cef9d0af,patriknw,336161,"When did we decide to use daemonic = on as default?
+It has consequences, and I'm not totally convinced of the benefits to have it default on.
+",2012-01-19T20:38:41Z,2012-01-19T20:38:41Z
+812041,2,"Why this change? I have a big aversion against """"new""""""",2011-12-20 22:34:43,viktorklang,akka,akka,dac0beb01b9ffe01ef85b3334c7077909321370a,viktorklang,10871,"Why this change? I have a big aversion against ""new""
+",2011-12-21T09:34:43Z,2011-12-21T09:34:43Z
+811751,2,"Arrg, crap. I'll fix.  -- Jonas Bonér CTO Typesafe - Enterprise-Grade Scala from the Experts Phone: +46 733 777 123 Twitter: @jboner  On Dec 21, 2011 2:56 AM, """"Peter Vlugter"""" < reply@reply.github.com> wrote:  > This commit accidentally added a """,2011-12-20 20:05:47,jboner,akka,akka,9801ec641d81f76a37e69f66e2c554f4e2ee05ec,jboner,10701,"Arrg, crap. I'll fix.
+## 
+
+Jonas Bonér
+CTO
+Typesafe - Enterprise-Grade Scala from the Experts
+Phone: +46 733 777 123
+Twitter: @jboner
+ On Dec 21, 2011 2:56 AM, ""Peter Vlugter"" <
+reply@reply.github.com>
+wrote:
+
+> This commit accidentally added a large tags file. Removed it in:
+> 
+> https://github.com/jboner/akka/commit/a624c74045396a6815a788a53aa2f0b066f60817
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/jboner/akka/commit/9801ec641d81f76a37e69f66e2c554f4e2ee05ec#commitcomment-811339
+",2011-12-21T07:05:47Z,2011-12-21T07:05:47Z
+553153,2,"Crap, this was meant for wip-props only :( I'll fix it.""",2011-08-25 20:23:20,viktorklang,akka,akka,95976b4f6b527256efb7172adfc692caa64442f5,viktorklang,10871,"Crap, this was meant for wip-props only :( I'll fix it.
+",2011-08-26T08:23:20Z,2011-08-26T08:23:20Z
+555935,2,"I don't like that. But I agree that all caps is ugly. I rather go with clusterPath. Most stuff are immutable vals anyway, so constants loose meaning in Scala. Change it if you like.  -- Jonas Bonér CTO Typesafe - Enterprise-Grade Scala from the Expe""",2011-08-28 02:03:40,jboner,akka,akka,4d317517932a162539602537b88d229c0ad6ed1f,jboner,10701,"I don't like that. But I agree that all caps is ugly. I rather go with
+clusterPath. Most stuff are immutable vals anyway, so constants loose
+meaning in Scala. Change it if you like.
+## 
+
+Jonas Bonér
+CTO
+Typesafe - Enterprise-Grade Scala from the Experts
+Phone: +46 733 777 123
+Twitter: @jboner
+ On Aug 28, 2011 3:37 PM, ""patriknw"" <
+reply@reply.github.com>
+wrote:
+
+> Isn't the Scala style convention for constants: ClusterPath ?
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/jboner/akka/commit/4d317517932a162539602537b88d229c0ad6ed1f#commitcomment-555913
+",2011-08-28T14:03:40Z,2011-08-28T14:03:40Z
+1161368,2,"abused as poor man’s option""",2012-04-01 22:22:29,rkuhn,akka,akka,288f02b113d0ab2ba41c8a48b8a3450d7f81aab9,rkuhn,470469,"abused as poor man’s option
+",2012-04-02T10:22:29Z,2012-04-02T10:22:29Z
+1171935,2,"I know, haven't thought of a nice solution yet :-(""",2012-04-03 22:46:22,momania,akka,akka,2697205ddb876d7e5e109670d18b51017584421e,momania,66616,"I know, haven't thought of a nice solution yet :-(
+",2012-04-04T10:46:22Z,2012-04-04T10:46:22Z
+897972,2,"I did that and ended up with massive project which I don't need and incorrect deps. I dont fancy shaving the project and fixing deps every time something changes in the project. Multi-module setup simply sucks...:(""",2012-01-24 10:26:50,piotrga,akka,akka,7e1899a22306e401e40c5621c59c9f926cd6e9a5,piotrga,129663,"I did that and ended up with massive project which I don't need and incorrect deps.
+I dont fancy shaving the project and fixing deps every time something changes in the project.
+Multi-module setup simply sucks...:(
+",2012-01-24T21:26:50Z,2012-01-24T21:27:02Z
+877472,2,"sorry, took this over from Nikolay without checking, changed now.""",2012-01-17 21:57:35,rkuhn,akka,akka,9c762dec2062f7a651363a6cc90d8105126d8f35,rkuhn,470469,"sorry, took this over from Nikolay without checking, changed now.
+",2012-01-18T08:57:35Z,2012-01-18T08:57:35Z
+793755,2,"Don't have time to read all of it :(""",2011-12-14 02:17:18,viktorklang,akka,akka,49e350a81571c5268d1809b4ed09fdd49fe1a55c,viktorklang,10871,"Don't have time to read all of it :(
+",2011-12-14T13:17:18Z,2011-12-14T13:17:18Z
+1864039,0,"But why Vector? Couldn't it bee an Array, too? You index it with idx(...), but that returns a value exactly in the range 0...n-1, so I don't see the need for a hash trie. WDYT?""",2012-09-17 01:59:19,drewhk,akka,akka,44f4fdb003dbf8014bef8bc2bc22c3e974815eaf,drewhk,932285,"But why Vector? Couldn't it bee an Array, too? You index it with idx(...), but that returns a value exactly in the range 0...n-1, so I don't see the need for a hash trie. WDYT?
+",2012-09-17T13:59:19Z,2012-09-17T13:59:19Z
+1864110,0,"I can take a stab at that. Will try something like:      private val (nodeHashRing: Array[Int], nodeRing: Array[T]) = {        val (nhr: IndexedSeq[Int], nr: IndexedSeq[T]) = nodes.toIndexedSeq.sortBy(_._1).unzip        (nhr.toArray, nr.toArray)     }""",2012-09-17 02:17:21,patriknw,akka,akka,44f4fdb003dbf8014bef8bc2bc22c3e974815eaf,patriknw,336161,"I can take a stab at that. Will try something like:
+
+```
+private val (nodeHashRing: Array[Int], nodeRing: Array[T]) = {
+   val (nhr: IndexedSeq[Int], nr: IndexedSeq[T]) = nodes.toIndexedSeq.sortBy(_._1).unzip
+   (nhr.toArray, nr.toArray)
+}
+```
+",2012-09-17T14:17:21Z,2012-09-17T14:17:21Z
+1864394,2,"yeah, it's definitely outside of my comfort zone also. Correct me if there is a better way, but adding this compiles fine (without warnings also)      class ConsistentHash[T <: Any: ClassTag]       private val (nodeHashRing: Array[Int], nodeRing: Array[T])""",2012-09-17 03:14:06,patriknw,akka,akka,44f4fdb003dbf8014bef8bc2bc22c3e974815eaf,patriknw,336161,"yeah, it's definitely outside of my comfort zone also. Correct me if there is a better way, but adding this compiles fine (without warnings also)
+
+```
+class ConsistentHash[T <: Any: ClassTag]
+
+
+private val (nodeHashRing: Array[Int], nodeRing: Array[T]) = {
+  val (nhr: Seq[Int], nr: Seq[T]) = nodes.toSeq.unzip
+  (nhr.toArray, nr.toArray)
+}
+```
+
+I have re-introduced the SortedMap in the constructor, to handle the sorting there instead. No need to re-sort everything when adding single nodes.
+",2012-09-17T15:14:06Z,2012-09-17T15:14:06Z
+1863066,0,"to make it very clear that this has nothing to do with `hashCode`""",2012-09-16 21:53:50,patriknw,akka,akka,48a0fda9915802d5516e476c489b01edc840a0a1,patriknw,336161,"to make it very clear that this has nothing to do with `hashCode`
+",2012-09-17T09:53:50Z,2012-09-17T09:53:50Z
+1863281,0,"`hashMapping` it will be""",2012-09-16 22:46:07,patriknw,akka,akka,48a0fda9915802d5516e476c489b01edc840a0a1,patriknw,336161,"`hashMapping` it will be
+",2012-09-17T10:46:07Z,2012-09-17T10:46:07Z
+956713,2,"why the trouble? identityHashCode should work fine most of the time, and the path comparison (which is extremely cheap also, in the most probable case) is only used on insanely large boxes with more than 4billion objects on the heap. UUID is waaay heavier.""",2012-02-11 05:51:43,rkuhn,akka,akka,43913b0490a88235748f631896217b38f11a2ca6,rkuhn,470469,"why the trouble? identityHashCode should work fine most of the time, and the path comparison (which is extremely cheap also, in the most probable case) is only used on insanely large boxes with more than 4billion objects on the heap. UUID is waaay heavier.
+",2012-02-11T16:51:43Z,2012-02-11T16:51:43Z
+952630,1,"The includecode thing is an addition we have done. It is compiled and run in the ordinary builds, not in the sphinx make phase. Yes, it suddenly make the documentation much more maintainable and also serves the purpose of user api verification.  Thanks for""",2012-02-09 21:31:17,patriknw,akka,akka,4a5f5eef21d9374cb2c635ce54896128c8fd3192,patriknw,336161,"The includecode thing is an addition we have done. It is compiled and run in the ordinary builds, not in the sphinx make phase. Yes, it suddenly make the documentation much more maintainable and also serves the purpose of user api verification.  Thanks for your support.
+",2012-02-10T08:31:17Z,2012-02-10T08:31:17Z
+738003,0,"Constructor of HashedWheelTimer should take Duration instead of value and unit parameters""",2011-11-22 04:10:15,patriknw,akka,akka,ac03696d88bf76eae5c760582b29f37f180493de,patriknw,336161,"Constructor of HashedWheelTimer should take Duration instead of value and unit parameters
+",2011-11-22T15:10:15Z,2011-11-22T15:10:15Z
+627219,1,"Overall: Great work!  I'm a bit worried about performance though, having everything encoded in one field means that the contention on the cache-line that holds the status will be greatly increased. Also, the inline:ability of """"become"""" is questionable. W""",2011-10-03 06:43:26,viktorklang,akka,akka,ca22e04a878719a2f5966da2a8a48a2724c94d97,viktorklang,10871,"Overall: Great work!
+
+I'm a bit worried about performance though, having everything encoded in one field means that the contention on the cache-line that holds the status will be greatly increased. Also, the inline:ability of ""become"" is questionable.
+We should look into this.
+
+Thanks for the hard work Roland!
+",2011-10-03T18:43:26Z,2011-10-03T18:43:26Z
+517180,0,"This is why I had asked on the mailing list if we can always trust the Scheduler. We need a timeout long enough to allow the Scheduler to do it's thing and complete the Future before it expires. If something were to delay the Scheduler then we would end up""",2011-08-06 07:53:05,derekjw,akka,akka,8a1d31691c573862d24d6677858ca3910b68c2a9,derekjw,7174,"This is why I had asked on the mailing list if we can always trust the Scheduler. We need a timeout long enough to allow the Scheduler to do it's thing and complete the Future before it expires. If something were to delay the Scheduler then we would end up timing out, which is what this method is trying to avoid.
+",2011-08-06T19:53:05Z,2011-08-06T19:53:05Z
+484664,0,"He Viktor,  the code isn't the prettiest but it deals with the ambiguity replication vs replication-factor.  On Tue, Jul 19, 2011 at 11:25 AM, viktorklang < reply@reply.github.com>wrote:  > Dude, this is a total hack. > There _has_ to be another way > > --""",2011-07-18 23:37:06,pveentjer,akka,akka,5635c9f76a5950d6231c40c3e705648d9a5f9158,pveentjer,105243,"He Viktor,
+
+the code isn't the prettiest but it deals with the ambiguity replication vs
+replication-factor.
+
+On Tue, Jul 19, 2011 at 11:25 AM, viktorklang <
+reply@reply.github.com>wrote:
+
+> Dude, this is a total hack.
+> There _has_ to be another way
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/jboner/akka/commit/5635c9f76a5950d6231c40c3e705648d9a5f9158#commitcomment-484440
+",2011-07-19T11:37:06Z,2011-07-19T11:37:06Z
+4000028,0,"Comment: Short circuiting is available if:  - no full comparison requested, only validation for a certain ordering (ordering ne FullOrder)  - state Same has already violated (see states and allowed transitions in my comment below) and the requested orde""",2013-09-02 21:33:25,drewhk,akka,akka,61e47c115da8cfbcb1c2abfda37752cb436fd7eb,drewhk,932285,"Comment:
+Short circuiting is available if:
+- no full comparison requested, only validation for a certain ordering (ordering ne FullOrder)
+- state Same has already violated (see states and allowed transitions in my comment below) and the requested ordering does not match with the current state then that state will be never reached again
+- NB: checking for concurrent can only be done with FullOrder -- otherwise this route is invalid
+",2013-09-03T09:33:25Z,2013-09-03T09:33:25Z
+4012055,0,"Yes, it's the node hash.""",2013-09-04 01:02:57,bantonsson,akka,akka,61e47c115da8cfbcb1c2abfda37752cb436fd7eb,bantonsson,805830,"Yes, it's the node hash.
+",2013-09-04T13:02:57Z,2013-09-04T13:02:57Z
+2733408,1,"This _is_ that ticket :) This commit is my fix of Roland's branch. But there is a hack where we behave like a Failed was received like a user message.""",2013-03-04 02:30:36,drewhk,akka,akka,5493e4f9fb2afeb08e2bbc12cd0b670dce5badbb,drewhk,932285,"This _is_ that ticket :) This commit is my fix of Roland's branch. But there is a hack where we behave like a Failed was received like a user message.
+",2013-03-04T13:30:36Z,2013-03-04T13:34:34Z
+2124294,1,"Thanks. I needed to spare the next poor schmuck from deciphering a late night chat transcript between you and Viktor ;)""",2012-11-08 08:56:46,bantonsson,akka,akka,90029ed8582fb85e76809932842087637512c89e,bantonsson,805830,"Thanks. I needed to spare the next poor schmuck from deciphering a late night chat transcript between you and Viktor ;)
+",2012-11-08T19:56:46Z,2012-11-08T19:56:46Z
+1299440,1,"Nice. Easy to forget :-)""",2012-05-06 21:10:11,jboner,akka,akka,9aa6d0efdfeed8eb17611f2df5646c7dbd76f59d,jboner,10701,"Nice. Easy to forget :-)
+",2012-05-07T09:10:11Z,2012-05-07T09:10:11Z
+1134408,2,"In my experience Jenkins (on our current slow box) will manage to violate this. We generally don’t go below 300ms multiplied by the dilation factor of 5, and we still see spurious failures from time to time. Yes, that’s 1.5sec :-(""",2012-03-26 08:58:15,rkuhn,akka,akka,3ce3f270dfce5da7aa5b6270b0559e2c3c0fff6f,rkuhn,470469,"In my experience Jenkins (on our current slow box) will manage to violate this. We generally don’t go below 300ms multiplied by the dilation factor of 5, and we still see spurious failures from time to time. Yes, that’s 1.5sec :-(
+",2012-03-26T20:58:15Z,2012-03-26T20:58:15Z
+1487844,1,"> Suspension of a parent implies suspension of children  Uhm, yes, this was originally about hierarchial suspension, wasn't it? There's the flaw in my plan ... just forget everything I said - sorry! :-) """,2012-06-21 03:32:11,oschulz,akka,akka,2e459f5f1d6b88472118b8c479f3eded3740926a,oschulz,546147,"> Suspension of a parent implies suspension of children
+
+Uhm, yes, this was originally about hierarchial suspension, wasn't it? There's the flaw in my plan ... just forget everything I said - sorry! :-)
+",2012-06-21T15:32:11Z,2012-06-21T15:32:11Z
+3466799,2,"Ah sorry, so the ask implementation does it for me, then I'll just use recover.""",2013-03-20 21:58:54,bantonsson,akka,akka,15a09f6b2ebca2d14ff907c2532d4e931ee66af5,rkuhn,470469,"(and that other thing as well)
+",2013-06-20T11:38:20Z,2013-06-20T11:38:20Z

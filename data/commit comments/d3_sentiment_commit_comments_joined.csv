@@ -1,0 +1,9 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2930003,2,"Breaking semver change makes iD developers sad. :(""",2013-04-02 07:02:54,jfirebaugh,mbostock,d3,28c7b46b5af21dd1ecc65b54fd575a8d9a83a507,jfirebaugh,98601,"Breaking semver change makes iD developers sad. :(
+",2013-04-02T19:02:54Z,2013-04-02T19:02:54Z
+3531777,2,"Component(1) was totally working before =( could you bring it back?""",2013-06-28 15:42:53,jaredly,mbostock,d3,2236488f2224e47e63ee23ee79f2c2a881259877,jaredly,112170,"Component(1) was totally working before =( could you bring it back?
+",2013-06-29T03:42:53Z,2013-06-29T03:42:53Z
+1879775,2,"I know it's tempting, but I'm worried about false positives.""",2012-09-19 15:07:44,mbostock,mbostock,d3,1bfd9a48d383d01497561aec53eda76d42f7d459,mbostock,230541,"I know it's tempting, but I'm worried about false positives.
+",2012-09-20T03:07:44Z,2012-09-20T03:07:44Z
+932442,0,"Maybe Javascript is better than C about this, but you're both re-assigning n and using its value in the same expression.  That seems like it relies on undefined behavior in the Javascript implementation.""",2012-02-03 14:39:27,nedbat,mbostock,d3,cc5de6d7d17668561608ac3b7ccc90cbe93632ba,nedbat,23789,"Maybe Javascript is better than C about this, but you're both re-assigning n and using its value in the same expression.  That seems like it relies on undefined behavior in the Javascript implementation.
+",2012-02-04T01:39:27Z,2012-02-04T01:39:27Z

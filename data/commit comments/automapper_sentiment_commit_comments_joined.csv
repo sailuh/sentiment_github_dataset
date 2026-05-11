@@ -1,0 +1,3 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+533037,1,"Good call, removed!""",2011-08-15 12:45:48,jbogard,AutoMapper,AutoMapper,3dd33f0ac524933e549361c4fddd5cb05fb118b9,jbogard,104498,"Good call, removed!
+",2011-08-16T00:45:48Z,2011-08-16T00:45:48Z

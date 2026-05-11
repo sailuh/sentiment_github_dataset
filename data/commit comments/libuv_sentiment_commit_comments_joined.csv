@@ -1,0 +1,109 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3431308,0,"That's only a problem when this library would be in use stand-alone. We always use it after including uv.h (and it's internal), and uv.h takes care of the vs2008 monkey patching.  In fact I only added that include to make sure @bnoordhuis wouldn't compla""",2013-06-15 01:03:10,piscisaureus,joyent,libuv,7d8504cf691325698a998cd55062156296185989,piscisaureus,218257,"That's only a problem when this library would be in use stand-alone. We always use it after including uv.h (and it's internal), and uv.h takes care of the vs2008 monkey patching.
+
+In fact I only added that include to make sure @bnoordhuis wouldn't complain about me using `uintptr_t`. It's sort of obvious that (long) was used here to make this little header file completely independent, alas that's not possible.
+",2013-06-15T13:03:10Z,2013-06-15T13:03:10Z
+804329,0,"Purely out of interest. Do you know how to create a symbol so that dlsym() returns NULL when you try to resolve it?""",2011-12-18 05:04:24,wereHamster,joyent,libuv,feb267e61184887bb0cd1da09e62762ef0bbe9a4,wereHamster,34538,"Purely out of interest. Do you know how to create a symbol so that dlsym() returns NULL when you try to resolve it?
+",2011-12-18T16:04:24Z,2011-12-18T16:04:24Z
+431475,0,"@piscisaureus, @HenryRawas   I think you can just link in the object files like I'm doing in config-unix.mk  https://github.com/joyent/libuv/blob/49a2ed61204baecb10b616d1a738a922cb10d4b3/config-unix.mk#L39""",2011-06-15 00:36:48,ry,joyent,libuv,dae2c0979633a4f2670691421fbc15899910e7e2,ry,80,"@piscisaureus, @HenryRawas   I think you can just link in the object files like I'm doing in config-unix.mk
+
+https://github.com/joyent/libuv/blob/49a2ed61204baecb10b616d1a738a922cb10d4b3/config-unix.mk#L39
+",2011-06-15T12:36:48Z,2011-06-15T12:37:31Z
+390455,2,"That's just bloody stupid. Libev stops the timer but still says it's active. :-/""",2011-05-19 00:35:31,piscisaureus,joyent,libuv,9c2dd6bea970b2376696aba070bdfc2873843cfb,piscisaureus,218257,"That's just bloody stupid. Libev stops the timer but still says it's active. :-/
+",2011-05-19T12:35:31Z,2011-05-19T12:35:31Z
+339502,2,"Looks like the book got pulled, link doesn't work for me. :(""",2011-04-12 07:54:22,joshthecoder,joyent,libuv,26b56fec8397e84c4f4700a57726dfe2eebc54a3,joshthecoder,25644,"Looks like the book got pulled, link doesn't work for me. :(
+",2011-04-12T19:54:22Z,2011-04-12T19:54:22Z
+3384359,2,"FWIW I'm still seeing problems in v0.10.10 :(  ```bash Compressing lodash.compat.min using the Closure Compiler (simple)... Assertion failed: (!uv__io_active(&stream->io_watcher, UV__POLLOUT) || !ngx_queue_empty(&stream->write_completed_queue) || !ngx_""",2013-06-08 15:04:48,jdalton,joyent,libuv,b38c9c1004993ca4f642629f5af1b7b09bbc6887,jdalton,4303,"FWIW I'm still seeing problems in v0.10.10 :(
+
+``` bash
+Compressing lodash.compat.min using the Closure Compiler (simple)...
+Assertion failed: (!uv__io_active(&stream->io_watcher, UV__POLLOUT) || !ngx_queue_empty(&stream->write_completed_queue) || !ngx_queue_empty(&stream->write_queue) || stream->shutdown_req != NULL || stream->connect_req != NULL), function uv_read_stop, file ../deps/uv/src/unix/stream.c, line 1329.
+Abort trap: 6
+```
+",2013-06-09T03:04:48Z,2013-06-09T03:05:13Z
+515532,2,"My bad! Fixed in 2fbcbe9.""",2011-08-05 03:12:47,bnoordhuis,joyent,libuv,041d60e1416335a817f735c41e033d27bd8f7ade,bnoordhuis,275871,"My bad! Fixed in 2fbcbe9.
+",2011-08-05T15:12:47Z,2011-08-05T15:12:47Z
+3431309,1,"Ah, sure. Thanks for explaining and sorry for the noise! :-)""",2013-06-15 01:04:09,saghul,joyent,libuv,7d8504cf691325698a998cd55062156296185989,saghul,317464,"Ah, sure. Thanks for explaining and sorry for the noise! :-)
+",2013-06-15T13:04:09Z,2013-06-15T13:04:09Z
+3298055,1,"This fixes many bugs, cheers""",2013-05-27 13:31:06,JamesS237,joyent,libuv,b38c9c1004993ca4f642629f5af1b7b09bbc6887,jcspencer,860934,"This fixes many bugs, cheers
+",2013-05-28T01:31:06Z,2013-05-28T01:31:06Z
+3298261,1,"Great, thanks""",2013-05-27 14:28:38,chriso,joyent,libuv,b38c9c1004993ca4f642629f5af1b7b09bbc6887,chriso,364903,"Great, thanks
+",2013-05-28T02:28:38Z,2013-05-28T02:28:38Z
+3318938,1,"Brilliant, this was causing a few issues for us. Any idea when this will be released?""",2013-05-29 22:32:55,SteveEdson,joyent,libuv,b38c9c1004993ca4f642629f5af1b7b09bbc6887,SteveEdson,1201960,"Brilliant, this was causing a few issues for us. Any idea when this will be released?
+",2013-05-30T10:32:55Z,2013-05-30T10:32:55Z
+3250091,1,"Thanks Ben!""",2013-05-20 06:20:55,TooTallNate,joyent,libuv,739a5b25b5704d526a46a953da8b9b8db31770d4,TooTallNate,71256,"Thanks Ben!
+",2013-05-20T18:20:55Z,2013-05-20T18:20:55Z
+3221014,1,"Exciting improvement.  How do nested spawns work within this framework? I don't think jobs could be nested prior to Windows 8. That's probably really rare, and this truly looks like a net improvement.  LGTM.""",2013-05-15 08:13:24,sblom,joyent,libuv,415f4d3e4c7ac25abf723eed3f5b40e63e045785,sblom,31878,"Exciting improvement.
+
+How do nested spawns work within this framework? I don't think jobs could be nested prior to Windows 8. That's probably really rare, and this truly looks like a net improvement.
+
+LGTM.
+",2013-05-15T20:13:24Z,2013-05-15T20:13:24Z
+2719884,1,"uv_stop is just the feature I needed--thank you!""",2013-02-28 19:05:30,jcheng5,joyent,libuv,bb3d1e24da288db876dcbfa4e983c9ceeb583890,jcheng5,129551,"uv_stop is just the feature I needed--thank you!
+",2013-03-01T06:05:30Z,2013-03-01T06:05:30Z
+2681642,1,"This is awesome :)""",2013-02-23 16:10:01,TooTallNate,joyent,libuv,e89aced8d6ca9e5fcb3d5e6159db0322beef4234,TooTallNate,71256,"This is awesome :)
+",2013-02-24T03:10:01Z,2013-02-24T03:10:01Z
+2279182,1,"sweet""",2012-12-09 14:05:21,ry,joyent,libuv,52c8a8617de020a14b87477a15ddaf107ff34445,ry,80,"sweet
+",2012-12-10T01:05:21Z,2012-12-10T01:05:21Z
+2171142,1,"@bnoordhuis Everything is working fine. Awesome!""",2012-11-18 02:44:46,shigeki,joyent,libuv,665a316aa9d551ffdd00d1192d0c3d9c88d7e866,shigeki,782880,"@bnoordhuis Everything is working fine. Awesome!
+",2012-11-18T13:44:46Z,2012-11-18T13:44:46Z
+1931554,1,"Sounds great! Thanks.""",2012-10-01 13:05:26,shigeki,joyent,libuv,f35a4b628a0153e454414e0c897785b59dd3709f,shigeki,782880,"Sounds great! Thanks.
+",2012-10-02T01:05:26Z,2012-10-02T01:05:26Z
+1864692,1,"Awesome! :-)""",2012-09-17 04:15:21,mscdex,joyent,libuv,cc1c1912ca119c56ecdc0e4564720a01bd53d47e,mscdex,54666,"Awesome! :-)
+",2012-09-17T16:15:21Z,2012-09-17T16:15:21Z
+1849566,1,"Heh, yeah :)""",2012-09-13 02:05:00,indutny,joyent,libuv,f8e7513a0618c33aef526abf76eb4bc99f0cdaa0,indutny,238531,"Heh, yeah :)
+",2012-09-13T14:05:00Z,2012-09-13T14:05:00Z
+1802340,1,"Well, it would be unexpected that the same user code silently works on Unix but gives an error on Windows, wouldn't it? Cross platform consistency is nice :-)""",2012-09-03 08:16:30,saghul,joyent,libuv,032c04179033b7512187fbcd17230e564c8573f4,saghul,317464,"Well, it would be unexpected that the same user code silently works on Unix but gives an error on Windows, wouldn't it? Cross platform consistency is nice :-)
+",2012-09-03T20:16:30Z,2012-09-03T20:16:30Z
+1777797,1,"yup  I considered writing my own, but the benefit isn't very obvious :-)""",2012-08-28 08:48:24,piscisaureus,joyent,libuv,abc945bc04bcd84ecb980988264949013ca35198,piscisaureus,218257,"yup
+
+I considered writing my own, but the benefit isn't very obvious :-)
+",2012-08-28T20:48:24Z,2012-08-28T20:48:24Z
+1434548,1,"Thanks, so is it planned it to work also in Windows? if so I don't need to change my code :)""",2012-06-08 02:38:02,ibc,joyent,libuv,b5a15f5cdf4679775bd9e6baf0568d97dd588170,ibc,16191,"Thanks, so is it planned it to work also in Windows? if so I don't need to change my code :)
+",2012-06-08T14:38:02Z,2012-06-08T14:38:02Z
+516398,1,"@ry you should read nodejs-dev from time to time. :) I cherry-picked it from badger/c-ares@bffd67f.""",2011-08-05 10:27:04,bnoordhuis,joyent,libuv,76338f794eb69cd235fbc221f3744205fef060d0,bnoordhuis,275871,"@ry you should read nodejs-dev from time to time. :) I cherry-picked it from badger/c-ares@bffd67f.
+",2011-08-05T22:27:04Z,2011-08-05T22:27:04Z
+866290,1,"I commented that line and run tests in both debug and release modes on osx and linux. And it seems to be working fine!""",2012-01-13 10:57:48,indutny,joyent,libuv,bde908f565f9b90f6a18a6ce266cc0c144fd4acb,indutny,238531,"I commented that line and run tests in both debug and release modes on osx and linux.
+And it seems to be working fine!
+",2012-01-13T21:57:48Z,2012-01-13T21:57:48Z
+364619,1,"we're just trying to come to terms with a problem in our interfaces - soon we'll want help :)""",2011-05-01 09:32:44,ry,joyent,libuv,210bcdd49ea781b75920f3180b9fb4527ace46b8,ry,80,"we're just trying to come to terms with a problem in our interfaces - soon we'll want help :)
+",2011-05-01T21:32:44Z,2011-05-01T21:32:44Z
+1842590,0,"Ok - thanks for the info.   I've been running node v0.8.9 with deps/uv patched with this since I sent the original query.  I looks only looks marginally better:  29271 ?        Ssl    0:02 Haraka (master) cn=2428 cc=0 cps=0/0.17/8 29273 ?        Sl   """,2012-09-12 00:41:36,smfreegard,joyent,libuv,9f7cdb20aa29c99a0917ca776bc705f5ef947737,smfreegard,550490,"Ok - thanks for the info.   I've been running node v0.8.9 with deps/uv patched with this since I sent the original query.
+
+I looks only looks marginally better:
+
+29271 ?        Ssl    0:02 Haraka (master) cn=2428 cc=0 cps=0/0.17/8
+29273 ?        Sl     0:03  _ Haraka (worker) cn=39 cc=0 cps=0/0/2  
+29274 ?        Sl     0:04  _ Haraka (worker) cn=60 cc=0 cps=0/0/2  
+29276 ?        Sl     0:08  _ Haraka (worker) cn=162 cc=0 cps=0/0.01/2  
+29278 ?        Sl     0:04  _ Haraka (worker) cn=100 cc=0 cps=0/0.01/2  
+29280 ?        Sl     0:09  _ Haraka (worker) cn=219 cc=0 cps=0/0.02/2  
+29282 ?        Sl     0:16  _ Haraka (worker) cn=397 cc=0 cps=0/0.03/3  
+29284 ?        Sl     0:31  _ Haraka (worker) cn=1161 cc=0 cps=0/0.08/6  
+29286 ?        Sl     0:12  _ Haraka (worker) cn=290 cc=0 cps=0/0.02/7     
+
+cn=connections handled; cc=concurrent connections; cps=connections per second current/average/maximum
+
+I guess this could be explained by Haraka doing a lot of network I/O e.g. rdns lookups, DNSxL checks etc. at connection start-up and will therefore hit an idle timer almost straightaway?   Plus I guess the OS scheduler will naturally prefer one process??
+
+Would you only expect to see an improvement here when under much heavier loads?
+
+On 12 Sep 2012, at 13:23, Ben Noordhuis wrote:
+
+> It's a libuv-only change and it's enabled by default.
+> 
+> You can disable it for benchmarking purposes like so: UV_TCP_ACCEPT_SINGLE=0 node script.js
+> 
+> —
+> Reply to this email directly or view it on GitHub.
+",2012-09-12T12:41:36Z,2012-09-12T12:41:36Z
+2951106,0,"Just out of curiosity, why `uv_buf_init` should take `unsigned int` instead of `size_t`?  On my machine, the compiler complains about > warning: implicit conversion shortens 64-bit value into a 32-bit value  using in `uv_alloc_cb`.""",2013-04-04 19:44:45,qqshfox,joyent,libuv,64f8cf463d92a7d566dc1f1942175917dd41c930,qqshfox,459733,"Just out of curiosity, why `uv_buf_init` should take `unsigned int` instead of `size_t`?
+
+On my machine, the compiler complains about
+
+> warning: implicit conversion shortens 64-bit value into a 32-bit value
+
+using in `uv_alloc_cb`.
+",2013-04-05T07:44:45Z,2013-04-05T07:46:21Z
+957819,0,"I assume you're talking about Debian? Then it's probably less relevant to you (unless you also maintain kFreeBSD packages) but we added some kqueue specific stuff plus lots of minor bug fixes and platform hacks.""",2012-02-12 04:34:46,bnoordhuis,joyent,libuv,6d9c9a533fdc8a5e43d0f2a77c85ef643247be3a,bnoordhuis,275871,"I assume you're talking about Debian? Then it's probably less relevant to you (unless you also maintain kFreeBSD packages) but we added some kqueue specific stuff plus lots of minor bug fixes and platform hacks.
+",2012-02-12T15:34:46Z,2012-02-12T15:34:46Z

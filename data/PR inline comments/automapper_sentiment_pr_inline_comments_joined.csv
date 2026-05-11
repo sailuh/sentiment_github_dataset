@@ -1,0 +1,18 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+15859,2,"ok, sorry""",2011-04-05 21:59:44,andreialecu,AutoMapper,AutoMapper,,https://github.com/LuckyPennySoftware/AutoMapper/pull/29#discussion_r15859,2011-04-06T09:59:44Z,2011-04-06T10:01:28Z,andreialecu,CONTRIBUTOR,src/AutoMapper/Mappers/CollectionMapper.cs,,55.0,,,11,"@@ -48,11 +48,25 @@ namespace AutoMapper.Mappers
+ 
+             protected override TCollection CreateDestinationObjectBase(Type destElementType, int sourceLength)
+             {
+-                var list = typeof(TCollection).IsInterface 
+-                                  ? new List<TElement>() 
+-                                  : ObjectCreator.CreateDefaultValue(typeof (TCollection));
++                Object collection;
++                
++                if (typeof(TCollection).IsInterface)
++                {
++                    if (typeof(TCollection).Name == ""ISet`1"")","A strong typed alternative to this would be:
+
+```
+if (typeof (TCollection).GetGenericTypeDefinition() == typeof (ISet<>))
+```
+",5492f5c2ed075c609e90c788ff4d43e97539cc4d

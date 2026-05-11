@@ -1,0 +1,33 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+2666920,1,"Wrong fork. :-)""",2013-01-16 04:43:42,bnoordhuis,joyent,http-parser,,https://github.com/nodejs/http-parser/pull/146#discussion_r2666920,2013-01-16T15:43:42Z,2018-10-04T04:05:01Z,bnoordhuis,MEMBER,README.md,,,,,1,"@@ -1,6 +1,8 @@
+ HTTP Parser
+ ===========
+ 
++[![Build Status](https://travis-ci.org/cmr/http-parser.png?branch=master)](https://travis-ci.org/cmr/http-parser)","Wrong fork. :-)
+",54cfd320d012db7e31338404aab02165628772cd
+2477052,0,"Looking back the logic I wrote doesn't even make sense. """"HTTP"""" is a valid extension method, so setting the type to RESPONSE before encountering a / doesn't make sense.""",2012-12-20 02:18:02,cmr,joyent,http-parser,,https://github.com/nodejs/http-parser/pull/145#discussion_r2477052,2012-12-20T13:18:02Z,2018-10-04T04:05:01Z,emberian,CONTRIBUTOR,http_parser.c,,692.0,,,1,"@@ -679,13 +682,12 @@ size_t http_parser_execute (http_parser *parser,
+           parser->type = HTTP_RESPONSE;
+           parser->state = s_res_HT;
+         } else {
+-          if (ch != 'E') {
+-            SET_ERRNO(HPE_INVALID_CONSTANT);
+-            goto error;
++          if (ch == 'E') {
++            parser->method = HTTP_HEAD;
++          } else {
++            parser->type = HTTP_REQUEST;
+           }","Looking back the logic I wrote doesn't even make sense. ""HTTP"" is a valid extension method, so setting the type to RESPONSE before encountering a / doesn't make sense.
+",6d5f2319d3475e9535439c367a1b7b812dddd87c
+1226921,0,"I'm not sure we really need this state. The caller is feeding in characters one-at-a-time anyway. If they care about whether or not there's a literal `@` in the authority, they can check for themselves. The only thing information is used for in `parse_url""",2012-07-24 04:49:40,pgriess,joyent,http-parser,,https://github.com/nodejs/http-parser/pull/118#discussion_r1226921,2012-07-24T16:49:40Z,2018-10-04T04:05:00Z,pgriess,CONTRIBUTOR,http_parser.c,,,,,1,"@@ -455,62 +470,28 @@ enum header_states
+ 
+       break;
+ 
+-    case s_req_host_start:
+-      if (ch == '[') {
+-        return s_req_host_v6_start;
+-      }
+-
+-      if (IS_HOST_CHAR(ch)) {
+-        return s_req_host;
++    case s_req_host_with_at:","I'm not sure we really need this state. The caller is feeding in characters one-at-a-time anyway. If they care about whether or not there's a literal `@` in the authority, they can check for themselves. The only thing information is used for in `parse_url_char()` is to make sure that we don't have consecutive `@`s, but even that's not a complete check -- we should really be checking for whether or not there are more than one. Again, the caller is pretty well positioned to do this with a simple counter.
+",a828edaf6af085e8fe9ad4a38267a1e75eb3269a

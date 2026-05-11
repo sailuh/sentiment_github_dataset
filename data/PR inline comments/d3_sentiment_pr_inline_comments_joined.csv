@@ -1,0 +1,1136 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+3433566,0,"Should the signature be (d, i)?""",2013-03-19 04:33:23,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/1150#discussion_r3433566,2013-03-19T15:33:23Z,2013-03-19T16:43:17Z,jasondavies,CONTRIBUTOR,src/geom/quadtree.js,,,,,1,"@@ -1,99 +1,145 @@
++import ""../core/functor"";
++import ""../svg/line"";
+ import ""geom"";
+ 
+ d3.geom.quadtree = function(points, x1, y1, x2, y2) {
+-  var p,
+-      i = -1,
+-      n = points.length;
++  var x = d3_svg_lineX,
++      y = d3_svg_lineY,
++      compat;
+ 
+-  // Allow bounds to be specified explicitly.
+-  if (arguments.length < 5) {
+-    if (arguments.length === 3) {
++  // For backwards-compatibility.
++  if (compat = arguments.length) {
++    x = d3_geom_quadtreeCompatX;
++    y = d3_geom_quadtreeCompatY;
++    if (compat === 3) {
+       y2 = y1;
+       x2 = x1;
+       y1 = x1 = 0;
++    }
++    return quadtree.apply(this, arguments);
++  }
++
++  function quadtree(data) {
++    var d,
++        fx = d3_functor(x),
++        fy = d3_functor(y),
++        points = [],
++        i = -1,
++        n = data.length;
++
++    if (x1 != null) {
++      while (++i < n) {
++        points.push({x: +fx.call(this, d = data[i], i), y: +fy.call(this, d, i)});
++      }
+     } else {
++      // Compute bounds.
+       x1 = y1 = Infinity;
+       x2 = y2 = -Infinity;
+-
+-      // Compute bounds.
+       while (++i < n) {
+-        p = points[i];
+-        if (p.x < x1) x1 = p.x;
+-        if (p.y < y1) y1 = p.y;
+-        if (p.x > x2) x2 = p.x;
+-        if (p.y > y2) y2 = p.y;
++        points.push(d = {x: +fx.call(this, d = data[i], i), y: +fy.call(this, d, i)});
++        if (d.x < x1) x1 = d.x;
++        if (d.y < y1) y1 = d.y;
++        if (d.x > x2) x2 = d.x;
++        if (d.y > y2) y2 = d.y;
+       }
+     }
+-  }
+ 
+-  // Squarify the bounds.
+-  var dx = x2 - x1,
+-      dy = y2 - y1;
+-  if (dx > dy) y2 = y1 + dx;
+-  else x2 = x1 + dy;
+-
+-  // Recursively inserts the specified point p at the node n or one of its
+-  // descendants. The bounds are defined by [x1, x2] and [y1, y2].
+-  function insert(n, p, x1, y1, x2, y2) {
+-    if (isNaN(p.x) || isNaN(p.y)) return; // ignore invalid points
+-    if (n.leaf) {
+-      var v = n.point;
+-      if (v) {
+-        // If the point at this leaf node is at the same position as the new
+-        // point we are adding, we leave the point associated with the
+-        // internal node while adding the new point to a child node. This
+-        // avoids infinite recursion.
+-        if ((Math.abs(v.x - p.x) + Math.abs(v.y - p.y)) < .01) {
+-          insertChild(n, p, x1, y1, x2, y2);
++    // Squarify the bounds.
++    var dx = x2 - x1,
++        dy = y2 - y1;
++    if (dx > dy) y2 = y1 + dx;
++    else x2 = x1 + dy;
++
++    // Recursively inserts the specified point p at the node n or one of its
++    // descendants. The bounds are defined by [x1, x2] and [y1, y2].
++    function insert(n, p, x1, y1, x2, y2) {
++      if (isNaN(p.x) || isNaN(p.y)) return; // ignore invalid points
++      if (n.leaf) {
++        var v = n.point;
++        if (v) {
++          // If the point at this leaf node is at the same position as the new
++          // point we are adding, we leave the point associated with the
++          // internal node while adding the new point to a child node. This
++          // avoids infinite recursion.
++          if ((Math.abs(v.x - p.x) + Math.abs(v.y - p.y)) < .01) {
++            insertChild(n, p, x1, y1, x2, y2);
++          } else {
++            n.point = null;
++            insertChild(n, v, x1, y1, x2, y2);
++            insertChild(n, p, x1, y1, x2, y2);
++          }
+         } else {
+-          n.point = null;
+-          insertChild(n, v, x1, y1, x2, y2);
+-          insertChild(n, p, x1, y1, x2, y2);
++          n.point = p;
+         }
+       } else {
+-        n.point = p;
++        insertChild(n, p, x1, y1, x2, y2);
+       }
+-    } else {
+-      insertChild(n, p, x1, y1, x2, y2);
+     }
+-  }
+ 
+-  // Recursively inserts the specified point p into a descendant of node n. The
+-  // bounds are defined by [x1, x2] and [y1, y2].
+-  function insertChild(n, p, x1, y1, x2, y2) {
+-    // Compute the split point, and the quadrant in which to insert p.
+-    var sx = (x1 + x2) * .5,
+-        sy = (y1 + y2) * .5,
+-        right = p.x >= sx,
+-        bottom = p.y >= sy,
+-        i = (bottom << 1) + right;
+-
+-    // Recursively insert into the child node.
+-    n.leaf = false;
+-    n = n.nodes[i] || (n.nodes[i] = d3_geom_quadtreeNode());
+-
+-    // Update the bounds as we recurse.
+-    if (right) x1 = sx; else x2 = sx;
+-    if (bottom) y1 = sy; else y2 = sy;
+-    insert(n, p, x1, y1, x2, y2);
++    // Recursively inserts the specified point p into a descendant of node n. The
++    // bounds are defined by [x1, x2] and [y1, y2].
++    function insertChild(n, p, x1, y1, x2, y2) {
++      // Compute the split point, and the quadrant in which to insert p.
++      var sx = (x1 + x2) * .5,
++          sy = (y1 + y2) * .5,
++          right = p.x >= sx,
++          bottom = p.y >= sy,
++          i = (bottom << 1) + right;
++
++      // Recursively insert into the child node.
++      n.leaf = false;
++      n = n.nodes[i] || (n.nodes[i] = d3_geom_quadtreeNode());
++
++      // Update the bounds as we recurse.
++      if (right) x1 = sx; else x2 = sx;
++      if (bottom) y1 = sy; else y2 = sy;
++      insert(n, p, x1, y1, x2, y2);
++    }
++
++    // Create the root node.
++    var root = d3_geom_quadtreeNode();
++
++    root.add = function(p) {
++      insert(root, p, x1, y1, x2, y2);","Should the signature be (d, i)?
+",cf5615518957fa8bff9b5f64daf8bcf45fd91dfe
+2410051,1,"Yeah, great point.""",2012-12-13 06:13:35,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/962#discussion_r2410051,2012-12-13T17:13:35Z,2012-12-13T17:13:35Z,mbostock,MEMBER,src/geo/albers-usa.js,,80.0,,,38,"@@ -69,3 +65,16 @@ d3.geo.albersUsa = function() {
+ 
+   return albersUsa.scale(lower48.scale());
+ };
++
++function d3_geo_albersUsaRadians(stream) {
++  return {
++    point: function(λ, φ) {
++      stream.point(λ * d3_radians, φ * d3_radians);
++    },
++    sphere: function() { stream.sphere(); },
++    lineStart: function() { stream.lineStart(); },
++    lineEnd: function() { stream.lineEnd(); },
++    polygonStart: function() { stream.polygonStart(); },
++    polygonEnd: function() { stream.polygonEnd(); }
++  };
++}","Yeah, great point.
+",361cac2044605c164700252d4695f70c34c607fa
+117051,1,"Neat.  I wouldn't pass up the opportunity to use a crazy trick!  :)""",2011-09-07 20:16:52,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/287#discussion_r117051,2011-09-08T08:16:52Z,2011-09-09T07:21:44Z,jasondavies,CONTRIBUTOR,src/layout/hierarchy.js,,15.0,,,7,"@@ -7,12 +7,12 @@ d3.layout.hierarchy = function() {
+   // Also converts the data representation into a standard hierarchy structure.
+   function recurse(data, depth, nodes) {
+     var childs = children.call(hierarchy, data, depth),
++        n,
+         node = d3_layout_hierarchyInline ? data : {data: data};
+     node.depth = depth;
+     nodes.push(node);
+-    if (childs) {
++    if (childs && (n = childs.length)) {
+       var i = -1,
+-          n = childs.length,","Neat.  I wouldn't pass up the opportunity to use a crazy trick!  :)
+",8d6511a2d08bcc406854f884df14c671e27eeeb4
+39836,0,"I think we need to wrap the input data so that we store the result on invoking the value accessor. This way, you can have a non-deterministic value accessor (such as returning a random number). Also, this way we don't overwrite any fields in the current d""",2011-06-04 03:59:11,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/169#discussion_r39836,2011-06-04T15:59:11Z,2011-06-04T18:00:23Z,mbostock,MEMBER,d3.chart.js,,,,,1,"@@ -736,6 +736,142 @@ function d3_chart_horizonX(d) {
+ function d3_chart_horizonY(d) {
+   return d[1];
+ }
++d3.chart.mekko = function() {
++  var width = 1,
++      height = 1,
++      x = d3.scale.linear().range([0, width]),
++      y = d3.scale.linear().range([0, height]),
++      z = d3.scale.category10(),
++      n = d3.format("",d""),
++      p = d3.format(""%""),
++      value = d3_chartMekkoValue,
++      categoryX = d3_chartMekkoCategoryX,
++      categoryY = d3_chartMekkoCategoryY;
++
++  // For each small multiple…
++  function mekko(g) {
++    g.each(function(data, i) {
++      var offset = 0;
++
++      // Nest values by x-category. We assume each (x-category, y-category) is
++      // unique.
++      var groups = d3.nest()
++          .key(categoryX)
++          .entries(data);
++
++      // Compute the total sum, the per-x sum, and the per-y offset.
++      // You can use reduce rather than reduceRight to reverse the ordering.
++      // We also record a reference to the parent x-category for each
++      // y-category.
++      var sum = groups.reduce(function(v, p) {
++        return (p.offset = v) + (p.sum = p.values.reduceRight(function(v, d) {
++          d.parent = p;
++          return (d.offset = v) + value.call(this, d);","I think we need to wrap the input data so that we store the result on invoking the value accessor. This way, you can have a non-deterministic value accessor (such as returning a random number). Also, this way we don't overwrite any fields in the current data by setting `parent` and `offset`. I'm thinking a similar model to the hierarchy layouts, there the data is converted into a standard format:
+
+```
+{parent: …, offset: …, value: …, data: d}
+```
+",4358cea0eade9372213deba69cf18b96e9aef4e5
+24238,1,"Fun trick: you can use `Object` instead of `function(d) { return d; }`. But the identity function is probably more readable. :)""",2011-04-28 17:38:55,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/125#discussion_r24238,2011-04-29T05:38:55Z,2011-04-29T09:17:26Z,mbostock,MEMBER,examples/spline/spline.js,,39.0,,,1,"@@ -0,0 +1,124 @@
++var w = 800,
++    h = 600,
++    p = 20;
++
++var points = d3.range(1, 5).map(function(i) {
++  return [
++    i * w / 5,
++    50 + Math.random() * (h - 100)
++  ];
++});
++
++var selected = points[0];
++
++var wrapper = d3.select(""#chart"")
++  .append(""svg:svg"")
++    .attr(""width"", w + p * 2)
++    .attr(""height"", h + p * 2);
++
++var vis = wrapper.append(""svg:g"")
++    .attr(""transform"", ""translate("" + p + "","" + p + "")"");
++
++// Use <rect> to ensure all ""mousemove"" events are captured.
++vis.append(""svg:rect"")
++    .attr(""fill"", ""#fff"")
++    .attr(""width"", w)
++    .attr(""height"", h);
++
++var line = d3.svg.line()
++    .x(function(d) { return d[0]; })
++    .y(function(d) { return d[1]; });
++
++function update() {
++  var path = vis.selectAll(""path"")
++    .data(points.length ? [points] : []);
++
++  path.enter().append(""svg:path"")
++      .attr(""class"", ""line"")
++      .attr(""d"", line);
++
++  path.attr(""d"", line);
++
++  path.exit().remove();
++
++  var circle = vis.selectAll(""circle"")
++      .data(points, function(d) { return d; });","Fun trick: you can use `Object` instead of `function(d) { return d; }`. But the identity function is probably more readable. :)
+",1c2546050f91cc93dcd6960a4d317e3176b5b8aa
+4304410,1,"Yep, that makes perfect sense""",2013-05-20 08:08:42,krikrou,mbostock,d3,,https://github.com/d3/d3/pull/1256#discussion_r4304410,2013-05-20T20:08:42Z,2013-05-20T21:00:51Z,christophe-g,NONE,d3.js,,,,,1,"@@ -277,13 +277,18 @@ d3 = function() {
+     }
+     function entries(map, depth) {
+       if (depth >= keys.length) return map;
+-      var array = [], sortKey = sortKeys[depth++];
++      var array = [], apply = applies[depth], sortKey = sortKeys[depth++];
+       map.forEach(function(key, keyMap) {
+         array.push({
+           key: key,
+           values: entries(keyMap, depth)
+         });
+       });
++      if (apply) {
++        array.map(function(a) {","Yep, that makes perfect sense
+",06a998af19bc9358c75fbac269ae2b47e824bb54
+3434461,0,"Oops, I didn't mean to add `i` to the public signature; I was thinking more like this:  ```js root.add = function(d) {   insert(root, d, +fx(d, ++i), +fy(d, i), x1_, y1_, x2_, y2_); };  i = -1; points.forEach(root.add); return root; ```""",2013-03-19 05:12:08,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/1150#discussion_r3434461,2013-03-19T16:12:08Z,2013-03-19T16:43:17Z,mbostock,MEMBER,src/geom/quadtree.js,,120.0,,,1,"@@ -1,104 +1,157 @@
++import ""../core/functor"";
++import ""../svg/line"";
+ import ""geom"";
+ 
+ d3.geom.quadtree = function(points, x1, y1, x2, y2) {
+-  var p,
+-      i = -1,
+-      n = points.length;
++  var x = d3_svg_lineX,
++      y = d3_svg_lineY,
++      compat;
+ 
+-  // Allow bounds to be specified explicitly.
+-  if (arguments.length < 5) {
+-    if (arguments.length === 3) {
++  // For backwards-compatibility.
++  if (compat = arguments.length) {
++    x = d3_geom_quadtreeCompatX;
++    y = d3_geom_quadtreeCompatY;
++    if (compat === 3) {
+       y2 = y1;
+       x2 = x1;
+       y1 = x1 = 0;
+-    } else {
+-      x1 = y1 = Infinity;
+-      x2 = y2 = -Infinity;
++    }
++    return quadtree(points);
++  }
++
++  function quadtree(data) {
++    var d,
++        fx = d3_functor(x),
++        fy = d3_functor(y),
++        points,
++        i,
++        n = data.length,
++        x1_,
++        y1_,
++        x2_,
++        y2_;
++
++    if (compat) points = data;
++    else for (points = [], i = 0; i < n; ++i) {
++      points.push({x: +fx(d = data[i], i), y: +fy(d, i)});
++    }
+ 
++    if (x1 != null) {
++      x1_ = x1, y1_ = y1, x2_ = x2, y2_ = y2;
++    } else {
+       // Compute bounds.
+-      while (++i < n) {
+-        p = points[i];
+-        if (p.x < x1) x1 = p.x;
+-        if (p.y < y1) y1 = p.y;
+-        if (p.x > x2) x2 = p.x;
+-        if (p.y > y2) y2 = p.y;
++      x2_ = y2_ = -(x1_ = y1_ = Infinity);
++      for (i = 0; i < n; ++i) {
++        d = data[i];
++        if (d.x < x1_) x1_ = d.x;
++        if (d.y < y1_) y1_ = d.y;
++        if (d.x > x2_) x2_ = d.x;
++        if (d.y > y2_) y2_ = d.y;
+       }
+     }
+-  }
+ 
+-  // Squarify the bounds.
+-  var dx = x2 - x1,
+-      dy = y2 - y1;
+-  if (dx > dy) y2 = y1 + dx;
+-  else x2 = x1 + dy;
+-
+-  // Recursively inserts the specified point p at the node n or one of its
+-  // descendants. The bounds are defined by [x1, x2] and [y1, y2].
+-  function insert(n, p, x1, y1, x2, y2) {
+-    if (isNaN(p.x) || isNaN(p.y)) return; // ignore invalid points
+-    if (n.leaf) {
+-      var v = n.point;
+-      if (v) {
+-        // If the point at this leaf node is at the same position as the new
+-        // point we are adding, we leave the point associated with the
+-        // internal node while adding the new point to a child node. This
+-        // avoids infinite recursion.
+-        if ((Math.abs(v.x - p.x) + Math.abs(v.y - p.y)) < .01) {
+-          insertChild(n, p, x1, y1, x2, y2);
++    // Squarify the bounds.
++    var dx = x2_ - x1_,
++        dy = y2_ - y1_;
++    if (dx > dy) y2_ = y1_ + dx;
++    else x2_ = x1_ + dy;
++
++    // Recursively inserts the specified point p at the node n or one of its
++    // descendants. The bounds are defined by [x1, x2] and [y1, y2].
++    function insert(n, d, x, y, x1, y1, x2, y2) {
++      if (isNaN(x) || isNaN(y)) return; // ignore invalid points
++      if (n.leaf) {
++        var nx = n.x,
++            ny = n.y;
++        if (nx != null) {
++          // If the point at this leaf node is at the same position as the new
++          // point we are adding, we leave the point associated with the
++          // internal node while adding the new point to a child node. This
++          // avoids infinite recursion.
++          if ((Math.abs(nx - x) + Math.abs(ny - y)) < .01) {
++            insertChild(n, d, x, y, x1, y1, x2, y2);
++          } else {
++            var nPoint = n.point;
++            n.x = n.y = n.point = null;
++            insertChild(n, nPoint, nx, ny, x1, y1, x2, y2);
++            insertChild(n, d, x, y, x1, y1, x2, y2);
++          }
+         } else {
+-          n.point = null;
+-          insertChild(n, v, x1, y1, x2, y2);
+-          insertChild(n, p, x1, y1, x2, y2);
++          n.x = x, n.y = y, n.point = d;
+         }
+       } else {
+-        n.point = p;
++        insertChild(n, d, x, y, x1, y1, x2, y2);
+       }
+-    } else {
+-      insertChild(n, p, x1, y1, x2, y2);
+     }
+-  }
+ 
+-  // Recursively inserts the specified point p into a descendant of node n. The
+-  // bounds are defined by [x1, x2] and [y1, y2].
+-  function insertChild(n, p, x1, y1, x2, y2) {
+-    // Compute the split point, and the quadrant in which to insert p.
+-    var sx = (x1 + x2) * .5,
+-        sy = (y1 + y2) * .5,
+-        right = p.x >= sx,
+-        bottom = p.y >= sy,
+-        i = (bottom << 1) + right;
+-
+-    // Recursively insert into the child node.
+-    n.leaf = false;
+-    n = n.nodes[i] || (n.nodes[i] = d3_geom_quadtreeNode());
+-
+-    // Update the bounds as we recurse.
+-    if (right) x1 = sx; else x2 = sx;
+-    if (bottom) y1 = sy; else y2 = sy;
+-    insert(n, p, x1, y1, x2, y2);
++    // Recursively inserts the specified point [x, y] into a descendant of node
++    // n. The bounds are defined by [x1, x2] and [y1, y2].
++    function insertChild(n, d, x, y, x1, y1, x2, y2) {
++      // Compute the split point, and the quadrant in which to insert p.
++      var sx = (x1 + x2) * .5,
++          sy = (y1 + y2) * .5,
++          right = x >= sx,
++          bottom = y >= sy,
++          i = (bottom << 1) + right;
++
++      // Recursively insert into the child node.
++      n.leaf = false;
++      n = n.nodes[i] || (n.nodes[i] = d3_geom_quadtreeNode());
++
++      // Update the bounds as we recurse.
++      if (right) x1 = sx; else x2 = sx;
++      if (bottom) y1 = sy; else y2 = sy;
++      insert(n, d, x, y, x1, y1, x2, y2);
++    }
++
++    // Create the root node.
++    var root = d3_geom_quadtreeNode();
++
++    root.add = function(d, i) {
++      insert(root, d, +fx(d, i), +fy(d, i), x1_, y1_, x2_, y2_);
++    };","Oops, I didn't mean to add `i` to the public signature; I was thinking more like this:
+
+``` js
+root.add = function(d) {
+  insert(root, d, +fx(d, ++i), +fy(d, i), x1_, y1_, x2_, y2_);
+};
+
+i = -1;
+points.forEach(root.add);
+return root;
+```
+",cf5615518957fa8bff9b5f64daf8bcf45fd91dfe
+515938,1,"Yeah, I had that to start off with. :) On second thoughts, it's nicer to keep this future-compatible with *-closed interpolators (as well as being shorter) so I've updated it.""",2012-03-04 08:42:59,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/581#discussion_r515938,2012-03-04T19:42:59Z,2012-03-04T19:42:59Z,jasondavies,CONTRIBUTOR,src/svg/area.js,,,,,1,"@@ -58,6 +59,7 @@ function d3_svg_area(projection) {
+     if (!d3_svg_lineInterpolators.has(x += """")) x = d3_svg_lineInterpolatorDefault;
+     i0 = d3_svg_lineInterpolators.get(interpolate = x);
+     i1 = i0.reverse || i0;
++    moveOrLine = x === ""basis-closed"" || x === ""cardinal-closed"" ? ""M"" : ""L"";","Yeah, I had that to start off with. :) On second thoughts, it's nicer to keep this future-compatible with *-closed interpolators (as well as being shorter) so I've updated it.
+",1638d96d72a0002a165357a345f457a4479348f9
+165487,0,"Should this be initialized with scale(200)? I believe the default d3.geo.zoom scale is 500.""",2011-10-11 10:05:14,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/318#discussion_r165487,2011-10-11T22:05:14Z,2012-07-19T15:42:45Z,mbostock,MEMBER,src/geo/azimuthal.js,,,,,1,"@@ -1,9 +1,8 @@
+ // TODO clip input coordinates on opposite hemisphere
+ d3.geo.azimuthal = function() {
+   var mode = ""orthographic"", // or stereographic, gnomonic, equidistant or equalarea
++      zoom = d3.geo.zoom(),","Should this be initialized with scale(200)? I believe the default d3.geo.zoom scale is 500.
+",a74c1f8903b0fd34b00b0b6522fdb558fc0fdcaa
+1199676,0,"Instead of sniffing for IE, you can use the IE-specific [`document.documentMode`](http://msdn.microsoft.com/en-us/library/ie/cc196988\(v=vs.85\).aspx) property.""",2012-07-19 06:31:45,kitcambridge,mbostock,d3,,https://github.com/d3/d3/pull/231#discussion_r1199676,2012-07-19T18:31:45Z,2012-07-19T18:31:45Z,,NONE,src/core/ie.js,,27.0,,,27,"@@ -0,0 +1,30 @@
++// Returns the version of Internet Explorer or a -1
++// (indicating the use of another browser).
++var ie = (function getInternetExplorerVersion()
++{
++  var result = -1; 
++  if (navigator.appName == 'Microsoft Internet Explorer')
++  {
++    var ua = navigator.userAgent;
++    var re  = new RegExp(""MSIE ([0-9]{1,}[\.0-9]{0,})"");
++    if (re.exec(ua) != null)
++      result = parseFloat( RegExp.$1 );
++  }
++  return result;
++})();
++
++// Does the browser support style.setProperty, IE9 and below don't
++var d3_setStyleProperty = (ie > -1) ?
++    function(obj, name, value, priority) { obj.style[name] = value; }  :
++    function(obj, name, value, priority) { obj.style.setProperty(name, value, priority); };
++
++// Does the browser support style.removeProperty, IE8 and below don't
++var d3_removeStyleProperty = (ie > -1 && ie < 9) ?
++    function(obj, name) { delete obj.style[name]; }  :
++    function(obj, name) { obj.style.removeProperty(name); };
++
++// Does the browser support style.getPropertyValue, IE8 and below don't
++var d3_getStylePropertyValue = (ie > -1 && ie < 9) ?","Instead of sniffing for IE, you can use the IE-specific [`document.documentMode`](http://msdn.microsoft.com/en-us/library/ie/cc196988%28v=vs.85%29.aspx) property.
+",e921980e76536ca214f7f63e2cbe36eb116af813
+24257,1,"Nice, less typing is always welcome :-)""",2011-04-28 20:46:13,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/125#discussion_r24257,2011-04-29T08:46:13Z,2011-04-29T09:17:26Z,jasondavies,CONTRIBUTOR,examples/spline/spline.js,,39.0,,,1,"@@ -0,0 +1,124 @@
++var w = 800,
++    h = 600,
++    p = 20;
++
++var points = d3.range(1, 5).map(function(i) {
++  return [
++    i * w / 5,
++    50 + Math.random() * (h - 100)
++  ];
++});
++
++var selected = points[0];
++
++var wrapper = d3.select(""#chart"")
++  .append(""svg:svg"")
++    .attr(""width"", w + p * 2)
++    .attr(""height"", h + p * 2);
++
++var vis = wrapper.append(""svg:g"")
++    .attr(""transform"", ""translate("" + p + "","" + p + "")"");
++
++// Use <rect> to ensure all ""mousemove"" events are captured.
++vis.append(""svg:rect"")
++    .attr(""fill"", ""#fff"")
++    .attr(""width"", w)
++    .attr(""height"", h);
++
++var line = d3.svg.line()
++    .x(function(d) { return d[0]; })
++    .y(function(d) { return d[1]; });
++
++function update() {
++  var path = vis.selectAll(""path"")
++    .data(points.length ? [points] : []);
++
++  path.enter().append(""svg:path"")
++      .attr(""class"", ""line"")
++      .attr(""d"", line);
++
++  path.attr(""d"", line);
++
++  path.exit().remove();
++
++  var circle = vis.selectAll(""circle"")
++      .data(points, function(d) { return d; });","Nice, less typing is always welcome :-)
+",1c2546050f91cc93dcd6960a4d317e3176b5b8aa
+2411715,1,"Well spotted.  It wasn’t actually necessary since .lineStart always reassigned it anyway, but it’s cleaner and more efficient to only reassign on ringEnd.  Fixed in @623b594cf5d9e413da78e20cadbc00726521718e.""",2012-12-13 08:02:45,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/962#discussion_r2411715,2012-12-13T19:02:45Z,2012-12-13T19:02:45Z,jasondavies,CONTRIBUTOR,src/geo/centroid.js,,61.0,,,128,"@@ -1,145 +1,104 @@
+-// TODO Implement using d3.geo.stream.
++d3.geo.centroid = function(object) {
++  d3_geo_centroidDimension = d3_geo_centroidW = d3_geo_centroidX = d3_geo_centroidY = d3_geo_centroidZ = 0;
++  d3.geo.stream(object, d3_geo_centroid);
++  var m;
++  if (d3_geo_centroidW &&
++      Math.abs(m = Math.sqrt(d3_geo_centroidX * d3_geo_centroidX + d3_geo_centroidY * d3_geo_centroidY + d3_geo_centroidZ * d3_geo_centroidZ)) > ε) {
++    return [
++      Math.atan2(d3_geo_centroidY, d3_geo_centroidX) * d3_degrees,
++      Math.asin(Math.max(-1, Math.min(1, d3_geo_centroidZ / m))) * d3_degrees
++    ];
++  }
++};
+ 
+-var d3_geo_centroidX,
++var d3_geo_centroidDimension,
++    d3_geo_centroidW,
++    d3_geo_centroidX,
+     d3_geo_centroidY,
+     d3_geo_centroidZ;
+ 
+-d3.geo.centroid = d3_geo_type({
+-
+-  FeatureCollection: d3_noop,
+-  GeometryCollection: d3_noop,
+-
+-  Feature: function(feature) {
+-    return this.geometry(feature.geometry);
++var d3_geo_centroid = {
++  sphere: d3_noop,
++  point: d3_geo_centroidPoint,
++  lineStart: d3_geo_centroidLineStart,
++  lineEnd: d3_geo_centroidLineEnd,
++  polygonStart: function() {
++    d3_geo_centroidDimension = 2;
++    d3_geo_centroid.lineStart = d3_geo_centroidRingStart;
+   },
++  polygonEnd: function() {
++    d3_geo_centroid.lineStart = d3_geo_centroidLineStart;
++  }
++};
+ 
+-  Point: function(point) {
+-    return point.coordinates;
+-  },
++// Arithmetic mean of Cartesian vectors.
++function d3_geo_centroidPoint(λ, φ) {
++  if (d3_geo_centroidDimension) return;
++  ++d3_geo_centroidW;
++  λ *= d3_radians;
++  var cosφ = Math.cos(φ *= d3_radians);
++  d3_geo_centroidX += (cosφ * Math.cos(λ) - d3_geo_centroidX) / d3_geo_centroidW;
++  d3_geo_centroidY += (cosφ * Math.sin(λ) - d3_geo_centroidY) / d3_geo_centroidW;
++  d3_geo_centroidZ += (Math.sin(φ) - d3_geo_centroidZ) / d3_geo_centroidW;
++}
+ 
+-  MultiPoint: function(multiPoint) {
+-    var coordinates = multiPoint.coordinates,
+-        n = coordinates.length,
+-        i = 0,
+-        point,
+-        λ,
+-        φ,
+-        cosφ,
+-        x = 0,
+-        y = 0,
+-        z = 0;
+-    while (i < n) {
+-      point = coordinates[i++];
+-      λ = point[0] * d3_radians;
+-      cosφ = Math.cos(φ = point[1] * d3_radians);
+-      x += (cosφ * Math.cos(λ) - x) / i;
+-      y += (cosφ * Math.sin(λ) - y) / i;
+-      z += (Math.sin(φ) - z) / i;
+-    }
+-    return n ? [
+-      Math.atan2(y, x) * d3_degrees,
+-      Math.asin(Math.max(-1, Math.min(1, z))) * d3_degrees
+-    ] : null;
+-  },
++function d3_geo_centroidRingStart() {
++  var λ00, φ00; // first point
+ 
+-  LineString: function(line) {
+-    var centroid = d3_geo_centroidLine(line.coordinates),
+-        cx,
+-        cy,
+-        cz;
+-    return centroid && centroid[3] ? [
+-      Math.atan2(cy = centroid[1], cx = centroid[0]) * d3_degrees,
+-      Math.asin(Math.max(-1, Math.min(1, (cz = centroid[2]) / Math.sqrt(cx * cx + cy * cy + cz * cz)))) * d3_degrees
+-    ] : null;
+-  },
++  if (d3_geo_centroidDimension < 2) {
++    d3_geo_centroidDimension = 2;
++    d3_geo_centroidW = d3_geo_centroidX = d3_geo_centroidY = d3_geo_centroidZ = 0;
++  }
++  d3_geo_centroidDimension = 1;
++  d3_geo_centroidLineStart();
++  d3_geo_centroidDimension = 2;
+ 
+-  MultiLineString: function(multiLine) {
+-    var coordinates = multiLine.coordinates,
+-        n = coordinates.length,
+-        i = -1,
+-        cx = 0,
+-        cy = 0,
+-        cz = 0,
+-        weight = 0;
+-    while (++i < n) {
+-      centroid = d3_geo_centroidLine(coordinates[i]);
+-      if (!centroid) continue;
+-      cx += centroid[0];
+-      cy += centroid[1];
+-      cz += centroid[2];
+-      weight += centroid[3];
+-    }
+-    return weight ? [
+-      Math.atan2(cy, cx) * d3_degrees,
+-      Math.asin(Math.max(-1, Math.min(1, cz / Math.sqrt(cx * cx + cy * cy + cz * cz)))) * d3_degrees
+-    ] : null;
+-  },
++  var linePoint = d3_geo_centroid.point;
++  d3_geo_centroid.point = function(λ, φ) {
++    linePoint(λ00 = λ, φ00 = φ);
++  };
++  d3_geo_centroid.lineEnd = function() {
++    d3_geo_centroid.point(λ00, φ00);","Well spotted.  It wasn’t actually necessary since .lineStart always reassigned it anyway, but it’s cleaner and more efficient to only reassign on ringEnd.
+
+Fixed in @623b594cf5d9e413da78e20cadbc00726521718e.
+",361cac2044605c164700252d4695f70c34c607fa
+5960033,1,"Beautiful. :)""",2013-08-23 08:10:27,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/1484#discussion_r5960033,2013-08-23T20:10:27Z,2013-08-23T20:10:27Z,jasondavies,CONTRIBUTOR,src/time/format.js,,,,,1,"@@ -67,7 +68,8 @@ function d3_time_parse(date, template, string, j) {
+     if (j >= m) return -1;
+     c = template.charCodeAt(i++);
+     if (c === 37) {
+-      p = d3_time_parsers[template.charAt(i++)];
++      t = template.charAt(i++);
++      p = d3_time_parsers[t === ""0"" || t === ""_"" || t === ""-"" ? template.charAt(i++) : t];","Beautiful. :)
+",7b63274795fddefd828c8d6b7837fec0625499b7
+4487794,0,"You could use `d3_selectRoot` here instead of creating a new element.""",2013-05-31 12:34:54,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/1289#discussion_r4487794,2013-06-01T00:34:54Z,2013-06-12T17:23:41Z,mbostock,MEMBER,src/selection/style.js,,,,,1,"@@ -54,3 +54,9 @@ function d3_selection_style(name, value, priority) {
+       ? styleNull : (typeof value === ""function""
+       ? styleFunction : styleConstant);
+ }
++
++var d3_selection_stylePrefix = (function(p) {
++  var i = -1, n = p.length, s = d3_document.createElement(""div"").style;","You could use `d3_selectRoot` here instead of creating a new element.
+",53cd4d46b43b0190310f2b8c9e9625eafebb91ef
+40863,1,"Yeah, I had it like this to start off with but I got carried away trying to make everything line up nicely. :)  I'll put it back how it was and see what you think.""",2011-06-07 04:36:17,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/177#discussion_r40863,2011-06-07T16:36:17Z,2011-06-07T16:47:15Z,jasondavies,CONTRIBUTOR,tests/test-scale-linear.out,,78.0,,,1,"@@ -69,3 +69,18 @@ domain unclamping:
+         under  ->  -1
+          over  ->  11
+ 
++domain([ 1.100, 10.900 ]).nice():
++   [ 1, 11 ]
++
++domain([ 10.900, 1.100 ]).nice():
++   [ 11, 1 ]
++
++domain([ 0.700, 11.001 ]).nice():
++   [ 0, 12 ]
++
++domain([ 123.100, 6.700 ]).nice():
++   [ 130, 0 ]
++
++domain([ 0.000, 0.490 ]).nice():
++   [ 0, 0.5 ]
++","Yeah, I had it like this to start off with but I got carried away trying to make everything line up nicely. :)  I'll put it back how it was and see what you think.
+",69324a46d5af5b97d590b9bc93feacebfb241065
+16818,1,"I use the prefix `d3_{module}_{class}` to avoid naming collisions. It's a bit verbose, but it gets minimized anyway. :)""",2011-04-08 05:14:00,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/101#discussion_r16818,2011-04-08T17:14:00Z,2011-04-09T18:36:02Z,mbostock,MEMBER,src/chart/bullet.js,,,,,1,"@@ -0,0 +1,298 @@
++// ranges (bad, satisfactory, good)
++// measures (actual, forecast)
++// markers (previous, goal)
++
++/*
++ * Chart design based on the recommendations of Stephen Few. Implementation
++ * based on the work of Clint Ivy, Jamie Love, and Jason Davies.
++ * http://projects.instantcognition.com/protovis/bulletchart/
++ */
++
++d3.chart.bullet = function() {
++  var orient = ""left"",
++      duration = 0,
++      title = d3_chart_title,
++      subtitle = d3_chart_subtitle,","I use the prefix `d3_{module}_{class}` to avoid naming collisions. It's a bit verbose, but it gets minimized anyway. :)
+",363950150936decfdf6e939363d7a416b5933184
+4660120,1,"Good idea!  That means we’d be future-proof if Firefox ever add onselectstart, which makes me happy.  I marginally prefer `event`, I think, as this seems more lightweight than behaviours (even though it’s only used by behaviours at the moment).""",2013-06-12 04:19:41,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/1289#discussion_r4660120,2013-06-12T16:19:41Z,2013-06-12T17:23:41Z,jasondavies,CONTRIBUTOR,src/behavior/select-disable.js,,,,,1,"@@ -0,0 +1,15 @@
++import ""../core/document"";
++import ""../core/noop"";
++import ""../event/event"";
++
++var d3_behavior_selectDisable = ""MozUserSelect"" in d3_documentElement.style","Good idea!  That means we’d be future-proof if Firefox ever add onselectstart, which makes me happy.
+
+I marginally prefer `event`, I think, as this seems more lightweight than behaviours (even though it’s only used by behaviours at the moment).
+",53cd4d46b43b0190310f2b8c9e9625eafebb91ef
+5460313,1,"It's a nice opinion.""",2013-07-29 08:16:53,LeoDutra,mbostock,d3,,https://github.com/d3/d3/pull/1423#discussion_r5460313,2013-07-29T20:16:53Z,2013-07-29T20:16:53Z,leodutra,CONTRIBUTOR,src/arrays/permute.js,,3.0,,,7,"@@ -1,7 +1,6 @@
+ d3.permute = function(array, indexes) {
+-  var permutes = [],
+-      i = -1,
+-      n = indexes.length;
+-  while (++i < n) permutes[i] = array[indexes[i]];
++  var i = indexes.length,
++      permutes = Array(i);","It's a nice opinion.
+",0befad2225d5a31cd7fbf19f6b3b31ab2473f9af
+4487847,1,"Nice idea!""",2013-05-31 12:43:43,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/1289#discussion_r4487847,2013-06-01T00:43:43Z,2013-06-12T17:23:41Z,jasondavies,CONTRIBUTOR,src/selection/style.js,,,,,1,"@@ -54,3 +54,9 @@ function d3_selection_style(name, value, priority) {
+       ? styleNull : (typeof value === ""function""
+       ? styleFunction : styleConstant);
+ }
++
++var d3_selection_stylePrefix = (function(p) {
++  var i = -1, n = p.length, s = d3_document.createElement(""div"").style;
++  while (++i < n) if (p[i] + ""Transform"" in s) return ""-"" + p[i].toLowerCase() + ""-"";
++  return """";
++})([""webkit"", ""ms"", ""Moz"", ""O""]);","Nice idea!
+",53cd4d46b43b0190310f2b8c9e9625eafebb91ef
+3433248,1,"Perfect!  Done.""",2013-03-19 04:18:26,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/1150#discussion_r3433248,2013-03-19T15:18:26Z,2013-03-19T16:43:17Z,jasondavies,CONTRIBUTOR,src/geom/quadtree.js,,157.0,,,224,"@@ -1,99 +1,145 @@
++import ""../core/functor"";
++import ""../svg/line"";
+ import ""geom"";
+ 
+ d3.geom.quadtree = function(points, x1, y1, x2, y2) {
+-  var p,
+-      i = -1,
+-      n = points.length;
++  var x = d3_svg_lineX,
++      y = d3_svg_lineY,
++      compat;
+ 
+-  // Allow bounds to be specified explicitly.
+-  if (arguments.length < 5) {
+-    if (arguments.length === 3) {
++  // For backwards-compatibility.
++  if (compat = arguments.length) {
++    x = d3_geom_quadtreeCompatX;
++    y = d3_geom_quadtreeCompatY;
++    if (compat === 3) {
+       y2 = y1;
+       x2 = x1;
+       y1 = x1 = 0;
++    }
++    return quadtree.apply(this, arguments);
++  }
++
++  function quadtree(data) {
++    var d,
++        fx = d3_functor(x),
++        fy = d3_functor(y),
++        points = [],
++        i = -1,
++        n = data.length;
++
++    if (x1 != null) {
++      while (++i < n) {
++        points.push({x: +fx.call(this, d = data[i], i), y: +fy.call(this, d, i)});
++      }
+     } else {
++      // Compute bounds.
+       x1 = y1 = Infinity;
+       x2 = y2 = -Infinity;
+-
+-      // Compute bounds.
+       while (++i < n) {
+-        p = points[i];
+-        if (p.x < x1) x1 = p.x;
+-        if (p.y < y1) y1 = p.y;
+-        if (p.x > x2) x2 = p.x;
+-        if (p.y > y2) y2 = p.y;
++        points.push(d = {x: +fx.call(this, d = data[i], i), y: +fy.call(this, d, i)});
++        if (d.x < x1) x1 = d.x;
++        if (d.y < y1) y1 = d.y;
++        if (d.x > x2) x2 = d.x;
++        if (d.y > y2) y2 = d.y;
+       }
+     }
+-  }
+ 
+-  // Squarify the bounds.
+-  var dx = x2 - x1,
+-      dy = y2 - y1;
+-  if (dx > dy) y2 = y1 + dx;
+-  else x2 = x1 + dy;
+-
+-  // Recursively inserts the specified point p at the node n or one of its
+-  // descendants. The bounds are defined by [x1, x2] and [y1, y2].
+-  function insert(n, p, x1, y1, x2, y2) {
+-    if (isNaN(p.x) || isNaN(p.y)) return; // ignore invalid points
+-    if (n.leaf) {
+-      var v = n.point;
+-      if (v) {
+-        // If the point at this leaf node is at the same position as the new
+-        // point we are adding, we leave the point associated with the
+-        // internal node while adding the new point to a child node. This
+-        // avoids infinite recursion.
+-        if ((Math.abs(v.x - p.x) + Math.abs(v.y - p.y)) < .01) {
+-          insertChild(n, p, x1, y1, x2, y2);
++    // Squarify the bounds.
++    var dx = x2 - x1,
++        dy = y2 - y1;
++    if (dx > dy) y2 = y1 + dx;
++    else x2 = x1 + dy;
++
++    // Recursively inserts the specified point p at the node n or one of its
++    // descendants. The bounds are defined by [x1, x2] and [y1, y2].
++    function insert(n, p, x1, y1, x2, y2) {
++      if (isNaN(p.x) || isNaN(p.y)) return; // ignore invalid points
++      if (n.leaf) {
++        var v = n.point;
++        if (v) {
++          // If the point at this leaf node is at the same position as the new
++          // point we are adding, we leave the point associated with the
++          // internal node while adding the new point to a child node. This
++          // avoids infinite recursion.
++          if ((Math.abs(v.x - p.x) + Math.abs(v.y - p.y)) < .01) {
++            insertChild(n, p, x1, y1, x2, y2);
++          } else {
++            n.point = null;
++            insertChild(n, v, x1, y1, x2, y2);
++            insertChild(n, p, x1, y1, x2, y2);
++          }
+         } else {
+-          n.point = null;
+-          insertChild(n, v, x1, y1, x2, y2);
+-          insertChild(n, p, x1, y1, x2, y2);
++          n.point = p;
+         }
+       } else {
+-        n.point = p;
++        insertChild(n, p, x1, y1, x2, y2);
+       }
+-    } else {
+-      insertChild(n, p, x1, y1, x2, y2);
+     }
+-  }
+ 
+-  // Recursively inserts the specified point p into a descendant of node n. The
+-  // bounds are defined by [x1, x2] and [y1, y2].
+-  function insertChild(n, p, x1, y1, x2, y2) {
+-    // Compute the split point, and the quadrant in which to insert p.
+-    var sx = (x1 + x2) * .5,
+-        sy = (y1 + y2) * .5,
+-        right = p.x >= sx,
+-        bottom = p.y >= sy,
+-        i = (bottom << 1) + right;
+-
+-    // Recursively insert into the child node.
+-    n.leaf = false;
+-    n = n.nodes[i] || (n.nodes[i] = d3_geom_quadtreeNode());
+-
+-    // Update the bounds as we recurse.
+-    if (right) x1 = sx; else x2 = sx;
+-    if (bottom) y1 = sy; else y2 = sy;
+-    insert(n, p, x1, y1, x2, y2);
++    // Recursively inserts the specified point p into a descendant of node n. The
++    // bounds are defined by [x1, x2] and [y1, y2].
++    function insertChild(n, p, x1, y1, x2, y2) {
++      // Compute the split point, and the quadrant in which to insert p.
++      var sx = (x1 + x2) * .5,
++          sy = (y1 + y2) * .5,
++          right = p.x >= sx,
++          bottom = p.y >= sy,
++          i = (bottom << 1) + right;
++
++      // Recursively insert into the child node.
++      n.leaf = false;
++      n = n.nodes[i] || (n.nodes[i] = d3_geom_quadtreeNode());
++
++      // Update the bounds as we recurse.
++      if (right) x1 = sx; else x2 = sx;
++      if (bottom) y1 = sy; else y2 = sy;
++      insert(n, p, x1, y1, x2, y2);
++    }
++
++    // Create the root node.
++    var root = d3_geom_quadtreeNode();
++
++    root.add = function(p) {
++      insert(root, p, x1, y1, x2, y2);
++    };
++
++    root.visit = function(f) {
++      d3_geom_quadtreeVisit(f, root, x1, y1, x2, y2);
++    };
++
++    // Insert all points.
++    points.forEach(root.add);
++    return root;
+   }
+ 
+-  // Create the root node.
+-  var root = d3_geom_quadtreeNode();
++  quadtree.x = function(_) {
++    return arguments.length ? (x = _, quadtree) : x;
++  };
+ 
+-  root.add = function(p) {
+-    insert(root, p, x1, y1, x2, y2);
++  quadtree.y = function(_) {
++    return arguments.length ? (y = _, quadtree) : y;
+   };
+ 
+-  root.visit = function(f) {
+-    d3_geom_quadtreeVisit(f, root, x1, y1, x2, y2);
++  quadtree.size = function(_) {
++    if (!arguments.length) return x1 == null ? null : [[x1, y1], [x2, y2]];
++    if (_ == null) {
++      x1 = y1 = x2 = y2 = null;
++    } else if (Array.isArray(_[0])) {
++      x1 = +_[0][0], y1 = +_[0][1];
++      x2 = +_[1][0], y2 = +_[1][1];
++    } else {
++      x1 = y1 = 0;
++      x2 = +_[0], y2 = +_[1];
++    }
++    return quadtree;","Perfect!  Done.
+",cf5615518957fa8bff9b5f64daf8bcf45fd91dfe
+465784,1,"That worked perfectly, thanks!""",2012-02-19 12:58:08,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/433#discussion_r465784,2012-02-19T23:58:08Z,2012-02-19T23:58:08Z,jasondavies,CONTRIBUTOR,src/core/mouse.js,,,,,1,"@@ -0,0 +1,35 @@
++d3.mouse = function(container) {
++  return d3_mousePoint(container, d3.event);
++};
++
++// https://bugs.webkit.org/show_bug.cgi?id=44083
++var d3_mouse_bug44083 = /WebKit/.test(navigator.userAgent) ? -1 : 0;
++
++function d3_mousePoint(container, e) {
++  var svg = container.ownerSVGElement || container;
++  if (svg instanceof SVGSVGElement) {
++    var point = svg.createSVGPoint();
++    if ((d3_mouse_bug44083 < 0) && (window.scrollX || window.scrollY)) {
++      svg = d3.select(document.body)
++        .append(""svg"")
++          .style(""position"", ""absolute"")
++          .style(""top"", 0)
++          .style(""left"", 0);
++      var ctm = svg[0][0].getScreenCTM();
++      d3_mouse_bug44083 = !(ctm.f || ctm.e);
++      svg.remove();
++    }
++    if (d3_mouse_bug44083) {
++      point.x = e.pageX;
++      point.y = e.pageY;
++    } else {
++      point.x = e.clientX;
++      point.y = e.clientY;
++    }
++    point = point.matrixTransform(container.getScreenCTM().inverse());
++    return [point.x, point.y];
++  }
++  var rect = container.getBoundingClientRect();
++  return [e.pageX - rect.left - container.clientLeft - window.pageXOffset,
++      e.pageY - rect.top - container.clientTop - window.pageYOffset];","That worked perfectly, thanks!
+",064822630ec25d284802d2a1ccf37d792ecd80a7
+16820,1,"Hehe, hadn't quite grokked that, thanks :-)""",2011-04-08 05:15:37,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/101#discussion_r16820,2011-04-08T17:15:37Z,2011-04-09T18:36:02Z,jasondavies,CONTRIBUTOR,src/chart/bullet.js,,,,,1,"@@ -0,0 +1,298 @@
++// ranges (bad, satisfactory, good)
++// measures (actual, forecast)
++// markers (previous, goal)
++
++/*
++ * Chart design based on the recommendations of Stephen Few. Implementation
++ * based on the work of Clint Ivy, Jamie Love, and Jason Davies.
++ * http://projects.instantcognition.com/protovis/bulletchart/
++ */
++
++d3.chart.bullet = function() {
++  var orient = ""left"",
++      duration = 0,
++      title = d3_chart_title,
++      subtitle = d3_chart_subtitle,","Hehe, hadn't quite grokked that, thanks :-)
+",363950150936decfdf6e939363d7a416b5933184
+5958207,1,"Yes, much more descriptive.  Done!""",2013-08-23 07:00:54,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/1484#discussion_r5958207,2013-08-23T19:00:54Z,2013-08-23T20:09:58Z,jasondavies,CONTRIBUTOR,test/time/format-test.js,,,,,1,"@@ -284,6 +284,10 @@ suite.addBatch({
+         assert.deepEqual(p(""% 02/03/1991""), local(1991, 1, 3));
+         assert.isNull(p(""%% 03/10/2010""));
+       },
++      ""parses padding modifier"": function(format) {","Yes, much more descriptive.  Done!
+",7b63274795fddefd828c8d6b7837fec0625499b7
+3434008,1,"Yes, I removed it as I was thinking the signature root.add(d, i) might be confusing.  I think it’s fine though, so I’ll add it back everywhere. :)""",2013-03-19 04:52:31,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/1150#discussion_r3434008,2013-03-19T15:52:31Z,2013-03-19T16:43:17Z,jasondavies,CONTRIBUTOR,src/geom/quadtree.js,,,,,1,"@@ -1,99 +1,151 @@
++import ""../core/functor"";
++import ""../svg/line"";
+ import ""geom"";
+ 
+ d3.geom.quadtree = function(points, x1, y1, x2, y2) {
+-  var p,
+-      i = -1,
+-      n = points.length;
++  var x = d3_svg_lineX,
++      y = d3_svg_lineY,
++      compat;
+ 
+-  // Allow bounds to be specified explicitly.
+-  if (arguments.length < 5) {
+-    if (arguments.length === 3) {
++  // For backwards-compatibility.
++  if (compat = arguments.length) {
++    x = d3_geom_quadtreeCompatX;
++    y = d3_geom_quadtreeCompatY;
++    if (compat === 3) {
+       y2 = y1;
+       x2 = x1;
+       y1 = x1 = 0;
+-    } else {
+-      x1 = y1 = Infinity;
+-      x2 = y2 = -Infinity;
++    }
++    return quadtree(points);
++  }
++
++  function quadtree(data) {
++    var d,
++        fx = d3_functor(x),
++        fy = d3_functor(y),
++        points,
++        i,
++        n = data.length,
++        x1_,
++        y1_,
++        x2_,
++        y2_;
++
++    if (compat) points = data;
++    else for (points = [], i = 0; i < n; ++i) {
++      points.push({x: +fx.call(this, d = data[i]), y: +fy.call(this, d)});
++    }","Yes, I removed it as I was thinking the signature root.add(d, i) might be confusing.  I think it’s fine though, so I’ll add it back everywhere. :)
+",cf5615518957fa8bff9b5f64daf8bcf45fd91dfe
+5460430,1,"Was a common optimization on IE. I think we can pass. @mbostock is smart about d3. I congratulate your holistic.""",2013-07-29 08:21:23,LeoDutra,mbostock,d3,,https://github.com/d3/d3/pull/1423#discussion_r5460430,2013-07-29T20:21:23Z,2013-07-29T20:21:23Z,leodutra,CONTRIBUTOR,src/math/number.js,,2.0,,,3,"@@ -1,3 +1,3 @@
+ function d3_number(x) {
+-  return x != null && !isNaN(x);
++  return !(x == null || isNaN(x));","Was a common optimization on IE. I think we can pass.
+@mbostock is smart about d3. I congratulate your holistic.
+",0befad2225d5a31cd7fbf19f6b3b31ab2473f9af
+4487805,0,"Should we restore whatever value was previously set? Note: not the computed value, but the assigned value, `element.style.webkitUserSelect`.""",2013-05-31 12:36:26,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/1289#discussion_r4487805,2013-06-01T00:36:26Z,2013-06-12T17:23:41Z,mbostock,MEMBER,src/behavior/zoom.js,,,,,1,"@@ -115,7 +115,8 @@ d3.behavior.zoom = function() {
+ 
+     function mouseup() {
+       if (moved) d3_eventCancel();
+-      w.on(""mousemove.zoom"", null).on(""mouseup.zoom"", null);
++      w.on(""mousemove.zoom"", null).on(""mouseup.zoom"", null).on(""selectstart.zoom"", null);
++      d3.select(""body"").style(d3_selection_stylePrefix + ""user-select"", null);","Should we restore whatever value was previously set? Note: not the computed value, but the assigned value, `element.style.webkitUserSelect`.
+",53cd4d46b43b0190310f2b8c9e9625eafebb91ef
+3622098,0,"I don’t think you want the `!dragging` here—this behavior should only be controlled by the clamp setting.""",2013-04-02 05:08:45,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/1173#discussion_r3622098,2013-04-02T17:08:45Z,2013-04-02T17:22:03Z,mbostock,MEMBER,src/svg/brush.js,,,,,1,"@@ -223,8 +224,13 @@ d3.svg.brush = function() {
+         r1 -= size + position;
+       }
+ 
+-      // Clamp the point so that the extent fits within the range extent.
+-      min = Math.max(r0, Math.min(r1, point[i]));
++      if (clamp[i] || !dragging) {","I don’t think you want the `!dragging` here—this behavior should only be controlled by the clamp setting.
+",c9844a6ca420f58100287b2927a5a6cdbd9044ed
+465785,0,"I thought it might be slightly less brittle to check for createSVGPoint (perhaps something like JSDOM might implement in a strange way?), so I made this change anyway.""",2012-02-19 12:59:13,jasondavies,mbostock,d3,,https://github.com/d3/d3/pull/433#discussion_r465785,2012-02-19T23:59:13Z,2012-02-19T23:59:13Z,jasondavies,CONTRIBUTOR,src/core/mouse.js,,,,,1,"@@ -0,0 +1,35 @@
++d3.mouse = function(container) {
++  return d3_mousePoint(container, d3.event);
++};
++
++// https://bugs.webkit.org/show_bug.cgi?id=44083
++var d3_mouse_bug44083 = /WebKit/.test(navigator.userAgent) ? -1 : 0;
++
++function d3_mousePoint(container, e) {
++  var svg = container.ownerSVGElement || container;
++  if (svg instanceof SVGSVGElement) {","I thought it might be slightly less brittle to check for createSVGPoint (perhaps something like JSDOM might implement in a strange way?), so I made this change anyway.
+",064822630ec25d284802d2a1ccf37d792ecd80a7
+163366,0,"If I'm understanding correctly, this zAngle is an optimization for when only the zAngle is set. Is that correct? If so, I say we leave it out for now for the sake of implementation simplicity. It doesn't look like we'll be doing a lot of z-only rotations """,2011-10-10 12:30:07,mbostock,mbostock,d3,,https://github.com/d3/d3/pull/318#discussion_r163366,2011-10-11T00:30:07Z,2012-07-19T15:42:45Z,mbostock,MEMBER,src/geo/rotate.js,,,,,1,"@@ -0,0 +1,124 @@
++d3.geo.rotate = function() {
++  var m = [[1, 0, 0],
++           [0, 1, 0],
++           [0, 0, 1]],
++      zAngle = 0;
++
++  function rotate(coordinates) {
++    if (zAngle != null) {
++      return zAngle ? [coordinates[0] + zAngle, coordinates[1]] : coordinates;
++    }","If I'm understanding correctly, this zAngle is an optimization for when only the zAngle is set. Is that correct? If so, I say we leave it out for now for the sake of implementation simplicity. It doesn't look like we'll be doing a lot of z-only rotations in the immediate future, though we can always add it back if we are.
+",a74c1f8903b0fd34b00b0b6522fdb558fc0fdcaa

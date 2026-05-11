@@ -1,0 +1,3 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+4414,2,"Yes, this is the first tiem I noticed it and it's a pretty weird idea to add something like that to the grid in the first place, IMO.""",2008-08-13 21:20:33,zerok,joshuaclayton,blueprint-css,899f6041a14c7531a5e00fd82cd12ef30f60e6c6,zerok,3782,"Yes, this is the first tiem I noticed it and it's a pretty weird idea to add something like that to the grid in the first place, IMO.
+",2008-08-14T09:20:33Z,2008-08-14T09:20:33Z

@@ -1,0 +1,54 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2760280,1,"@renanbr, great point! Why not just change it to look like this, though?  ```php $paths = array(   // for git clone git@github.com:sebastianbergmann/phpunit.git && cd phpunit && composer install   __DIR__ . '/../vendor',    // for composer install -""",2013-03-07 06:07:24,whatthejeff,sebastianbergmann,phpunit,e825b20cefa126cb26aa9a90b2153afbcd21f231,whatthejeff,306525,"@renanbr, great point! Why not just change it to look like this, though?
+
+``` php
+$paths = array(
+  // for git clone git@github.com:sebastianbergmann/phpunit.git && cd phpunit && composer install
+  __DIR__ . '/../vendor',
+
+  // for composer install --dev in 3rd-party projects
+  __DIR__ . '/../../..'       
+);
+
+foreach ($paths as $path) {
+    if (is_dir($path . '/composer') &&
+        is_file($path . '/autoload.php')) {
+        require_once $path . '/autoload.php';
+        define('PHPUNIT_COMPOSER_INSTALL', $path . '/autoload.php');
+
+        return;
+    }
+}
+```
+
+Which is pretty much the same way 2b2dd909 did it.
+",2013-03-07T17:07:24Z,2013-03-07T17:07:24Z
+2760554,1,":) Thanks again, @renanbr.""",2013-03-07 06:39:31,whatthejeff,sebastianbergmann,phpunit,e825b20cefa126cb26aa9a90b2153afbcd21f231,whatthejeff,306525,":) Thanks again, @renanbr.
+",2013-03-07T17:39:31Z,2013-03-07T17:39:31Z
+2436405,0,"This is actually very restrictive since projects with Symfony 2.2-dev cannot integrate with PHPUnit. Can it be bumped to `>=2.1,<2.3-dev` or is 3e68c5383e20c0fbe97dc221df1de0f68470812d still an issue? That commit message doesn't make it very clear why 2.2 """,2013-01-14 22:52:35,StanAngeloff,sebastianbergmann,phpunit,9a531f338ed507ad473a2dafe6bdd1fe55a87d0d,StanAngeloff,93127,"This is actually very restrictive since projects with Symfony 2.2-dev cannot integrate with PHPUnit. Can it be bumped to `>=2.1,<2.3-dev` or is 3e68c5383e20c0fbe97dc221df1de0f68470812d still an issue? That commit message doesn't make it very clear why 2.2 is an issue?
+",2013-01-15T09:52:35Z,2013-01-15T09:52:35Z
+2458008,0,"Something like this?  ```php <?php  spl_autoload_register(function ($class) {     if (file_exists($file = __DIR__.'/'.str_replace('\\', '/', $class).'.php')) {         require_once $file;     } });  ```""",2013-01-17 21:52:26,fabpot,sebastianbergmann,phpunit,9a531f338ed507ad473a2dafe6bdd1fe55a87d0d,fabpot,47313,"Something like this?
+
+``` php
+<?php
+
+spl_autoload_register(function ($class) {
+    if (file_exists($file = __DIR__.'/'.str_replace('\\', '/', $class).'.php')) {
+        require_once $file;
+    }
+});
+
+```
+",2013-01-18T08:52:26Z,2013-01-18T08:52:26Z
+3505743,2,"So much annoying and useless dependency on ctype extension""",2013-06-25 17:36:59,eelf,sebastianbergmann,phpunit,6cee0a78fb5c7dd10ee333e97509d46e33c5ed5a,eelf,1023912,"So much annoying and useless dependency on ctype extension
+",2013-06-26T05:36:59Z,2013-06-26T05:36:59Z
+2774462,1,"Was just working on that. Thanks :)""",2013-03-10 05:58:34,whatthejeff,sebastianbergmann,phpunit,a36f92f741292ddd6f8a8f750efa440b9f2f86e3,whatthejeff,306525,"Was just working on that. Thanks :)
+",2013-03-10T16:58:34Z,2013-03-10T16:58:34Z
+3214322,2,"Whoops, something went terribly wrong here! Fix is at 7bf32c0.""",2013-05-14 14:26:32,whatthejeff,sebastianbergmann,phpunit,ebbfe6a9f4ca56737932dd67940161b0b5eb82a6,whatthejeff,306525,"Whoops, something went terribly wrong here! Fix is at 7bf32c0.
+",2013-05-15T02:26:32Z,2013-05-15T02:26:32Z
+3748118,1,"No problemo :)""",2013-07-30 02:28:58,whatthejeff,sebastianbergmann,phpunit,d60e164d8f5c1a11360ee4edd1e5f73c23022f55,whatthejeff,306525,"No problemo :)
+",2013-07-30T14:28:58Z,2013-07-30T14:28:58Z
+2760534,1,"@sebastianbergmann, I think this is the final tweak :). I don't think it's necessary to rush out a release for this corner case, though.""",2013-03-07 06:37:28,whatthejeff,sebastianbergmann,phpunit,3c4559d3f4c008c1b9c89d39feeeb00921b6b534,whatthejeff,306525,"@sebastianbergmann, I think this is the final tweak :). I don't think it's necessary to rush out a release for this corner case, though.
+",2013-03-07T17:37:28Z,2013-03-07T17:37:28Z
+2774461,1,"Please do not forget to update `ChangeLog.md` and adding new files to `package.xml`. Thanks!""",2013-03-10 05:57:56,sebastianbergmann,sebastianbergmann,phpunit,a36f92f741292ddd6f8a8f750efa440b9f2f86e3,sebastianbergmann,25218,"Please do not forget to update `ChangeLog.md` and adding new files to `package.xml`. Thanks!
+",2013-03-10T16:57:56Z,2013-03-10T16:57:56Z

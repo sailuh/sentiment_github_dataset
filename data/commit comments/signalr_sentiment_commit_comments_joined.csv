@@ -1,0 +1,17 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3129573,0,"This pass code analysis?  It'd think it'd complain about the out parameters""",2013-05-01 17:41:39,NTaylorMullen,SignalR,SignalR,71b9e8955a0cb9b9cd6d3096a634e823dae350ac,NTaylorMullen,2008729,"This pass code analysis?  It'd think it'd complain about the out parameters
+",2013-05-02T05:41:39Z,2013-05-02T05:41:55Z
+2735566,2,"Ahhh wtf. I'm removing this shit good catch.""",2013-03-04 07:34:15,davidfowl,SignalR,SignalR,b955d5c14194a731e10369bb585147d08507be05,davidfowl,95136,"Ahhh wtf. I'm removing this shit good catch.
+",2013-03-04T18:34:15Z,2013-03-04T18:34:15Z
+3722739,1,"Who the hell cares, we're the only ppl calling it :)""",2013-07-25 17:16:15,DamianEdwards,SignalR,SignalR,974314f891fdf9456617b474eee1b30d95e5f578,DamianEdwards,249088,"Who the hell cares, we're the only ppl calling it :)
+",2013-07-26T05:16:15Z,2013-07-26T05:16:15Z
+3074333,1,"Nice English there""",2013-04-23 17:47:08,DamianEdwards,SignalR,SignalR,fb2f767f3d52830316eb36fc117ebd81d5f1fce0,DamianEdwards,249088,"Nice English there
+",2013-04-24T05:47:08Z,2013-04-24T05:47:08Z
+2775442,1,"Really appreciated this!""",2013-03-10 12:27:16,raybooysen,SignalR,SignalR,dba49abcdc89dbe3bb3670386d9cc8f5e7314237,raybooysen,461957,"Really appreciated this!
+",2013-03-10T23:27:16Z,2013-03-10T23:27:16Z
+1889592,1,"Okay, I'm totally relaxed now ;)""",2012-09-21 08:59:56,akrohn,SignalR,SignalR,b641c3113b295e33840baed3dfdd044a66ef3602,akrohn,155587,"Okay, I'm totally relaxed now ;)
+",2012-09-21T20:59:56Z,2012-09-21T20:59:56Z
+1462646,1,"love the named parameter usage for clarity. more people should adopt that""",2012-06-14 22:28:40,kenegozi,SignalR,SignalR,c7b1d7419e4d9c63b0cc0a9ba0bc08908a5beebc,kenegozi,4206,"love the named parameter usage for clarity. more people should adopt that
+",2012-06-15T10:28:40Z,2012-06-15T10:28:40Z
+1071016,0,"Ahh, no. That was from when it was called CookieCollection, which is the same class name as in System.Net.""",2012-03-11 10:43:10,DamianEdwards,SignalR,SignalR,30fd000aeaa87b8bb47a2c8e33684c7cb7e1ef5f,DamianEdwards,249088,"Ahh, no. That was from when it was called CookieCollection, which is the same class name as in System.Net.
+",2012-03-11T21:43:10Z,2012-03-11T21:43:10Z

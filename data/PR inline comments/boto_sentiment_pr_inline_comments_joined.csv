@@ -1,0 +1,189 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+742471,0,"PVS Studio. Also it's free (month license) for opensource projects (http://www.viva64.com/en/b/0092/).""",2012-04-26 12:00:35,evanworley,boto,boto,,https://github.com/boto/boto/pull/727#discussion_r742471,2012-04-27T00:00:35Z,2012-04-27T00:00:35Z,evanworley,CONTRIBUTOR,boto/gs/resumable_upload_handler.py,,406.0,,,34,"@@ -399,11 +397,18 @@ def _attempt_resumable_upload(self, key, fp, file_length, headers, cb,
+                     self._query_server_pos(conn, file_length))
+                 self.server_has_bytes = server_start
+ 
+-                # Cannot use incremental md5 calculation if the server already has some of the data.
+                 if server_end:
+-                  self.incremental_md5 = False
++                  # If the server already has some of the content, we need to update the md5 with
++                  # the bytes that have already been uploaded to ensure we get a complete hash in
++                  # the end.
++                  print 'Catching up md5 for resumed upload'
++                  fp.seek(0)
++                  bytes_to_go = server_end + 1
++                  while bytes_to_go:
++                    chunk = fp.read(min(key.BufferSize, bytes_to_go))
++                    md5sum.update(chunk)
++                    bytes_to_go -= len(chunk)
+ 
+-                key=key","Cleaned up
+",d03726240e0fba8b7366242b360feb5676dfccfe
+329404,0,"Hmmm. I don't have an environment at home to test with but I was thinking... why do I have to decode() here??? Shouldn't the object already be in unicode? I remembered thinking about the DeleteMarker and Key objects where they parse xml and pondering the """,2012-01-04 23:47:13,tpodowd,boto,boto,,https://github.com/boto/boto/pull/461#discussion_r329404,2012-01-05T10:47:13Z,2012-01-06T02:46:36Z,tpodowd,CONTRIBUTOR,boto/s3/bucket.py,,523.0,,,66,"@@ -503,15 +509,26 @@ def delete_keys(self, keys, quiet=False, mfa_token=None, headers=None):
+                 key_name = key.name
+                 version_id = key.version_id
+             else:
+-                skipped.append(key)
++                if isinstance(key, Prefix):
++                    key_name = key.name
++                    code = 'PrefixSkipped'   # Don't delete Prefix
++                else:
++                    key_name = repr(key)     # try get a string
++                    code = 'InvalidArgument' # other unknown type
++                message = 'Invalid. No delete action taken for this object.'
++                error = Error(key_name, code=code, message=message)
++                result.errors.append(error)
+                 continue
+-            data += ""<Object><Key>%s</Key>"" % xml.sax.saxutils.escape(key_name)
++            count += 1
++            key_name = key_name.decode('utf-8')","Hmmm. I don't have an environment at home to test with but I was thinking... why do I have to decode() here??? Shouldn't the object already be in unicode? I remembered thinking about the DeleteMarker and Key objects where they parse xml and pondering the logic behind the following.
+
+```
+if name == 'Key':
+    self.name = value.encode('utf-8')
+```
+
+I think internally, we should be using unicode keys names. So I think this should be. I'll do some tests with that.
+
+```
+if name == 'Key':
+    self.name = value
+```
+
+That way, I guess we wouldn't need the decode here.
+",c7be0020db068420ef4974c1a502c317fbc33947
+1882593,0,"This is just another of the things I noticed and fixed while this pull request was waiting. I don't believe I can create multiple pull requests with the different bits so it got included here.  The reason for this change is that the cookie_expiration_pe""",2012-10-18 06:56:04,reversefold,boto,boto,,https://github.com/boto/boto/pull/833#discussion_r1882593,2012-10-18T18:56:04Z,2012-11-27T06:35:23Z,reversefold,CONTRIBUTOR,boto/ec2/elb/__init__.py,,438.0,,,7,"@@ -432,8 +432,8 @@ def create_app_cookie_stickiness_policy(self, name, lb_name, policy_name):
+                   'PolicyName': policy_name}
+         return self.get_status('CreateAppCookieStickinessPolicy', params)
+ 
+-    def create_lb_cookie_stickiness_policy(self, cookie_expiration_period,
+-                                           lb_name, policy_name):
++    def create_lb_cookie_stickiness_policy(self, lb_name, policy_name,
++                                           cookie_expiration_period=None):","This is just another of the things I noticed and fixed while this pull request was waiting. I don't believe I can create multiple pull requests with the different bits so it got included here.
+
+The reason for this change is that the cookie_expiration_period isn't required as part of these calls. Leaving the value as None (and not sending to the API) allows you to create a stickiness policy with a non-expiring cookie.
+",ccfa42f3402c08c79fb8fd5ae0269cb96a58e775
+357720,2,"That's what I get for hand-copying the patch after spending all night on a plane.  Thanks for catching that.  :-\\""",2012-01-16 17:03:04,gholms,boto,boto,,https://github.com/boto/boto/pull/477#discussion_r357720,2012-01-17T04:03:04Z,2012-01-17T04:03:04Z,gholms,CONTRIBUTOR,boto/jsonresponse.py,,145.0,,,13,"@@ -134,12 +134,14 @@ def get_name(self, name):
+     def startElement(self, name, attrs, connection):
+         for lm in self.list_marker:
+             if name.endswith(lm):
+-                l = ListElement(self.connection, name, self.item_marker,
++                l = ListElement(self.connection, name, self.list_marker,
++                                self.item_marker,
+                                 pythonize_name=self.pythonize_name)
+                 setattr(self, self.get_name(name), l)
+                 return l
+         if name in self.item_marker:
+             e = Element(self.connection, name, parent=self,
++                        self.list_marker, self.item_marker,
+                         pythonize_name=self.pythonize_name)","That's what I get for hand-copying the patch after spending all night on a plane.  Thanks for catching that.  :-\
+",84fd00b5762c95245cdfca117a7495ba3b06a39a
+13980,0,"some debug print statements, I think.""",2011-03-30 12:11:44,garnaat,boto,boto,,https://github.com/boto/boto/pull/122#discussion_r13980,2011-03-31T00:11:44Z,2011-03-31T00:11:44Z,garnaat,MEMBER,boto/ec2/autoscale/group.py,,126.0,,,44,"@@ -106,12 +109,21 @@ class AutoScalingGroup(object):
+         zones = availability_zones or []
+         self.availability_zone = availability_zone
+         self.availability_zones = ListElement(zones)
++        self.group_arn = group_arn
++        self.health_check_type = health_check_type
++        self.health_check_period = health_check_period
++        self.suspended = suspended
++        self.placement_group = placement_group
++        self.vpc_zone = vpc_zone
++        self.metrics = None
+         self.instances = None
+ 
+     def __repr__(self):
+         return 'AutoScalingGroup:%s' % self.name
+ 
+     def startElement(self, name, attrs, connection):
++        print '-' *50
++        print 'Start %s' % name","some debug print statements, I think.
+",26660231433d920f53d82e985d7b05310f6868d0
+1878831,0,"Not quite sure why these LB cookie methods are included in this PR.  Are they related?  The changes will break existing code but if there is a good reason, it may still be the right thing to do.  Just need a bit more background.""",2012-10-18 01:57:22,garnaat,boto,boto,,https://github.com/boto/boto/pull/833#discussion_r1878831,2012-10-18T13:57:22Z,2012-11-27T06:35:23Z,garnaat,MEMBER,boto/ec2/elb/__init__.py,,438.0,,,7,"@@ -432,8 +432,8 @@ def create_app_cookie_stickiness_policy(self, name, lb_name, policy_name):
+                   'PolicyName': policy_name}
+         return self.get_status('CreateAppCookieStickinessPolicy', params)
+ 
+-    def create_lb_cookie_stickiness_policy(self, cookie_expiration_period,
+-                                           lb_name, policy_name):
++    def create_lb_cookie_stickiness_policy(self, lb_name, policy_name,
++                                           cookie_expiration_period=None):","Not quite sure why these LB cookie methods are included in this PR.  Are they related?  The changes will break existing code but if there is a good reason, it may still be the right thing to do.  Just need a bit more background.
+",ccfa42f3402c08c79fb8fd5ae0269cb96a58e775
+2491018,0,"I think that's reasonable.  One of the changes I've added to the provider module was to log where the credentials are coming from, so I went ahead and added log messages for keyring credentials as well.  I also added a log message when the keyring module """,2012-12-21 06:52:51,jamesls,boto,boto,,https://github.com/boto/boto/pull/1157#discussion_r2491018,2012-12-21T17:52:51Z,2012-12-21T17:52:51Z,jamesls,MEMBER,boto/provider.py,,251.0,,,6,"@@ -246,6 +246,11 @@ def get_credentials(self, access_key=None, secret_key=None):
+             self.secret_key = os.environ[secret_key_name.upper()]
+         elif config.has_option('Credentials', secret_key_name):
+             self.secret_key = config.get('Credentials', secret_key_name)
++        elif config.has_option('Credentials', 'keyring'):
++            keyring_name = config.get('Credentials', 'keyring')
++            import keyring","I think that's reasonable.  One of the changes I've added to the provider module was to log where the credentials are coming from, so I went ahead and added log messages for keyring credentials as well.  I also added a log message when the keyring module can't be imported, but still let the ImportError propogate.
+
+Thanks for the pull request.
+",86c0e28ef19e2f3c0f7ffcd649985ec2eed14fe2
+1247543,0,"@leprechaun This should be:  ``` BotoConfigLocations.append(os.path.join(os.getcwd(), """".boto"""")) ```  This avoids an invalid path on Windows.   Also spaces after or before parenthesis aren't preferred according to PEP8 which I believe @garnaat is trying to""",2012-07-26 07:41:53,jtriley,boto,boto,,https://github.com/boto/boto/pull/885#discussion_r1247543,2012-07-26T19:41:53Z,2012-07-26T19:41:53Z,jtriley,CONTRIBUTOR,boto/pyami/config.py,,46.0,,,13,"@@ -35,12 +35,15 @@
+   # This is probably running on App Engine.
+   expanduser = (lambda x: x)
+ 
+-# By default we use two locations for the boto configurations,
++# By default we use three locations for the boto configurations,
+ # /etc/boto.cfg and ~/.boto (which works on Windows and Unix).
++# os.getcwd() was added so users could have multiple config files
++# without using environment variables
+ BotoConfigPath = '/etc/boto.cfg'
+ BotoConfigLocations = [BotoConfigPath]
+ UserConfigPath = os.path.join(expanduser('~'), '.boto')
+ BotoConfigLocations.append(UserConfigPath)
++BotoConfigLocations.append( os.getcwd() + ""/.boto"" )","@leprechaun This should be:
+
+```
+BotoConfigLocations.append(os.path.join(os.getcwd(), "".boto""))
+```
+
+This avoids an invalid path on Windows. 
+
+Also spaces after or before parenthesis aren't preferred according to PEP8 which I believe @garnaat is trying to stick with...
+",82f46b33874b145abf797a60396e4029c0ca8c09
+1878850,0,"Unfortunately, this will cause SSL certificate verification to fail on all Python versions < 2.7.3.  The endpoint we use MUST match the commonName in the SSL certificate since the Python ssl module is unable to find the subjectAlt fields in the certificat""",2012-10-18 01:59:42,garnaat,boto,boto,,https://github.com/boto/boto/pull/833#discussion_r1878850,2012-10-18T13:59:42Z,2012-11-27T06:35:23Z,garnaat,MEMBER,boto/rds/__init__.py,,,,,1,"@@ -79,7 +79,7 @@ def connect_to_region(region_name, **kw_params):
+ class RDSConnection(AWSQueryConnection):
+ 
+     DefaultRegionName = 'us-east-1'
+-    DefaultRegionEndpoint = 'rds.amazonaws.com'
++    DefaultRegionEndpoint = 'rds.us-east-1.amazonaws.com'","Unfortunately, this will cause SSL certificate verification to fail on all Python versions < 2.7.3.  The endpoint we use MUST match the commonName in the SSL certificate since the Python ssl module is unable to find the subjectAlt fields in the certificate.
+",ccfa42f3402c08c79fb8fd5ae0269cb96a58e775
+5668963,0,"Corrected in SHA: 58a13d7""",2013-08-08 08:26:41,toastdriven,boto,boto,,https://github.com/boto/boto/pull/1660#discussion_r5668963,2013-08-08T20:26:41Z,2013-08-08T20:26:41Z,toastdriven,CONTRIBUTOR,boto/dynamodb2/items.py,,,,,1,"@@ -383,6 +383,17 @@ def partial_save(self):
+         if not final_data:
+             return False
+ 
++        # Remove the key(s) if present.","Corrected in SHA: 58a13d7
+",58a13d7104e27bd123bbfd85c4d7294497defb94
+2572998,0,"In the unit tests I wrote to handle _sign_string's three use cases (private key file object, private key file name, private key string), the private key file object test was failing because no data was being read from the file object. The seek(0) fixed th""",2013-01-07 15:35:34,seandst,boto,boto,,https://github.com/boto/boto/pull/1214#discussion_r2572998,2013-01-08T02:35:34Z,2013-01-08T14:13:11Z,tehsmyers,CONTRIBUTOR,boto/cloudfront/distribution.py,,,,,1,"@@ -654,18 +654,17 @@ def _sign_string(message, private_key_file=None, private_key_string=None):
+             raise ValueError(""Only specify the private_key_file or the private_key_string not both"")
+         if not private_key_file and not private_key_string:
+             raise ValueError(""You must specify one of private_key_file or private_key_string"")
+-        # if private_key_file is a file object read the key string from there
++        # If private_key_file is a file, read its contents. Otherwise, open it and then read it
+         if isinstance(private_key_file, file):
++            private_key_file.seek(0)","In the unit tests I wrote to handle _sign_string's three use cases (private key file object, private key file name, private key string), the private key file object test was failing because no data was being read from the file object. The seek(0) fixed the problem. I think the test may have been flawed, so I'll take a closer look before submitting the unit tests for this.
+
+In hindsight, the seek will probably break on file-like objects that don't support seek, so it's probably best to remove it. Any preparation of the passed-in private_key_file can/should be done before the call to create_signed_url.
+
+Unless there are objections, I'll go ahead and pull out the seek(0) here.
+",5ee626a7b47f44a7d7414b2d178858a501708d54
+1969789,0,"Wouldn't it make more sense for this check to happen up a level?  It just seems odd that `compute_hashes_from_fileobj` raises an `EmptyArchiveError`.  It seems more appropriate for `Vault.upload_archive` to perform the empty file check and raise an except""",2012-10-29 07:20:01,jamesls,boto,boto,,https://github.com/boto/boto/pull/1083#discussion_r1969789,2012-10-29T18:20:01Z,2012-10-29T18:20:01Z,jamesls,MEMBER,boto/glacier/writer.py,,95.0,,,14,"@@ -89,6 +90,10 @@ def compute_hashes_from_fileobj(fileobj, chunk_size=1024 * 1024):
+         linear_hash.update(chunk)
+         chunks.append(hashlib.sha256(chunk).digest())
+         chunk = fileobj.read(chunk_size)
++
++    if not chunks:
++        raise EmptyArchiveError()","Wouldn't it make more sense for this check to happen up a level?  It just seems odd that `compute_hashes_from_fileobj` raises an `EmptyArchiveError`.  It seems more appropriate for `Vault.upload_archive` to perform the empty file check and raise an exception if appropriate
+",05915453e3887515338ef9c8a062f78c44430058
+42421,0,"We try not to change the function footprints unless absolutely necessary. Why is it necessary to have both secuirty_group_ids and security_groups?""",2011-06-09 07:38:02,kopertop,boto,boto,,https://github.com/boto/boto/pull/221#discussion_r42421,2011-06-09T19:38:02Z,2011-06-10T06:12:04Z,kopertop,CONTRIBUTOR,boto/ec2/connection.py,,,,,1,"@@ -442,10 +442,10 @@ class EC2Connection(AWSQueryConnection):
+                              [('item', Reservation)], verb='POST')
+ 
+     def run_instances(self, image_id, min_count=1, max_count=1,
+-                      key_name=None, security_groups=None,
+-                      user_data=None, addressing_type=None,
+-                      instance_type='m1.small', placement=None,
+-                      kernel_id=None, ramdisk_id=None,
++                      key_name=None, security_group_ids=None,
++                      security_groups=None, user_data=None, 
++                      addressing_type=None, instance_type='m1.small', 
++                      placement=None, kernel_id=None, ramdisk_id=None,","We try not to change the function footprints unless absolutely necessary. Why is it necessary to have both secuirty_group_ids and security_groups?
+",84f4e05c83ef49f0ebfe4a221839d6a29a5675e6

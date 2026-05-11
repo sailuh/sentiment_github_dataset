@@ -1,0 +1,67 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1076064,0,"This line means I can no longer have a URL from an interpolation look like so, note the ? for the params. I have worked around the issue by defining a singleton method for #escape on the returned string. The subject of the commit seems to indicated this sh""",2012-03-12 16:04:21,metaskills,thoughtbot,paperclip,128d664c1143d119922393fde342431c1523535e,metaskills,2381,"This line means I can no longer have a URL from an interpolation look like so, note the ? for the params. I have worked around the issue by defining a singleton method for #escape on the returned string. The subject of the commit seems to indicated this should not happen since indeed my returned URL does have an = after it.
+
+``` ruby
+Paperclip.interpolates(:my_authed_url) do |attachment, style|
+  params = ""?filename=#{attachment.original_filename}&key=#{attachment.instance.random_secret}""
+  ""http://example.com/downloads/get_authed#{params}"".tap do |url|
+    def url.escape
+      url
+    end
+  end
+end
+```
+
+So is this pattern what we need to do in my case of returning a self build url in an interpolation?
+",2012-03-13T03:04:21Z,2012-03-13T03:04:30Z
+628959,2,"@evgeniy123 — no, still leaking :-(""",2011-10-03 23:19:10,LongMan,thoughtbot,paperclip,d18d814dd7e55e134bb3b06c43178e98b6db1760,alxgsv,22303,"@evgeniy123 — no, still leaking :-(
+",2011-10-04T11:19:10Z,2011-10-04T11:19:10Z
+628982,2,"@evgeniy123 use paperclip 2.3.11 — no leaks for me  @sikachu really, something wrong with 2.4.2 — eating memory as a monster :-(  But only when cache_classes = false""",2011-10-03 23:28:24,LongMan,thoughtbot,paperclip,d18d814dd7e55e134bb3b06c43178e98b6db1760,alxgsv,22303,"@evgeniy123 use paperclip 2.3.11 — no leaks for me
+
+@sikachu really, something wrong with 2.4.2 — eating memory as a monster :-(
+
+But only when cache_classes = false
+",2011-10-04T11:28:24Z,2011-10-04T11:29:15Z
+515706,0,"Actually, here is [one example](http://travis-ci.org/#!/thoughtbot/paperclip/builds/67058).""",2011-08-05 04:26:58,michaelklishin,thoughtbot,paperclip,b08c6c6abe80c1e499bd9a5ae05275facb0ff543,michaelklishin,1090,"Actually, here is [one example](http://travis-ci.org/#!/thoughtbot/paperclip/builds/67058).
+",2011-08-05T16:26:58Z,2011-08-05T16:26:58Z
+481640,1,"Awesome, thanks :)""",2011-07-17 05:46:37,czj,thoughtbot,paperclip,1c91f7153568bd79314af2c3d4ce0700a3d74201,czj,14306,"Awesome, thanks :)
+",2011-07-17T17:46:37Z,2011-07-21T14:30:18Z
+136243,0,"Any chance we can get definition duped on the way in? These deletes can cause some bizarre issues at times. See http://github.com/ernie/paperclip/commit/ef2e871ac1015a67e27b7a8a8c0da35842ed97bb for one fix.""",2010-08-27 08:46:18,ernie,thoughtbot,paperclip,7a42e6517c8c54805412fa7b2e05f8cb83f3cb84,ernie,14947,"Any chance we can get definition duped on the way in? These deletes can cause some bizarre issues at times. See http://github.com/ernie/paperclip/commit/ef2e871ac1015a67e27b7a8a8c0da35842ed97bb for one fix.
+",2010-08-27T20:46:18Z,2010-08-27T20:46:18Z
+39456,2,"Hey! This problem prevents all European folks from usage of paperclip... I am sad about it :-(""",2009-12-20 23:01:00,LongMan,thoughtbot,paperclip,ac86bb9dfbe3ed8dabe2f76cd4a3199966a1899f,alxgsv,22303,"Hey! This problem prevents all European folks from usage of paperclip... I am sad about it :-(
+",2009-12-21T10:01:00Z,2009-12-21T10:01:00Z
+16725,1,"Yeh, it was a nice feature but I think this is easier to understand - I like having #clear and #destroy separately, too. :-)""",2009-03-13 13:16:16,joshpencheon,thoughtbot,paperclip,2db00be2e137c1fd8d69c35dd3e56ada28c511b1,joshpencheon,30904,"Yeh, it was a nice feature but I think this is easier to understand - I like having #clear and #destroy separately, too. :-)
+",2009-03-14T00:16:16Z,2009-03-14T00:16:16Z
+1278690,2,"This is absolutely your prerogative, but sad panda is very sad because this bug fix:  https://github.com/thoughtbot/paperclip/commit/7d84569092f03cf5d9d487e7b667408e4bc9fa59  Is unavailable to 3.0.1 users without forking. Might you be interested in rel""",2012-05-01 04:45:59,dball,thoughtbot,paperclip,efd70322683f8a6bcb8f13505679c097ba39ac89,dball,12763,"This is absolutely your prerogative, but sad panda is very sad because this bug fix:
+
+https://github.com/thoughtbot/paperclip/commit/7d84569092f03cf5d9d487e7b667408e4bc9fa59
+
+Is unavailable to 3.0.1 users without forking. Might you be interested in releasing a 3.0.1.1 patch series, or should I just fork it myself?
+",2012-05-01T16:45:59Z,2012-05-01T16:45:59Z
+26912,2,"That is bad news. We were just updating our app and migrating from attachment_fu / AWS::S3 to paperclip because we were getting sick and tired of the problems with european buckets :(""",2009-08-06 01:23:34,khelal,thoughtbot,paperclip,ac86bb9dfbe3ed8dabe2f76cd4a3199966a1899f,khelal,46205,"That is bad news. We were just updating our app and migrating from attachment_fu / AWS::S3 to paperclip because we were getting sick and tired of the problems with european buckets :(
+",2009-08-06T13:23:34Z,2009-08-06T13:23:34Z
+1435373,2,"Isn't it kind of weird that you're checking for `merge` here and then not calling it?""",2012-06-08 05:47:31,jferris,thoughtbot,paperclip,5840b757b896315932e34681fcd126e93ac88ed7,jferris,7591,"Isn't it kind of weird that you're checking for `merge` here and then not calling it?
+",2012-06-08T17:47:31Z,2012-06-08T17:47:31Z
+36137,1,"It's """"supposed"""" :-)""",2009-11-23 04:44:16,khelal,thoughtbot,paperclip,ac86bb9dfbe3ed8dabe2f76cd4a3199966a1899f,khelal,46205,"AWS is based on right_aws, which is not supported anymore by paperclip. This is thus not a viable solution. Can't believe this is still ongoing months after the original announcement by thoughbot :)
+",2009-11-23T15:44:16Z,2009-11-23T15:44:16Z
+8871,0,"I'm having some problems with Paperclip 2.1.2 (sudo gem update isn't finding newer versions...)  When I try to @validate_attachment_presense :image@ it doesn't work. I've managed to hack it, like so:  <pre>   before_validation :validate_image    pri""",2008-11-28 12:02:26,joshpencheon,thoughtbot,paperclip,cd02525e96f9023706f459f920d84f970e47c3f5,joshpencheon,30904,"I'm having some problems with Paperclip 2.1.2 (sudo gem update isn't finding newer versions...)
+
+When I try to @validate_attachment_presense :image@ it doesn't work. I've managed to hack it, like so:
+
+<pre>
+  before_validation :validate_image
+
+  private
+  
+ # This then seems to trigger #flush_errors...
+  def validate_image
+    image.send(:validate)
+  end
+</pre>
+
+
+Am I doing something wrong, or is this a bug? 
+
+Thanks,
+Josh
+",2008-11-28T23:02:26Z,2008-11-28T23:02:26Z

@@ -1,0 +1,19 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+4058185,1,"Thanks for fixing this issue! Are nightly builds available for servicestack via nuget or other means? I want to upgrade this ASAP if possible. Also, why would you want to use the Config.WebHostUrl property? Most companies have DEV, Test, STG and production""",2013-09-10 06:05:50,flipnode81,ServiceStack,ServiceStack,0b092cad14babb6b33dce2c951e4fc1c0955dc08,BruceHunter,3585646,"Thanks for fixing this issue! Are nightly builds available for servicestack via nuget or other means? I want to upgrade this ASAP if possible. Also, why would you want to use the Config.WebHostUrl property? Most companies have DEV, Test, STG and production environments and this value would change on each one!?
+",2013-09-10T18:05:50Z,2013-09-10T18:06:43Z
+4058265,0,"We don't do interim builds, but I'm preparing for the next NuGet release which will also be the starting point for the v3/v4 split. WebHostUrl can be explicitly set to point to a preferred external url, which if it is it will use that instead. """,2013-09-10 06:13:34,mythz,ServiceStack,ServiceStack,0b092cad14babb6b33dce2c951e4fc1c0955dc08,mythz,89361,"We don't do interim builds, but I'm preparing for the next NuGet release which will also be the starting point for the v3/v4 split. WebHostUrl can be explicitly set to point to a preferred external url, which if it is it will use that instead. 
+",2013-09-10T18:13:34Z,2013-09-10T18:18:12Z
+1838123,2,"OK this was a stupid 4am commit on my part, I borked the copy + paste fixed this commit and re-ran it: https://github.com/ServiceStack/ServiceStack/commit/d43c62d0167ba8f01bda9ec6ab832bb8d4ec4f2f  Running for 10000 times... MVC Razor took 418ms (1385363 ti""",2012-09-11 05:39:24,mythz,ServiceStack,ServiceStack,1e7240e75e7fcae3b4b0aa77d8182fa9d8565514,mythz,89361,"OK this was a stupid 4am commit on my part, I borked the copy + paste fixed this commit and re-ran it:
+https://github.com/ServiceStack/ServiceStack/commit/d43c62d0167ba8f01bda9ec6ab832bb8d4ec4f2f
+
+Running for 10000 times...
+MVC Razor took 418ms (1385363 ticks), avg: 138 ticks
+Markdown Razor took 737ms (2442097 ticks), avg: 244 ticks
+Markdown Razor was 1056734ms or 1.76 times slower than MVC Razor
+
+Compile times were accurate tho...
+",2012-09-11T17:39:24Z,2012-09-11T17:41:30Z
+2734200,0,"Removing this class seems to have broken ServiceStack.OrmLite.SqlServer:  Could not load type 'ServiceStack.Common.Extensions.ReflectionExtensions' from assembly 'ServiceStack.Common, Version=3.9.38.0, Culture=neutral, PublicKeyToken=null'.""",2013-03-04 04:32:30,cyberprune,ServiceStack,ServiceStack,0b32f8ac7875f219ab4fde4b493706fe59f2459f,cyberprune,1411500,"Removing this class seems to have broken ServiceStack.OrmLite.SqlServer:
+
+Could not load type 'ServiceStack.Common.Extensions.ReflectionExtensions' from assembly 'ServiceStack.Common, Version=3.9.38.0, Culture=neutral, PublicKeyToken=null'.
+",2013-03-04T15:32:30Z,2013-03-04T15:32:30Z

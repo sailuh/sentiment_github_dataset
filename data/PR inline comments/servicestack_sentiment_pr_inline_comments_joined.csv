@@ -1,0 +1,85 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+2053396,1,"I stand corrected! Cheers   On 7 November 2012 10:04, Sergey Bogdanov <notifications@github.com> wrote:  > In src/ServiceStack.Common/ServiceClient.Web/ServiceClientBase.cs: > > > @@ -904,10 +904,8 @@ public virtual TResponse PostFileWithRequest<TR""",2012-11-06 23:09:17,JonCanning,ServiceStack,ServiceStack,,https://github.com/ServiceStack/ServiceStack/pull/327#discussion_r2053396,2012-11-07T10:09:17Z,2012-11-07T10:31:01Z,JonCanning,CONTRIBUTOR,src/ServiceStack.Common/ServiceClient.Web/ServiceClientBase.cs,,,,,1,"@@ -904,10 +904,8 @@ public virtual TResponse PostFileWithRequest<TResponse>(string relativeOrAbsolut
+                     {
+                         outputStream.Write(boundary + newLine);
+                         outputStream.Write(""Content-Disposition: form-data;name=\""{0}\""{1}"".FormatWith(key, newLine));
+-                        outputStream.Write(""Content-Type: text/plain;charset=utf-8{0}{1}"".FormatWith(newLine, newLine));
+-
+-                        var value = Encoding.UTF8.GetBytes(string.Concat(nameValueCollection[key], newLine));
+-                        outputStream.Write(value, 0, value.Length);
++                        outputStream.Write(""Content-Type: charset=utf-8{0}{1}"".FormatWith(newLine, newLine));","I stand corrected! Cheers
+
+On 7 November 2012 10:04, Sergey Bogdanov notifications@github.com wrote:
+
+> In src/ServiceStack.Common/ServiceClient.Web/ServiceClientBase.cs:
+> 
+> > @@ -904,10 +904,8 @@ public virtual TResponse PostFileWithRequest<TResponse>(string relativeOrAbsolut
+> >                      {
+> >                          outputStream.Write(boundary + newLine);
+> >                          outputStream.Write(""Content-Disposition: form-data;name=\""{0}\""{1}"".FormatWith(key, newLine));
+> > 
+> > ## \-                        outputStream.Write(""Content-Type: text/plain;charset=utf-8{0}{1}"".FormatWith(newLine, newLine));
+> > -                        var value = Encoding.UTF8.GetBytes(string.Concat(nameValueCollection[key], newLine));
+> > -                        outputStream.Write(value, 0, value.Length);
+> > -                        outputStream.Write(""Content-Type: charset=utf-8{0}{1}"".FormatWith(newLine, newLine));
+> 
+> According to http://www.ietf.org/rfc/rfc2045.txt (section 5.1):
+> Content-Type should be:
+> content := ""Content-Type"" "":"" type ""/"" subtype
+> *("";"" parameter)
+> ; Matching of media type and subtype
+> ; is ALWAYS case-insensitive.
+> 
+> which means that type is required, but parameter (charset) is optional. In
+> w3 17.13 stated that default value of Content-Type is text/plain but since
+> we need to specify encoding we have to explicitly set it to text/plain +
+> charset.
+> 
+> —
+> Reply to this email directly or view it on GitHubhttps://github.com/ServiceStack/ServiceStack/pull/327/files#r2053354.
+",45116ad0c32ed3fb8c192a299b1b22eac592e7d5
+635852,1,"Fair enough. I'll redo the entire thing, it was a bit hefty in the end :)""",2012-04-02 08:57:49,damianh,ServiceStack,ServiceStack,,https://github.com/ServiceStack/ServiceStack/pull/121#discussion_r635852,2012-04-02T20:57:49Z,2012-04-02T20:57:49Z,damianh,CONTRIBUTOR,src/ServiceStack.Interfaces/Logging/ILog.cs,,36.0,,,43,"@@ -2,118 +2,109 @@
+ 
+ namespace ServiceStack.Logging
+ {
+-    /// <summary>
+-    /// Logs a message in a running application
+-    /// </summary>
+-    public interface ILog 
+-    {
++	/// <summary>
++	/// Logs a message in a running application
++	/// </summary>
++	public interface ILog 
++	{
+ 		/// <summary>
+-		/// Gets or sets a value indicating whether this instance is debug enabled.
++		/// Logs a Debug message
+ 		/// </summary>
+-		/// <value>
+-		/// 	<c>true</c> if this instance is debug enabled; otherwise, <c>false</c>.
+-		/// </value>
+-    	bool IsDebugEnabled { get; }
+-        
+-		/// <summary>
+-        /// Logs a Debug message.
+-        /// </summary>
+-        /// <param name=""message"">The message.</param>
+-        void Debug(object message);
+-
+-        /// <summary>
+-        /// Logs a Debug message and exception.
+-        /// </summary>
+-        /// <param name=""message"">The message.</param>
+-        /// <param name=""exception"">The exception.</param>
+-        void Debug(object message, Exception exception);
++		/// <param name=""messageFunc"">A function returning message to be written. Function is not evaluated if logging is not enabled.</param>
++		void Debug(Func<object> messageFunc);
+ 
+-        /// <summary>
+-        /// Logs a Debug format message.
+-        /// </summary>
+-        /// <param name=""format"">The format.</param>
+-        /// <param name=""args"">The args.</param>
+-        void DebugFormat(string format, params object[] args);","Fair enough. I'll redo the entire thing, it was a bit hefty in the end :)
+",7b1bc6f830f84a09ac869edc1563cb01587241ea

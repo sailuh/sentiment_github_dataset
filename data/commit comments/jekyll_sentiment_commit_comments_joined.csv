@@ -1,0 +1,63 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+4063186,0,"No. I still see the wrong twins.  * https://github.com/mojombo/jekyll/tree/gh-pages/news * https://github.com/mojombo/jekyll/tree/gh-pages/news/releases """,2013-09-10 18:31:55,penibelst,mojombo,jekyll,cb521b7f9a6887051b982a2053cd402ff019594e,doktorbro,3617307,"No. I still see the wrong twins.
+- https://github.com/mojombo/jekyll/tree/gh-pages/news
+- https://github.com/mojombo/jekyll/tree/gh-pages/news/releases
+",2013-09-11T06:31:55Z,2013-09-11T06:31:55Z
+3646754,1,"Thanks :-)""",2013-07-16 06:12:44,mrngm,mojombo,jekyll,f25fe1c86fd6d9fb05f23222711e3678d4453371,mrngm,305101,"Thanks :-)
+",2013-07-16T18:12:44Z,2013-07-16T18:12:44Z
+3007204,0,"I've been using Python more often recently, so it just felt foreign. I changed it.""",2013-04-13 14:18:45,parkr,mojombo,jekyll,5f5450720414e6d3f16f9b19b48c62e5608f3207,parkr,237985,"I've been using Python more often recently, so it just felt foreign. I changed it.
+",2013-04-14T02:18:45Z,2013-04-14T02:18:45Z
+2893081,1,"Whoopwhoop! Thank you!""",2013-03-27 08:19:06,frdmn,mojombo,jekyll,a72cdc9293051937ddca6af4db01fddbc54828ca,frdmn,944459,"Whoopwhoop! Thank you!
+",2013-03-27T19:19:06Z,2013-03-27T19:19:06Z
+2431386,2,"Six?  WTF man?  No oriental sites.  And oh yes, point to your own milk-toast, blog-only and fuckall-else  sites.  Nice work.  Seriously.   At least point to the list in the wiki.   """,2013-01-14 04:30:12,StevenBlack,mojombo,jekyll,45f10a22da8c2d2631c5669a2dcd4314a517b8c6,StevenBlack,80144,"Six?  WTF man?
+
+No oriental sites.  And oh yes, point to your own milk-toast, blog-only and fuckall-else  sites.  Nice work.  Seriously. 
+
+At least point to the list in the wiki. 
+",2013-01-14T15:30:12Z,2013-01-14T15:30:12Z
+2426510,1,"Glad I could help! :-)""",2013-01-12 15:11:23,parkr,mojombo,jekyll,5a3e05dbff48394746b519f2015fa1153e2ae17f,parkr,237985,"Glad I could help! :-)
+",2013-01-13T02:11:23Z,2013-01-13T02:11:23Z
+15218,0,"The first example was supposed to be: <pre> categories:  - foo  - bar  - xyzzy </pre>""",2009-02-20 11:56:24,vilcans,mojombo,jekyll,1211f23b53af69f5ce31bd1e7eec747294f12e78,vilcans,48641,"The first example was supposed to be:
+
+<pre>
+categories:
+ - foo
+ - bar
+ - xyzzy
+</pre>
+",2009-02-20T22:56:24Z,2009-02-20T22:56:24Z
+4097188,1,":heart: thank you!""",2013-09-15 09:09:34,parkr,mojombo,jekyll,94eed4643612522934ac0c354fa066011fab8d3c,parkr,237985,":heart: thank you!
+",2013-09-15T21:09:34Z,2013-09-15T21:09:34Z
+4151608,1,"Bollocks, you're right. It doesn't look like it's a problem so far, but I'll fix that per this info. Thanks!""",2013-09-22 09:28:28,parkr,mojombo,jekyll,26dc14881c444198f2c57d740d8ab126525a5b67,parkr,237985,"Bollocks, you're right. It doesn't look like it's a problem so far, but I'll fix that per this info. Thanks!
+",2013-09-22T21:28:28Z,2013-09-22T21:28:28Z
+3718660,1,":+1: :tada: :yellow_heart: """,2013-07-25 06:09:24,parkr,mojombo,jekyll,a88493007cca41ca7cd63b542f893c786028ad53,parkr,237985,":+1: :tada: :yellow_heart: 
+",2013-07-25T18:09:24Z,2013-07-25T18:09:24Z
+3587854,1,":heart: much better than my version. :smiley:""",2013-07-08 09:13:22,mattr-,mojombo,jekyll,6afbf2b05cad4a86507317ee34543f85c3aa231c,mattr-,77174,":heart: much better than my version. :smiley:
+",2013-07-08T21:13:22Z,2013-07-08T21:13:22Z
+3587868,1,"It's hardly any different, but I appreciate your support in this matter. :tongue: :smiley: """,2013-07-08 09:15:30,parkr,mojombo,jekyll,6afbf2b05cad4a86507317ee34543f85c3aa231c,parkr,237985,"It's hardly any different, but I appreciate your support in this matter. :tongue: :smiley: 
+",2013-07-08T21:15:30Z,2013-07-08T21:15:30Z
+10890,2,"*shame*""",2009-01-02 10:17:43,ngerakines,mojombo,jekyll,29313b046c227bf07b83ab2f262ba1035a08cfc4,ngerakines,12125,"_shame_
+",2009-01-02T21:17:43Z,2009-01-02T21:17:43Z
+3006454,2,"I see. Yeah. It's weird that we call 'em options when they go in and configurations when they come out.""",2013-04-13 06:33:14,dracula2000,mojombo,jekyll,a355762190c2d4e656d5fc492a9ce798d063232b,brainkim,2996754,"I see. Yeah. It's weird that we call 'em options when they go in and configurations when they come out.
+",2013-04-13T18:33:14Z,2013-04-13T18:33:14Z
+4095640,1,"It's dbname, not database. :-)""",2013-09-14 22:13:40,grobmeier,mojombo,jekyll,97cb3f1336a3873a875276a00694f9cf999e187a,grobmeier,873786,"It's dbname, not database. :-)
+",2013-09-15T10:13:40Z,2013-09-15T10:13:40Z
+4037417,1,"Haha thanks :heart: My brain is a bit fried at the moment. :)""",2013-09-06 14:51:52,parkr,mojombo,jekyll,24f0debeaeb72204a95427cd1ec40d08871c6dc0,parkr,237985,"Haha thanks :heart: My brain is a bit fried at the moment. :)
+",2013-09-07T02:51:52Z,2013-09-07T02:51:52Z
+3210435,0,"Maybe Jlogger?  cheers On May 14, 2013 7:30 PM, """"Parker Moore"""" <notifications@github.com> wrote:  > As the commit message says, it was a hack to get around pygments.rb's use > of the Ruby stdlib Logger. I guess I should rename this class, but I > co""",2013-05-14 05:33:33,hendricius,mojombo,jekyll,ca888cad76b7816bbe3b004b0b9e7064cfb5215b,hendricius,816859,"Maybe Jlogger?
+
+cheers
+On May 14, 2013 7:30 PM, ""Parker Moore"" notifications@github.com wrote:
+
+> As the commit message says, it was a hack to get around pygments.rb's use
+> of the Ruby stdlib Logger. I guess I should rename this class, but I
+> couldn't come up with anything that wasn't outrageous. Thoughts?
+> 
+> —
+> Reply to this email directly or view it on GitHubhttps://github.com/mojombo/jekyll/commit/ca888cad76b7816bbe3b004b0b9e7064cfb5215b#commitcomment-3210405
+> .
+",2013-05-14T17:33:33Z,2013-05-14T17:33:33Z
+2680924,0,"Why does everyone who hacks on Jekyll have to use the same Ruby version? Jekyll is [supposed to be compatible](https://github.com/mojombo/jekyll/blob/cc0f84197afc4b73781e2a800ea4d1990605981b/.travis.yml#L2-5) with all sorts of Rubies.  I think this file """,2013-02-23 09:20:22,mislav,mojombo,jekyll,6ec1c45d5d53ebb2523400996c79a0593fb9d56c,mislav,887,"Why does everyone who hacks on Jekyll have to use the same Ruby version? Jekyll is [supposed to be compatible](https://github.com/mojombo/jekyll/blob/cc0f84197afc4b73781e2a800ea4d1990605981b/.travis.yml#L2-5) with all sorts of Rubies.
+
+I think this file should be unversioned.
+",2013-02-23T20:20:22Z,2013-02-23T20:20:22Z

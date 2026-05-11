@@ -1,0 +1,5 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+19663,1,"Have you thought about using libev? I've switched from libevent to libev and been really happy. It's got a compatibility layer during the transition that's at least as fast as libevent is natively. Plus, libev is really reliable in my experience. :-)""",2009-04-22 18:33:01,erichocean,kr,beanstalkd,9e91ae535c17506f4d66a6b2841faf6628b0675a,erichocean,11814,"Have you thought about using libev? I've switched from libevent to libev and been really happy. It's got a compatibility layer during the transition that's at least as fast as libevent is natively. Plus, libev is really reliable in my experience. :-)
+",2009-04-23T06:33:01Z,2009-04-23T06:33:01Z
+19666,1,"I didn't know about libev. I'll check it out! Thanks.""",2009-04-22 19:02:34,kr,kr,beanstalkd,9e91ae535c17506f4d66a6b2841faf6628b0675a,kr,4178,"I didn't know about libev. I'll check it out! Thanks.
+",2009-04-23T07:02:34Z,2009-04-23T07:02:34Z

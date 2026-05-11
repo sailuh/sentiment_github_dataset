@@ -1,0 +1,269 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1745958,0,"@tricil seems like a GitHub issue, when you actually go to the raw file, you do see it correctly: https://raw.github.com/h5bp/html5-boilerplate/master/js/vendor/jquery-1.8.0.min.js""",2012-08-21 10:12:48,christianv,h5bp,html5-boilerplate,1c30c5a6602c708cca718572eaa80b52110d3f81,christianvuerings,127199,"@tricil seems like a GitHub issue, when you actually go to the raw file, you do see it correctly:
+https://raw.github.com/h5bp/html5-boilerplate/master/js/vendor/jquery-1.8.0.min.js
+",2012-08-21T22:12:48Z,2012-08-21T22:12:48Z
+1686526,2,"`readme` is capitalized again.  I like `changelog.md`. Also `readme.md` is better than `README.md`. To me having all caps in my filenames feels somehow wrong.""",2012-08-08 00:37:24,drublic,h5bp,html5-boilerplate,703d0b8651120a96848d55a0db059a7f334c2638,drublic,502487,"`readme` is capitalized again.
+
+I like `changelog.md`. Also `readme.md` is better than `README.md`. To me having all caps in my filenames feels somehow wrong.
+",2012-08-08T12:37:24Z,2012-08-08T12:37:24Z
+1245144,2,"Just Mario-Karted into work, while dealing with already terrible Atlanta drivers who are trying to cope with the fact that winds have knocked out every light in Midtown, for this? I feel like I'm taking crazy pills.   At the same time, its whatever dude.""",2012-04-23 02:54:46,j-hernandez,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,j-hernandez,499335,"Just Mario-Karted into work, while dealing with already terrible Atlanta drivers who are trying to cope with the fact that winds have knocked out every light in Midtown, for this? I feel like I'm taking crazy pills. 
+
+At the same time, its whatever dude. I'll just make the two tiny changes to add hot pink back in where appropriate and it will take all of half a second. Hot Pank Reprazent.
+",2012-04-23T14:54:46Z,2012-04-23T14:54:46Z
+1281844,2,"@ProLoser What?! This is no Mac vs PC argument! I'm merely mentioning that presumably the default colour should be the native colour of the platform with the most marketshare. Oh well, I suppose it's not too important :-S  (Also I'm saddened that you fou""",2012-05-01 22:16:38,timdavies,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,timdavies,237173,"@ProLoser What?! This is no Mac vs PC argument! I'm merely mentioning that presumably the default colour should be the native colour of the platform with the most marketshare. Oh well, I suppose it's not too important :-S
+
+(Also I'm saddened that you found the need to be so offensive in response to a post that was perfectly civil).
+",2012-05-02T10:16:38Z,2012-05-02T10:24:54Z
+1048473,1,"@phobia There is no prefixes for text-shadow (yay \o/).""",2012-03-06 03:05:45,Calvein,h5bp,html5-boilerplate,aa0396eae757c9e03dda4e463fb0d4db5a5f82d7,Calvein,243189,"@phobia There is no prefixes for text-shadow (yay \o/).
+",2012-03-06T14:05:45Z,2012-03-06T14:05:45Z
+846592,0,"unfortunately, adding this directive seems to cause problems with some rewrite rules.  [Sat Jan 07 14:59:06 2012] [error] [client 24.90.*.*] Options FollowSymLinks or SymLinksIfOwnerMatch is off which implies that RewriteRule directive is forbidden: /var""",2012-01-07 09:13:52,moimikey,h5bp,html5-boilerplate,e2ca1bf93104b773a05c1ffc32086d9373920b78,moimikey,182661,"unfortunately, adding this directive seems to cause problems with some rewrite rules.
+
+[Sat Jan 07 14:59:06 2012] [error] [client 24.90._._] Options FollowSymLinks or SymLinksIfOwnerMatch is off which implies that RewriteRule directive is forbidden: /var/www/vhosts/hertzberg.co/hsquared.co/www/wp-includes/js/thickbox/thickbox.css, referer: http://hsquared.co/wp-admin/update-core.php
+[...]
+",2012-01-07T20:13:52Z,2012-01-07T20:13:52Z
+774178,0,"IMHO it’s still a matter of… will people read the comments / documentation and remove what they don’t want or need? History has shown that generally, they won’t.""",2011-12-06 11:39:35,mathiasbynens,h5bp,html5-boilerplate,2727fa23a6715080f120fd41792a6a8c1b112125,mathiasbynens,81942,"IMHO it’s still a matter of… will people read the comments / documentation and remove what they don’t want or need? History has shown that generally, they won’t.
+",2011-12-06T22:39:35Z,2011-12-06T22:39:35Z
+575175,0,"We got a buildscript so we can afford to have 45 extra bytes in the uncompressed JS.  In fact, I'd be fine with more friendly variable names. I just like it minified because this code doesnt deserve to absorb vertical space in the file.""",2011-09-07 07:41:59,paulirish,h5bp,html5-boilerplate,70a836c34dd05590c2a0260a5aa425ed9893da86,paulirish,39191,"We got a buildscript so we can afford to have 45 extra bytes in the uncompressed JS.  In fact, I'd be fine with more friendly variable names. I just like it minified because this code doesnt deserve to absorb vertical space in the file.
+",2011-09-07T19:41:59Z,2011-09-07T19:41:59Z
+524608,1,"i'm sure i forgot a lot of people.. like @gmoulin and other dev powerhouses.. sorry and i'll try to get you added.   @retlehs thx for downstreaming our changes into Roots Theme before we even ship them. killer. :)""",2011-08-10 06:16:39,paulirish,h5bp,html5-boilerplate,1e79f7b7dfc852d047be225289a38afe15993391,paulirish,39191,"i'm sure i forgot a lot of people.. like @gmoulin and other dev powerhouses.. sorry and i'll try to get you added. 
+
+@retlehs thx for downstreaming our changes into Roots Theme before we even ship them. killer. :)
+",2011-08-10T18:16:39Z,2011-08-10T18:16:39Z
+482279,0,"Allow only vertical resizing"""" - why this? This affects Usability and can even affect Accessibility in some cases.""",2011-07-17 20:57:29,anselmh,h5bp,html5-boilerplate,5416bcd103e3d1118a48ca93d17ffc0280ef96ec,anselmh,399345,"""Allow only vertical resizing"" - why this? This affects Usability and can even affect Accessibility in some cases.
+",2011-07-18T08:57:29Z,2011-07-18T08:57:29Z
+787557,0,"You can use the meta, but it's just much better to send it as an http header.""",2011-12-12 05:55:39,paulirish,h5bp,html5-boilerplate,5e26749118f79cfd1b43bf166344916c2d24f37a,paulirish,39191,"You can use the meta, but it's just much better to send it as an http header.
+",2011-12-12T16:55:39Z,2011-12-12T16:55:39Z
+184321,1,"<button onclick=""""alert('speaking of security....')"""">hhahaha WHOOPS""",2010-11-03 06:19:34,paulirish,h5bp,html5-boilerplate,b57c5c8620f19045fe4ba407975bcf082736c2ae,paulirish,39191,"<button onclick=""alert('speaking of security....')"">hhahaha WHOOPS
+",2010-11-03T17:19:34Z,2010-11-03T17:19:34Z
+178845,1,"Just blogged this: http://paulirish.com/2010/the-protocol-relative-url/ :)""",2010-10-27 04:31:20,paulirish,h5bp,html5-boilerplate,22b8ab5215b8bdc29ac62b12d8e9a4d76a592a87,paulirish,39191,"Just blogged this: http://paulirish.com/2010/the-protocol-relative-url/
+:)
+",2010-10-27T16:31:20Z,2010-10-27T16:31:20Z
+173940,0,"I stopped using the google code to get minified code.  I can also compress it with all of the other js using minify into a single document request.  I love the concept of the google api, but the point is -- using it slowed my web sites down far to much d""",2010-10-20 21:50:31,wshawn,h5bp,html5-boilerplate,afaf14304e55dac23b2f4c38b6c5f67a7ddb70c8,wshawn,334107,"I stopped using the google code to get minified code.  I can also compress it with all of the other js using minify into a single document request.
+
+I love the concept of the google api, but the point is -- using it slowed my web sites down far to much due to the extra document requests.
+",2010-10-21T09:50:31Z,2010-10-21T09:50:31Z
+132206,2,"With every color you add, I have to edit more.""",2010-08-20 07:31:53,kaikuehne,h5bp,html5-boilerplate,34c0003bae9fd8af82a88a35031458606a854206,kaikuehne,16883,"With every color you add, I have to edit more.
+",2010-08-20T19:31:53Z,2010-08-20T19:31:53Z
+1768219,2,"Hate to add noise, but I would really prefer to have links to the issues as well. """,2012-08-26 19:43:46,patrickkettner,h5bp,html5-boilerplate,dfca687243d9f5f316b16bf7990df1d79b80e389,patrickkettner,465414,"Hate to add noise, but I would really prefer to have links to the issues as well. 
+",2012-08-27T07:43:46Z,2012-08-27T07:43:46Z
+1244712,2,":( so sad. I liked the hot pink""",2012-04-23 01:31:30,eddiemoore,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,eddiemoore,199016,":( so sad. I liked the hot pink
+",2012-04-23T13:31:30Z,2012-04-23T13:31:30Z
+1244903,2,"that's ruined my day :(""",2012-04-23 02:09:34,Aaunel,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,yanneves,1331877,"that's ruined my day :(
+",2012-04-23T14:09:34Z,2012-04-23T14:09:34Z
+1245864,2,"A new age of of The Internet has started.... sad times! :(""",2012-04-23 04:36:10,RutZap,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,RutZap,1662143,"A new age of of The Internet has started.... sad times! :(
+",2012-04-23T16:36:10Z,2012-04-23T16:36:10Z
+1247902,2,"Sad story. RIP hot pink coolness.""",2012-04-23 13:31:13,ArnaudBrousseau,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,ArnaudBrousseau,208469,"Sad story. RIP hot pink coolness.
+",2012-04-24T01:31:13Z,2012-04-24T01:31:13Z
+1250522,2,":'(  I'm keeping my hot pink!!!!""",2012-04-24 02:53:35,antoniwan,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,antoniwan,588388,":'(
+
+I'm keeping my hot pink!!!!
+",2012-04-24T14:53:35Z,2012-04-24T14:53:35Z
+1261504,2,"Sad day. :'(""",2012-04-26 02:01:35,rikkert,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,rikkert,153894,"Sad day. :'(
+",2012-04-26T14:01:35Z,2012-04-26T14:01:35Z
+1263336,2,"Sad day indeed... """,2012-04-26 08:39:46,rodolfocaldeira,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,rodolfocaldeira,50342,"Sad day indeed... 
+",2012-04-26T20:39:46Z,2012-04-26T20:39:46Z
+1264458,2,"I leave hot pink in on purpose. As a badge of pride for using H5BP. Sad day :(""",2012-04-26 14:23:55,dlindahl,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,dlindahl,55945,"I leave hot pink in on purpose. As a badge of pride for using H5BP. Sad day :(
+",2012-04-27T02:23:55Z,2012-04-27T02:23:55Z
+1266314,2,"only if abcnews.com changed their CSS earlier, this wouldn't have happened. sad day indeed :(""",2012-04-27 01:14:09,shichuan,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,chuanxshi,153513,"only if abcnews.com changed their CSS earlier, this wouldn't have happened. sad day indeed :(
+",2012-04-27T13:14:09Z,2012-04-27T13:14:09Z
+1272472,2,"I'm offended that anyone would want to contribute something useful.   Also, I'm going to punch a random stranger in the back of the head tomorrow and yell """"that's for hot pink!""""  Based on this I'm happy to have immortalized hot pink in print:  !['hot""",2012-04-29 14:09:50,roblarsen,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,roblarsen,361421,"I'm offended that anyone would want to contribute something useful. 
+
+Also, I'm going to punch a random stranger in the back of the head tomorrow and yell ""that's for hot pink!""
+
+Based on this I'm happy to have immortalized hot pink in print:
+
+!['hot pink forever'](http://htmlcssjavascript.com/wp-content/uploads/2012/04/026687-f12011.png)
+",2012-04-30T02:09:50Z,2012-04-30T02:09:50Z
+1281833,2,"@dotty I find your comments more imbecilic and unsubstantial than my own, which is impressive. You're bringing a Mac vs PC argument into a H5BP bug ticket...  Time to unsubscribe from from this thread.""",2012-05-01 22:14:00,ProLoser,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,ProLoser,67395,"@dotty I find your comments more imbecilic and unsubstantial than my own, which is impressive. You're bringing a Mac vs PC argument into a H5BP bug ticket...
+
+Time to unsubscribe from from this thread.
+",2012-05-02T10:14:00Z,2012-05-02T10:14:00Z
+1281989,2,"@dotty I won't rest until the standard is either hot pink or neon green, but bringing Windows standards into the argument is blasphemous!  No one thinking KDE, GNOME? Fedora? :(""",2012-05-01 22:59:36,Aaunel,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,yanneves,1331877,"@dotty I won't rest until the standard is either hot pink or neon green, but bringing Windows standards into the argument is blasphemous!
+
+No one thinking KDE, GNOME? Fedora? :(
+",2012-05-02T10:59:36Z,2012-05-02T10:59:36Z
+1047690,2,"I know :( Whoever pushes something next can fix that.""",2012-03-05 22:59:22,necolas,h5bp,html5-boilerplate,aa0396eae757c9e03dda4e463fb0d4db5a5f82d7,necolas,239676,"I know :( Whoever pushes something next can fix that.
+",2012-03-06T09:59:22Z,2012-03-06T14:02:48Z
+1047778,2,"I'm really worried about SEO and color : transparent; maybe i shouln't ?""",2012-03-05 23:24:45,AlexandreBroudin,h5bp,html5-boilerplate,aa0396eae757c9e03dda4e463fb0d4db5a5f82d7,AlexandreBroudin,1390084,"I'm really worried about SEO and color : transparent; maybe i shouln't ?
+",2012-03-06T10:24:45Z,2012-03-06T10:24:45Z
+1396249,2,"Fancy, but just kinda wasted my time trying to figure out if it was an error or not.  My guess is It looks wrong to most developers. Wasting dev time makes me sad.  Also, it's inconsistent within the project since index.html retains the closing tags.  Also""",2012-05-30 10:51:05,djtriptych,h5bp,html5-boilerplate,f8f347e392489282d96286e91c2795ef741e752b,djtriptych,1135131,"Fancy, but just kinda wasted my time trying to figure out if it was an error or not.
+
+My guess is It looks wrong to most developers. Wasting dev time makes me sad.
+
+Also, it's inconsistent within the project since index.html retains the closing tags.
+
+Also, browsers aren't the only things that consume HTML.
+",2012-05-30T22:51:05Z,2012-05-30T22:54:53Z
+911435,2,"I have already set them in my `.vimrc` files, unsure why these indentations occurred still :||""",2012-01-28 12:28:44,nimbupani,h5bp,html5-boilerplate,d269a55d4541756c1b339429997e7ca507b5c908,nimbupani,74513,"I have already set them in my `.vimrc` files, unsure why these indentations occurred still :||
+",2012-01-28T23:28:44Z,2012-01-28T23:28:44Z
+389320,2,"also this issue closes #504 (forgot that sorry!)""",2011-05-18 07:13:01,paulirish,h5bp,html5-boilerplate,648026d780dc6b9ecad8d37d61a92b69be5fd654,paulirish,39191,"also this issue closes #504 (forgot that sorry!)
+",2011-05-18T19:13:01Z,2011-05-18T19:13:01Z
+387277,2,"Thumbs up. I worried about all the folks deploying this without building it (I see alot).""",2011-05-17 05:32:21,walker,h5bp,html5-boilerplate,0e1c7ba929caddec63971cccfb7de7c0d343e060,walker,3987,"Thumbs up. I worried about all the folks deploying this without building it (I see alot).
+",2011-05-17T17:32:21Z,2011-05-17T17:32:21Z
+157984,2,"I'm assuming it breaks for people not on the latest versions of Apache.. I hate when people don't upgrade to latest versions :(""",2010-09-28 21:02:38,adeelejaz,h5bp,html5-boilerplate,7db47878f80366597d19f0a5b0e6df55275fa51f,adeelejaz,200611,"I'm assuming it breaks for people not on the latest versions of Apache.. I hate when people don't upgrade to latest versions :(
+",2010-09-29T09:02:38Z,2010-09-29T20:01:41Z
+132448,2,"Yeah, add another file that's blocking parallel download. No, really. Don't do it. The proposed solution isn't solving the problem, since """"people like me"""" wouldn't remove the file. We also need colors. We would just change them, or not. Please use sane def""",2010-08-20 14:43:11,kaikuehne,h5bp,html5-boilerplate,34c0003bae9fd8af82a88a35031458606a854206,kaikuehne,16883,"Yeah, add another file that's blocking parallel download. No, really. Don't do it. The proposed solution isn't solving the problem, since ""people like me"" wouldn't remove the file. We also need colors. We would just change them, or not. Please use sane defaults throughout the project. Colors aren't sane defaults.
+",2010-08-21T02:43:11Z,2010-08-21T02:43:11Z
+1686516,2,"That’s another good point. Seems weird to lowercase `readme` but then capitalize `CHANGELOG`.""",2012-08-08 00:34:50,mathiasbynens,h5bp,html5-boilerplate,703d0b8651120a96848d55a0db059a7f334c2638,mathiasbynens,81942,"That’s another good point. Seems weird to lowercase `readme` but then capitalize `CHANGELOG`.
+",2012-08-08T12:34:50Z,2012-08-08T12:41:02Z
+1690506,2,"afaik, `LICENSE` is convention. I haven't seen much of them in markdown.  As it's so established, I think its fine to yell SO LOUD, but I'd advocate for lowercasing `changelog.md` and `readme.md`. UPPERCASE STRESSES ME OUT. :/""",2012-08-08 13:58:04,paulirish,h5bp,html5-boilerplate,703d0b8651120a96848d55a0db059a7f334c2638,paulirish,39191,"afaik, `LICENSE` is convention. I haven't seen much of them in markdown.
+
+As it's so established, I think its fine to yell SO LOUD, but I'd advocate
+for lowercasing `changelog.md` and `readme.md`. UPPERCASE STRESSES ME OUT.
+:/
+",2012-08-09T01:58:04Z,2012-08-09T01:58:04Z
+1241316,2,"Honestly I don't think it could ever be inappropiate. But if it hurts the project, that definitely sucks.""",2012-04-22 08:58:37,kahlil,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,khalillechelt,104712,"Honestly I don't think it could ever be inappropiate. But if it hurts the project, that definitely sucks.
+",2012-04-22T20:58:37Z,2012-04-22T20:58:37Z
+1244257,2,"YYYYYYYY :(""",2012-04-22 23:48:11,yclian,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,yclian,168416,"YYYYYYYY :(
+",2012-04-23T11:48:11Z,2012-04-23T11:48:11Z
+1246546,2,"The end of an era. This saddens me.""",2012-04-23 07:15:18,AlShaikh,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,AlShaikh,738331,"The end of an era. This saddens me.
+",2012-04-23T19:15:18Z,2012-04-23T19:15:18Z
+524899,2,"@edwinm Pwned :(  No seriously, I was just wondering if this change wouldn’t cause any issues — there must be a reason the spec prohibits it. But if it works reliably in IE6 then it’s cool, I guess.  I do [wonder](https://github.com/paulirish/lazyweb-r""",2011-08-10 08:57:40,mathiasbynens,h5bp,html5-boilerplate,060315b591681789581c0d72415541800b00d863,mathiasbynens,81942,"@edwinm Pwned :(
+
+No seriously, I was just wondering if this change wouldn’t cause any issues — there must be a reason the spec prohibits it. But if it works reliably in IE6 then it’s cool, I guess.
+
+I do [wonder](https://github.com/paulirish/lazyweb-requests/issues/42) how useful `@defer` really is for these `<script>`s though, since they’re at the bottom of the document.
+",2011-08-10T20:57:40Z,2011-08-11T09:57:59Z
+562473,2,"I'm late to the game here...but if anyone is tallying votes...I don't like it. -1  I understand the reasons for `resize:vertical` and of course they make sense. But to me, it is akin to *disabling* text-selection-highlighting because the colors make your""",2011-08-31 07:54:42,davidmurdoch,h5bp,html5-boilerplate,5416bcd103e3d1118a48ca93d17ffc0280ef96ec,davidmurdoch,187813,"I'm late to the game here...but if anyone is tallying votes...I don't like it. -1
+
+I understand the reasons for `resize:vertical` and of course they make sense. But to me, it is akin to _disabling_ text-selection-highlighting because the colors make your design look bad. Sure, disabling the text-selection-highlight makes sense in some cases (draggables, `<button>` elements, etc) but not all cases, same with this.
+
+Are there any other cases where H5BP removes a default browser functionality or hinders usability?
+
+IMO: `resize:vertical` belongs in _Make It Better_ or commented out.
+",2011-08-31T19:54:42Z,2011-08-31T20:02:39Z
+184338,2,"Unable to delete my comment. asdf...  <b>Ed.</b> yah.. very weird things afoot.""",2010-11-03 06:29:42,aivopaas,h5bp,html5-boilerplate,b57c5c8620f19045fe4ba407975bcf082736c2ae,aivopaas,191152,"Unable to delete my comment. asdf...
+
+<b>Ed.</b> yah.. very weird things afoot.
+",2010-11-03T17:29:42Z,2010-11-03T17:56:03Z
+3966444,1,"Ah that makes sense :)""",2013-08-28 07:35:59,nartb,h5bp,html5-boilerplate,ab6b2fc4aa83c760dd9fff6ec29eac5c72c271b1,nartb,5327136,"Ah that makes sense :)
+",2013-08-28T19:35:59Z,2013-08-28T19:35:59Z
+3940998,1,"Haha, glad to see you guys appreciate it :)""",2013-08-25 18:39:47,mathiasbynens,h5bp,html5-boilerplate,48d49e96d6db282eb9686d31ebbc5cbbbdd4d966,mathiasbynens,81942,"Haha, glad to see you guys appreciate it :)
+",2013-08-26T06:39:47Z,2013-08-26T06:39:47Z
+2922142,1,"@alrra: thanks for all your work on the server-configs repo. much appreciated!""",2013-04-01 07:33:15,mattbrundage,h5bp,html5-boilerplate,c8b0431c7d57a9670500bb0e1a22dc80d87f8d41,mattbrundage,1263178,"@alrra: thanks for all your work on the server-configs repo. much appreciated!
+",2013-04-01T19:33:15Z,2013-04-01T19:33:15Z
+3421552,1,"Oh, nice! Thank you for your ultra fast response :)""",2013-06-13 10:33:03,minterior,h5bp,html5-boilerplate,c8b0431c7d57a9670500bb0e1a22dc80d87f8d41,minterior,2928014,"Oh, nice! Thank you for your ultra fast response :)
+",2013-06-13T22:33:03Z,2013-06-13T22:33:03Z
+1697494,1,"Much better! :thumbsup:""",2012-08-09 23:30:56,mathiasbynens,h5bp,html5-boilerplate,66b137083fe7743ae3979ceb109959242142bdb2,mathiasbynens,81942,"Much better! :thumbsup:
+",2012-08-10T11:30:56Z,2012-08-10T11:30:56Z
+1713707,1,"No worries. If you want to help out, and the ant-build-script docs are not clear or up to date, please do feel free to improve that project's docs. It would be much appreciated! :)""",2012-08-14 07:08:23,necolas,h5bp,html5-boilerplate,889e377b2d20eaaa690785d7e47daf50aa46b972,necolas,239676,"No worries. If you want to help out, and the ant-build-script docs are not clear or up to date, please do feel free to improve that project's docs. It would be much appreciated! :)
+",2012-08-14T19:08:23Z,2012-08-14T19:08:23Z
+1719029,1,"h5bp/ant-build-script@be424f7 solved my only complaint with this commit, so thanks! I love you all <3""",2012-08-15 05:34:24,d8uv,h5bp,html5-boilerplate,889e377b2d20eaaa690785d7e47daf50aa46b972,d8uv,184964,"h5bp/ant-build-script@be424f7 solved my only complaint with this commit, so thanks! I love you all <3
+",2012-08-15T17:34:24Z,2012-08-15T17:34:24Z
+1240728,1,"Ahh, I don't know how I feel about this... Paul Irish would not agree. =P lol I joke of course. =)""",2012-04-22 02:57:33,frankstallone,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,frankstallone,496730,"Ahh, I don't know how I feel about this... Paul Irish would not agree. =P lol I joke of course. =)
+",2012-04-22T14:57:33Z,2012-04-22T14:57:33Z
+1244146,1,"That was the easiest way to recognize a h5bp project :)""",2012-04-22 23:15:24,creativityhurts,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,eddievlagea,435233,"That was the easiest way to recognize a h5bp project :)
+",2012-04-23T11:15:24Z,2012-04-23T11:17:36Z
+1248842,1,"I am sure my coworkers are quite pleased with this patch ;)""",2012-04-23 19:36:19,lekkerduidelijk,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,rutger1140,357924,"I am sure my coworkers are quite pleased with this patch ;)
+",2012-04-24T07:36:19Z,2012-04-24T07:36:19Z
+1263389,1,"No matter, easy enough to add back in as needed :)""",2012-04-26 08:47:53,jeef3,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,jeef3,577141,"No matter, easy enough to add back in as needed :)
+",2012-04-26T20:47:53Z,2012-04-26T20:47:53Z
+1045625,1,"Neat!  Nice touch ;)""",2012-03-05 13:43:24,danielfilho,h5bp,html5-boilerplate,aa0396eae757c9e03dda4e463fb0d4db5a5f82d7,danielfilho,24597,"Neat!
+
+Nice touch ;)
+",2012-03-06T00:43:24Z,2012-03-06T00:43:24Z
+1045582,1,"Ahh that's nice. I like it!""",2012-03-05 13:29:53,JeffreyWay,h5bp,html5-boilerplate,aa0396eae757c9e03dda4e463fb0d4db5a5f82d7,JeffreyWay,183223,"Ahh that's nice. I like it!
+",2012-03-06T00:29:53Z,2012-03-06T00:29:53Z
+1049570,1,"Nice solution. Definitely should start using this method.""",2012-03-06 06:56:48,jcutrell,h5bp,html5-boilerplate,aa0396eae757c9e03dda4e463fb0d4db5a5f82d7,jcutrell,302832,"Nice solution. Definitely should start using this method.
+",2012-03-06T17:56:48Z,2012-03-06T17:56:48Z
+921067,1,"Hooray!! Thanks everyone. :)""",2012-01-31 15:14:20,paulirish,h5bp,html5-boilerplate,e1b81302bdaeccd08307978978bb38a350538b5b,paulirish,39191,"Hooray!! Thanks everyone. :)
+",2012-02-01T02:14:20Z,2012-02-01T02:14:20Z
+904551,1,"A box-shadow glow is prettier than a hard darkblue border ;)""",2012-01-26 04:51:08,sindresorhus,h5bp,html5-boilerplate,0bf9143cd135df0b0357d4c7c50dcdb91dd85724,sindresorhus,170270,"A box-shadow glow is prettier than a hard darkblue border ;)
+",2012-01-26T15:51:08Z,2012-01-26T15:51:08Z
+846088,1,"Pretty much what I figured. Thanks for the ultra quick response! ;)""",2012-01-07 02:58:28,reinink,h5bp,html5-boilerplate,8c4ce42af3f1f2b099949a45a48a8aff5d5c196f,reinink,882133,"Pretty much what I figured. Thanks for the ultra quick response! ;)
+",2012-01-07T13:58:28Z,2012-01-07T13:58:28Z
+1050682,0,"Turns out IE6 leaves a 1px faint trace of the text because `color:transparent` isn't supported by IE6/7/8 (but IE7/8 hide the text properly anyway). So if you to 100% remove any trace of text in IE6, you might have to throw an IE6 hack in there.""",2012-03-06 11:16:32,necolas,h5bp,html5-boilerplate,aa0396eae757c9e03dda4e463fb0d4db5a5f82d7,necolas,239676,"Turns out IE6 leaves a 1px faint trace of the text because `color:transparent` isn't supported by IE6/7/8 (but IE7/8 hide the text properly anyway). So if you to 100% remove any trace of text in IE6, you might have to throw an IE6 hack in there.
+",2012-03-06T22:16:32Z,2012-03-06T22:16:32Z
+441748,0,"I am getting confused with what is considered 'best practice'?  In the Boilerplate template you advocate paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/   In this revised reset, normalize you are now reverting back to CSS hacks for """,2011-06-21 08:30:45,blackfalcon,h5bp,html5-boilerplate,ddaf66a515c09f835603f95fe723d7da691324e6,blackfalcon,181089,"I am getting confused with what is considered 'best practice'?  In the Boilerplate template you advocate paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/   In this revised reset, normalize you are now reverting back to CSS hacks for IE?  
+",2011-06-21T20:30:45Z,2011-06-21T20:30:45Z
+443154,0,"Does anyone know what that hack is actually FOR? That's inherited code from, what, Yahoo? What's the purpose? (I've always been curious)""",2011-06-22 02:59:47,roblarsen,h5bp,html5-boilerplate,ddaf66a515c09f835603f95fe723d7da691324e6,roblarsen,361421,"Does anyone know what that hack is actually FOR? That's inherited code from, what, Yahoo? What's the purpose? (I've always been curious)
+",2011-06-22T14:59:47Z,2011-06-22T14:59:47Z
+391636,0,"Hm I think I'll be sticking to using the .ie6 and .ie7 classes rather than resorting to hacks. The only real benefit is that you don't have to repeat the `<html>` tag, but with a bit of server-side script it's very easy to generate those first few lines. """,2011-05-19 12:54:25,neave,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,neave,129713,"Hm I think I'll be sticking to using the .ie6 and .ie7 classes rather than resorting to hacks. The only real benefit is that you don't have to repeat the `<html>` tag, but with a bit of server-side script it's very easy to generate those first few lines.
+
+I'd much rather have clean CSS and a single (if ugly) HTML head, rather than lots of ugly hacks throughout the CSS. But I guess it's just a personal preference.
+
+Damn you, IE!
+",2011-05-20T00:54:25Z,2011-05-20T00:54:25Z
+391668,2,"I disagree with this change. With conditional classes, it was very clear what styles were applied to which browser. CSS hacks don't have inherent meaning, which decreases maintainability in my opinion. They're probably fine if you're the only one writing t""",2011-05-19 13:40:23,chrisjaure,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,chrisjaure,136582,"I disagree with this change. With conditional classes, it was very clear what styles were applied to which browser. CSS hacks don't have inherent meaning, which decreases maintainability in my opinion. They're probably fine if you're the only one writing the stylesheet, but I don't think they scale to a team environment.
+
+At least keep both versions so we can pick which one we want.
+",2011-05-20T01:40:23Z,2011-05-20T01:40:23Z
+391829,1,"In case it wasn’t obvious from my article, I’m all for reducing the number of conditionals used. :) The use of the `_` and `*` hacks is a no-brainer, really. Love the `.oldie` class by the way – I was thinking of using that when I wrote the article but dec""",2011-05-19 17:48:53,mathiasbynens,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,mathiasbynens,81942,"In case it wasn’t obvious from my article, I’m all for reducing the number of conditionals used. :) The use of the `_` and `*` hacks is a no-brainer, really. Love the `.oldie` class by the way – I was thinking of using that when I wrote the article but decided to go with the more neutral `.lte-ie-8` instead.
+
+The only thing I would be wary of is the winning hack (`\0/`):
+
+```
+.oldie div { color: blue\0/; }
+```
+
+For one, it has to be the last declaration in the selector’s ruleset, which is far from ideal. I haven’t done much practical testing, but what happens if you try to use two winning hacks in the same rule set? Is the last one ignored, or what? IMHO, it feels a little bit _too_ hacky to be considered a _safe_ hack.
+
+(Btw, the commit message refers to this hack as the “IE8 Winning Hack” but it actually works in IE9 as well.)
+
+Adding a rule for IE8 and overruling it later for IE7 and IE6 using the `*` hack could be an alternative. Any other ideas?
+",2011-05-20T05:48:53Z,2011-05-20T05:50:08Z
+391868,0,"I believe if users check out this URL they expect to see the same code. Perhaps we should add a little bit more info here — something among the lines of “we’re using a minimal variation of this technique combined with safe CSS hacks”. """,2011-05-19 18:41:05,mathiasbynens,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,mathiasbynens,81942,"I believe if users check out this URL they expect to see the same code. Perhaps we should add a little bit more info here — something among the lines of “we’re using a minimal variation of this technique combined with safe CSS hacks”. 
+",2011-05-20T06:41:05Z,2011-05-20T06:41:05Z
+392111,1,"I personally like the old way better, just because I will never ever remember all those hacks when I need them.""",2011-05-19 23:02:10,FabianBeiner,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,FabianBeiner,86269,"I personally like the old way better, just because I will never ever remember all those hacks when I need them.
+",2011-05-20T11:02:10Z,2011-05-20T11:02:10Z
+395748,2,"+1 for reverting - these hacks are ugly and unacceptable. Specific classnames for each version of IE is much simpler to read and comprehend at a quick glance.""",2011-05-23 08:44:52,leek,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,leek,60204,"+1 for reverting - these hacks are ugly and unacceptable. Specific classnames for each version of IE is much simpler to read and comprehend at a quick glance.
+",2011-05-23T20:44:52Z,2011-05-23T20:44:52Z
+396046,0,"`Oldie` insures no past or future browsers that have broken parsers could ever possible apply the IE hacks, but I like `lte-ie8` better.   I would advise just using php(that's my preference) to convert between the classes and hacks on the fly.  Just right """,2011-05-23 13:14:12,limeblack,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,7fe,372491,"`Oldie` insures no past or future browsers that have broken parsers could ever possible apply the IE hacks, but I like `lte-ie8` better. 
+
+I would advise just using php(that's my preference) to convert between the classes and hacks on the fly.  Just right a little regex.  You could also compress and reorder the attributes for further gzip compatibility.
+
+<ul>
+<li>You have clean css source
+<li>Have minimal to no conditional comments
+<li>No throwing IE into compatibility mode
+</ul>
+
+
+```
+<?
+$css = include('style.css');
+$css = preg_replace(/.ie6/,'* html.lte-ie8', $css);
+$css = preg_replace(/.ie7/,'*+html.lte-ie8', $css);
+$css = preg_replace(/.ie8/,'html.lte-ie8>/**/body', $css);
+echo compress_routine($css);
+```
+",2011-05-24T01:14:12Z,2011-05-24T01:19:53Z
+233848,0,"`g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';`""",2011-01-06 07:08:44,mathiasbynens,h5bp,html5-boilerplate,e4183675f144a654b955f2a90776c7f83c9a2143,mathiasbynens,81942,"`g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';`
+",2011-01-06T18:08:44Z,2011-01-06T18:08:44Z
+184703,0,"I dunno. But it i think it opens an XSS vulnerability in IE6. I haven't test yet but if someone wants to confirm use """"javascript:alert('xss')""""  as the src attribute for an image. (or just load this page with IE6)  HaX0r = <img src=""""javascript:alert('XSS')""""""",2010-11-03 11:17:03,davidmurdoch,h5bp,html5-boilerplate,b57c5c8620f19045fe4ba407975bcf082736c2ae,davidmurdoch,187813,"I dunno. But it i think it opens an XSS vulnerability in IE6. I haven't test yet but if someone wants to confirm use ""javascript:alert('xss')""  as the src attribute for an image. (or just load this page with IE6)  HaX0r = <img src=""javascript:alert('XSS')"" />
+",2010-11-03T22:17:03Z,2010-11-04T13:03:27Z
+178486,0,"yes, it's intended. It's a protocol less notation, that uses HTTPS when the website itself uses HTTPS or else it uses HTTP when the website itself uses HTTP. So you'll get no differences in protocols used, when using SSL.""",2010-10-26 21:27:18,meghuizen,h5bp,html5-boilerplate,22b8ab5215b8bdc29ac62b12d8e9a4d76a592a87,meghuizen,367462,"yes, it's intended. It's a protocol less notation, that uses HTTPS when the website itself uses HTTPS or else it uses HTTP when the website itself uses HTTP. So you'll get no differences in protocols used, when using SSL.
+",2010-10-27T09:27:18Z,2010-10-27T09:27:18Z
+179977,0,"Kyle..  Fair point.. So webkit doesnt cache assets served over SSL. They blogged about this over a year ago and said they'd work on it but havent yet: https://bugs.webkit.org/show_bug.cgi?id=26777 Tough issue.. Cacheability is key but until we have a backe""",2010-10-28 08:43:40,paulirish,h5bp,html5-boilerplate,22b8ab5215b8bdc29ac62b12d8e9a4d76a592a87,paulirish,39191,"Kyle..
+
+Fair point.. So webkit doesnt cache assets served over SSL. They blogged about this over a year ago and said they'd work on it but havent yet:
+https://bugs.webkit.org/show_bug.cgi?id=26777
+Tough issue.. Cacheability is key but until we have a backend component in boilerplate that can be more logical about this, I'm not sure..
+
+Also Souders just commented on my blog yesterday praising this technique.. I guess he wasn't considering what you just pointed out:
+http://paulirish.com/2010/the-protocol-relative-url/#comment-37388
+
+btw- you should also not be revving filenames via querystring, but instead do it in the filename:
+http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/
+
+other than that your deployment script is superhawttt
+",2010-10-28T20:43:40Z,2010-10-28T20:43:40Z
+1244167,2,":( ’twas the little easter egg signature… :/""",2012-04-22 23:24:07,bertobox,h5bp,html5-boilerplate,1d320b59a390041f25cf87d790f6472a25a512ef,bertobox,572210,":( ’twas the little easter egg signature… :/
+",2012-04-23T11:24:07Z,2012-04-23T11:24:07Z
+1097309,2,"I just visited html5boilerplate.com in Opera, zoomed in a bit, took a screenshot, and cropped it. Sorry if it’s not authentic enough :(  @paulirish Fun fact (just tested): iOS 5.1 doesn’t support SVG touch icons. :( I’ve reported this as bug #11068792 on""",2012-03-16 20:53:59,mathiasbynens,h5bp,html5-boilerplate,923b0f3adca333931ae64ec5ff58392554c9f426,mathiasbynens,81942,"I just visited html5boilerplate.com in Opera, zoomed in a bit, took a screenshot, and cropped it. Sorry if it’s not authentic enough :(
+
+@paulirish Fun fact (just tested): iOS 5.1 doesn’t support SVG touch icons. :( I’ve reported this as bug #11068792 on [bugreport.apple.com](http://bugreport.apple.com/).
+",2012-03-17T07:53:59Z,2012-03-17T08:16:42Z
+391689,2,"CSS hacks make baby jesus cry. :'(  If it's perfectly acceptable to make use of modernizr to target your CSS at functionality known to be available, then I don't see why it wouldn't be just as acceptable to use something like uacss to target your CSS at """,2011-05-19 14:24:59,ttilley,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,ttilley,9715,"CSS hacks make baby jesus cry. :'(
+
+If it's perfectly acceptable to make use of modernizr to target your CSS at functionality known to be available, then I don't see why it wouldn't be just as acceptable to use something like uacss to target your CSS at known bugs and functionality that is unavailable. Given that the conditional comments provide exactly the same functionality for IE without requiring javascript, and a sane method of transitioning from that to uacss if you DO need to target some other browser, it is (for me, personally) more appealing. Insert disclaimer about this being an opinion here.
+
+uacss is part of dojo. I'm currently making use of a version I pulled out to be framework agnostic:
+https://gist.github.com/859799/1310b71794bf184b4abe573e4bf2866e50b6fb5f
+",2011-05-20T02:24:59Z,2011-05-20T02:24:59Z
+391672,2,"I don't understand this change. According to Mathias' post, this new solution still has most of the cons of the original.  The CSS hacks are much less readable, obvious, meaningful, etc. They're harder to notice and more complicated to remember and use. """,2011-05-19 13:53:47,swalkinshaw,h5bp,html5-boilerplate,e5e057e53815ed55f4ecfaef3057bf2940c7c0b2,swalkinshaw,295605,"I don't understand this change. According to Mathias' post, this new solution still has most of the cons of the original.
+
+The CSS hacks are much less readable, obvious, meaningful, etc. They're harder to notice and more complicated to remember and use. The only advantage I see to .oldie is having 1 class to target all old versions of IE. If that's wanted, why not just add an additional ""ie"" class to all the html tags?
+
+This change might be good if it completely eliminated the conditionals, but it doesn't.
+",2011-05-20T01:53:47Z,2011-05-20T01:53:47Z

@@ -1,0 +1,32 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1354400,0,"Removing `Apply` subclasses will break implicit highlighting in the IDE, in the worst case forcing us to fork the IDE for 2.9 and 2.10. The change in itself is fine, but let's not slip this in one day before a milestone goes out.""",2012-05-20 22:28:31,dragos,scala,scala,50bf852c9a48312e60b441d052150fdd78b52a1a,dragos,133742,"Removing `Apply` subclasses will break implicit highlighting in the IDE, in the worst case forcing us to fork the IDE for 2.9 and 2.10. The change in itself is fine, but let's not slip this in one day before a milestone goes out.
+",2012-05-21T10:28:31Z,2012-05-21T10:28:31Z
+968427,0,"Missing in action: one '\n'.""",2012-02-14 21:29:44,retronym,scala,scala,bb23d766bceccecc99280b543001bc70e16afbc9,retronym,65551,"Missing in action: one '\n'.
+",2012-02-15T08:29:44Z,2012-02-15T08:29:44Z
+927960,0,"If you have a number you can get the correct behavior with """"%016d"""" instead of s. If it's not a number then things get more complicated.""",2012-02-02 10:44:06,non,scala,scala,d01da30e4c2197ec24e29fb77ce9a62435bff9a4,non,218045,"If you have a number you can get the correct behavior with ""%016d"" instead of s. If it's not a number then things get more complicated.
+",2012-02-02T21:44:06Z,2012-02-02T21:44:06Z
+830309,1,"Thanks, I was able to reproduce it that way.  Now investigating.""",2012-01-01 03:53:51,paulp,scala,scala,82c793a438c7bd802daf96c8b2012f54fbd737ba,paulp,9135,"Thanks, I was able to reproduce it that way.  Now investigating.
+",2012-01-01T14:53:51Z,2012-01-01T14:53:51Z
+3995163,0,"Here lies [SI-7801](https://issues.scala-lang.org/browse/SI-7801); should be `BoxedUnitTpe`. Not sure why that crash only shows up under in such limited circumstances, yet.""",2013-09-02 01:17:04,retronym,scala,scala,d8b96bb8583161e59180527bab0283f783466426,retronym,65551,"Here lies [SI-7801](https://issues.scala-lang.org/browse/SI-7801); should be `BoxedUnitTpe`. Not sure why that crash only shows up under in such limited circumstances, yet.
+",2013-09-02T13:17:04Z,2013-09-02T13:17:04Z
+1270668,2,"Sorry, my mistake :-/""",2012-04-28 14:18:51,soc,scala,scala,774cd4f87b1ef1ba0b0850f1934fa1539b0e2bce,soc,42493,"Sorry, my mistake :-/
+",2012-04-29T02:18:51Z,2012-04-29T02:18:51Z
+1251207,2,"I would say an abstract type is less ugly than a cast...""",2012-04-24 05:08:46,adriaanm,scala,scala,814cf34fb00f9ccb001249f4b3445ebc4f9942c9,adriaanm,91083,"I would say an abstract type is less ugly than a cast...
+",2012-04-24T17:08:46Z,2012-04-24T17:08:46Z
+1266891,0,"It's designed to strip the same prefix as the OS uses, then it uses substring to trim the leading slash or backslash or whatever.  Partest does successfully normalize slashes in general.  If it fails I guess I'll retract some portion of this comment.  On F""",2012-04-27 02:44:48,paulp,scala,scala,e9c432093ba1d2a0d55fd6778ba75fa81c49bd06,paulp,9135,"It's designed to strip the same prefix as the OS uses, then it uses
+substring to trim the leading slash or backslash or whatever.  Partest
+does successfully normalize slashes in general.  If it fails I guess
+I'll retract some portion of this comment.
+
+On Fri, Apr 27, 2012 at 7:07 AM, Lukas Rytz
+reply@reply.github.com
+wrote:
+
+> this might not do it due to backslashes (https://scala-webapps.epfl.ch/jenkins/job/scala-nightly-windows/ws/test/files/run/inner-parse-run.log) - didn't verify that though..
+> ---
+> 
+> Reply to this email directly or view it on GitHub:
+> https://github.com/scala/scala/commit/e9c432093ba1d2a0d55fd6778ba75fa81c49bd06#commitcomment-1266701
+",2012-04-27T14:44:48Z,2012-04-27T14:44:48Z
+1474988,0,"wouldn't a HashSet make more sense here (and be faster, especially for a small number of trees)?""",2012-06-18 20:59:31,adriaanm,scala,scala,bf4b982389dcd573e81155bfe233f70f1471b017,adriaanm,91083,"wouldn't a HashSet make more sense here (and be faster, especially for a small number of trees)?
+",2012-06-19T08:59:31Z,2012-06-19T08:59:31Z

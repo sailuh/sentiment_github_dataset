@@ -1,0 +1,9 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+526203,0,"session.reset() is invalid in this scope. Lets remove it and then work on a different approach.  In my ExampleServlet I had to use `this.request.getSession(false).invalidate()` to get it to reset the JSESSIONID. Simply using `session.invalidate()` was no""",2011-08-11 02:32:25,jlarmstrong,scalatra,scalatra,b550563b8e7bedc8c4a7be8e78cd1413fef2dc40,jlarmstrong,112237,"session.reset() is invalid in this scope. Lets remove it and then work on a different approach.
+
+In my ExampleServlet I had to use `this.request.getSession(false).invalidate()` to get it to reset the JSESSIONID. Simply using `session.invalidate()` was not enough. Also assigning a new session in addition to invalidating the current entry would ensure the JSESSIONID will change.
+",2011-08-11T14:32:25Z,2011-08-11T14:33:27Z
+2235883,0,"@casualjim I noticed the changes in this commit caused my basic auth implementation to break, since it's not calling my `unauthenticated()` in the `BasicAuthStrategy`. I used something very similar to the example here: https://gist.github.com/732347.  Is""",2012-11-30 12:57:31,gmethvin,scalatra,scalatra,9e34208504007e6fb4890a7e9dbfd4d74fa1681f,gmethvin,171663,"@casualjim I noticed the changes in this commit caused my basic auth implementation to break, since it's not calling my `unauthenticated()` in the `BasicAuthStrategy`. I used something very similar to the example here: https://gist.github.com/732347.
+
+Is there a different way to do this now? I'm having trouble finding good information on this problem.
+",2012-11-30T23:57:31Z,2012-11-30T23:57:31Z

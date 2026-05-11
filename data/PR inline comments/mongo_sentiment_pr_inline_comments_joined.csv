@@ -1,0 +1,78 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+4558533,0,"Verify is thread-fatal, while fassert is process-fatal. Is the process compromised after CHECK failures in S2? If so, fassert. On Jun 5, 2013 1:37 PM, """"Hari Khalsa"""" <notifications@github.com> wrote:  > In src/third_party/s2/base/logging.h: > > > > """,2013-06-05 11:28:15,andy10gen,mongodb,mongo,,https://github.com/mongodb/mongo/pull/430#discussion_r4558533,2013-06-05T23:28:15Z,2013-06-05T23:28:15Z,amschwerin,CONTRIBUTOR,src/third_party/s2/base/logging.h,,33.0,,,21,"@@ -17,14 +17,20 @@
+ #include <stdlib.h>
+ #include <stdlib.h>
+ #include <iostream>
+-using std::ostream;
+-using std::cout;
+-using std::endl;
+ 
+ #include ""macros.h""
++#include ""util/log.h""
++
++#define INFO 1
++#define FATAL 0
++#define DFATAL 0
++
++#define S2LOG(x) LOG(x)
++#define VLOG(x) LOG(x)
++
+ 
+ // Always-on checking
+-#define CHECK(x)	if(x){}else LogMessageFatal(__FILE__, __LINE__).stream() << ""Check failed: "" #x
++#define CHECK(x)	if(x){}else VLOG(2) << __FILE__ << "":"" << __LINE__ << "": Check failed: "" #x","Verify is thread-fatal, while fassert is process-fatal. Is the process
+compromised after CHECK failures in S2? If so, fassert.
+On Jun 5, 2013 1:37 PM, ""Hari Khalsa"" notifications@github.com wrote:
+
+> In src/third_party/s2/base/logging.h:
+> 
+> >  // Always-on checking
+> > -#define CHECK(x)   if(x){}else LogMessageFatal(**FILE**, **LINE**).stream() << ""Check failed: "" #x
+> > +#define CHECK(x)   if(x){}else VLOG(2) << **FILE** << "":"" << **LINE** << "": Check failed: "" #x
+> 
+> I agree. Thanks for looking into this. Should be good to pull once that
+> change is made.
+> 
+> —
+> Reply to this email directly or view it on GitHubhttps://github.com/mongodb/mongo/pull/430/files#r4550584
+> .
+",59a3cfe08f570751a0613a1a545dbc075ae64db3
+4550584,1,"I agree.  Thanks for looking into this.  Should be good to pull once that change is made.""",2013-06-05 05:33:36,hkhalsa,mongodb,mongo,,https://github.com/mongodb/mongo/pull/430#discussion_r4550584,2013-06-05T17:33:36Z,2013-06-05T17:33:36Z,hkhalsa,CONTRIBUTOR,src/third_party/s2/base/logging.h,,33.0,,,21,"@@ -17,14 +17,20 @@
+ #include <stdlib.h>
+ #include <stdlib.h>
+ #include <iostream>
+-using std::ostream;
+-using std::cout;
+-using std::endl;
+ 
+ #include ""macros.h""
++#include ""util/log.h""
++
++#define INFO 1
++#define FATAL 0
++#define DFATAL 0
++
++#define S2LOG(x) LOG(x)
++#define VLOG(x) LOG(x)
++
+ 
+ // Always-on checking
+-#define CHECK(x)	if(x){}else LogMessageFatal(__FILE__, __LINE__).stream() << ""Check failed: "" #x
++#define CHECK(x)	if(x){}else VLOG(2) << __FILE__ << "":"" << __LINE__ << "": Check failed: "" #x","I agree.  Thanks for looking into this.  Should be good to pull once that change is made.
+",59a3cfe08f570751a0613a1a545dbc075ae64db3
+5353654,1,"Sorry about that. The new things are just so shiny!""",2013-07-23 06:59:49,acmorrow,mongodb,mongo,,https://github.com/mongodb/mongo/pull/459#discussion_r5353654,2013-07-23T18:59:49Z,2013-07-29T14:33:56Z,acmorrow,CONTRIBUTOR,src/mongo/base/string_data.h,,144.0,,,1,"@@ -135,6 +135,19 @@
+             size_t operator() (const StringData& str) const;
+         };
+ 
++        //
++        // iterators
++        //
++
++        /**
++        * Convenience wrapper to create a const_iterator. The notion of of a non-const iterator
++        * doesn't make sense in the context of a StringData instance.
++        */
++        typedef const char* const_iterator;
++
++        const_iterator begin() const { return rawData(); }","Sorry about that. The new things are just so shiny!
+",d705e4eae410964131a52fca54cf5f20b39f73db

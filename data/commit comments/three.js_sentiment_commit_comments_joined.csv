@@ -1,0 +1,317 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3152660,0,"They are all just lines.  Thus I would make some utility functions that created sets of lines that could be rendered using the standard Line.js class.  But I am unsure if you are looking for additional functionality on top of just generation.""",2013-05-06 04:16:57,bhouston,mrdoob,three.js,bad6535be13c61e4d05337353721a7bab2f3abe4,bhouston,588541,"They are all just lines.  Thus I would make some utility functions that created sets of lines that could be rendered using the standard Line.js class.  But I am unsure if you are looking for additional functionality on top of just generation.
+",2013-05-06T16:16:57Z,2013-05-06T16:16:57Z
+2446386,0,"@WestLangley I think the only thing that stands out is the following:  * Shouldn't Matrix4.multiplyVector3Array also be made obsolete in favor of a applyProjectionVector3Array or applyMatrix4Vector3Array?    * Same issue with Matrix3.multiplyVector3Arr""",2013-01-16 06:54:54,bhouston,mrdoob,three.js,bb873d16d676ead71dfce5181a73828b5993a05f,bhouston,588541,"@WestLangley I think the only thing that stands out is the following:
+- Shouldn't Matrix4.multiplyVector3Array also be made obsolete in favor of a applyProjectionVector3Array or applyMatrix4Vector3Array?  
+- Same issue with Matrix3.multiplyVector3Array as with Matrix4.multiplyVector3Array.
+
+Besides that I think it is okay and I did check each file via the diff.
+",2013-01-16T17:54:54Z,2013-01-16T17:54:54Z
+2147438,2,"> Windows and Ubuntu are also pretty ugly implementations.  Agreed, I would be happy if you could come up with a better solution. I wasn't aware of some other approaches. This is a design problem that pops up over and over so having some new tools in a t""",2012-11-13 09:31:44,alteredq,mrdoob,three.js,89fd8f679a3c340eaccc10481004c2abf71c7d1a,alteredq,438022,"> Windows and Ubuntu are also pretty ugly implementations.
+
+Agreed, I would be happy if you could come up with a better solution. I wasn't aware of some other approaches. This is a design problem that pops up over and over so having some new tools in a toolbox would be cool.
+",2012-11-13T20:31:44Z,2012-11-13T20:31:44Z
+2064030,0,"... but if it's a headache we can just revert. It was just because of #2524.""",2012-10-28 08:39:54,mrdoob,mrdoob,three.js,2ed94bb52fce9b94c312a00b2b30b68d83528ffa,mrdoob,97088,"... but if it's a headache we can just revert. It was just because of #2524.
+",2012-10-28T19:39:54Z,2012-10-28T19:39:54Z
+2196798,0,"What if `ambient` was `null` by default? Then, if `null` it will use the value of `color` for the ambient component.  This should solve the problem of not knowing about it and not getting the right colors, and also should have the flexibility for when yo""",2012-11-22 23:04:25,mrdoob,mrdoob,three.js,09ca23477712b90f43be50fd646cc6e0bde45e4e,mrdoob,97088,"What if `ambient` was `null` by default? Then, if `null` it will use the value of `color` for the ambient component.
+
+This should solve the problem of not knowing about it and not getting the right colors, and also should have the flexibility for when you know about it and want to experiment.
+
+Plus it would simplify the API.
+",2012-11-23T10:04:25Z,2012-11-23T10:04:25Z
+2199749,0,"I think the cleanest would be:  - leave material API as it is - add color coupling lock to Editor UI - for Editor default starting object initialize ambient and diffuse to the same color  Using `null` is kinda tempting because of convenience but it's""",2012-11-23 13:29:27,alteredq,mrdoob,three.js,09ca23477712b90f43be50fd646cc6e0bde45e4e,alteredq,438022,"I think the cleanest would be:
+- leave material API as it is
+- add color coupling lock to Editor UI
+- for Editor default starting object initialize ambient and diffuse to the same color
+
+Using `null` is kinda tempting because of convenience but it's also ""surprise"" type of API. 
+
+I don't know, if you want we can try `null` in a separate branch and see how it feels. Implementation wise it should be relatively simple. If it's too revolting, we could just not use it.
+",2012-11-24T00:29:27Z,2012-11-24T00:29:27Z
+1913814,1,":)""",2012-09-27 00:03:25,mrdoob,mrdoob,three.js,1f512a992de0342a9ec951522c65b0c7dd75117f,mrdoob,97088,":)
+",2012-09-27T12:03:25Z,2012-09-27T12:03:25Z
+2467528,1,"Looks good to me!""",2013-01-20 10:26:08,mrdoob,mrdoob,three.js,9b8db498c8579763bf2dc7eebf4d40f9c891ac85,mrdoob,97088,"Looks good to me!
+",2013-01-20T21:26:08Z,2013-01-20T21:26:08Z
+2471261,0,"I did some experiments on using the Closure API for compressing code remotely. You just gather the code to compress (as we do in the build.py script right now), and post it to their endpoint, then grab the compressed results if all went fine. It's somethin""",2013-01-21 05:15:07,sole,mrdoob,three.js,9b8db498c8579763bf2dc7eebf4d40f9c891ac85,sole,5609,"I did some experiments on using the Closure API for compressing code remotely. You just gather the code to compress (as we do in the build.py script right now), and post it to their endpoint, then grab the compressed results if all went fine. It's something like this:
+
+``` python
+def get_response(data):
+    post_data = urllib.parse.urlencode(data)
+    request = urllib.request.Request('http://closure-compiler.appspot.com/compile', post_data.encode())
+    response = urllib.request.urlopen( request )
+
+    compressed = response.read()
+
+    return compressed
+
+values = {
+    'compilation_level': 'SIMPLE_OPTIMIZATIONS',
+    'output_format': 'text',
+    'output_info': 'compiled_code',
+    'js_code': string
+}
+
+compressed_js = get_response( values )
+
+if len(compressed_js) == 1:
+    print('BOOOH ERRORS FOUND!!!')
+    values['output_info'] = 'errors'
+
+    errors = get_response( values )
+    print(errors)
+
+else:
+
+    with open(outfile, 'wb') as f:
+        f.write(compressed_js)
+
+```
+",2013-01-21T16:15:07Z,2013-01-21T16:15:07Z
+1675584,0,"Wouldn't it be better to return directly from this instead of creating a new object        if ( parameters === undefined ) return; """,2012-08-06 02:27:31,gero3,mrdoob,three.js,4845632e1596812352a33abb2375d289ea8ddc69,gero3,155535,"Wouldn't it be better to return directly from this instead of creating a new object
+
+```
+  if ( parameters === undefined ) return;
+```
+",2012-08-06T14:27:31Z,2012-08-06T14:27:31Z
+1677490,1,"Ah, ok cool!""",2012-08-06 09:23:37,mrdoob,mrdoob,three.js,4845632e1596812352a33abb2375d289ea8ddc69,mrdoob,97088,"Ah, ok cool!
+",2012-08-06T21:23:37Z,2012-08-06T21:23:37Z
+1009451,0,"```javascript this.matrix.multiplySelf( matrix ); ```  I don't think that works like that. Got the feature to work by multiplying the other way around (like in `updateMatrixWorld()`).  I've tested the code a bit and seems to work, but the rotations a""",2012-02-24 10:25:26,mrdoob,mrdoob,three.js,9809101319612e9e0abc9f13e7b42c22cd569e24,mrdoob,97088,"``` javascript
+this.matrix.multiplySelf( matrix );
+```
+
+I don't think that works like that. Got the feature to work by multiplying the other way around (like in `updateMatrixWorld()`).
+
+I've tested the code a bit and seems to work, but the rotations aren't right when you rotate more than one axis. `getRotationFromMatrix()` may need some work.
+",2012-02-24T21:25:26Z,2012-02-24T21:25:26Z
+624610,2,"Sounds like a nasty Chrome bug :S""",2011-10-01 09:40:20,mrdoob,mrdoob,three.js,b87bfc71c8825b695e40d813147e46fc2cd6fe9a,mrdoob,97088,"Sounds like a nasty Chrome bug :S
+",2011-10-01T21:40:20Z,2011-10-01T21:40:20Z
+518266,0,"I might miss something here, but isn't this line now missing the final semicolon?""",2011-08-07 10:53:57,jonemo,mrdoob,three.js,418780fc74a73f09753c45bf3d109e59dee07394,jonemo,97921,"I might miss something here, but isn't this line now missing the final semicolon?
+",2011-08-07T22:53:57Z,2011-08-07T22:53:57Z
+469302,1,"Progress progress!""",2011-07-09 12:01:57,mrdoob,mrdoob,three.js,8bf95541b03cfd2beab77eeaa858d40b2054292c,mrdoob,97088,"Progress progress!
+",2011-07-10T00:01:57Z,2011-07-10T00:01:57Z
+393670,1,"I think lens flare should be removed from the renderer :) Is that a feature added specifically for ROME?""",2011-05-21 14:18:36,arodic,mrdoob,three.js,b8faf8a6873759c884c02ab9586ea11c4944a119,arodic,708984,"I think lens flare should be removed from the renderer :) Is that a feature added specifically for ROME?
+",2011-05-22T02:18:36Z,2011-05-22T02:18:36Z
+477154,1,"@mrdoob Hehe, indeed ;).""",2011-07-14 00:26:37,alteredq,mrdoob,three.js,dcbcf72f55a7c6e9bfb8da1bd8dadb783f8936e2,alteredq,438022,"@mrdoob Hehe, indeed ;).
+",2011-07-14T12:26:37Z,2011-07-14T12:26:37Z
+314816,1,"This is awesome ;)""",2011-03-24 16:54:56,alteredq,mrdoob,three.js,95e92d902659062931b2e975f809dc06ecd7494e,alteredq,438022,"This is awesome ;)
+",2011-03-25T03:54:56Z,2011-03-25T03:54:56Z
+1195302,0,"not really...""",2012-04-10 11:05:35,mrdoob,mrdoob,three.js,c8d13bd7b0acdf8112222fd54fcf0b6e7834ddc7,mrdoob,97088,"not really...
+",2012-04-10T23:05:35Z,2012-04-10T23:05:35Z
+217428,1,"Nah it's cool. The code it's there and works, it's just a matter of moving it around :)""",2010-12-14 03:09:42,mrdoob,mrdoob,three.js,b84bca3bb0acee9b5b5b5f370a95b56b8a0e316d,mrdoob,97088,"Nah it's cool. The code it's there and works, it's just a matter of moving it around :)
+",2010-12-14T14:09:42Z,2010-12-14T14:09:42Z
+196670,1,"Oh, I'm silly, I just looked at my old code. Of course you can do texture offset, you can do whatever you want in shaders, you get built-in parameter `gl_PointCoord` ;)      vec4 texelColor = texture2D(uSamplerDiffuse, gl_PointCoord);""",2010-11-17 14:30:30,alteredq,mrdoob,three.js,5535f711309a8296173d0bb907e807b6bc0d7f1d,alteredq,438022,"Oh, I'm silly, I just looked at my old code. Of course you can do texture offset, you can do whatever you want in shaders, you get built-in parameter `gl_PointCoord` ;)
+
+```
+vec4 texelColor = texture2D(uSamplerDiffuse, gl_PointCoord);
+```
+",2010-11-18T01:30:30Z,2010-11-18T01:30:30Z
+190790,1,"Could you please put somewhere Blender model which throws this exception so I could debug it?   There can be many edge cases, this exporter is not yet hardened by tackling real word models :)""",2010-11-10 10:52:26,alteredq,mrdoob,three.js,c545318b5163640bf604857948c76832d894a7e5,alteredq,438022,"Could you please put somewhere Blender model which throws this exception so I could debug it? 
+
+There can be many edge cases, this exporter is not yet hardened by tackling real word models :)
+",2010-11-10T21:52:26Z,2010-11-10T21:52:26Z
+93087,0,"Yes, I tried that way before too but it didn't work. Thisi is what I had:   <source src=""""textures/sintel.ogv"""" type=""""video/ogg; codecs='theora, vorbis'"""">  It doesn't work on Firefox (3.6.3 Linux), it gives this error:  """"uncaught exception: [Exception... """"Co""",2010-06-12 03:40:02,mrdoob,mrdoob,three.js,3755d003f02d900fbd68fd2ce6fc3976179b2089,mrdoob,97088,"Yes, I tried that way before too but it didn't work. Thisi is what I had:
+
+```
+<source src=""textures/sintel.ogv"" type=""video/ogg; codecs='theora, vorbis'"">
+```
+
+It doesn't work on Firefox (3.6.3 Linux), it gives this error:
+
+""uncaught exception: [Exception... ""Component returned failure code 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsIDOMCanvasRenderingContext2D.drawImage]""... (I wonder why can't the Error console doesn't let my right click and copy the error instead of forcing me to type the error by hand).
+
+That error means the video object isn't available to be copied to the canvas, so I guess the browser isn't liking the codec information. It does work fine without that.
+",2010-06-12T15:40:02Z,2010-06-12T15:43:32Z
+1347619,2,"I'll wait for a better case. This guy seemed too desperate for generating pageviews.""",2012-05-18 00:14:35,mrdoob,mrdoob,three.js,40649e023a72c0eb50484776766a384593ac68f7,mrdoob,97088,"I'll wait for a better case. This guy seemed too desperate for generating pageviews.
+",2012-05-18T12:14:35Z,2012-05-18T12:14:35Z
+889349,2,"i thought it's faster, and also save bytes, but after running a few jspref tests, it looks slower :(""",2012-01-21 16:03:47,lintaba,mrdoob,three.js,a6473096d74b410194436c7f049c3ea431c2b6e7,lintaba,375078,"i thought it's faster, and also save bytes, but after running a few jspref tests, it looks slower :(
+",2012-01-22T03:03:47Z,2012-01-22T03:03:47Z
+313839,2,"Oh snap, I merged to the wrong version :(""",2011-03-24 03:00:24,alteredq,mrdoob,three.js,dedf6a203515ececad83ab5d4cd84f340112e576,alteredq,438022,"Oh snap, I merged to the wrong version :(
+",2011-03-24T14:00:24Z,2011-03-24T14:00:24Z
+292144,2,"Oh, that's bad. Thanks for reporting, I'll have a look into this. I thought we already got rid of these :(""",2011-03-05 13:59:48,alteredq,mrdoob,three.js,58701d586e1b1f039026ee5a6fea588cff8f980c,alteredq,438022,"Oh, that's bad. Thanks for reporting, I'll have a look into this. I thought we already got rid of these :(
+",2011-03-06T00:59:48Z,2011-03-06T00:59:48Z
+207614,2,"> Is it even possible to reliably compute vertex normals just from the mesh? I tried this with MeshLab when I was trying to fix the first Gallardo model and I couldn't get it right :(.  Hmm, it depends of the mesh. A car can have some sharp corners, so com""",2010-12-01 23:41:12,mrdoob,mrdoob,three.js,1d7a14733b264989788aeaa66b710fec4d8e37ed,mrdoob,97088,"> Is it even possible to reliably compute vertex normals just from the mesh? I tried this with MeshLab when I was trying to fix the first Gallardo model and I couldn't get it right :(.
+
+Hmm, it depends of the mesh. A car can have some sharp corners, so computing vertex normals automatically won't give good results. But heads, like spheres, tend to have smooth corners. I haven't really read about computing vertex normals, but I was just going to get the average of all the normals of all the faces that vertex is used on. It just feels like it should work?
+",2010-12-02T10:41:12Z,2010-12-02T10:48:14Z
+203604,2,"> Weird, this is what I get:  > http://twitpic.com/3agtdb/full  My bad, I reverted my changes, rebuilt and now I see it (Lucy has strongest effect). Must have been some caching issue.  > By the way, I'm a bit confused with the ratio the refraction us""",2010-11-26 12:31:21,alteredq,mrdoob,three.js,724870d5f1a329c2f74569731529c67ef8446b5b,alteredq,438022,"> Weird, this is what I get:
+> 
+> http://twitpic.com/3agtdb/full
+
+My bad, I reverted my changes, rebuilt and now I see it (Lucy has strongest effect). Must have been some caching issue.
+
+> By the way, I'm a bit confused with the ratio the refraction uses. 
+> But the material seem to use another range?
+
+These are indices of refraction, specific for one material (IOR). Refraction ratio is IOR1 / IOR2 when light passes between two materials. 
+
+For example:
+
+```
+ air / water => 1.0003 / 1.3333 ~= 0.75
+ air / glass => 1.0003 / 1.5 ~= 0.67
+```
+
+There is some problem, though, for inversed ratios (e.g. air bubble inside water), there are some artefacts around object edges :(. Don't know what's expected behavior for such cases (with this particular implementation).
+
+> I see... Still, if Microsoft had supported OpenGL instead of DirectX only this wouldn't have happened. Although I guess they also showed OpenGL where to go :)
+
+This is for much longer story ;)
+
+I lived through the times when big changes have been going in 3d graphics (I started graduate school on Silicon Graphics minicomputer and finished it on my notebook ;)
+
+Microsoft is responsible for big part of rapid progress. I have witnessed DirectX rolling over OpenGL, despites OpenGL being nicer solution, much more preferred among developers. 
+
+Microsoft managed to get better results from coevolving GPU hardware, despite developers gnashing their teeth. Ultimately what mattered was that end users were getting cooler games on DirectX (even with such titans as John Carmack being for a long time firmly in OpenGL camp).
+",2010-11-26T23:31:21Z,2010-11-26T23:31:21Z
+2157572,2,"> Now we know why vertex colors are not used that much for AO. I went to pains to get nice corners and minimize triangle count. With vertex colors, you either get ugly look or higher triangle count :(  Yeah. The problem is that it was very convoluted. I """,2012-11-14 23:10:28,mrdoob,mrdoob,three.js,6f8eec68c6863c8960a16a7e7101bff5dcfc69e3,mrdoob,97088,"> Now we know why vertex colors are not used that much for AO. I went to pains to get nice corners and minimize triangle count. With vertex colors, you either get ugly look or higher triangle count :(
+
+Yeah. The problem is that it was very convoluted. I could spend a day trying to map in my head how it works and for a newbie that's kinda intimidating. Even the current one is still convoluted. I'll see if I can make it a bit prettier though.
+
+> Right now I found Doom3 demo broke completely (I'm in the process of fixing loaders), SSAO demo is now less efficient (I used turning off cube sides to cut down triangles) and particle city demo is completely broken (the same like for minecraft AO, cube sides and materials were used extensively for creating high-performance complicated multi-material geometries).
+
+Well, good thing is that the `PlaneGeometry` approach is pretty much the same amount of code. Also, I think there was a leak before, because we were creating a `Mesh` for every cube that was being merged. Now it reuses one `Mesh`.
+
+I think these `CubeGeometry` materials ans sides features came from these Minecraft demos. It seemed that would be handy to have such features, but imho it overcomplicated things inside and outside.
+
+> Ok, finally I managed to get them working again.
+
+Yay!
+",2012-11-15T10:10:28Z,2012-11-15T10:24:44Z
+1943087,2,"Unless there's something removing items from that list this could be a real pain in the ass for very dynamic, long-running apps... like games =/""",2012-10-03 09:13:28,haeric,mrdoob,three.js,05cbaf5a3324d5770b8f52c0a3fc886344d8b932,haeric,422174,"Unless there's something removing items from that list this could be a real pain in the ass for very dynamic, long-running apps... like games =/
+",2012-10-03T21:13:28Z,2012-10-03T21:13:28Z
+1733502,2,"Is camera example supposed to be working? It's very confusing now ;/""",2012-08-18 12:29:58,alteredq,mrdoob,three.js,d846a0a67a51d18fd91f6b3c65c41a1658743d72,alteredq,438022,"Is camera example supposed to be working? It's very confusing now ;/
+",2012-08-19T00:29:58Z,2012-08-19T00:29:58Z
+1678365,2,"Ok, all examples should work now. BTW there were quite a few broken from since before these changes ;/""",2012-08-06 12:43:33,alteredq,mrdoob,three.js,4845632e1596812352a33abb2375d289ea8ddc69,alteredq,438022,"Ok, all examples should work now. BTW there were quite a few broken from since before these changes ;/
+",2012-08-07T00:43:33Z,2012-08-07T00:43:33Z
+1145530,2,"There is something weird going on indeed. I managed to get the terrain shape but lighting is very odd.   And even with the original `PlaneGeometry` and standard materials I'm getting some lighting anomalies when poking around. I think there may be some b""",2012-03-28 09:51:36,alteredq,mrdoob,three.js,547781127e8627babcab0a81687a702c9214c8cb,alteredq,438022,"There is something weird going on indeed. I managed to get the terrain shape but lighting is very odd. 
+
+And even with the original `PlaneGeometry` and standard materials I'm getting some lighting anomalies when poking around. I think there may be some bugs elsewhere, or some assumptions that don't always hold and this change uncovered them.
+",2012-03-28T21:51:36Z,2012-03-28T21:51:36Z
+1049088,2,"Hmmm, maybe it's correct. I put there some spheres and they seem to be lit in a similar way like pyramids. So I guess it's just lights setting that is weird and before it did look better thanks to wrong normals.""",2012-03-06 05:28:54,alteredq,mrdoob,three.js,59798ff301aacac40f23d350002eb7f28c116105,alteredq,438022,"Hmmm, maybe it's correct. I put there some spheres and they seem to be lit in a similar way like pyramids. So I guess it's just lights setting that is weird and before it did look better thanks to wrong normals.
+",2012-03-06T16:28:54Z,2012-03-06T16:28:54Z
+733971,2,"That was my bad, I missed the skinning and pathcontroller examples. I was focused on getting key-framed animations working. I'll start work fixing those tomorrow.  I'm not sure why the collada monster isn't rotated for you and @mrdoob though. I built usi""",2011-11-20 17:09:16,ekitson,mrdoob,three.js,01ac1e3d1771d212702b2d51935a955659d5e407,ekitson,1203816,"That was my bad, I missed the skinning and pathcontroller examples. I was focused on getting key-framed animations working. I'll start work fixing those tomorrow.
+
+I'm not sure why the collada monster isn't rotated for you and @mrdoob though. I built using `python build.py --common`. Should I build with a different flag?
+",2011-11-21T04:09:16Z,2011-11-21T04:09:16Z
+464162,2,"Oh my... I remember I stopped and looked at the word, it looked weird but kept going... =_=""",2011-07-06 04:54:02,mrdoob,mrdoob,three.js,7593b8d58a5980f8dd5e0a098aaca59b6db10555,mrdoob,97088,"Oh my... I remember I stopped and looked at the word, it looked weird but kept going... =_=
+",2011-07-06T16:54:02Z,2011-07-06T16:54:02Z
+427962,2,"I understand the reasoning behind this change, though it does feel weird here. The same would hold for another group that is not yet suffixed - objects. Well, maybe I'll get used ...""",2011-06-13 04:48:15,alteredq,mrdoob,three.js,b61ee54f279e1f56322418cee77f12c6ec4152ac,alteredq,438022,"I understand the reasoning behind this change, though it does feel weird here. The same would hold for another group that is not yet suffixed - objects. Well, maybe I'll get used ...
+",2011-06-13T16:48:15Z,2011-06-13T16:48:15Z
+288577,2,"Hmmm, it looks nicer like this but now it's very slow on my notebook :(. Curiously now it's OpenGL that is worse than ANGLE.  Multimaterials are costly and lines are costly too. I used flat shading instead exactly for this reason.""",2011-03-02 01:31:49,alteredq,mrdoob,three.js,568beba84847c771f4676eadc66cdb9155d865d4,alteredq,438022,"Hmmm, it looks nicer like this but now it's very slow on my notebook :(. Curiously now it's OpenGL that is worse than ANGLE.
+
+Multimaterials are costly and lines are costly too. I used flat shading instead exactly for this reason.
+",2011-03-02T12:31:49Z,2011-03-02T12:31:49Z
+288659,2,"Ok, I tested it - it seems to work now, but performance is really bad - about half of what was before. That's pretty weird.""",2011-03-02 02:55:27,alteredq,mrdoob,three.js,568beba84847c771f4676eadc66cdb9155d865d4,alteredq,438022,"Ok, I tested it - it seems to work now, but performance is really bad - about half of what was before. That's pretty weird.
+",2011-03-02T13:55:27Z,2011-03-02T13:55:27Z
+288118,2,"Awesome thanks for the fast response! Yeah I figured this wasn't the best place, but didn't know any other except Issues which this isn't... :\""",2011-03-01 12:49:02,jonobr1,mrdoob,three.js,9297fb975e92558d7ac9e2740a9f98ca0aebdf58,jonobr1,220033,"Awesome thanks for the fast response! Yeah I figured this wasn't the best place, but didn't know any other except Issues which this isn't... :\
+",2011-03-01T23:49:02Z,2011-03-01T23:49:02Z
+210506,2,"Oops, sorry for that. I have to get into habit of reloading files in editor after merge to prevent doing changes on obsolete versions.""",2010-12-06 04:05:01,alteredq,mrdoob,three.js,e829542744364bbf3da661e236153dcad0eed1c6,alteredq,438022,"Oops, sorry for that. I have to get into habit of reloading files in editor after merge to prevent doing changes on obsolete versions.
+",2010-12-06T15:05:01Z,2010-12-06T15:05:01Z
+203573,2,"This didn't produce any noticeable effect for me :(  While we are already at it, here is how it could look with a more proper solution (still just hardcoded arbitrary r/g/b etas, but here they are applied where they should go, in vertex shader's per-chan""",2010-11-26 11:23:11,alteredq,mrdoob,three.js,724870d5f1a329c2f74569731529c67ef8446b5b,alteredq,438022,"This didn't produce any noticeable effect for me :(
+
+While we are already at it, here is how it could look with a more proper solution (still just hardcoded arbitrary r/g/b etas, but here they are applied where they should go, in vertex shader's per-channel refract):
+
+http://alteredqualia.com/three/examples/materials_cubemap_balls_refraction_chromatic_dispersion.html
+
+I'm not sure though whether to keep it, as this consumes 2 extra varying parameters, meaning only 2 lights would be left on ANGLE backend ;(.
+
+Here is gist with respective shader code:
+
+https://gist.github.com/717285
+",2010-11-26T22:23:11Z,2010-11-26T22:23:11Z
+200380,2,"Hmmm, thick wireframes in WebGL look awful :(  Unfortunately there is no equvalent to `linecap` and `linejoin` in WebGL.  Brief googling shows people are doing crazy stuff to solve this, basically constructing lines from polygons.  Maybe something co""",2010-11-22 12:02:25,alteredq,mrdoob,three.js,87b37e124aa9831027faf56e83dad25c8866f9fd,alteredq,438022,"Hmmm, thick wireframes in WebGL look awful :(
+
+Unfortunately there is no equvalent to `linecap` and `linejoin` in WebGL.
+
+Brief googling shows people are doing crazy stuff to solve this, basically constructing lines from polygons.
+
+Maybe something could be faked by adding point sprites to vertices, though it may still look strange and it wouldn't work well with transparent lines.
+",2010-11-22T23:02:25Z,2010-11-22T23:02:25Z
+196692,2,"I'm afraid I don't follow :(   If I understood well, `gl_PointCoord` gives every fragment (u,v) coordinates inside these automatically generated quads, so that you can do mapping as you please (e.g. in unrelated classical quads I did flip texture in shad""",2010-11-17 15:06:36,alteredq,mrdoob,three.js,5535f711309a8296173d0bb907e807b6bc0d7f1d,alteredq,438022,"I'm afraid I don't follow :( 
+
+If I understood well, `gl_PointCoord` gives every fragment (u,v) coordinates inside these automatically generated quads, so that you can do mapping as you please (e.g. in unrelated classical quads I did flip texture in shader simply by using (u, 1 - v) as I was too lazy to do it in 2d canvas).
+
+Well, we will see when we get there, if point sprites would still work ;)
+",2010-11-18T02:06:36Z,2010-11-18T02:06:36Z
+195119,2,"Do we still use hexes with alpha?   I thought it was obsoleted by """"opacity"""" materials parameter, otherwise it's a mess when you have color saying one alpha and opacity another one. Also alpha for lights color is weird concept.""",2010-11-16 06:20:31,alteredq,mrdoob,three.js,dc6e335dc9f7f38f1c79a5a6c112019d6fcce69d,alteredq,438022,"Do we still use hexes with alpha? 
+
+I thought it was obsoleted by ""opacity"" materials parameter, otherwise it's a mess when you have color saying one alpha and opacity another one. Also alpha for lights color is weird concept.
+",2010-11-16T17:20:31Z,2010-11-16T17:20:31Z
+228563,0,"Do you really want to force the size to know if empty?""",2010-12-29 13:02:28,alteredq,mrdoob,three.js,9b755e827ffe1202f0577702008252ed0f71254f,alteredq,438022,"Works ok in Chrome OpenGL and ANGLE.
+
+In Firefox 4 I'm getting warnings:
+
+```
+Warning: WebGL: VertexAttribPointer: index out of range - -1 >= 15
+Source File: http://localhost/three/fork/three.js/build/Three.js
+Line: 174
+
+Warning: WebGL: EnableVertexAttribArray: index out of range
+Source File: http://localhost/three/fork/three.js/build/Three.js
+Line: 174
+```
+
+This also could be the problem. 
+
+I didn't get complains about shader, though these could have been drowned with these warnings.
+",2010-12-30T00:02:28Z,2010-12-30T00:02:28Z
+2047735,1,"This this. I started to play with it a bit but I guess it's better if I leave you do the overall design first, I feel I'm just adding more hacks ;)""",2012-10-24 08:09:39,alteredq,mrdoob,three.js,1834c1bc84c0baeea7c5913b076fa11a44ef054c,alteredq,438022,"This this. I started to play with it a bit but I guess it's better if I leave you do the overall design first, I feel I'm just adding more hacks ;)
+",2012-10-24T20:09:39Z,2012-10-24T20:09:39Z
+2047696,1,"Yeah. It's coming :) I'll probably refactor this and do a UI.Menu/UI.MenuOption or something, this is too hacky.""",2012-10-24 08:02:57,mrdoob,mrdoob,three.js,1834c1bc84c0baeea7c5913b076fa11a44ef054c,mrdoob,97088,"Yeah. It's coming :)
+I'll probably refactor this and do a UI.Menu/UI.MenuOption or something, this is too hacky.
+",2012-10-24T20:02:57Z,2012-10-24T20:02:57Z
+1943250,0,"This solves map, but can I use the same hack for all the other *maps?""",2012-10-03 09:39:32,mrdoob,mrdoob,three.js,92a7278b4ca5546422269632a99a618a02ce160e,mrdoob,97088,"This solves map, but can I use the same hack for all the other *maps?
+",2012-10-03T21:39:32Z,2012-10-03T21:39:51Z
+1681207,2,"If there was an option for that people won't care to fix their shit... For instance, this is coming from `ColladaLoader` sending undefined parameters. If we don't show that message chances are we would forget about it.""",2012-08-07 02:42:20,mrdoob,mrdoob,three.js,e60c179536f0de29f10d55a76043e2c8db042f9e,mrdoob,97088,"If there was an option for that people won't care to fix their shit...
+For instance, this is coming from `ColladaLoader` sending undefined parameters. If we don't show that message chances are we would forget about it.
+",2012-08-07T14:42:20Z,2012-08-07T14:42:20Z
+1670280,0,"Didn't really need to do anything special as anyways rendering was already done per material-specific parts, remember geometry groups?  Maybe we can just forget about this for now, anyways before it wasn't possible to have object with different face orient""",2012-08-03 12:05:54,alteredq,mrdoob,three.js,0360459943a98850f5d83c02f1626175d539a7c6,alteredq,438022,"Didn't really need to do anything special as anyways rendering was already done per material-specific parts, remember geometry groups?
+
+Maybe we can just forget about this for now, anyways before it wasn't possible to have object with different face orientations parts, so nothing is lost, just full functionality is not gained.
+
+Let's say we just make it assume doubleSided or regular front facing orientation for anything with MeshFaceMaterial.
+
+Also I'm not really sure what's actually ""proper"" way of dealing with these unphysical things like backface culling - object is still there even if face is not rendered. E.g. for shadows I just ignore this, if it exists, it casts shadow.
+
+Edit: hmmm, I forgot `Projector` / `Ray` are already going face by face, so you could just check geometry.materials[ face.materialIndex ] if material is `MeshFaceMaterial`. Not sure about performance impact.
+",2012-08-04T00:05:54Z,2012-08-04T00:17:55Z
+1202042,1,"If the internet wasn't full of spammers maybe :) I think github is fine, just needs some extra tweaks.""",2012-04-12 00:19:47,mrdoob,mrdoob,three.js,bc9aac972956165e5004c06202171fde0338e31f,mrdoob,97088,"If the internet wasn't full of spammers maybe :)
+I think github is fine, just needs some extra tweaks.
+",2012-04-12T12:19:47Z,2012-04-12T12:19:47Z
+532555,2,"Yeah, I also can think just of some ugly hacks :S.  I'll try to do at least something to restore examples ...""",2011-08-15 08:02:00,alteredq,mrdoob,three.js,714e9ec302c6636d48368b25aeafbae288b3bbc5,alteredq,438022,"Yeah, I also can think just of some ugly hacks :S.
+
+I'll try to do at least something to restore examples ...
+",2011-08-15T20:02:00Z,2011-08-15T20:02:00Z
+461415,1,"I tried with Chrome/Window/Nvidia and worked fine, then I tried Firefox/Windows/Nvidia and turns out my card is blacklisted there. Interestingly, it works fine on Firefox/Linux/Nvidia. I guess Linux drivers aren't that bad after all! ;)""",2011-07-05 00:10:06,mrdoob,mrdoob,three.js,8bf95541b03cfd2beab77eeaa858d40b2054292c,mrdoob,97088,"I tried with Chrome/Window/Nvidia and worked fine, then I tried Firefox/Windows/Nvidia and turns out my card is blacklisted there. Interestingly, it works fine on Firefox/Linux/Nvidia. I guess Linux drivers aren't that bad after all! ;)
+",2011-07-05T12:10:06Z,2011-07-05T12:10:06Z
+389373,0,"Nothing has changed.  Firefox was / is ok, Opera I don't dare to try WebGL enabled build, it kills my computer.  """"Hack"""" was and is needed for Chrome stable on Windows, at least on ATI cards. Chrome 12 stable that should have fixed this will come soon. I th""",2011-05-18 07:50:55,alteredq,mrdoob,three.js,967696257d4178990044f55f58167e77964a59b3,alteredq,438022,"Nothing has changed.
+
+Firefox was / is ok, Opera I don't dare to try WebGL enabled build, it kills my computer.
+
+""Hack"" was and is needed for Chrome stable on Windows, at least on ATI cards. Chrome 12 stable that should have fixed this will come soon. I think we can keep ""hack"" till then.
+",2011-05-18T19:50:55Z,2011-05-18T19:59:09Z
+325513,1,"I'm using similar method in GLGE but instead of checking the whole string I'm generating a simple 6 byte hash form the string and comparing that. Not 100% perfect but faster and it should work 99.999999...% of the time ;-)  see: https://github.com/supere""",2011-04-01 00:48:29,supereggbert,mrdoob,three.js,29da25e74616cf874861f0d5b4d6f2cbfc40bd95,supereggbert,166785,"I'm using similar method in GLGE but instead of checking the whole string I'm generating a simple 6 byte hash form the string and comparing that. Not 100% perfect but faster and it should work 99.999999...% of the time ;-) 
+see:
+https://github.com/supereggbert/GLGE/blob/master/src/core/glge.js
+The fastHash function
+",2011-04-01T12:48:29Z,2011-04-01T12:48:29Z
+217386,1,"Yup, it's commendable effort ;).   I was also tempted to start from scratch, just it's so daunting task. There are many hacks cumulated in WebGLRenderer, it just grew organically with each demo :S""",2010-12-14 02:04:35,alteredq,mrdoob,three.js,b84bca3bb0acee9b5b5b5f370a95b56b8a0e316d,alteredq,438022,"Yup, it's commendable effort ;). 
+
+I was also tempted to start from scratch, just it's so daunting task. There are many hacks cumulated in WebGLRenderer, it just grew organically with each demo :S
+",2010-12-14T13:04:35Z,2010-12-14T13:04:35Z
+195806,2,"There is a problem when running this new FaceMaterial example with WebGLRenderer.   I'm already too tired to sort it out now, but the problem is apparently coming from faces which do not get randomly assigned material, which means their material is undef""",2010-11-16 19:14:09,alteredq,mrdoob,three.js,2b92a824c2da7163ec52194827694ab1aba56db0,alteredq,438022,"There is a problem when running this new FaceMaterial example with WebGLRenderer. 
+
+I'm already too tired to sort it out now, but the problem is apparently coming from faces which do not get randomly assigned material, which means their material is undefined and this breaks some assumptions in WebGLRenderer.
+
+I will get to fix this in my next awake cycle ;)
+",2010-11-17T06:14:09Z,2010-11-17T06:14:09Z
+325539,1,"@altherdq I used MD5 initially too but it was very slow, and since it's not being used for security I wasn't really worried about somebody figuring out how to generate collisions :-)  @SunboX you don't need to generate a hash for every string every time.""",2011-04-01 01:12:17,supereggbert,mrdoob,three.js,29da25e74616cf874861f0d5b4d6f2cbfc40bd95,supereggbert,166785,"@altherdq I used MD5 initially too but it was very slow, and since it's not being used for security I wasn't really worried about somebody figuring out how to generate collisions :-)
+
+@SunboX you don't need to generate a hash for every string every time. You associate the hash with the string so it only has to be done once for the string being supplied then you compare with the hashes you already know. Would probably be slower if you only had a few programs but should quickly pay for it's self as the number of programs increase.
+",2011-04-01T13:12:17Z,2011-04-01T13:12:17Z
+1146083,2,"I got it working, but just by hack, still don't understand what's wrong :S  https://github.com/alteredq/three.js/commit/ff5d13d03c4ad2e7a4845189b21d1869a7ac4c45""",2012-03-28 12:47:42,alteredq,mrdoob,three.js,547781127e8627babcab0a81687a702c9214c8cb,alteredq,438022,"I got it working, but just by hack, still don't understand what's wrong :S
+
+https://github.com/alteredq/three.js/commit/ff5d13d03c4ad2e7a4845189b21d1869a7ac4c45
+",2012-03-29T00:47:42Z,2012-03-29T00:47:42Z
+325522,1,"I was thinking something like MD5, but yours is much shorter ;) """,2011-04-01 01:00:34,alteredq,mrdoob,three.js,29da25e74616cf874861f0d5b4d6f2cbfc40bd95,alteredq,438022,"I was thinking something like MD5, but yours is much shorter ;) 
+",2011-04-01T13:00:34Z,2011-04-01T13:00:34Z

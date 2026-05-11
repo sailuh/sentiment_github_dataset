@@ -1,0 +1,71 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+556105,2,"Whoops, amazing that this lasted a year in the repo :(  I fixed things up in [27ab9093b5be7ca16192982d4f6640130d963421]""",2012-03-13 21:15:12,stuhood,twitter,gizzard,,https://github.com/twitter-archive/gizzard/pull/92#discussion_r556105,2012-03-14T08:15:12Z,2012-03-15T05:25:14Z,stuhood,NONE,src/main/scala/com/twitter/gizzard/nameserver/NameServer.scala,,131.0,,,102,"@@ -80,38 +83,68 @@ class NameServer(val shard: RoutingNode[ShardManagerSource], val mappingFunction
+     forwarder
+   }
+ 
+-  private def recreateInternalShardState() {
+-    val infos       = mutable.ArrayBuffer[ShardInfo]()
+-    val links       = mutable.ArrayBuffer[LinkInfo]()
+-    val forwardings = mutable.ArrayBuffer[Forwarding]()
++  def reload() {
++    log.info(""Loading name server configuration..."")
++    synchronized {
++      shardManager.prepareReload()
++
++      val infos       = mutable.ArrayBuffer[ShardInfo]()
++      val links       = mutable.ArrayBuffer[LinkInfo]()
++      val forwardings = mutable.ArrayBuffer[Forwarding]()
++      val (states, updatedSeq) = shardManager.currentState()
++
++      states foreach { state =>
++        infos       ++= state.shards
++        links       ++= state.links
++        forwardings ++= state.forwardings
++      }
+ 
+-    shardManager.currentState() foreach { state =>
+-      infos       ++= state.shards
+-      links       ++= state.links
+-      forwardings ++= state.forwardings
+-    }
++      val routes = new RoutingState(
++        shardRepository.instantiateNode,
++        infos,
++        links,
++        forwardings
++      )
+ 
+-    val routes = new RoutingState(
+-      shardRepository.instantiateNode,
+-      infos,
+-      links,
+-      forwardings
+-    )
++      forwardingTree = routes.buildForwardingTree()
++      lastUpdatedSeq = updatedSeq
++    }
++    log.info(""Loading name server configuration is done."")
++  }
+ 
+-    forwardingTree = routes.buildForwardingTree()
++  private def constructRoutingNode(shardId: ShardId, weight: Int = 1) : RoutingNode[Any] = {
++    val shardInfo = shardManager.getShard(shardId)
++    val children = shardManager.listDownwardLinks(shardId).map { link => constructRoutingNode(link.downId, link.weight) }
++    shardRepository.instantiateNode(shardInfo, weight, children)
+   }
+ 
+   def reloadUpdatedForwardings() {
+     log.info(""Loading updated name server configuration..."")
+-    recreateInternalShardState()
+-    log.info(""Loading updated name server configuration is done."")
+-  }
++    synchronized {
++      if (forwardingTree == null) throw new NameserverUninitialized
++
++      val changes: NameServerChanges = shardManager.diffState(lastUpdatedSeq)
++      val updatedForwardingsByTableId = changes.updatedForwardings.groupBy(_.tableId)
++      val deletedForwardingsByTableId = changes.deletedForwardings.groupBy(_.tableId)
++      val tableIds = updatedForwardingsByTableId.keySet ++ deletedForwardingsByTableId.keySet
++
++      tableIds foreach { tableId =>","Since the initial build of the forwardingTree is implemented inside the RoutingState class, this update logic should probably be in there as well for symmetry.
+",c9938d4786761a7ccdb27a965140d7ec7a284678

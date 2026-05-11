@@ -1,0 +1,7 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+721979,2,"Bad Scott! Bad!""",2011-11-15 04:39:41,brandondiamond,mongodb,mongo,c31b96a8bc41941774e90828a5c5653688f293ee,brandondiamond,1036976,"Bad Scott! Bad!
+",2011-11-15T15:39:41Z,2011-11-15T15:39:41Z
+551849,2,"It seems odd to me to have non deterministic tests.  This code seems like it could lead to a test failing one time and succeeding when you try it again.""",2011-08-25 04:44:16,nehresma,mongodb,mongo,812e49a673293f34a09f091cb5e9124cc5685c6d,nehresma,228009,"It seems odd to me to have non deterministic tests.  This code seems like it could lead to a test failing one time and succeeding when you try it again.
+",2011-08-25T16:44:16Z,2011-08-25T16:44:16Z
+132633,2,"Double build break, double my bad. I'll have to start building on ubuntu to check these things.""",2010-08-21 06:12:39,zippy1981,mongodb,mongo,1783eb7219f440cfc8fb0028ab1ade6384ea2477,zippy1981,146930,"Double build break, double my bad. I'll have to start building on ubuntu to check these things.
+",2010-08-21T18:12:39Z,2010-08-21T18:12:39Z

@@ -1,0 +1,19 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+2386669,1,"that would be great, thanks, can't find any documentation on this feature.""",2012-12-11 12:27:48,jberkel,JakeWharton,ActionBarSherlock,,https://github.com/JakeWharton/ActionBarSherlock/pull/736#discussion_r2386669,2012-12-11T23:27:48Z,2012-12-11T23:27:48Z,jberkel,NONE,library/src/com/actionbarsherlock/app/SherlockActivity.java,,22.0,,,11,"@@ -18,6 +19,7 @@
+ import com.actionbarsherlock.view.MenuInflater;
+ import com.actionbarsherlock.view.MenuItem;
+ 
++@TargetApi(11)","that would be great, thanks, can't find any documentation on this feature.
+",10a82cde65d4b063c5512b38a19652bbe9f32793
+2379700,0,"This is wrong since it works on API 7+""",2012-12-11 04:51:21,JakeWharton,JakeWharton,ActionBarSherlock,,https://github.com/JakeWharton/ActionBarSherlock/pull/736#discussion_r2379700,2012-12-11T15:51:21Z,2012-12-11T15:51:21Z,JakeWharton,OWNER,library/src/com/actionbarsherlock/app/SherlockActivity.java,,22.0,,,11,"@@ -18,6 +19,7 @@
+ import com.actionbarsherlock.view.MenuInflater;
+ import com.actionbarsherlock.view.MenuItem;
+ 
++@TargetApi(11)","This is wrong since it works on API 7+
+",10a82cde65d4b063c5512b38a19652bbe9f32793
+2389775,1,"i build my project using maven so there is no ABS library folder per se (get recreated for each build) so this might not be applicable. thanks for your help anyway!""",2012-12-11 21:17:34,jberkel,JakeWharton,ActionBarSherlock,,https://github.com/JakeWharton/ActionBarSherlock/pull/736#discussion_r2389775,2012-12-12T08:17:34Z,2012-12-12T08:17:34Z,jberkel,NONE,library/src/com/actionbarsherlock/app/SherlockActivity.java,,22.0,,,11,"@@ -18,6 +19,7 @@
+ import com.actionbarsherlock.view.MenuInflater;
+ import com.actionbarsherlock.view.MenuItem;
+ 
++@TargetApi(11)","i build my project using maven so there is no ABS library folder per se (get recreated for each build) so this might not be applicable. thanks for your help anyway!
+",10a82cde65d4b063c5512b38a19652bbe9f32793

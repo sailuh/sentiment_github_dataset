@@ -1,0 +1,293 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+1368509,0,"FYI, ThinkUp supports assigning custom, per-view CSS in the controller. To do it, you'd take this whole block of inline CSS, put it in its own file, and then in the LoginController add the line:  $this->addHeaderCSS('assets/css/login.css');  Currently thi""",2012-08-13 12:49:22,ginatrapani,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1366#discussion_r1368509,2012-08-14T00:49:22Z,2012-08-14T00:49:22Z,ginatrapani,MEMBER,webapp/_lib/view/_header.tpl,,24.0,,,35,"@@ -1,54 +1,108 @@
+ <!DOCTYPE html>
+ <html lang=""en"" itemscope itemtype=""http://schema.org/Article"">
+ <head>
+-  <meta charset=""utf-8"">
+-  <title>{if $controller_title}{$controller_title} | {/if}{$app_title}</title>
+-  <link rel=""shortcut icon"" type=""image/x-icon"" href=""{$site_root_path}assets/img/favicon.png"">
+-  <link rel=""apple-touch-icon-precomposed"" sizes=""144x144"" href=""{$site_root_path}assets/ico/apple-touch-icon-144-precomposed.png"">
+-  <link rel=""apple-touch-icon-precomposed"" sizes=""114x114"" href=""{$site_root_path}assets/ico/apple-touch-icon-114-precomposed.png"">
+-  <link rel=""apple-touch-icon-precomposed"" sizes=""72x72"" href=""{$site_root_path}assets/ico/apple-touch-icon-72-precomposed.png"">
+-  <link rel=""apple-touch-icon-precomposed"" href=""{$site_root_path}assets/ico/apple-touch-icon-57-precomposed.png"">
++    <meta charset=""utf-8"">
++    <title>{if $controller_title}{$controller_title} | {/if}{$app_title}</title>
++    <link rel=""shortcut icon"" type=""image/x-icon"" href=""{$site_root_path}assets/img/favicon.png"">
++    <link rel=""apple-touch-icon-precomposed"" sizes=""144x144"" href=""{$site_root_path}assets/ico/apple-touch-icon-144-precomposed.png"">
++    <link rel=""apple-touch-icon-precomposed"" sizes=""114x114"" href=""{$site_root_path}assets/ico/apple-touch-icon-114-precomposed.png"">
++    <link rel=""apple-touch-icon-precomposed"" sizes=""72x72"" href=""{$site_root_path}assets/ico/apple-touch-icon-72-precomposed.png"">
++    <link rel=""apple-touch-icon-precomposed"" href=""{$site_root_path}assets/ico/apple-touch-icon-57-precomposed.png"">
+ 
+ 
+-{if $smarty.get.v eq ""insights""}
++{if $enable_bootstrap}
+ 
+     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+     <meta name=""description"" content="""">
+     <meta name=""author"" content="""">
+ 
+     <!-- Le styles -->
+-    <link href=""./assets/css/bootstrap.css"" rel=""stylesheet"">
++    <link href=""{$site_root_path}assets/css/bootstrap.css"" rel=""stylesheet"">
+     <style>
+     {literal}
+ 
+-    .insight-item {
+-        position: relative;
++    .detail-btn {","FYI, ThinkUp supports assigning custom, per-view CSS in the controller. To do it, you'd take this whole block of inline CSS, put it in its own file, and then in the LoginController add the line:
+
+$this->addHeaderCSS('assets/css/login.css');
+
+Currently this change causes the custom header CSS test to fail (TestOfTestController::testAddCSS2Header) because you moved the {foreach from=$header_scripts item=script} bit into the else area.
+
+I'm fixing now, but wanted you to know 1.) about the custom CSS assignment mechanism, and 2.) that we really have to get you running the whole test suite. :)
+",075036700f775e30d63c145469bc38c2794c48cb
+281338,0,"Let's standardize the message to be:  """"Must contain both numbers and letters""""  Since that's what TU uses in its current messaging.""",2011-12-08 11:31:33,ginatrapani,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1173#discussion_r281338,2011-12-08T22:31:33Z,2011-12-08T22:31:33Z,ginatrapani,MEMBER,webapp/assets/js/jquery.validate.password.js,,59.0,,,59,"@@ -0,0 +1,88 @@
++/*
++ * jQuery validate.password plug-in 1.0
++ *
++ * http://bassistance.de/jquery-plugins/jquery-plugin-validate.password/
++ *
++ * Copyright (c) 2009 Jörn Zaefferer
++ *
++ * $Id$
++ *
++ * Dual licensed under the MIT and GPL licenses:
++ *   http://www.opensource.org/licenses/mit-license.php
++ *   http://www.gnu.org/licenses/gpl.html
++ */
++(function($) {
++	
++	var LOWER = /[a-z]/,
++		UPPER = /[A-Z]/,
++		DIGIT = /[0-9]/,
++		DIGITS = /[0-9].*[0-9]/,
++		SPECIAL = /[^a-zA-Z0-9]/,
++		SAME = /^(.)\1+$/;
++		
++	function rating(rate, message) {
++		return {
++			rate: rate,
++			messageKey: message
++		};
++	}
++	
++	function uncapitalize(str) {
++		return str.substring(0, 1).toLowerCase() + str.substring(1);
++	}
++	
++	$.validator.passwordRating = function(password, username) {
++		if (!password || password.length < 8)
++			return rating(0, ""too-short"");
++		if (username && password.toLowerCase().match(username.toLowerCase()))
++			return rating(0, ""similar-to-username"");
++		if (SAME.test(password))
++			return rating(1, ""very-weak"");
++		
++		var lower = LOWER.test(password),
++			upper = UPPER.test(uncapitalize(password)),
++			digit = DIGIT.test(password),
++			digits = DIGITS.test(password),
++			special = SPECIAL.test(password);
++		
++		if (lower && upper && digit || lower && digits || upper && digits || special)
++			return rating(4, ""strong"");
++		if (lower && upper || lower && digit || upper && digit)
++			return rating(3, ""good"");
++		return rating(2, ""weak"");
++	}
++	
++	$.validator.passwordRating.messages = {
++		""similar-to-username"": ""Too similar to username"",
++		""too-short"": ""Too short"",
++		""very-weak"": ""Very weak: Must be a mix of characters and numbers"",
++		""weak"": ""Weak: Must be a mix of characters and numbers"",","Let's standardize the message to be:
+
+""Must contain both numbers and letters""
+
+Since that's what TU uses in its current messaging.
+",4a8d7cb8eed92939c85c11610be15fccf3c3b374
+6226072,1,"Great, thanks.""",2013-09-07 10:47:31,ginatrapani,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1715#discussion_r6226072,2013-09-07T22:47:31Z,2013-09-07T22:47:31Z,ginatrapani,MEMBER,webapp/plugins/twitter/view/twitter.account.hashtag.tpl,,23.0,,,7,"@@ -20,9 +20,7 @@
+     {foreach from=$hashtags key=iid item=h name=foo}
+     <tr>
+         <td>
+-            <h3 class=""lead""><a href=""{$site_root_path}search.php?u={$user}&n=twitter&c=searches&t=
+-{if substr($h->hashtag,0,1) eq '#'}hashtag{else}keyword{/if}&q=
+-{if substr($h->hashtag,0,1) eq '#'}{$h->hashtag|replace:""#"":""""}{else}{$h->hashtag}{/if}"">{$h->hashtag}</a></h3>
++            <h3 class=""lead""><a href=""{$site_root_path}search.php?u={$user}&n=twitter&c=searches&k={$h->hashtag|replace:""#"":""%23""}&q="">{$h->hashtag}</a></h3>","Great, thanks.
+",3cfbf602d534fce9381f46417712e45cfffea28a
+6201771,2,"Ah! I was looking at the wrong place to fix this error!""",2013-09-05 18:15:11,nilakshdas,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1712#discussion_r6201771,2013-09-06T06:15:11Z,2013-09-08T18:45:26Z,nilakshdas,CONTRIBUTOR,webapp/plugins/insightsgenerator/tests/TestOfInsightPluginParent.php,,40.0,,,40,"@@ -0,0 +1,103 @@
++<?php
++/**
++ * ThinkUp/webapp/plugins/insightsgenerator/tests/TestOfInsightPluginParent.php
++ *
++ * Copyright (c) 2013 Nilaksh Das, Gina Trapani
++ *
++ *
++ * LICENSE:
++ *
++ * This file is part of ThinkUp (http://thinkup.com).
++ *
++ * ThinkUp is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
++ * License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any
++ * later version.
++ *
++ * ThinkUp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
++ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License along with ThinkUp.  If not, see
++ * <http://www.gnu.org/licenses/>.
++ *
++ *
++ * Test of InsightPluginParent class
++ *
++ * @author Nilaksh Das <nilakshdas [at] gmail [dot] com>
++ * @license http://www.gnu.org/licenses/gpl.html
++ * @copyright 2013 Nilaksh Das, Gina Trapani
++ */
++
++require_once dirname(__FILE__) . '/../../../../tests/init.tests.php';
++require_once THINKUP_WEBAPP_PATH.'_lib/extlib/simpletest/autorun.php';
++require_once THINKUP_WEBAPP_PATH.'_lib/extlib/simpletest/web_tester.php';
++require_once THINKUP_ROOT_PATH. 'webapp/plugins/insightsgenerator/model/class.InsightPluginParent.php';
++
++class TestOfInsightPluginParent extends ThinkUpUnitTestCase {
++
++    public function setUp(){
++        parent::setUp();
++        putenv(""MODE=PROD"");","Ah! I was looking at the wrong place to fix this error!
+",4fc249e0db6ddb0e4744f493b95690678cfd6364
+1368576,0,"Actually, looking more closely, this CSS isn't specific to login/register? or is it? Right now it's everywhere Bootstrap is enabled, but it looks pretty login-specific. What do you think?""",2012-08-13 12:58:59,ginatrapani,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1366#discussion_r1368576,2012-08-14T00:58:59Z,2012-08-14T00:58:59Z,ginatrapani,MEMBER,webapp/_lib/view/_header.tpl,,24.0,,,35,"@@ -1,54 +1,108 @@
+ <!DOCTYPE html>
+ <html lang=""en"" itemscope itemtype=""http://schema.org/Article"">
+ <head>
+-  <meta charset=""utf-8"">
+-  <title>{if $controller_title}{$controller_title} | {/if}{$app_title}</title>
+-  <link rel=""shortcut icon"" type=""image/x-icon"" href=""{$site_root_path}assets/img/favicon.png"">
+-  <link rel=""apple-touch-icon-precomposed"" sizes=""144x144"" href=""{$site_root_path}assets/ico/apple-touch-icon-144-precomposed.png"">
+-  <link rel=""apple-touch-icon-precomposed"" sizes=""114x114"" href=""{$site_root_path}assets/ico/apple-touch-icon-114-precomposed.png"">
+-  <link rel=""apple-touch-icon-precomposed"" sizes=""72x72"" href=""{$site_root_path}assets/ico/apple-touch-icon-72-precomposed.png"">
+-  <link rel=""apple-touch-icon-precomposed"" href=""{$site_root_path}assets/ico/apple-touch-icon-57-precomposed.png"">
++    <meta charset=""utf-8"">
++    <title>{if $controller_title}{$controller_title} | {/if}{$app_title}</title>
++    <link rel=""shortcut icon"" type=""image/x-icon"" href=""{$site_root_path}assets/img/favicon.png"">
++    <link rel=""apple-touch-icon-precomposed"" sizes=""144x144"" href=""{$site_root_path}assets/ico/apple-touch-icon-144-precomposed.png"">
++    <link rel=""apple-touch-icon-precomposed"" sizes=""114x114"" href=""{$site_root_path}assets/ico/apple-touch-icon-114-precomposed.png"">
++    <link rel=""apple-touch-icon-precomposed"" sizes=""72x72"" href=""{$site_root_path}assets/ico/apple-touch-icon-72-precomposed.png"">
++    <link rel=""apple-touch-icon-precomposed"" href=""{$site_root_path}assets/ico/apple-touch-icon-57-precomposed.png"">
+ 
+ 
+-{if $smarty.get.v eq ""insights""}
++{if $enable_bootstrap}
+ 
+     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+     <meta name=""description"" content="""">
+     <meta name=""author"" content="""">
+ 
+     <!-- Le styles -->
+-    <link href=""./assets/css/bootstrap.css"" rel=""stylesheet"">
++    <link href=""{$site_root_path}assets/css/bootstrap.css"" rel=""stylesheet"">
+     <style>
+     {literal}
+ 
+-    .insight-item {
+-        position: relative;
++    .detail-btn {","Actually, looking more closely, this CSS isn't specific to login/register? or is it? Right now it's everywhere Bootstrap is enabled, but it looks pretty login-specific. What do you think?
+",075036700f775e30d63c145469bc38c2794c48cb
+3695939,0,"Hmm, I don't have admin rights to create that alias - can you do that?""",2013-04-08 03:01:22,anildash,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1524#discussion_r3695939,2013-04-08T15:01:22Z,2013-04-08T21:19:18Z,anildash,MEMBER,docs/source/install/security.rst,,107.0,,,5,"@@ -104,7 +104,7 @@ How to Report a Security Bug
+ ----------------------------
+ 
+ If you find a security bug in ThinkUp, send an email with a descriptive subject line to 
+-**thinkup-security[at]expertlabs.org**. If you think you've found a serious vulnerability, please do not file a public
++**thinkup-security[at]thinkup.com**. If you think you've found a serious vulnerability, please do not file a public","Hmm, I don't have admin rights to create that alias - can you do that?
+",bd385f255fde08d24fce94d3a36732c80b390615
+6074074,2,"Ah, my bad... I confused 'double' for a noun! This sounds good.""",2013-08-29 09:41:12,nilakshdas,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1704#discussion_r6074074,2013-08-29T21:41:12Z,2013-09-05T19:43:59Z,nilakshdas,CONTRIBUTOR,webapp/plugins/insightsgenerator/model/class.InsightPluginParent.php,,,,,1,"@@ -46,4 +46,20 @@ public function activate() {
+ 
+     public function deactivate() {
+     }
+-}
+\ No newline at end of file
++
++    // Converts a numerical multiplier such as 2 to its string equivalent such as double so insight text complies
++    // with guidelines.
++    public function convertMultiplierToText($number) {","Ah, my bad... I confused 'double' for a noun! This sounds good.
+",c1be46830892a01b3cd106adb67d95b25312ccd3
+3971174,0,"If we're only storing the first 32 characters of a 64-character hash, isn't it possible to have two hashes that are not unique?  Why not add a unique index to the activation_token field and catch a PDOException on insert that indicates a unique key prob""",2013-04-25 16:33:38,ginatrapani,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1567#discussion_r3971174,2013-04-26T04:33:38Z,2013-04-27T12:29:58Z,ginatrapani,MEMBER,webapp/_lib/dao/class.OwnerMySQLDAO.php,,,,,1,"@@ -191,13 +199,13 @@ private function createOwner($email, $pwd, $full_name, $is_admin) {
+                 ':email'=>$email,
+                 ':hashed_pwd'=>$hashed_pwd,
+                 ':pwd_salt'=>$pwd_salt,
+-                ':activation_code'=>$activation_code,
++                ':activation_token'=>$activation_token,
+                 ':full_name'=>$full_name,
+                 ':api_key'=>$api_key
+             );
+             if ($this->profiler_enabled) { Profiler::setDAOMethod(__METHOD__); }
+             $ps = $this->execute($q, $vars);
+-            return $activation_code;
++            return substr ($activation_token, 0, 32);","If we're only storing the first 32 characters of a 64-character hash, isn't it possible to have two hashes that are not unique?
+
+Why not add a unique index to the activation_token field and catch a PDOException on insert that indicates a unique key problem?
+",138252b3165ddd0f52d7e30ee7565ae850dbe964
+118435,1,"I had no good reason for removing this comment - it must have been my mistake :)""",2011-09-08 11:13:17,thegeekiestmark,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/951#discussion_r118435,2011-09-08T23:13:17Z,2011-09-08T23:13:17Z,thegeekiestmark,CONTRIBUTOR,webapp/plugins/facebook/model/class.FacebookCrawler.php,,184.0,,,64,"@@ -180,8 +200,6 @@ class FacebookCrawler {
+             if ($profile==null) {
+                 $profile = $this->fetchUserInfo($p->from->id, $network, 'Post stream', true);
+             }
+-
+-            //Assume profile comments are private and page posts are public","I had no good reason for removing this comment - it must have been my mistake :)
+",9ec9358da5e8acc676127afd596480d95c02c8ac
+6095055,2,"Oh sorry!   Just need to add a reference to the youtube page in docs/source/userguide/settings/plugins/index.rst. That's this page: http://www.thinkupapp.com/docs/userguide/settings/plugins/  Also the developer guide you wrote isn't linked anywhere in""",2013-08-30 08:12:33,ginatrapani,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1678#discussion_r6095055,2013-08-30T20:12:33Z,2013-09-05T16:44:17Z,ginatrapani,MEMBER,docs/source/userguide/settings/plugins/youtube.rst,,1.0,,,1,"@@ -0,0 +1,41 @@
++YouTube","Oh sorry! 
+
+Just need to add a reference to the youtube page in docs/source/userguide/settings/plugins/index.rst. That's this page: http://www.thinkupapp.com/docs/userguide/settings/plugins/
+
+Also the developer guide you wrote isn't linked anywhere in the docs. You can add a reference in docs/source/contribute/developers/plugins/index.rst http://www.thinkupapp.com/docs/contribute/developers/plugins/
+",f6cf51ea84be56b7fca3323011684fc8214ba990
+3972028,0,"Sorry I couldn't check the issues, I was travelling. Regarding the REMOTE_ADDR, yes your concern is true. I suggest we can change md5(microtime().$_SERVER[REMOTE_ADDR]) to md5(microtime().$_SERVER[REMOTE_ADDR].rand()) This will reduce the probabibilit""",2013-04-25 18:40:45,hemant-singh,ginatrapani,ThinkUp,,https://github.com/ThinkUpLLC/ThinkUp/pull/1564#discussion_r3972028,2013-04-26T06:40:45Z,2013-04-28T12:19:44Z,hemant-singh,NONE,webapp/_lib/class.Session.php,,,,,1,"@@ -71,10 +74,16 @@ public static function getLoggedInUser() {
+      * @param Owner $owner
+      */
+     public static function completeLogin($owner) {
++		
++		$config = Config::getInstance();
++		$_SESSION[$config->getValue('source_root_path')]['session_key']=md5(microtime().$_SERVER[REMOTE_ADDR]) ;","Sorry I couldn't check the issues, I was travelling.
+Regarding the REMOTE_ADDR, yes your concern is true. I suggest we can
+change md5(microtime().$_SERVER[REMOTE_ADDR]) to
+md5(microtime().$_SERVER[REMOTE_ADDR].rand()) This will reduce the
+probabibility highly.
+
+On Fri, Apr 26, 2013 at 9:35 AM, Gina Trapani notifications@github.comwrote:
+
+> In webapp/_lib/class.Session.php:
+> 
+> > @@ -71,10 +74,16 @@ public static function getLoggedInUser() {
+> >       \* @param Owner $owner
+> >       */
+> >      public static function completeLogin($owner) {
+> > -   
+> > -       $config = Config::getInstance();
+> > -       $_SESSION[$config->getValue('source_root_path')]['session_key']=md5(microtime().$_SERVER[REMOTE_ADDR]) ;
+> 
+> Is there a risk using REMOTE_ADDR here? Theoretically 2 people could log
+> in at the exact same time from the same IP address and this wouldn't be
+> unique.
+> 
+> —
+> Reply to this email directly or view it on GitHubhttps://github.com/ginatrapani/ThinkUp/pull/1564/files#r3971059
+> .
+
+## 
+
+## 
+
+_Hemant Kumar Singh_
+III Year,
+B.E.(Hons) Chemical Engineering
+M.Sc. (Hons) Physics
+e-mail: _Gmail unizen01@gmail.com , BITSmail f2010580@bits-pilani.ac.in_
+
+contact: +919529068585,+917891160904
+
+_Birla Institute of Technology & Science,_ Pilani
+
+Pilani Campus, Rajasthan 333 031 02, INDIA
+",91386a85aa816968d43a10f3df1c804564e2cc13

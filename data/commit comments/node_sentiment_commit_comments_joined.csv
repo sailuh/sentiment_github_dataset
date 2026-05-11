@@ -1,0 +1,333 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3895301,0,"`a` :)""",2013-08-19 11:41:00,KenanSulayman,joyent,node,9456cf8fe2b42ccfb2a9561cd50430e623bdc6d2,19h,280212,"`a` :)
+",2013-08-19T23:41:00Z,2013-08-19T23:41:09Z
+3856255,0,"Do you have a reference to that bug in clang ?""",2013-08-13 19:02:17,kapouer,joyent,node,61935bc167cc2de57c6417bd12493775dc9c1b81,kapouer,131406,"Do you have a reference to that bug in clang ?
+",2013-08-14T07:02:17Z,2013-08-14T07:02:17Z
+1293652,0,"No, it is not normal to see req objects leak in this case.  The agent.requests collection is merely requests that are pending or in progress.  The role of the agent is to keep a pool of **sockets**, which are re-used between different requests.  The reques""",2012-05-04 05:46:30,isaacs,joyent,node,91120e04297009ddabb6b7c68ec83a092041903c,isaacs,9287,"No, it is not normal to see req objects leak in this case.  The agent.requests collection is merely requests that are pending or in progress.  The role of the agent is to keep a pool of **sockets**, which are re-used between different requests.  The requests themselves are thrown away when they're completed.
+
+The closure in your example is only leaked because the request was leaked.  The req object was leaked because it was attached to a http_parser and never removed.  The req refers to the closure, which traps a reference to the big object.  Breaking the chain at any point will allow GC to happen, but it must be broken at the right place, not just smashed to bits.
+
+For example, you could also have prevented the leak of the big object by setting the `big` reference to null.  But that's not the root cause.  The root cause is that the parser was not getting cleaned up properly.  So the test focuses on the root cause, not the noisy symptom.
+",2012-05-04T17:46:30Z,2012-05-04T17:46:30Z
+923938,1,"In truth, I don't really think we need this any more, since we figured out how to get gyp to generate xcode projects to build with a .node extension. I'm happy to generate a PR that adds the condition you've suggested, or backs out the change.""",2012-02-01 09:37:04,paddybyers,joyent,node,7e0bf7d57de318f45a097e05644efa49beb65209,paddybyers,1137574,"In truth, I don't really think we need this any more, since we figured out how to get gyp to generate xcode projects to build with a .node extension. I'm happy to generate a PR that adds the condition you've suggested, or backs out the change.
+",2012-02-01T20:37:04Z,2012-02-01T20:37:04Z
+697259,0,"shoule be """"Stable"""" ??""",2011-11-04 22:39:50,windyrobin,joyent,node,865b077819a9271a29f982faaef99dc635b57fbc,windyrobin,42018,"shoule be ""Stable"" ??
+",2011-11-05T09:39:50Z,2011-11-05T09:39:50Z
+700960,0,"There is still a reference to cluster.eachWorker on line 83 of cluster.js: https://github.com/joyent/node/blob/d42006c80a9c827e4c147e22f56bb3d789f578ce/lib/cluster.js#L83""",2011-11-07 09:55:37,jtokoph,joyent,node,d42006c80a9c827e4c147e22f56bb3d789f578ce,jtokoph,346225,"There is still a reference to cluster.eachWorker on line 83 of cluster.js:
+https://github.com/joyent/node/blob/d42006c80a9c827e4c147e22f56bb3d789f578ce/lib/cluster.js#L83
+",2011-11-07T20:55:37Z,2011-11-07T20:55:37Z
+600577,1,"@isaacs  ```js function Deflate(opts) {   if (!(this instanceof Deflate)) return new Deflate(opt);   Zlib.call(this, opts, binding.Deflate); } ```  it should be `new Deflate(opts)`  (The commit is to big to add proper line comments ;o)""",2011-09-20 06:16:04,3rd-Eden,joyent,node,5b8e1dabbc117b38c56f874f4e6d5b7e537cd3c1,3rd-Eden,28071,"@isaacs
+
+``` js
+function Deflate(opts) {
+  if (!(this instanceof Deflate)) return new Deflate(opt);
+  Zlib.call(this, opts, binding.Deflate);
+}
+```
+
+it should be `new Deflate(opts)`
+
+(The commit is to big to add proper line comments ;o)
+",2011-09-20T18:16:04Z,2011-09-20T18:16:55Z
+517281,0,"Shouldn't this be `set`, not `get`? From the commit message:  > It's important to be able to inspect this, but modifying it no longer has any effect.""",2011-08-06 10:19:57,michaelficarra,joyent,node,7f0047c2d52eb39c30ee49a6e5a9a3167ec6f54d,michaelficarra,218840,"Shouldn't this be `set`, not `get`? From the commit message:
+
+> It's important to be able to inspect this, but modifying it no longer has any effect.
+",2011-08-06T22:19:57Z,2011-08-06T22:19:57Z
+273868,0,"Hi Ryan,  I'm working on a new version of timers.js that preserves the order, uses just one Timer(), is as fast or faster (less cpu load), uses less memory and fires them more accurately, at ~exactly the right time. But I'd need a little help from you be""",2011-02-16 11:05:59,xk,joyent,node,6b50a9f5f4a7d0aea82c2b1f8b2b88d5568be4e1,xk,96355,"Hi Ryan,
+
+I'm working on a new version of timers.js that preserves the order, uses just one Timer(), is as fast or faster (less cpu load), uses less memory and fires them more accurately, at ~exactly the right time. But I'd need a little help from you because I don't get what's exactly the use of enroll(), unenroll() and active() ?
+
+Everything ( but these 3 above ) is working now, unfinished, not polished yet, but working better than before: you can have a look at it here: https://github.com/xk/node/tree/fix_settimeout_order
+
+I'll upload later some tests to show how is it better than before.
+
+Please enlighten me wrt to these 3 methods...
+
+Thank you,
+Jorge.
+",2011-02-16T22:05:59Z,2011-02-16T22:05:59Z
+244856,0,"It seems that this commit has broken again the timers on MacOS (issue 534). They were fixed in 82e9da9fb7fb79bf730d  See https://github.com/ry/node/issues/closed#issue/534 Cheers, Jorge.""",2011-01-19 00:59:02,xk,joyent,node,2ec4cd552501b895c83c6871951c1a6256288c48,xk,96355,"It seems that this commit has broken again the timers on MacOS (issue 534). They were fixed in 82e9da9fb7fb79bf730d  See https://github.com/ry/node/issues/closed#issue/534
+Cheers,
+Jorge.
+",2011-01-19T11:59:02Z,2011-01-19T12:01:53Z
+197891,1,"Not sure if I'm missing something, but `writeStream.write()` has always supported a callback. In fact I believe it was the first `write()` function to do so : )""",2010-11-19 01:39:59,felixge,joyent,node,296802c641783034a3d56f4eacc180191c8506cc,felixge,15000,"Not sure if I'm missing something, but `writeStream.write()` has always supported a callback. In fact I believe it was the first `write()` function to do so : )
+",2010-11-19T12:39:59Z,2010-11-19T12:39:59Z
+176234,0,"Build failed on debian x64:      deps/libev/ev.c:49:22: error: config.h: No such file or directory     deps/libev/ev.c: In function ‘ev_feed_event’:     deps/libev/ev.c:870: warning: unused variable ‘ocur_’     deps/libev/ev.c: In function ‘feed_rever""",2010-10-24 13:53:59,akaspin,joyent,node,15594eaf87066abc8cf36520a1ad95e0c52da517,akaspin,140088,"Build failed on debian x64:
+
+```
+deps/libev/ev.c:49:22: error: config.h: No such file or directory
+deps/libev/ev.c: In function ‘ev_feed_event’:
+deps/libev/ev.c:870: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘feed_reverse’:
+deps/libev/ev.c:879: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘fd_change’:
+deps/libev/ev.c:990: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘evpipe_init’:
+deps/libev/ev.c:1240: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘loop_init’:
+deps/libev/ev.c:1689: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1689: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1689: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1692: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1692: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1692: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1693: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘loop_destroy’:
+deps/libev/ev.c:1704: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘loop_fork’:
+deps/libev/ev.c:1799: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘verify_watcher’:
+deps/libev/ev.c:1866: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:1869: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘verify_heap’:
+deps/libev/ev.c:1879: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:1880: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:1881: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘array_verify’:
+deps/libev/ev.c:1892: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_verify’:
+deps/libev/ev.c:1910: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:1917: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:1918: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_default_loop_init’:
+deps/libev/ev.c:1990: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1990: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1990: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:1991: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘timers_reify’:
+deps/libev/ev.c:2115: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘periodics_reify’:
+deps/libev/ev.c:2154: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:2141: warning: unused variable ‘feed_count’
+deps/libev/ev.c: In function ‘ev_run’:
+deps/libev/ev.c:2303: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_io_start’:
+deps/libev/ev.c:2576: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:2577: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:2585: warning: suggest parentheses around arithmetic in operand of ‘|’
+deps/libev/ev.c: In function ‘ev_io_stop’:
+deps/libev/ev.c:2598: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_timer_start’:
+deps/libev/ev.c:2618: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:2624: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘ev_timer_stop’:
+deps/libev/ev.c:2646: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_periodic_start’:
+deps/libev/ev.c:2706: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:2717: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘ev_periodic_stop’:
+deps/libev/ev.c:2739: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_signal_start’:
+deps/libev/ev.c:2776: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:2779: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_child_start’:
+deps/libev/ev.c:2893: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c: In function ‘ev_stat_start’:
+deps/libev/ev.c:3260: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3260: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3260: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3260: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3261: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘ev_stat_stop’:
+deps/libev/ev.c:3293: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘ev_idle_start’:
+deps/libev/ev.c:3322: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘ev_prepare_start’:
+deps/libev/ev.c:3362: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘ev_check_start’:
+deps/libev/ev.c:3400: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘ev_embed_start’:
+deps/libev/ev.c:3495: warning: left-hand operand of comma expression has no effect
+deps/libev/ev.c:3496: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3496: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3496: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3501: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3504: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3504: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3504: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3505: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3508: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3508: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3508: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c: In function ‘ev_fork_start’:
+deps/libev/ev.c:3547: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘ev_async_start’:
+deps/libev/ev.c:3589: warning: unused variable ‘ocur_’
+deps/libev/ev.c: In function ‘ev_once’:
+deps/libev/ev.c:3677: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3677: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3677: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3684: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3684: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3684: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3687: warning: dereferencing type-punned pointer will break strict-aliasing rules
+deps/libev/ev.c:3803:27: warning: ""/*"" within comment
+deps/libev/ev.c:3804:27: warning: ""/*"" within comment
+make: *** [build/release/deps/libev/ev.o] Error 1
+```
+",2010-10-25T01:53:59Z,2010-10-25T01:53:59Z
+109238,2,"sadly, sun_path is not null terminated on OSX, but it is on Linux. I've almost got a fix for this. """,2010-07-15 09:26:30,mranney,joyent,node,4e50197e5330b7f1f603981f6dc817cac7f9a4f9,mranney,210141,"sadly, sun_path is not null terminated on OSX, but it is on Linux. I've almost got a fix for this.
+",2010-07-15T21:26:30Z,2010-07-15T21:26:30Z
+50682,0,"Should line 602 be       var encoding = typeof(encoding_) == 'string' ? encoding_ : 'utf8';  Note the additional underscore on the third 'encoding' there.  There are no tests for this but changing it doesn't break any tests, so in case it is easier f""",2010-02-24 21:12:16,bentomas,joyent,node,9ad7539cf9c36edf4b014adb1ce979f578de0aa1,bentomas,49276,"Should line 602 be 
+
+```
+var encoding = typeof(encoding_) == 'string' ? encoding_ : 'utf8';
+```
+
+Note the additional underscore on the third 'encoding' there.
+
+There are no tests for this but changing it doesn't break any tests, so in case it is easier for you I whipped up a quick patch: http://gist.github.com/314351
+",2010-02-25T08:12:16Z,2010-02-25T08:12:16Z
+48746,0,"what about using fs.readFileSync(), rather then .wait()ing?""",2010-02-17 14:33:47,miksago,joyent,node,92292c8394df98c179dcdf8bae13c52a43f78001,ThisIsMissEm,30827,"what about using fs.readFileSync(), rather then .wait()ing?
+",2010-02-18T01:33:47Z,2010-02-18T01:33:47Z
+39603,1,"All I gotta say's we got passionate people here and I look forward to all your commits and releases... I guess this one wont go away without a """" You $%#^ Semicolon Nazi* """" and thus voila!  * http://en.wikipedia.org/wiki/Godwin%27s_law )""",2009-12-22 04:23:14,quickredfox,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,quickredfox,2949,"All I gotta say's we got passionate people here and I look forward to all your commits and releases... I guess this one wont go away without a "" You $%#^ Semicolon Nazi\* "" and thus voila!
+- http://en.wikipedia.org/wiki/Godwin%27s_law )
+",2009-12-22T15:23:14Z,2009-12-22T15:23:14Z
+110658,0,"Good code is properly tested.  The function of good code is self-evident.   Problems in good code are easily found.    I completely agree that good code is simple, consistent, readable & maintainable but I am not sure that is concreate enough.  I am not """,2010-07-19 02:34:36,joshaven,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,joshaven,21927,"Good code is properly tested.  The function of good code is self-evident.   Problems in good code are easily found.  
+
+I completely agree that good code is simple, consistent, readable & maintainable but I am not sure that is concreate enough.  I am not sure everyone would agree what good code looks like.  I personally don't think that the placement of... (say, optional semicolons, etc)... make much difference.   
+
+Functions should be simple in style and process, variable names should be descriptive, data should be well structured,  and most importantly everything should be well documented and tested. 
+",2010-07-19T14:34:36Z,2010-07-19T14:34:36Z
+36169,1,"I think that's a good idea and it will always work as long as everyone calls their requires right up front, and not later on while the server is running.""",2009-11-23 07:42:07,creationix,joyent,node,dc093ef833561cfa8d85fbd649f62d2045d4e61f,creationix,89353,"I think that's a good idea and it will always work as long as everyone calls their requires right up front, and not later on while the server is running.
+",2009-11-23T18:42:07Z,2009-11-23T18:42:07Z
+948130,0,"@bnoordhuis it's been the same since I can remember in v8, not that it's necessarily stable but I cant recall it changing at all yet  looks like it's been the same since 2010 http://code.google.com/p/v8/wiki/JavaScriptStackTraceApi""",2012-02-08 17:04:16,visionmedia,joyent,node,007b7181e307a8d52970947d2b6432a2addd9ef0,tj,25254,"@bnoordhuis it's been the same since I can remember in v8, not that it's necessarily stable but I cant recall it changing at all yet
+
+looks like it's been the same since 2010 http://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
+",2012-02-09T04:04:16Z,2012-02-09T04:04:16Z
+379072,0,"The more I think about this, the more isolated shared-nothing threads seem reasonable.""",2011-05-11 04:05:18,isaacs,joyent,node,9e26dab150e15cdbc7fbec76dcadeafed7d85646,isaacs,9287,"The more I think about this, the more isolated shared-nothing threads seem reasonable.
+",2011-05-11T16:05:18Z,2011-05-11T16:05:18Z
+379915,1,"That's what I thought originally but the unix-y people at Joyent don't mind. """"Fork"""" is cute.""",2011-05-11 14:09:31,ry,joyent,node,337c48db5fe06ddaf626b03b7db6c6f48c5d3b62,ry,80,"That's what I thought originally but the unix-y people at Joyent don't mind. ""Fork"" is cute.
+",2011-05-12T02:09:31Z,2011-05-12T02:09:31Z
+1567427,2,"Though now I realize there's a dead comment above that `handleGroup` function :\""",2012-07-11 04:16:50,TooTallNate,joyent,node,8a9e8d60d2ef1ca434fee2a4e2fdfc77813f83c1,TooTallNate,71256,"Though now I realize there's a dead comment above that `handleGroup` function :\
+",2012-07-11T16:16:50Z,2012-07-11T16:16:50Z
+1518264,2,"Without any message about deprecation status, really? :(""",2012-06-28 11:58:10,Sannis,joyent,node,f2a9ed487369ab7222522e1097708550adbe165c,Sannis,77367,"Without any message about deprecation status, really? :(
+",2012-06-28T23:58:10Z,2012-06-28T23:58:10Z
+845785,2,"Oh, whoops!  Sorry about that!""",2012-01-06 20:05:58,isaacs,joyent,node,9ef3c6238b022a52d564799bab38bcdb78dd3565,isaacs,9287,"Oh, whoops!  Sorry about that!
+",2012-01-07T07:05:58Z,2012-01-07T07:05:58Z
+545046,2,"thank's isaacs, sadly it took us several ridiculous comment ping-pongs to come to some meaningful dialogue such is the power of """"social coding"""", I suppose ...""",2011-08-22 07:09:07,DBJDBJ,joyent,node,fcf9cfa1374bbbc0e77dd77908b55d45d7735450,DBJDBJ,145155,"thank's isaacs, sadly it took us several ridiculous comment ping-pongs to come to some meaningful dialogue
+such is the power of ""social coding"", I suppose ...
+",2011-08-22T19:09:07Z,2011-08-22T19:09:07Z
+509739,2,"Sad to see this go""",2011-08-02 13:52:58,drewlesueur,joyent,node,703a1ffe52b66972f38db19fb68e0f70c3dd2631,drewlesueur,115536,"Sad to see this go
+",2011-08-03T01:52:58Z,2011-08-03T01:52:58Z
+168515,2,"This makes me sad in my heart.  I urge you to reconsider.""",2010-10-13 12:14:47,isaacs,joyent,node,d164989e3fd7199ad8905d884c378eecc60f51ee,isaacs,9287,"This makes me sad in my heart.  I urge you to reconsider.
+",2010-10-14T00:14:47Z,2010-10-14T00:14:47Z
+39155,2,"ah man :( why is everyone so semi-colon crazy, especially after a function literal :S""",2009-12-18 04:57:31,visionmedia,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,tj,25254,"ah man :( why is everyone so semi-colon crazy, especially after a function literal :S
+",2009-12-18T15:57:31Z,2009-12-18T15:57:31Z
+39571,2,"You fail to understand the spec, and instead of saying """"fair enough"""" you pretend you've been bullied, claiming hostility. Countering inconsistent, incomplete arguments based on assumptions made from the suggestions made by bad tools is not bullying, it's r""",2009-12-21 23:54:13,raggi,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,raggi,348,"You fail to understand the spec, and instead of saying ""fair enough"" you pretend you've been bullied, claiming hostility. Countering inconsistent, incomplete arguments based on assumptions made from the suggestions made by bad tools is not bullying, it's rational challenge.
+
+The only hostility I have comes from the fact that you're _still_ digging a hole and changing your tune on the way down. First it was a best practice (which actually, came from an aforementioned crappy tool, JSLint), then you claimed it was part of the spec (I corrected you on this, twice). Now you're telling me it's part of the conventions for node (however, that's missing from the documentation you referenced too).
+
+I like the size of the crater you've dug, but would you please stop shouting in it, as it's starting to echo.
+
+If this is now the official convention for node, then so be it, but it's a shame, given the heritage of the advice, and my parting comment on this discussion is merely to place my -1 that convention, before it's written into the projects guidelines. I'm sure there are others that feel the same way.
+
+I'm out, Merry Christmas.
+",2009-12-22T10:54:13Z,2009-12-22T10:54:13Z
+39522,2,"sure, sadly, that's actually what was originally annoying me about the discussion. it's old, void, and wrong :-(""",2009-12-21 10:03:53,raggi,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,raggi,348,"sure, sadly, that's actually what was originally annoying me about the discussion. it's old, void, and wrong :-(
+",2009-12-21T21:03:53Z,2009-12-21T21:03:53Z
+110647,2,"+1 the code must remains simple, consistent, readable and maintainable. It's the only way we can avoid stupid bugs.""",2010-07-19 02:19:01,c4milo,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,c4milo,41681,"+1 the code must remains simple, consistent, readable and maintainable. It's the only way we can avoid stupid bugs.
+",2010-07-19T14:19:01Z,2010-07-19T14:19:01Z
+2664165,2,"P.S. This commit is way too big. I'm having a hard time tracking down exactly why my callbacks aren't getting invoked. The weird thing is that when I start inserting console.error() calls to debug, then it seems to work as expected. Very strange.  @isaac""",2013-02-20 21:07:22,TooTallNate,joyent,node,86c0745a5ebd75a4a5fa69420dfde657a5e717bc,TooTallNate,71256,"P.S. This commit is way too big. I'm having a hard time tracking down exactly why my callbacks aren't getting invoked. The weird thing is that when I start inserting console.error() calls to debug, then it seems to work as expected. Very strange.
+
+@isaacs I think we should revert this (TooTallNate/node@5337d5218b873cc98adedcf115a2b1f1d59e779a if you want to cheery-pick). @trevnorris Would it be possible to re-submit this in a few more smaller more atomic commits? Maybe we could track down whatever is going wrong easier.
+",2013-02-21T08:07:22Z,2013-02-21T08:43:05Z
+429344,2,"Lame, but I give up.""",2011-06-13 22:06:38,tlrobinson,joyent,node,9967c369c9272335bb0343558673b689725c6d7c,tlrobinson,18193,"Lame, but I give up.
+",2011-06-14T10:06:38Z,2011-06-14T10:06:38Z
+430079,2,"I'm just not a fan of AMD for anything except a browser transport mechanism, but I'm not going to fight it any more.""",2011-06-14 06:05:51,tlrobinson,joyent,node,9967c369c9272335bb0343558673b689725c6d7c,tlrobinson,18193,"I'm just not a fan of AMD for anything except a browser transport mechanism, but I'm not going to fight it any more.
+",2011-06-14T18:05:51Z,2011-06-14T18:05:51Z
+415337,2,"Yes, fixed on the next commit, sorry about that.""",2011-06-05 05:30:48,isaacs,joyent,node,580ab7ba2c1e0c89f351759b31f65bfed451ba9d,isaacs,9287,"Yes, fixed on the next commit, sorry about that.
+",2011-06-05T17:30:48Z,2011-06-05T17:30:48Z
+267162,2,"this is kinda lame, still not progressive""",2011-02-10 06:04:06,visionmedia,joyent,node,b09c5889bee8388a6710ecf75d76ca242e0684bd,tj,25254,"this is kinda lame, still not progressive
+",2011-02-10T17:04:06Z,2011-02-10T17:04:06Z
+118241,2,"holy crap! did you just read my mind? http://github.com/ry/node/issues/issue/210#issue/210/comment/330101""",2010-07-27 16:06:25,dannycoates,joyent,node,b5b83b210bb9873cd6b5052e5f5d260eb1f9d2f9,dannycoates,87619,"holy crap! did you just read my mind? http://github.com/ry/node/issues/issue/210#issue/210/comment/330101
+",2010-07-28T04:06:25Z,2010-07-28T04:06:25Z
+82908,2,"What's with all the weird tags Ry?""",2010-05-21 09:32:53,TooTallNate,joyent,node,9514a4d5476225e8c8310ce5acae2857033bcaaa,TooTallNate,71256,"What's with all the weird tags Ry?
+",2010-05-21T21:32:53Z,2010-05-21T21:32:53Z
+1322767,2,"ah right right. js needs first-class mixins :(""",2012-05-11 12:42:36,visionmedia,joyent,node,38542f76a97e5c424aeada2e2dc8371797449335,tj,25254,"ah right right. js needs first-class mixins :(
+",2012-05-12T00:42:36Z,2012-05-12T00:44:08Z
+807476,2,"parens here is really weird""",2011-12-19 09:46:20,visionmedia,joyent,node,07b199738887ecce3d14d54cbf1f97f159759a19,tj,25254,"parens here is really weird
+",2011-12-19T20:46:20Z,2011-12-19T20:46:20Z
+343994,2,"Also break code in `if-else` statements without curly brackets :( Just have added `--cov` support to nodeunit, but it breaks itself. too mane `else-if` statements without {  }  I suggest to do not add coverage stuff to files, that not pass jslint test.  *U""",2011-04-14 20:12:51,anatoliychakkaev,joyent,node,b4ff36a41b242c0b379d3c27fb30818de54fe2d4,anatoliychakkaev,34927,"Also break code in `if-else` statements without curly brackets :(
+Just have added `--cov` support to nodeunit, but it breaks itself. too mane `else-if` statements without {  }
+
+I suggest to do not add coverage stuff to files, that not pass jslint test.
+
+_UPD_
+
+I have implemented this: when code did'n pass jslint, it just ignored, it is fine for me. If you found this solution acceptable, I will submit pull request. Only wanted to figure out correct way to use third-party modules in node (Douglas Crockford's fulljslint). Now I just place inside `/lib` folder.
+",2011-04-15T08:12:51Z,2011-04-15T09:28:09Z
+1964802,2,"Ugh.  ~/.node_libraries was such a mistake.  This makes me sad, but the people have spoken, I suppose.  LGTM.""",2012-10-08 11:58:39,isaacs,joyent,node,f9a5a917f4a7d9e0fa69a1e26126c19ff59fd44d,isaacs,9287,"Ugh.  ~/.node_libraries was such a mistake.  This makes me sad, but the people have spoken, I suppose.
+
+LGTM.
+",2012-10-08T23:58:39Z,2012-10-08T23:58:39Z
+3457620,1,"I'm pretty excited about node on android. I just started playing around with the nodecopter and would love to run my programs without having to lug my laptop around. """,2013-06-19 01:11:57,andythecoderman,joyent,node,5e4e8ec429381a8d1eebe31647e9daaaae42c54b,andythecoderman,1945002,"I'm pretty excited about node on android. I just started playing around with the nodecopter and would love to run my programs without having to lug my laptop around. 
+",2013-06-19T13:11:57Z,2013-06-19T13:11:57Z
+823455,0,"One liners please""",2011-12-27 19:06:10,koichik,joyent,node,09ee29318f32fdbe68d04188795bb6c760f4835c,koichik,355825,"+1 to deferred.
+",2011-12-28T06:06:10Z,2011-12-28T06:06:10Z
+2669147,0,"We need to signal """"done reading but no data yet and not EOF"""" for crypto streams.""",2013-02-21 09:17:48,isaacs,joyent,node,6bd450155c36f9e3dbaa8e4d6261e5e447af0a9a,isaacs,9287,"We need to signal ""done reading but no data yet and not EOF"" for crypto streams.
+",2013-02-21T20:17:48Z,2013-02-21T20:17:48Z
+696185,0,"this breaks tls-peer-certificate on windows""",2011-11-04 06:46:03,ry,joyent,node,0e8a55d2a22b88dc3b9b0165f344602b0fa8c977,ry,80,"this breaks tls-peer-certificate on windows
+",2011-11-04T17:46:03Z,2011-11-04T17:46:03Z
+341817,0,"I'm using """"!aNULL:!ADH:!eNull:!LOW:!EXP:RC4+RSA:MEDIUM:HIGH"""" and Chromium's flip_server is using that too and looks like most of google servers are configured that way too. But that won't work without setting SSL_OP_CIPHER_SERVER_PREFERENCE flag on SSL con""",2011-04-13 14:34:12,indutny,joyent,node,050bbf0bc482178b4b5f4c81c50e22f6bbcb6b13,indutny,238531,"I'm using ""!aNULL:!ADH:!eNull:!LOW:!EXP:RC4+RSA:MEDIUM:HIGH"" and Chromium's flip_server is using that too and looks like most of google servers are configured that way too. But that won't work without setting SSL_OP_CIPHER_SERVER_PREFERENCE flag on SSL context.
+",2011-04-14T02:34:12Z,2011-04-14T02:34:12Z
+267261,0,"i vote we white-list the obvious ones, and `res.setHeader('x-foo', 'bar', true)` for the others""",2011-02-10 07:28:14,visionmedia,joyent,node,b09c5889bee8388a6710ecf75d76ca242e0684bd,tj,25254,"i vote we white-list the obvious ones, and `res.setHeader('x-foo', 'bar', true)` for the others
+",2011-02-10T18:28:14Z,2011-02-10T18:28:14Z
+267727,0,"So how will the writeHead merge handle multiple headers?  If it's an array then append, otherwise overwrite?  There's some nuance here maybe.      res.setHeader('set-cookie', 'single-value');     res.writeHead(200, { 'set-cookie': ['more', 'cookies']});  I""",2011-02-10 14:17:18,polotek,joyent,node,b09c5889bee8388a6710ecf75d76ca242e0684bd,polotek,107142,"So how will the writeHead merge handle multiple headers?  If it's an array then append, otherwise overwrite?  There's some nuance here maybe.
+
+```
+res.setHeader('set-cookie', 'single-value');
+res.writeHead(200, { 'set-cookie': ['more', 'cookies']});
+```
+
+Is single-value added to the array? Or does the array overwrite the single-value?
+",2011-02-11T01:17:18Z,2011-02-11T01:17:47Z
+898981,0,"Yes, they are still necessary to support HTTP pipelining (server side) and connection pool (`Agent`, client side). `_buffer()` keeps data until a socket is assigned. When a socket is assigned, `_flush()` writes the buffered data to the socket.   The follow""",2012-01-24 17:18:20,koichik,joyent,node,60aea96f84c850615bac7a6e00ef28fab5ae18ae,koichik,355825,"Yes, they are still necessary to support HTTP pipelining (server side) and connection pool (`Agent`, client side).
+`_buffer()` keeps data until a socket is assigned. When a socket is assigned, `_flush()` writes the buffered data to the socket.
+
+The following comment explains the client side. If `Agent.maxSockets` is `1`, the socket is not yet assigned to `req2`. So, `'hello world\n'` is kept by `_buffer()`.
+",2012-01-25T04:18:20Z,2012-01-25T04:18:20Z
+904628,0,"@bnoordhuis - No, with HTTP pipelining, a following response is created before a preceding response is closed (a following response does not have a socket). When the preceding response emits `'finish'`, its socket is assigned to the next response.""",2012-01-26 05:07:56,koichik,joyent,node,60aea96f84c850615bac7a6e00ef28fab5ae18ae,koichik,355825,"@bnoordhuis - No, with HTTP pipelining, a following response is created before a preceding response is closed (a following response does not have a socket). When the preceding response emits `'finish'`, its socket is assigned to the next response.
+",2012-01-26T16:07:56Z,2012-01-26T16:07:56Z
+163773,2,"I agree with Tim on this, anything implemented so far just seems really hackish, and ultimately from experience many modules rely on their own state""",2010-10-06 23:06:50,visionmedia,joyent,node,1a2c1c8a96b4e05d496d05d99f7cf1f7c2fb1829,tj,25254,"I agree with Tim on this, anything implemented so far just seems really hackish, and ultimately from experience many modules rely on their own state
+",2010-10-07T11:06:50Z,2010-10-07T11:06:50Z
+39976,0,"I think maybe we should consider changing """"anchor"""" to """"hash"""", since that's the language used by window.location, and JavaScripters are likely to be somewhat familiar with that object.  (By that same logic, we'd have hash, host, hostname, href, pathname, po""",2009-12-26 17:55:19,isaacs,joyent,node,2f9722cca0a72122aa03763c085f6b5aa7f0ada2,isaacs,9287,"I think maybe we should consider changing ""anchor"" to ""hash"", since that's the language used by window.location, and JavaScripters are likely to be somewhat familiar with that object.  (By that same logic, we'd have hash, host, hostname, href, pathname, port, protocol, and search; some of those are kinda confusing, and I much prefer ""query"" to ""search"".)  Seems like a bikeshed.
+
+However, ""URI"" is certainly what this module is concerned with, in the general sense of ""a compact string of characters for identifying an abstract or physical resource"", consistent with many of the examples and semantics described in RFC 2396, by Berners-Lee, et. al. http://www.ietf.org/rfc/rfc2396.txt  For instance, it will parse, validate, and provide a meaningful toolkit for dealing with ""mailto:i@izs.me"" or ""xmpp:isaacschlueter@jabber.org/Adium-12345"" and so on.  Those are not ""resource locators"", but they are definitely ""resource identifiers"".
+
+That being said, it doesn't seem to _correctly_ parse these.  Without the ""//"", it doesn't seem to realize that anything following the ""protocol:"" is typically a user/domain information.  The reason for this is that it would make the ""resolve"" functionality more complicated.  (Without the authorityRoot, a href is resolved relative to the existing authority, but when treated as an absolute link, the authorityRoot is implied, which is weird, but that's the internet for ya.)
+
+If this issue bugs you, please bring it up on the nodejs google group list.  Your request will have lots more weight if you write a failing test case and send that along with your bug report.  For even more points, send a patch that makes it pass the test :)  Whatever bugs may exist, the purpose of the module is URIs in general, with some sugar for URLs, since they _are_ the sort of URI that is dealt with most often.
+",2009-12-27T04:55:19Z,2009-12-27T04:55:19Z
+39196,1,"You should consider it, because you will get better contributions. Trust me once your used to it, things are much easier to read. I do understand that people are set in their ways, but hey someone has to break the mold :P """,2009-12-18 08:29:30,visionmedia,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,tj,25254,"You should consider it, because you will get better contributions. Trust me once your used to it, things are much easier to read. I do understand that people are set in their ways, but hey someone has to break the mold :P 
+",2009-12-18T19:29:30Z,2009-12-18T19:29:30Z
+27982,0,"No - but you can still do [[""""Set-Cookie"""", """"cookie1""""], [""""Set-Cookie"""", """"cookie2""""], ... ] Perhaps how you suggest is better though...""",2009-08-23 01:17:14,ry,joyent,node,316e2833f017150d58392f5ee82d86438ec22d5f,ry,80,"No - but you can still do [[""Set-Cookie"", ""cookie1""], [""Set-Cookie"", ""cookie2""], ... ]
+Perhaps how you suggest is better though...
+",2009-08-23T13:17:14Z,2009-08-23T13:17:14Z
+1872356,0,"@richardhoffman that's like telling people to just convert binary string results back to a Buffer when using crypto functions. Sure you can do that, but why would you want to do it?""",2012-09-18 08:33:55,mscdex,joyent,node,63ff449d87e23b5e3d475da960135c1a2fd0ed58,mscdex,54666,"@richardhoffman that's like telling people to just convert binary string results back to a Buffer when using crypto functions. Sure you can do that, but why would you want to do it?
+",2012-09-18T20:33:55Z,2012-09-18T20:33:55Z
+4257620,2,"-1 for doing it in libuv, its too hacky for general users.""",2013-10-04 21:56:18,indutny,joyent,node,6820054d2d42ff9274ea0755bea59cfc4f26f353,indutny,238531,"-1 for doing it in libuv, its too hacky for general users.
+",2013-10-05T09:56:18Z,2013-10-05T09:56:18Z
+2866231,2,":( Sad that it was removed. Related discussion here: https://github.com/Bodule/Bodule/issues/3 If Node is compatible with the syntax `require """"name"""", ->`, we can do some hacks to reuse browser code in Node, and per se. The door was closed long time ago.""",2013-03-23 00:29:07,jiyinyiyong,joyent,node,bb08f0c219bf4ca99b1129f54ef415ce46b01f22,tiye,449224,":(
+Sad that it was removed. Related discussion here: https://github.com/Bodule/Bodule/issues/3
+If Node is compatible with the syntax `require ""name"", ->`, we can do some hacks to reuse browser code in Node, and per se.
+The door was closed long time ago.
+",2013-03-23T11:29:07Z,2013-03-23T11:29:07Z
+39489,2,"@raggi, The language does have a standard, it's terrible and specifies that the parsers implement these crazy rules.  If you understood the history of JavaScript and how it was never really thought through or designed it would make sense.  Ryan has made """,2009-12-21 05:15:24,creationix,joyent,node,7873639f55ce9d4b1cbc87542e54a74b60a7b293,creationix,89353,"@raggi, The language does have a standard, it's terrible and specifies that the parsers implement these crazy rules.  If you understood the history of JavaScript and how it was never really thought through or designed it would make sense.
+
+Ryan has made it clear that he wants to use vanilla V8 Javascript, I think that's a good idea.  The V8 guys have made it clear that they want to keep in sync with JavaScriptCore, and so basically, not following the spec, or even patching bugs in V8, if there were any, is not the place of node.
+
+And to clear up what I mean by the spec specifying the crazy whitespace sensitive rules, here is the relevant part of the official spec.
+
+https://gist.github.com/4658280967e5a1fba668
+
+Basically it says that semicolons ARE NOT optional to be valid code, but parsers are required to implement a pre-parser that tries to guess where to put the semicolons.  Hence, omitting them is both dangerous and slows down the parser because it has to ""repair"" your code first.
+",2009-12-21T16:15:24Z,2009-12-21T16:15:24Z
+94770,1,"Ah, that's very nice! : )  Should the StringDecoder now be documented?""",2010-06-15 19:19:19,felixge,joyent,node,6bed15e0748590e2589e64b151c3f4b8aab7ae78,felixge,15000,"Ah, that's very nice! : )
+
+Should the StringDecoder now be documented?
+",2010-06-16T07:19:19Z,2010-06-16T07:19:19Z
+27980,1,"I hope ideally that this also accepts the syntax of {""""Set-Cookie"""": ['cookie 1', 'cookie 2', 'cookie 3']} too. :)  That's how it's done in Camping, and in my Campy thingo. I think I had read somewhere that some http client (old browsers or some such thing""",2009-08-22 23:32:32,Bluebie,joyent,node,316e2833f017150d58392f5ee82d86438ec22d5f,Bluebie,12768,"I hope ideally that this also accepts the syntax of {""Set-Cookie"": ['cookie 1', 'cookie 2', 'cookie 3']} too. :)
+
+That's how it's done in Camping, and in my Campy thingo. I think I had read somewhere that some http client (old browsers or some such thing) had some difficulty coping with comma seperated multiple header values, though looking in to it I can't find any reference for that claim, so perhaps it's total bogus! Anyway, muchly like the new API. ^_^
+",2009-08-23T11:32:32Z,2009-08-23T11:32:32Z

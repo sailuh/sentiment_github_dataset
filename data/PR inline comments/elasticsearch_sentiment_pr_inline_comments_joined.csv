@@ -1,0 +1,1542 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+33645,1,"We need to think about optimizing here for the most common case. Which is a single alias. In this case, we don't really need to allocate a list. Might be an overkill, but stil.. :)""",2011-05-21 12:28:22,kimchy,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/955#discussion_r33645,2011-05-22T00:28:22Z,2011-05-22T01:16:42Z,kimchy,MEMBER,modules/elasticsearch/src/main/java/org/elasticsearch/index/aliases/IndexAliasesService.java,,73.0,,,73,"@@ -0,0 +1,132 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.index.aliases;
++
++import org.apache.lucene.search.*;
++import org.elasticsearch.common.Nullable;
++import org.elasticsearch.common.collect.ImmutableMap;
++import org.elasticsearch.common.collect.UnmodifiableIterator;
++import org.elasticsearch.common.compress.CompressedString;
++import org.elasticsearch.common.inject.Inject;
++import org.elasticsearch.common.settings.Settings;
++import org.elasticsearch.common.xcontent.XContentFactory;
++import org.elasticsearch.common.xcontent.XContentParser;
++import org.elasticsearch.index.AbstractIndexComponent;
++import org.elasticsearch.index.Index;
++import org.elasticsearch.index.query.IndexQueryParserService;
++import org.elasticsearch.index.query.xcontent.XContentIndexQueryParser;
++import org.elasticsearch.index.settings.IndexSettings;
++import org.elasticsearch.indices.AliasFilterParsingException;
++
++import java.io.IOException;
++import java.util.List;
++
++import static org.elasticsearch.common.collect.Lists.newArrayList;
++import static org.elasticsearch.common.collect.MapBuilder.newMapBuilder;
++
++/**
++ * @author imotov
++ */
++public class IndexAliasesService extends AbstractIndexComponent implements Iterable<IndexAlias> {
++
++    private final IndexQueryParserService indexQueryParserService;
++
++    private volatile ImmutableMap<String, IndexAlias> aliases = ImmutableMap.of();
++
++    private final Object mutex = new Object();
++
++    @Inject protected IndexAliasesService(Index index, @IndexSettings Settings indexSettings, IndexQueryParserService indexQueryParserService) {
++        super(index, indexSettings);
++        this.indexQueryParserService = indexQueryParserService;
++    }
++
++    public boolean hasAlias(String alias) {
++        return aliases.containsKey(alias);
++    }
++
++    public IndexAlias alias(String alias) {
++        return aliases.get(alias);
++    }
++
++    public void add(String alias, @Nullable CompressedString filter) {
++        add(new IndexAlias(alias, filter, parse(alias, filter)));
++    }
++
++    public Filter aliasFilter(String... indices) {","We need to think about optimizing here for the most common case. Which is a single alias. In this case, we don't really need to allocate a list. Might be an overkill, but stil.. :)
+",cb86bd081b54c90deab5944eaadfa57592e7b1cd
+4463242,0,"Do you mean, they could be base64 encoded? If so, do you know how to figure out how they were encoded?""",2013-05-30 06:21:02,brwe,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/3115#discussion_r4463242,2013-05-30T18:21:02Z,2013-06-07T18:30:15Z,brwe,CONTRIBUTOR,src/main/java/org/elasticsearch/action/termvector/TermVectorResponse.java,,,,,1,"@@ -0,0 +1,317 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this 
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.action.termvector;
++
++import java.io.IOException;
++import java.util.Iterator;
++import java.util.Set;
++
++import org.apache.lucene.index.DocsAndPositionsEnum;
++import org.apache.lucene.index.DocsEnum;
++import org.apache.lucene.index.Fields;
++import org.apache.lucene.index.Terms;
++import org.apache.lucene.index.TermsEnum;
++import org.apache.lucene.util.ArrayUtil;
++import org.apache.lucene.util.BytesRef;
++import org.apache.lucene.util.CharsRef;
++import org.apache.lucene.util.UnicodeUtil;
++import org.elasticsearch.ElasticSearchIllegalStateException;
++import org.elasticsearch.action.ActionResponse;
++import org.elasticsearch.common.bytes.BytesReference;
++import org.elasticsearch.common.io.stream.BytesStreamOutput;
++import org.elasticsearch.common.io.stream.StreamInput;
++import org.elasticsearch.common.io.stream.StreamOutput;
++import org.elasticsearch.common.xcontent.ToXContent;
++import org.elasticsearch.common.xcontent.XContentBuilder;
++import org.elasticsearch.common.xcontent.XContentBuilderString;
++
++import com.google.common.collect.Iterators;
++
++public class TermVectorResponse extends ActionResponse implements ToXContent {
++
++    private static class FieldStrings {
++        // term statistics strings
++        public static final XContentBuilderString TTF = new XContentBuilderString(""ttf"");
++        public static final XContentBuilderString DOC_FREQ = new XContentBuilderString(""doc_freq"");
++        public static final XContentBuilderString TERM_FREQ = new XContentBuilderString(""term_freq"");
++
++        // field statistics strings
++        public static final XContentBuilderString DOC_COUNT = new XContentBuilderString(""doc_count"");
++        public static final XContentBuilderString SUM_DOC_FREQ = new XContentBuilderString(""sum_doc_freq"");
++        public static final XContentBuilderString SUM_TTF = new XContentBuilderString(""sum_ttf"");
++
++        public static final XContentBuilderString POS = new XContentBuilderString(""pos"");
++        public static final XContentBuilderString START_OFFSET = new XContentBuilderString(""start"");
++        public static final XContentBuilderString END_OFFSET = new XContentBuilderString(""end"");
++        public static final XContentBuilderString PAYLOAD = new XContentBuilderString(""payload"");
++        public static final XContentBuilderString _INDEX = new XContentBuilderString(""_index"");
++        public static final XContentBuilderString _TYPE = new XContentBuilderString(""_type"");
++        public static final XContentBuilderString _ID = new XContentBuilderString(""_id"");
++        public static final XContentBuilderString _VERSION = new XContentBuilderString(""_version"");
++        public static final XContentBuilderString EXISTS = new XContentBuilderString(""exists"");
++        public static final XContentBuilderString TERMS = new XContentBuilderString(""terms"");
++        public static final XContentBuilderString TERM_VECTORS = new XContentBuilderString(""term_vectors"");
++
++    }
++
++    private BytesReference termVectors;
++    private BytesReference headerRef;
++    private String index;
++    private String type;
++    private String id;
++    private long docVersion;
++
++    private boolean sourceCopied = false;
++
++    int[] curentPositions = new int[0];
++    int[] currentStartOffset = new int[0];
++    int[] currentEndOffset = new int[0];
++    String[] currentPayloads = new String[0];
++
++    public TermVectorResponse(String index, String type, String id) {
++        this.index = index;
++        this.type = type;
++        this.id = id;
++    }
++
++    TermVectorResponse() {
++    }
++
++    @Override
++    public void writeTo(StreamOutput out) throws IOException {
++        out.writeString(index);
++        out.writeString(type);
++        out.writeString(id);
++        out.writeVLong(docVersion);
++        final boolean docExists = documentExists();
++        out.writeBoolean(docExists);
++        if (docExists) {
++            out.writeBytesReference(headerRef);
++            out.writeBytesReference(termVectors);
++        }
++    }
++
++    @Override
++    public void readFrom(StreamInput in) throws IOException {
++        index = in.readString();
++        type = in.readString();
++        id = in.readString();
++        docVersion = in.readVLong();
++        if (in.readBoolean()) {
++            headerRef = in.readBytesReference();
++            termVectors = in.readBytesReference();
++        }
++    }
++
++    public Fields getFields() throws IOException {
++        if (documentExists()) {
++            if (!sourceCopied) { // make the bytes safe
++                headerRef = headerRef.copyBytesArray();
++                termVectors = termVectors.copyBytesArray();
++            }
++            return new TermVectorFields(headerRef, termVectors);
++        } else {
++            return new Fields() {
++                @Override
++                public Iterator<String> iterator() {
++                    return Iterators.emptyIterator();
++                }
++
++                @Override
++                public Terms terms(String field) throws IOException {
++                    return null;
++                }
++
++                @Override
++                public int size() {
++                    return 0;
++                }
++            };
++        }
++
++    }
++
++    @Override
++    public XContentBuilder toXContent(XContentBuilder builder, Params params) throws IOException {
++        assert index != null;
++        assert type != null;
++        assert id != null;
++        builder.startObject();
++        builder.field(FieldStrings._INDEX, index);
++        builder.field(FieldStrings._TYPE, type);
++        builder.field(FieldStrings._ID, id);
++        builder.field(FieldStrings._VERSION, docVersion);
++        builder.field(FieldStrings.EXISTS, documentExists());
++        if (!documentExists()) {
++            builder.endObject();
++            return builder;
++        }
++        builder.startObject(FieldStrings.TERM_VECTORS);
++        final CharsRef spare = new CharsRef();
++        Fields theFields = getFields();
++        Iterator<String> fieldIter = theFields.iterator();
++        while (fieldIter.hasNext()) {
++            buildField(builder, spare, theFields, fieldIter);
++        }
++        builder.endObject();
++        builder.endObject();
++        return builder;
++
++    }
++
++    private void buildField(XContentBuilder builder, final CharsRef spare, Fields theFields, Iterator<String> fieldIter) throws IOException {
++        String fieldName = fieldIter.next();
++        builder.startObject(fieldName);
++        Terms curTerms = theFields.terms(fieldName);
++        // write field statistics
++        buildFieldStatistics(builder, curTerms);
++        builder.startObject(FieldStrings.TERMS);
++        TermsEnum termIter = curTerms.iterator(null);
++        for (int i = 0; i < curTerms.size(); i++) {
++            buildTerm(builder, spare, curTerms, termIter);
++        }
++        builder.endObject();
++        builder.endObject();
++    }
++
++    private void buildTerm(XContentBuilder builder, final CharsRef spare, Terms curTerms, TermsEnum termIter) throws IOException {
++        // start term, optimized writing
++        BytesRef term = termIter.next();
++        UnicodeUtil.UTF8toUTF16(term, spare);
++        builder.startObject(spare.toString());
++        buildTermStatistics(builder, termIter);
++        // finally write the term vectors
++        DocsAndPositionsEnum posEnum = termIter.docsAndPositions(null, null);
++        int termFreq = posEnum.freq();
++        builder.field(FieldStrings.TERM_FREQ, termFreq);
++        initMemory(curTerms, termFreq);
++        initValues(curTerms, posEnum, termFreq);
++        buildValues(builder, curTerms, termFreq);
++        builder.endObject();
++    }
++
++    private void buildTermStatistics(XContentBuilder builder, TermsEnum termIter) throws IOException {
++        // write term statistics. At this point we do not naturally have a
++        // boolean that says if these values actually were requested.
++        // However, we can assume that they were not if the statistic values are
++        // <= 0.
++        assert (((termIter.docFreq() > 0) && (termIter.totalTermFreq() > 0)) || ((termIter.docFreq() == -1) && (termIter.totalTermFreq() == -1)));
++        int docFreq = termIter.docFreq();
++        if (docFreq > 0) {
++            builder.field(FieldStrings.DOC_FREQ, docFreq);
++            builder.field(FieldStrings.TTF, termIter.totalTermFreq());
++        }
++    }
++
++    private void buildValues(XContentBuilder builder, Terms curTerms, int termFreq) throws IOException {
++        if (curTerms.hasPositions()) {
++            builder.field(FieldStrings.POS, 0, termFreq, curentPositions);
++        }
++        if (curTerms.hasOffsets()) {
++            builder.field(FieldStrings.START_OFFSET, 0, termFreq, currentStartOffset);
++            builder.field(FieldStrings.END_OFFSET, 0, termFreq, currentEndOffset);
++        }
++        if (curTerms.hasPayloads()) {
++            builder.array(FieldStrings.PAYLOAD, currentPayloads);
++        }
++    }
++
++    private void initValues(Terms curTerms, DocsAndPositionsEnum posEnum, int termFreq) throws IOException {
++        for (int j = 0; j < termFreq; j++) {
++            int nextPos = posEnum.nextPosition();
++            if (curTerms.hasPositions()) {
++                curentPositions[j] = nextPos;
++            }
++            if (curTerms.hasOffsets()) {
++                currentStartOffset[j] = posEnum.startOffset();
++                currentEndOffset[j] = posEnum.endOffset();
++            }
++            if (curTerms.hasPayloads()) {
++                currentPayloads[j] = posEnum.getPayload().utf8ToString();","Do you mean, they could be base64 encoded? If so, do you know how to figure out how they were encoded?
+",510cf2546528ba4f8357de75089bab99d0c33658
+33648,0,"Don't forget to close the parser here in the finally clause.""",2011-05-21 12:29:32,kimchy,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/955#discussion_r33648,2011-05-22T00:29:32Z,2011-05-22T01:16:42Z,kimchy,MEMBER,modules/elasticsearch/src/main/java/org/elasticsearch/index/aliases/IndexAliasesService.java,,126.0,,,126,"@@ -0,0 +1,132 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.index.aliases;
++
++import org.apache.lucene.search.*;
++import org.elasticsearch.common.Nullable;
++import org.elasticsearch.common.collect.ImmutableMap;
++import org.elasticsearch.common.collect.UnmodifiableIterator;
++import org.elasticsearch.common.compress.CompressedString;
++import org.elasticsearch.common.inject.Inject;
++import org.elasticsearch.common.settings.Settings;
++import org.elasticsearch.common.xcontent.XContentFactory;
++import org.elasticsearch.common.xcontent.XContentParser;
++import org.elasticsearch.index.AbstractIndexComponent;
++import org.elasticsearch.index.Index;
++import org.elasticsearch.index.query.IndexQueryParserService;
++import org.elasticsearch.index.query.xcontent.XContentIndexQueryParser;
++import org.elasticsearch.index.settings.IndexSettings;
++import org.elasticsearch.indices.AliasFilterParsingException;
++
++import java.io.IOException;
++import java.util.List;
++
++import static org.elasticsearch.common.collect.Lists.newArrayList;
++import static org.elasticsearch.common.collect.MapBuilder.newMapBuilder;
++
++/**
++ * @author imotov
++ */
++public class IndexAliasesService extends AbstractIndexComponent implements Iterable<IndexAlias> {
++
++    private final IndexQueryParserService indexQueryParserService;
++
++    private volatile ImmutableMap<String, IndexAlias> aliases = ImmutableMap.of();
++
++    private final Object mutex = new Object();
++
++    @Inject protected IndexAliasesService(Index index, @IndexSettings Settings indexSettings, IndexQueryParserService indexQueryParserService) {
++        super(index, indexSettings);
++        this.indexQueryParserService = indexQueryParserService;
++    }
++
++    public boolean hasAlias(String alias) {
++        return aliases.containsKey(alias);
++    }
++
++    public IndexAlias alias(String alias) {
++        return aliases.get(alias);
++    }
++
++    public void add(String alias, @Nullable CompressedString filter) {
++        add(new IndexAlias(alias, filter, parse(alias, filter)));
++    }
++
++    public Filter aliasFilter(String... indices) {
++        List<Filter> filters = newArrayList();
++        for (String alias : indices) {
++            // The list contains the index itself - no filtering needed
++            if (alias.equals(index.name())) {
++                return null;
++            }
++            IndexAlias indexAlias = aliases.get(alias);
++            if (indexAlias != null) {
++                // The list contains a non-filtering alias - no filtering needed
++                if (indexAlias.parsedFilter() == null) {
++                    return null;
++                } else {
++                    filters.add(indexAlias.parsedFilter());
++                }
++            }
++        }
++        if (filters.isEmpty()) {
++            return null;
++        }
++        if (filters.size() == 1) {
++            return filters.get(0);
++        } else {
++            BooleanFilter combined = new BooleanFilter();
++            for (Filter filter : filters) {
++                combined.add(new FilterClause(filter, BooleanClause.Occur.SHOULD));
++            }
++            return combined;
++        }
++    }
++
++    private void add(IndexAlias indexAlias) {
++        synchronized (mutex) {
++            aliases = newMapBuilder(aliases).put(indexAlias.alias(), indexAlias).immutableMap();
++        }
++    }
++
++    public void remove(String alias) {
++        synchronized (mutex) {
++            aliases = newMapBuilder(aliases).remove(alias).immutableMap();
++        }
++    }
++
++    private Filter parse(String alias, CompressedString filter) {
++        if (filter == null) {
++            return null;
++        }
++        XContentIndexQueryParser indexQueryParser = (XContentIndexQueryParser) indexQueryParserService.defaultIndexQueryParser();
++        try {
++            byte[] filterSource = filter.uncompressed();
++            XContentParser parser = XContentFactory.xContent(filterSource).createParser(filterSource);","Don't forget to close the parser here in the finally clause.
+",cb86bd081b54c90deab5944eaadfa57592e7b1cd
+33650,1,"Right, then parsedFilter is also Nullable :), also, for completeness, you can mark the filter() and parsedFilter() methods as Nullable""",2011-05-21 12:31:22,kimchy,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/955#discussion_r33650,2011-05-22T00:31:22Z,2011-05-22T01:16:42Z,kimchy,MEMBER,modules/elasticsearch/src/main/java/org/elasticsearch/index/aliases/IndexAlias.java,,,,,1,"@@ -0,0 +1,56 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.index.aliases;
++
++import org.apache.lucene.search.Filter;
++import org.elasticsearch.common.Nullable;
++import org.elasticsearch.common.compress.CompressedString;
++
++/**
++ * @author imotov
++ */
++public class IndexAlias {
++
++    private String alias;
++
++    private CompressedString filter;
++
++    private Filter parsedFilter;
++
++    public IndexAlias(String alias, @Nullable CompressedString filter, Filter parsedFilter) {","Right, then parsedFilter is also Nullable :), also, for completeness, you can mark the filter() and parsedFilter() methods as Nullable
+",cb86bd081b54c90deab5944eaadfa57592e7b1cd
+3270683,0,"I think most proxies will set the """"X-Forwarded-Ssl"""" http header variable, or the """"X-Forwarded-Proto"""" header (set to """"https""""). So you would have to check for this header and return the appropriate protocol. This specific use-case is getting more complex th""",2013-03-06 11:07:06,spinscale,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/2723#discussion_r3270683,2013-03-06T22:07:06Z,2013-03-08T12:45:26Z,spinscale,CONTRIBUTOR,src/main/java/org/elasticsearch/http/HttpServer.java,,211.0,,,49,"@@ -191,6 +195,21 @@ void handlePluginSite(HttpRequest request, HttpChannel channel) {
+         }
+     }
+ 
++    private String getRedirectUrl(HttpRequest request) {
++        String hostname;
++        if (Strings.isNullOrEmpty(request.header(""Host""))) {
++            InetSocketTransportAddress transportAddress = (InetSocketTransportAddress)transport.boundAddress().boundAddress();
++            try {
++                hostname = InetAddress.getLocalHost().getHostName() + "":"" + transportAddress.address().getPort();
++            } catch (UnknownHostException e) {
++                hostname = transportAddress.address().getHostString() + "":"" + transportAddress.address().getPort();
++            }
++        } else {
++            hostname = request.header(""Host"");
++        }
++
++        return ""http://"" + hostname + request.rawPath() + ""/"";","I think most proxies will set the ""X-Forwarded-Ssl"" http header variable, or the ""X-Forwarded-Proto"" header (set to ""https""). So you would have to check for this header and return the appropriate protocol. This specific use-case is getting more complex than intended (I still think, that being able to add headers is good).
+",3ce1914e9af9795de7106f5f48c3d0cbe6825f2c
+4456124,0,"I think we shouldn't assume that the payloads are UTF-8 strings. Maybe it should rather be base64-encoded?""",2013-05-30 01:14:26,jpountz,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/3115#discussion_r4456124,2013-05-30T13:14:26Z,2013-06-07T18:30:15Z,jpountz,CONTRIBUTOR,src/main/java/org/elasticsearch/action/termvector/TermVectorResponse.java,,,,,1,"@@ -0,0 +1,317 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this 
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.action.termvector;
++
++import java.io.IOException;
++import java.util.Iterator;
++import java.util.Set;
++
++import org.apache.lucene.index.DocsAndPositionsEnum;
++import org.apache.lucene.index.DocsEnum;
++import org.apache.lucene.index.Fields;
++import org.apache.lucene.index.Terms;
++import org.apache.lucene.index.TermsEnum;
++import org.apache.lucene.util.ArrayUtil;
++import org.apache.lucene.util.BytesRef;
++import org.apache.lucene.util.CharsRef;
++import org.apache.lucene.util.UnicodeUtil;
++import org.elasticsearch.ElasticSearchIllegalStateException;
++import org.elasticsearch.action.ActionResponse;
++import org.elasticsearch.common.bytes.BytesReference;
++import org.elasticsearch.common.io.stream.BytesStreamOutput;
++import org.elasticsearch.common.io.stream.StreamInput;
++import org.elasticsearch.common.io.stream.StreamOutput;
++import org.elasticsearch.common.xcontent.ToXContent;
++import org.elasticsearch.common.xcontent.XContentBuilder;
++import org.elasticsearch.common.xcontent.XContentBuilderString;
++
++import com.google.common.collect.Iterators;
++
++public class TermVectorResponse extends ActionResponse implements ToXContent {
++
++    private static class FieldStrings {
++        // term statistics strings
++        public static final XContentBuilderString TTF = new XContentBuilderString(""ttf"");
++        public static final XContentBuilderString DOC_FREQ = new XContentBuilderString(""doc_freq"");
++        public static final XContentBuilderString TERM_FREQ = new XContentBuilderString(""term_freq"");
++
++        // field statistics strings
++        public static final XContentBuilderString DOC_COUNT = new XContentBuilderString(""doc_count"");
++        public static final XContentBuilderString SUM_DOC_FREQ = new XContentBuilderString(""sum_doc_freq"");
++        public static final XContentBuilderString SUM_TTF = new XContentBuilderString(""sum_ttf"");
++
++        public static final XContentBuilderString POS = new XContentBuilderString(""pos"");
++        public static final XContentBuilderString START_OFFSET = new XContentBuilderString(""start"");
++        public static final XContentBuilderString END_OFFSET = new XContentBuilderString(""end"");
++        public static final XContentBuilderString PAYLOAD = new XContentBuilderString(""payload"");
++        public static final XContentBuilderString _INDEX = new XContentBuilderString(""_index"");
++        public static final XContentBuilderString _TYPE = new XContentBuilderString(""_type"");
++        public static final XContentBuilderString _ID = new XContentBuilderString(""_id"");
++        public static final XContentBuilderString _VERSION = new XContentBuilderString(""_version"");
++        public static final XContentBuilderString EXISTS = new XContentBuilderString(""exists"");
++        public static final XContentBuilderString TERMS = new XContentBuilderString(""terms"");
++        public static final XContentBuilderString TERM_VECTORS = new XContentBuilderString(""term_vectors"");
++
++    }
++
++    private BytesReference termVectors;
++    private BytesReference headerRef;
++    private String index;
++    private String type;
++    private String id;
++    private long docVersion;
++
++    private boolean sourceCopied = false;
++
++    int[] curentPositions = new int[0];
++    int[] currentStartOffset = new int[0];
++    int[] currentEndOffset = new int[0];
++    String[] currentPayloads = new String[0];
++
++    public TermVectorResponse(String index, String type, String id) {
++        this.index = index;
++        this.type = type;
++        this.id = id;
++    }
++
++    TermVectorResponse() {
++    }
++
++    @Override
++    public void writeTo(StreamOutput out) throws IOException {
++        out.writeString(index);
++        out.writeString(type);
++        out.writeString(id);
++        out.writeVLong(docVersion);
++        final boolean docExists = documentExists();
++        out.writeBoolean(docExists);
++        if (docExists) {
++            out.writeBytesReference(headerRef);
++            out.writeBytesReference(termVectors);
++        }
++    }
++
++    @Override
++    public void readFrom(StreamInput in) throws IOException {
++        index = in.readString();
++        type = in.readString();
++        id = in.readString();
++        docVersion = in.readVLong();
++        if (in.readBoolean()) {
++            headerRef = in.readBytesReference();
++            termVectors = in.readBytesReference();
++        }
++    }
++
++    public Fields getFields() throws IOException {
++        if (documentExists()) {
++            if (!sourceCopied) { // make the bytes safe
++                headerRef = headerRef.copyBytesArray();
++                termVectors = termVectors.copyBytesArray();
++            }
++            return new TermVectorFields(headerRef, termVectors);
++        } else {
++            return new Fields() {
++                @Override
++                public Iterator<String> iterator() {
++                    return Iterators.emptyIterator();
++                }
++
++                @Override
++                public Terms terms(String field) throws IOException {
++                    return null;
++                }
++
++                @Override
++                public int size() {
++                    return 0;
++                }
++            };
++        }
++
++    }
++
++    @Override
++    public XContentBuilder toXContent(XContentBuilder builder, Params params) throws IOException {
++        assert index != null;
++        assert type != null;
++        assert id != null;
++        builder.startObject();
++        builder.field(FieldStrings._INDEX, index);
++        builder.field(FieldStrings._TYPE, type);
++        builder.field(FieldStrings._ID, id);
++        builder.field(FieldStrings._VERSION, docVersion);
++        builder.field(FieldStrings.EXISTS, documentExists());
++        if (!documentExists()) {
++            builder.endObject();
++            return builder;
++        }
++        builder.startObject(FieldStrings.TERM_VECTORS);
++        final CharsRef spare = new CharsRef();
++        Fields theFields = getFields();
++        Iterator<String> fieldIter = theFields.iterator();
++        while (fieldIter.hasNext()) {
++            buildField(builder, spare, theFields, fieldIter);
++        }
++        builder.endObject();
++        builder.endObject();
++        return builder;
++
++    }
++
++    private void buildField(XContentBuilder builder, final CharsRef spare, Fields theFields, Iterator<String> fieldIter) throws IOException {
++        String fieldName = fieldIter.next();
++        builder.startObject(fieldName);
++        Terms curTerms = theFields.terms(fieldName);
++        // write field statistics
++        buildFieldStatistics(builder, curTerms);
++        builder.startObject(FieldStrings.TERMS);
++        TermsEnum termIter = curTerms.iterator(null);
++        for (int i = 0; i < curTerms.size(); i++) {
++            buildTerm(builder, spare, curTerms, termIter);
++        }
++        builder.endObject();
++        builder.endObject();
++    }
++
++    private void buildTerm(XContentBuilder builder, final CharsRef spare, Terms curTerms, TermsEnum termIter) throws IOException {
++        // start term, optimized writing
++        BytesRef term = termIter.next();
++        UnicodeUtil.UTF8toUTF16(term, spare);
++        builder.startObject(spare.toString());
++        buildTermStatistics(builder, termIter);
++        // finally write the term vectors
++        DocsAndPositionsEnum posEnum = termIter.docsAndPositions(null, null);
++        int termFreq = posEnum.freq();
++        builder.field(FieldStrings.TERM_FREQ, termFreq);
++        initMemory(curTerms, termFreq);
++        initValues(curTerms, posEnum, termFreq);
++        buildValues(builder, curTerms, termFreq);
++        builder.endObject();
++    }
++
++    private void buildTermStatistics(XContentBuilder builder, TermsEnum termIter) throws IOException {
++        // write term statistics. At this point we do not naturally have a
++        // boolean that says if these values actually were requested.
++        // However, we can assume that they were not if the statistic values are
++        // <= 0.
++        assert (((termIter.docFreq() > 0) && (termIter.totalTermFreq() > 0)) || ((termIter.docFreq() == -1) && (termIter.totalTermFreq() == -1)));
++        int docFreq = termIter.docFreq();
++        if (docFreq > 0) {
++            builder.field(FieldStrings.DOC_FREQ, docFreq);
++            builder.field(FieldStrings.TTF, termIter.totalTermFreq());
++        }
++    }
++
++    private void buildValues(XContentBuilder builder, Terms curTerms, int termFreq) throws IOException {
++        if (curTerms.hasPositions()) {
++            builder.field(FieldStrings.POS, 0, termFreq, curentPositions);
++        }
++        if (curTerms.hasOffsets()) {
++            builder.field(FieldStrings.START_OFFSET, 0, termFreq, currentStartOffset);
++            builder.field(FieldStrings.END_OFFSET, 0, termFreq, currentEndOffset);
++        }
++        if (curTerms.hasPayloads()) {
++            builder.array(FieldStrings.PAYLOAD, currentPayloads);
++        }
++    }
++
++    private void initValues(Terms curTerms, DocsAndPositionsEnum posEnum, int termFreq) throws IOException {
++        for (int j = 0; j < termFreq; j++) {
++            int nextPos = posEnum.nextPosition();
++            if (curTerms.hasPositions()) {
++                curentPositions[j] = nextPos;
++            }
++            if (curTerms.hasOffsets()) {
++                currentStartOffset[j] = posEnum.startOffset();
++                currentEndOffset[j] = posEnum.endOffset();
++            }
++            if (curTerms.hasPayloads()) {
++                currentPayloads[j] = posEnum.getPayload().utf8ToString();","I think we shouldn't assume that the payloads are UTF-8 strings. Maybe it should rather be base64-encoded?
+",510cf2546528ba4f8357de75089bab99d0c33658
+6220502,1,"Okay, that makes sense. I'll change it to debug.  Better explanations would be nice, would definitely be a neat feature.""",2013-09-06 09:28:05,dakrone,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/3637#discussion_r6220502,2013-09-06T21:28:05Z,2013-09-09T15:48:31Z,dakrone,MEMBER,src/main/java/org/elasticsearch/cluster/routing/allocation/decider/DiskThresholdDecider.java,,,,,1,"@@ -0,0 +1,325 @@
++/*
++ * Licensed to ElasticSearch and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. ElasticSearch licenses this
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.cluster.routing.allocation.decider;
++
++import org.elasticsearch.ElasticSearchParseException;
++import org.elasticsearch.cluster.ClusterInfo;
++import org.elasticsearch.cluster.DiskUsage;
++import org.elasticsearch.cluster.routing.RoutingNode;
++import org.elasticsearch.cluster.routing.ShardRouting;
++import org.elasticsearch.cluster.routing.allocation.RoutingAllocation;
++import org.elasticsearch.common.inject.Inject;
++import org.elasticsearch.common.settings.ImmutableSettings;
++import org.elasticsearch.common.settings.Settings;
++import org.elasticsearch.common.unit.ByteSizeValue;
++import org.elasticsearch.node.settings.NodeSettingsService;
++
++import java.util.Map;
++
++import static org.elasticsearch.cluster.InternalClusterInfoService.shardIdentifierFromRouting;
++
++/**
++ * The {@link DiskThresholdDecider} checks that the node a shard is potentially
++ * being allocated to has enough disk space.
++ *
++ * It has three configurable settings, all of which can be changed dynamically:
++ *
++ * <code>cluster.routing.allocation.disk.watermark.low</code> is the low disk
++ * watermark. New shards will not allocated to a node with usage higher than this,
++ * although this watermark may be passed by allocating a shard. It defaults to
++ * 70.0%.
++ *
++ * <code>cluster.routing.allocation.disk.watermark.high</code> is the high disk
++ * watermark. If a node has usage higher than this, shards are not allowed to
++ * remain on the node. In addition, if allocating a shard to a node causes the
++ * node to pass this watermark, it will not be allowed. It defaults to 85.0%.
++ *
++ * Both watermark settings are expressed in terms of used disk percentage, or
++ * exact byte values for free space (like ""500mb"")
++ *
++ * <code>cluster.routing.allocation.disk.threshold_enabled</code> is used to
++ * enable or disable this decider. It defaults to false (disabled).
++ */
++public class DiskThresholdDecider extends AllocationDecider {
++
++    private volatile Double freeDiskThresholdLow;
++    private volatile Double freeDiskThresholdHigh;
++    private volatile ByteSizeValue freeBytesThresholdLow;
++    private volatile ByteSizeValue freeBytesThresholdHigh;
++    private volatile boolean enabled;
++
++    public static final String CLUSTER_ROUTING_ALLOCATION_DISK_THRESHOLD_ENABLED = ""cluster.routing.allocation.disk.threshold_enabled"";
++    public static final String CLUSTER_ROUTING_ALLOCATION_LOW_DISK_WATERMARK = ""cluster.routing.allocation.disk.watermark.low"";
++    public static final String CLUSTER_ROUTING_ALLOCATION_HIGH_DISK_WATERMARK = ""cluster.routing.allocation.disk.watermark.high"";
++
++    class ApplySettings implements NodeSettingsService.Listener {
++        @Override
++        public void onRefreshSettings(Settings settings) {
++            String newLowWatermark = settings.get(CLUSTER_ROUTING_ALLOCATION_LOW_DISK_WATERMARK, null);
++            String newHighWatermark = settings.get(CLUSTER_ROUTING_ALLOCATION_HIGH_DISK_WATERMARK, null);
++            Boolean newEnableSetting =  settings.getAsBoolean(CLUSTER_ROUTING_ALLOCATION_DISK_THRESHOLD_ENABLED, null);
++
++            if (newEnableSetting != null) {
++                logger.info(""updating [{}] from [{}] to [{}]"", CLUSTER_ROUTING_ALLOCATION_DISK_THRESHOLD_ENABLED,
++                        DiskThresholdDecider.this.enabled, newEnableSetting);
++                DiskThresholdDecider.this.enabled = newEnableSetting;
++            }
++            if (newLowWatermark != null) {
++                if (!validWatermarkSetting(newLowWatermark)) {
++                    throw new ElasticSearchParseException(""Unable to parse low watermark: ["" + newLowWatermark + ""]"");
++                }
++                logger.info(""updating [{}] to [{}]"", CLUSTER_ROUTING_ALLOCATION_LOW_DISK_WATERMARK, newLowWatermark);
++                DiskThresholdDecider.this.freeDiskThresholdLow = 100.0 - thresholdPercentageFromWatermark(newLowWatermark);
++                DiskThresholdDecider.this.freeBytesThresholdLow = thresholdBytesFromWatermark(newLowWatermark);
++            }
++            if (newHighWatermark != null) {
++                if (!validWatermarkSetting(newHighWatermark)) {
++                    throw new ElasticSearchParseException(""Unable to parse high watermark: ["" + newHighWatermark + ""]"");
++                }
++                logger.info(""updating [{}] to [{}]"", CLUSTER_ROUTING_ALLOCATION_HIGH_DISK_WATERMARK, newHighWatermark);
++                DiskThresholdDecider.this.freeDiskThresholdHigh = 100.0 - thresholdPercentageFromWatermark(newHighWatermark);
++                DiskThresholdDecider.this.freeBytesThresholdHigh = thresholdBytesFromWatermark(newHighWatermark);
++            }
++        }
++    }
++
++    public DiskThresholdDecider() {
++        this(ImmutableSettings.Builder.EMPTY_SETTINGS);
++    }
++
++    public DiskThresholdDecider(Settings settings) {
++        this(settings, new NodeSettingsService(settings));
++    }
++
++    @Inject
++    protected DiskThresholdDecider(Settings settings, NodeSettingsService nodeSettingsService) {
++        super(settings);
++        String lowWatermark = settings.get(CLUSTER_ROUTING_ALLOCATION_LOW_DISK_WATERMARK, ""70.0"");
++        String highWatermark = settings.get(CLUSTER_ROUTING_ALLOCATION_HIGH_DISK_WATERMARK, ""85.0"");
++
++        if (!validWatermarkSetting(lowWatermark)) {
++            throw new ElasticSearchParseException(""Unable to parse low watermark: ["" + lowWatermark + ""]"");
++        }
++        if (!validWatermarkSetting(highWatermark)) {
++            throw new ElasticSearchParseException(""Unable to parse high watermark: ["" + highWatermark + ""]"");
++        }
++        // Watermark is expressed in terms of used data, but we need ""free"" data watermark
++        this.freeDiskThresholdLow = 100.0 - thresholdPercentageFromWatermark(lowWatermark);
++        this.freeDiskThresholdHigh = 100.0 - thresholdPercentageFromWatermark(highWatermark);
++
++        this.freeBytesThresholdLow = thresholdBytesFromWatermark(lowWatermark);
++        this.freeBytesThresholdHigh = thresholdBytesFromWatermark(highWatermark);
++
++        this.enabled = settings.getAsBoolean(CLUSTER_ROUTING_ALLOCATION_DISK_THRESHOLD_ENABLED, false);
++        nodeSettingsService.addListener(new ApplySettings());
++    }
++
++    public Decision canAllocate(ShardRouting shardRouting, RoutingNode node, RoutingAllocation allocation) {
++        if (!enabled) {
++            return Decision.YES;
++        }
++        // Allow allocation regardless if only a single node is available
++        if (allocation.nodes().size() <= 1) {
++            return Decision.YES;
++        }
++
++        ClusterInfo clusterInfo = allocation.clusterInfo();
++        if (clusterInfo == null) {
++            logger.warn(""Cluster info unavailable for disk threshold decider, allowing allocation."");
++            return Decision.YES;
++        }
++
++        Map<String, DiskUsage> usages = clusterInfo.getNodeDiskUsages();
++        Map<String, Long> shardSizes = clusterInfo.getShardSizes();
++        if (usages.isEmpty()) {
++            if (logger.isTraceEnabled()) {
++                logger.trace(""Unable to determine disk usages for disk-aware allocation, allowing allocation"");
++            }
++            return Decision.YES;
++        }
++
++        DiskUsage usage = usages.get(node.nodeId());
++        if (usage == null) {
++            // If there is no usage, and we have other nodes in the cluster,
++            // use the average usage for all nodes as the usage for this node
++            usage = averageUsage(node, usages);
++            logger.warn(""Unable to determine disk usage for [{}], defaulting to average across nodes [{} total] [{} free] [{}% free]"",
++                    node.nodeId(), usage.getTotalBytes(), usage.getFreeBytes(), usage.getFreeDiskAsPercentage());
++        }
++
++        // First, check that the node currently over the low watermark
++        double freeDiskPercentage = usage.getFreeDiskAsPercentage();
++        long freeBytes = usage.getFreeBytes();
++        if (logger.isDebugEnabled()) {
++            logger.debug(""Node [{}] has {}% free disk"", node.nodeId(), freeDiskPercentage);
++        }
++        if (freeBytes < freeBytesThresholdLow.bytes()) {
++            logger.warn(""Less than the required {} free bytes threshold ({} bytes free) on node {}, preventing allocation"",
++                    freeBytesThresholdLow, freeBytes, node.nodeId());
++            return Decision.NO;
++        }
++        if (freeDiskPercentage < freeDiskThresholdLow) {
++            logger.warn(""Less than the required {}% free disk threshold ({}% free) on node [{}], preventing allocation"",
++                    freeDiskThresholdLow, freeDiskPercentage, node.nodeId());","Okay, that makes sense. I'll change it to debug.
+
+Better explanations would be nice, would definitely be a neat feature.
+",7d52d587470104ba451f24564ec2aa2be4214f70
+33646,0,"Will make it public.  On Sat, May 21, 2011 at 8:27 PM, kimchy < reply@reply.github.com>wrote:  > > + > > +import static org.elasticsearch.common.collect.Lists.newArrayList; > > +import static org.elasticsearch.common.collect.MapBuilder.newMapBuilder; > > """,2011-05-21 12:28:31,imotov,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/955#discussion_r33646,2011-05-22T00:28:31Z,2011-05-22T01:16:42Z,imotov,CONTRIBUTOR,modules/elasticsearch/src/main/java/org/elasticsearch/index/aliases/IndexAliasesService.java,,,,,1,"@@ -0,0 +1,132 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.index.aliases;
++
++import org.apache.lucene.search.*;
++import org.elasticsearch.common.Nullable;
++import org.elasticsearch.common.collect.ImmutableMap;
++import org.elasticsearch.common.collect.UnmodifiableIterator;
++import org.elasticsearch.common.compress.CompressedString;
++import org.elasticsearch.common.inject.Inject;
++import org.elasticsearch.common.settings.Settings;
++import org.elasticsearch.common.xcontent.XContentFactory;
++import org.elasticsearch.common.xcontent.XContentParser;
++import org.elasticsearch.index.AbstractIndexComponent;
++import org.elasticsearch.index.Index;
++import org.elasticsearch.index.query.IndexQueryParserService;
++import org.elasticsearch.index.query.xcontent.XContentIndexQueryParser;
++import org.elasticsearch.index.settings.IndexSettings;
++import org.elasticsearch.indices.AliasFilterParsingException;
++
++import java.io.IOException;
++import java.util.List;
++
++import static org.elasticsearch.common.collect.Lists.newArrayList;
++import static org.elasticsearch.common.collect.MapBuilder.newMapBuilder;
++
++/**
++ * @author imotov
++ */
++public class IndexAliasesService extends AbstractIndexComponent implements Iterable<IndexAlias> {
++
++    private final IndexQueryParserService indexQueryParserService;
++
++    private volatile ImmutableMap<String, IndexAlias> aliases = ImmutableMap.of();
++
++    private final Object mutex = new Object();
++
++    @Inject protected IndexAliasesService(Index index, @IndexSettings Settings indexSettings, IndexQueryParserService indexQueryParserService) {","Will make it public.
+
+On Sat, May 21, 2011 at 8:27 PM, kimchy <
+reply@reply.github.com>wrote:
+
+> > +
+> > +import static org.elasticsearch.common.collect.Lists.newArrayList;
+> > +import static org.elasticsearch.common.collect.MapBuilder.newMapBuilder;
+> > +
+> > +/**
+> > - \* @author imotov
+> > - */
+> >   +public class IndexAliasesService extends AbstractIndexComponent
+> >   implements Iterable<IndexAlias> {
+> >   +
+> > -    private final IndexQueryParserService indexQueryParserService;
+> >   +
+> > -    private volatile ImmutableMap<String, IndexAlias> aliases =
+> >   ImmutableMap.of();
+> >   +
+> > -    private final Object mutex = new Object();
+> >   +
+> > -    @Inject protected IndexAliasesService(Index index, @IndexSettings
+> >   Settings indexSettings, IndexQueryParserService indexQueryParserService) {
+> 
+> Why not public? Will make reflection faster for guice.
+> 
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> https://github.com/elasticsearch/elasticsearch/pull/955/files#r33644
+",cb86bd081b54c90deab5944eaadfa57592e7b1cd
+6779808,0,"So this loads docvalues? and touched the terms, termsenum, tv etc?""",2013-10-04 09:37:21,martijnvg,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/3830#discussion_r6779808,2013-10-04T21:37:21Z,2013-10-08T14:40:31Z,martijnvg,MEMBER,src/main/java/org/elasticsearch/search/SearchService.java,,637.0,,,56,"@@ -618,36 +631,130 @@ private void processScroll(InternalScrollSearchRequest request, SearchContext co
+         }
+     }
+ 
++    static class IndexReaderWarmer extends IndicesWarmer.Listener {
++
++        private final SimpleMergedSegmentWarmer warmer = new SimpleMergedSegmentWarmer(InfoStream.NO_OUTPUT);","So this loads docvalues? and touched the terms, termsenum, tv etc?
+",653f6a6c606b80414f4140a2c8f4b085b36e9895
+4586686,0,"Not sure if we need to do that it's just one entry per field though.""",2013-06-06 23:36:12,s1monw,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/3115#discussion_r4586686,2013-06-07T11:36:12Z,2013-06-07T18:30:15Z,s1monw,CONTRIBUTOR,src/main/java/org/elasticsearch/action/termvector/TermVectorFields.java,,,,,1,"@@ -0,0 +1,470 @@
++/*
++ * Licensed to ElasticSearch and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. ElasticSearch licenses this
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.action.termvector;
++
++import java.io.IOException;
++import java.util.Comparator;
++import java.util.HashMap;
++import java.util.Iterator;
++import java.util.Map;
++
++import org.apache.lucene.index.DocsAndPositionsEnum;
++import org.apache.lucene.index.DocsEnum;
++import org.apache.lucene.index.Fields;
++import org.apache.lucene.index.Terms;
++import org.apache.lucene.index.TermsEnum;
++import org.apache.lucene.util.ArrayUtil;
++import org.apache.lucene.util.Bits;
++import org.apache.lucene.util.BytesRef;
++import org.apache.lucene.util.RamUsageEstimator;
++import org.elasticsearch.ElasticSearchException;
++import org.elasticsearch.common.bytes.BytesReference;
++import org.elasticsearch.common.io.stream.BytesStreamInput;
++import static org.apache.lucene.util.ArrayUtil.grow;
++
++/**
++ * This class represents the result of a {@link TermVectorRequest}. It works
++ * exactly like the {@link Fields} class except for one thing: It can return
++ * offsets and payloads even if positions are not present. You must call
++ * nextPosition() anyway to move the counter although this method only returns
++ * <tt>-1,</tt>, if no positions were returned by the {@link TermVectorRequest}.
++ * 
++ * The data is stored in two byte arrays ({@code headerRef} and
++ * {@code termVectors}, both {@link ByteRef}) that have the following format:
++ * <p>
++ * {@code headerRef}: Stores offsets per field in the {@code termVectors} array
++ * and some header information as {@link BytesRef}. Format is
++ * <ul>
++ * <li>String : ""TV""</li>
++ * <li>vint: version (=-1)</li>
++ * <li>boolean: hasTermStatistics (are the term statistics stored?)</li>
++ * <li>boolean: hasFieldStatitsics (are the field statistics stored?)</li>
++ * <li>vint: number of fields</li>
++ * <ul>
++ * <li>String: field name 1</li>
++ * <li>vint: offset in {@code termVectors} for field 1</li>
++ * <li>...</li>
++ * <li>String: field name last field</li>
++ * <li>vint: offset in {@code termVectors} for last field</li>
++ * </ul>
++ * </ul>
++ * 
++ * termVectors: Stores the actual term vectors as a {@link BytesRef}.
++ * 
++ * Term vectors for each fields are stored in blocks, one for each field. The
++ * offsets in {@code headerRef} are used to find where the block for a field
++ * starts. Each block begins with a
++ * <ul>
++ * <li>vint: number of terms</li>
++ * <li>boolean: positions (has it positions stored?)</li>
++ * <li>boolean: offsets (has it offsets stored?)</li>
++ * <li>boolean: payloads (has it payloads stored?)</li>
++ * </ul>
++ * If the field statistics were requested ({@code hasFieldStatistics} is true,
++ * see {@code headerRef}), the following numbers are stored:
++ * <ul>
++ * <li>vlong: sum of total term freqencies of the field (sumTotalTermFreq)</li>
++ * <li>vlong: sum of document frequencies for each term (sumDocFreq)</li>
++ * <li>vint: number of documents in the shard that has an entry for this field
++ * (docCount)</li>
++ * </ul>
++ * 
++ * After that, for each term it stores
++ * <ul>
++ * <ul>
++ * <li>vint: term lengths</li>
++ * <li>BytesRef: term name</li>
++ * </ul>
++ * 
++ * If term statistics are requested ({@code hasTermStatistics} is true, see
++ * {@code headerRef}):
++ * <ul>
++ * <li>vint: document frequency, how often does this term appear in documents?</li>
++ * <li>vlong: total term frequency. Sum of terms in this field.</li>
++ * </ul>
++ * After that
++ * <ul>
++ * <li>vint: frequency (always returned)</li>
++ * <ul>
++ * <li>vint: position_1 (if positions == true)</li>
++ * <li>vint: startOffset_1 (if offset == true)</li>
++ * <li>vint: endOffset_1 (if offset == true)</li>
++ * <li>BytesRef: payload_1 (if payloads == true)</li>
++ * <li>...</li>
++ * <li>vint: endOffset_freqency (if offset == true)</li>
++ * <li>BytesRef: payload_freqency (if payloads == true)</li>
++ * <ul>
++ * </ul> </ul>
++ * 
++ */
++
++public final class TermVectorFields extends Fields {
++
++    final private Map<String, Long> fieldMap;
++    final private BytesReference termVectors;
++    final boolean hasTermStatistic;
++    final boolean hasFieldStatistic;
++
++    /**
++     * @param headerRef
++     *            Stores offsets per field in the {@code termVectors} and some
++     *            header information as {@link BytesRef}.
++     * 
++     * @param termVectors
++     *            Stores the actual term vectors as a {@link BytesRef}.
++     * 
++     */
++    public TermVectorFields(BytesReference headerRef, BytesReference termVectors) throws IOException {
++        BytesStreamInput header = new BytesStreamInput(headerRef);
++        fieldMap = new HashMap<String, Long>();
++        // here we read the header to fill the field offset map","Not sure if we need to do that it's just one entry per field though.
+",510cf2546528ba4f8357de75089bab99d0c33658
+45392,0,"This should be NodeAliasUpdatedTransportAction?""",2011-06-14 20:35:10,kimchy,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/1030#discussion_r45392,2011-06-15T08:35:10Z,2011-06-15T08:35:10Z,kimchy,MEMBER,modules/elasticsearch/src/main/java/org/elasticsearch/cluster/action/index/NodeAliasesUpdatedAction.java,,111.0,,,111,"@@ -0,0 +1,161 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.cluster.action.index;
++
++import org.elasticsearch.ElasticSearchException;
++import org.elasticsearch.cluster.ClusterService;
++import org.elasticsearch.cluster.node.DiscoveryNodes;
++import org.elasticsearch.common.component.AbstractComponent;
++import org.elasticsearch.common.inject.Inject;
++import org.elasticsearch.common.io.stream.StreamInput;
++import org.elasticsearch.common.io.stream.StreamOutput;
++import org.elasticsearch.common.io.stream.Streamable;
++import org.elasticsearch.common.io.stream.VoidStreamable;
++import org.elasticsearch.common.settings.Settings;
++import org.elasticsearch.common.unit.TimeValue;
++import org.elasticsearch.threadpool.ThreadPool;
++import org.elasticsearch.transport.BaseTransportRequestHandler;
++import org.elasticsearch.transport.TransportChannel;
++import org.elasticsearch.transport.TransportService;
++import org.elasticsearch.transport.VoidTransportResponseHandler;
++
++import java.io.IOException;
++import java.util.List;
++import java.util.concurrent.CopyOnWriteArrayList;
++
++/**
++ * @author imotov
++ */
++public class NodeAliasesUpdatedAction extends AbstractComponent {
++
++    private final ThreadPool threadPool;
++
++    private final TransportService transportService;
++
++    private final ClusterService clusterService;
++
++    private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
++
++    @Inject public NodeAliasesUpdatedAction(Settings settings, ThreadPool threadPool, TransportService transportService, ClusterService clusterService) {
++        super(settings);
++        this.threadPool = threadPool;
++        this.transportService = transportService;
++        this.clusterService = clusterService;
++        transportService.registerHandler(NodeMappingCreatedTransportHandler.ACTION, new NodeMappingCreatedTransportHandler());
++    }
++
++    public void add(final Listener listener, TimeValue timeout) {
++        listeners.add(listener);
++        threadPool.schedule(timeout, ThreadPool.Names.CACHED, new Runnable() {
++            @Override public void run() {
++                boolean removed = listeners.remove(listener);
++                if (removed) {
++                    listener.onTimeout();
++                }
++            }
++        });
++    }
++
++    public void remove(Listener listener) {
++        listeners.remove(listener);
++    }
++
++    public void nodeAliasesUpdated(final NodeAliasesUpdatedResponse response) throws ElasticSearchException {
++        DiscoveryNodes nodes = clusterService.state().nodes();
++        if (nodes.localNodeMaster()) {
++            threadPool.cached().execute(new Runnable() {
++                @Override public void run() {
++                    innerNodeAliasesUpdated(response);
++                }
++            });
++        } else {
++            transportService.sendRequest(clusterService.state().nodes().masterNode(),
++                    NodeMappingCreatedTransportHandler.ACTION, response, VoidTransportResponseHandler.INSTANCE_SAME);
++        }
++    }
++
++    private void innerNodeAliasesUpdated(NodeAliasesUpdatedResponse response) {
++        for (Listener listener : listeners) {
++            if (listener.expectedVersion() <= response.version) {
++                listener.onAliasesUpdated(response);
++            }
++        }
++    }
++
++
++    public static interface Listener {
++        long expectedVersion();
++
++        void onAliasesUpdated(NodeAliasesUpdatedResponse response);
++
++        void onTimeout();
++    }
++
++    private class NodeMappingCreatedTransportHandler extends BaseTransportRequestHandler<NodeAliasesUpdatedResponse> {","This should be NodeAliasUpdatedTransportAction?
+",b9c97f220225bbed67ef202c1e89108ab732aafd
+4474942,0,"I think BytesRef.toString is too verbose since it uses 4 chars per byte ('0xc3' for example). Maybe we could directly call `currentPayloads[j] = Base64.encode(curPaypoad.bytes, curPaypoad.offset, curPaypoad.length)`?""",2013-05-30 22:55:41,jpountz,elasticsearch,elasticsearch,,https://github.com/elastic/elasticsearch/pull/3115#discussion_r4474942,2013-05-31T10:55:41Z,2013-06-07T18:30:15Z,jpountz,CONTRIBUTOR,src/main/java/org/elasticsearch/action/termvector/TermVectorResponse.java,,,,,1,"@@ -0,0 +1,323 @@
++/*
++ * Licensed to Elastic Search and Shay Banon under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership. Elastic Search licenses this 
++ * file to you under the Apache License, Version 2.0 (the
++ * ""License""); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing,
++ * software distributed under the License is distributed on an
++ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++ * KIND, either express or implied.  See the License for the
++ * specific language governing permissions and limitations
++ * under the License.
++ */
++
++package org.elasticsearch.action.termvector;
++
++import java.io.IOException;
++import java.util.EnumSet;
++import java.util.Iterator;
++import java.util.Set;
++
++import org.apache.lucene.index.DocsAndPositionsEnum;
++import org.apache.lucene.index.DocsEnum;
++import org.apache.lucene.index.Fields;
++import org.apache.lucene.index.Terms;
++import org.apache.lucene.index.TermsEnum;
++import org.apache.lucene.util.ArrayUtil;
++import org.apache.lucene.util.BytesRef;
++import org.apache.lucene.util.CharsRef;
++import org.apache.lucene.util.UnicodeUtil;
++import org.elasticsearch.ElasticSearchIllegalStateException;
++import org.elasticsearch.action.ActionResponse;
++import org.elasticsearch.action.termvector.TermVectorRequest.Flag;
++import org.elasticsearch.common.Base64;
++import org.elasticsearch.common.bytes.BytesReference;
++import org.elasticsearch.common.io.stream.BytesStreamOutput;
++import org.elasticsearch.common.io.stream.StreamInput;
++import org.elasticsearch.common.io.stream.StreamOutput;
++import org.elasticsearch.common.xcontent.ToXContent;
++import org.elasticsearch.common.xcontent.XContentBuilder;
++import org.elasticsearch.common.xcontent.XContentBuilderString;
++
++import com.google.common.collect.Iterators;
++
++public class TermVectorResponse extends ActionResponse implements ToXContent {
++
++    private static class FieldStrings {
++        // term statistics strings
++        public static final XContentBuilderString TTF = new XContentBuilderString(""ttf"");
++        public static final XContentBuilderString DOC_FREQ = new XContentBuilderString(""doc_freq"");
++        public static final XContentBuilderString TERM_FREQ = new XContentBuilderString(""term_freq"");
++
++        // field statistics strings
++        public static final XContentBuilderString DOC_COUNT = new XContentBuilderString(""doc_count"");
++        public static final XContentBuilderString SUM_DOC_FREQ = new XContentBuilderString(""sum_doc_freq"");
++        public static final XContentBuilderString SUM_TTF = new XContentBuilderString(""sum_ttf"");
++
++        public static final XContentBuilderString POS = new XContentBuilderString(""pos"");
++        public static final XContentBuilderString START_OFFSET = new XContentBuilderString(""start"");
++        public static final XContentBuilderString END_OFFSET = new XContentBuilderString(""end"");
++        public static final XContentBuilderString PAYLOAD = new XContentBuilderString(""payload"");
++        public static final XContentBuilderString _INDEX = new XContentBuilderString(""_index"");
++        public static final XContentBuilderString _TYPE = new XContentBuilderString(""_type"");
++        public static final XContentBuilderString _ID = new XContentBuilderString(""_id"");
++        public static final XContentBuilderString _VERSION = new XContentBuilderString(""_version"");
++        public static final XContentBuilderString EXISTS = new XContentBuilderString(""exists"");
++        public static final XContentBuilderString TERMS = new XContentBuilderString(""terms"");
++        public static final XContentBuilderString TERM_VECTORS = new XContentBuilderString(""term_vectors"");
++
++    }
++
++    private BytesReference termVectors;
++    private BytesReference headerRef;
++    private String index;
++    private String type;
++    private String id;
++    private long docVersion;
++
++    private boolean sourceCopied = false;
++
++    int[] curentPositions = new int[0];
++    int[] currentStartOffset = new int[0];
++    int[] currentEndOffset = new int[0];
++    String[] currentPayloads = new String[0];
++
++    public TermVectorResponse(String index, String type, String id) {
++        this.index = index;
++        this.type = type;
++        this.id = id;
++    }
++
++    TermVectorResponse() {
++    }
++
++    @Override
++    public void writeTo(StreamOutput out) throws IOException {
++        out.writeString(index);
++        out.writeString(type);
++        out.writeString(id);
++        out.writeVLong(docVersion);
++        final boolean docExists = documentExists();
++        out.writeBoolean(docExists);
++        if (docExists) {
++            out.writeBytesReference(headerRef);
++            out.writeBytesReference(termVectors);
++        }
++    }
++
++    @Override
++    public void readFrom(StreamInput in) throws IOException {
++        index = in.readString();
++        type = in.readString();
++        id = in.readString();
++        docVersion = in.readVLong();
++        if (in.readBoolean()) {
++            headerRef = in.readBytesReference();
++            termVectors = in.readBytesReference();
++        }
++    }
++
++    public Fields getFields() throws IOException {
++        if (documentExists()) {
++            if (!sourceCopied) { // make the bytes safe
++                headerRef = headerRef.copyBytesArray();
++                termVectors = termVectors.copyBytesArray();
++            }
++            return new TermVectorFields(headerRef, termVectors);
++        } else {
++            return new Fields() {
++                @Override
++                public Iterator<String> iterator() {
++                    return Iterators.emptyIterator();
++                }
++
++                @Override
++                public Terms terms(String field) throws IOException {
++                    return null;
++                }
++
++                @Override
++                public int size() {
++                    return 0;
++                }
++            };
++        }
++
++    }
++
++    @Override
++    public XContentBuilder toXContent(XContentBuilder builder, Params params) throws IOException {
++        assert index != null;
++        assert type != null;
++        assert id != null;
++        builder.startObject();
++        builder.field(FieldStrings._INDEX, index);
++        builder.field(FieldStrings._TYPE, type);
++        builder.field(FieldStrings._ID, id);
++        builder.field(FieldStrings._VERSION, docVersion);
++        builder.field(FieldStrings.EXISTS, documentExists());
++        if (!documentExists()) {
++            builder.endObject();
++            return builder;
++        }
++        builder.startObject(FieldStrings.TERM_VECTORS);
++        final CharsRef spare = new CharsRef();
++        Fields theFields = getFields();
++        Iterator<String> fieldIter = theFields.iterator();
++        while (fieldIter.hasNext()) {
++            buildField(builder, spare, theFields, fieldIter);
++        }
++        builder.endObject();
++        builder.endObject();
++        return builder;
++
++    }
++
++    private void buildField(XContentBuilder builder, final CharsRef spare, Fields theFields, Iterator<String> fieldIter) throws IOException {
++        String fieldName = fieldIter.next();
++        builder.startObject(fieldName);
++        Terms curTerms = theFields.terms(fieldName);
++        // write field statistics
++        buildFieldStatistics(builder, curTerms);
++        builder.startObject(FieldStrings.TERMS);
++        TermsEnum termIter = curTerms.iterator(null);
++        for (int i = 0; i < curTerms.size(); i++) {
++            buildTerm(builder, spare, curTerms, termIter);
++        }
++        builder.endObject();
++        builder.endObject();
++    }
++
++    private void buildTerm(XContentBuilder builder, final CharsRef spare, Terms curTerms, TermsEnum termIter) throws IOException {
++        // start term, optimized writing
++        BytesRef term = termIter.next();
++        UnicodeUtil.UTF8toUTF16(term, spare);
++        builder.startObject(spare.toString());
++        buildTermStatistics(builder, termIter);
++        // finally write the term vectors
++        DocsAndPositionsEnum posEnum = termIter.docsAndPositions(null, null);
++        int termFreq = posEnum.freq();
++        builder.field(FieldStrings.TERM_FREQ, termFreq);
++        initMemory(curTerms, termFreq);
++        initValues(curTerms, posEnum, termFreq);
++        buildValues(builder, curTerms, termFreq);
++        builder.endObject();
++    }
++
++    private void buildTermStatistics(XContentBuilder builder, TermsEnum termIter) throws IOException {
++        // write term statistics. At this point we do not naturally have a
++        // boolean that says if these values actually were requested.
++        // However, we can assume that they were not if the statistic values are
++        // <= 0.
++        assert (((termIter.docFreq() > 0) && (termIter.totalTermFreq() > 0)) || ((termIter.docFreq() == -1) && (termIter.totalTermFreq() == -1)));
++        int docFreq = termIter.docFreq();
++        if (docFreq > 0) {
++            builder.field(FieldStrings.DOC_FREQ, docFreq);
++            builder.field(FieldStrings.TTF, termIter.totalTermFreq());
++        }
++    }
++
++    private void buildValues(XContentBuilder builder, Terms curTerms, int termFreq) throws IOException {
++        if (curTerms.hasPositions()) {
++            builder.field(FieldStrings.POS, 0, termFreq, curentPositions);
++        }
++        if (curTerms.hasOffsets()) {
++            builder.field(FieldStrings.START_OFFSET, 0, termFreq, currentStartOffset);
++            builder.field(FieldStrings.END_OFFSET, 0, termFreq, currentEndOffset);
++        }
++        if (curTerms.hasPayloads()) {
++            builder.array(FieldStrings.PAYLOAD, currentPayloads);
++        }
++    }
++
++    private void initValues(Terms curTerms, DocsAndPositionsEnum posEnum, int termFreq) throws IOException {
++        for (int j = 0; j < termFreq; j++) {
++            int nextPos = posEnum.nextPosition();
++            if (curTerms.hasPositions()) {
++                curentPositions[j] = nextPos;
++            }
++            if (curTerms.hasOffsets()) {
++                currentStartOffset[j] = posEnum.startOffset();
++                currentEndOffset[j] = posEnum.endOffset();
++            }
++            if (curTerms.hasPayloads()) {
++                BytesRef curPaypoad = posEnum.getPayload();
++                curPaypoad.bytes = Base64.encodeBytesToBytes(curPaypoad.bytes, curPaypoad.offset, curPaypoad.length, 0);
++                curPaypoad.length = curPaypoad.bytes.length;
++                curPaypoad.offset = 0;
++                currentPayloads[j] = curPaypoad.toString();","I think BytesRef.toString is too verbose since it uses 4 chars per byte ('0xc3' for example). Maybe we could directly call `currentPayloads[j] = Base64.encode(curPaypoad.bytes, curPaypoad.offset, curPaypoad.length)`?
+",510cf2546528ba4f8357de75089bab99d0c33658

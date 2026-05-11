@@ -1,0 +1,1503 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+824126,0,"You should replace 255 for $maxLen""",2012-05-15 03:15:06,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1226#discussion_r824126,2012-05-15T15:15:06Z,2012-05-23T16:24:28Z,Maks3w,MEMBER,library/Zend/Service/Amazon/S3/S3.php,,,,,1,"@@ -109,24 +109,96 @@ public function __construct($accessKey=null, $secretKey=null, $region=null)
+ 
+     /**
+      * Verify if the bucket name is valid
++     * For reference: http://docs.amazonwebservices.com/AmazonS3/latest/dev/BucketRestrictions.html
+      *
+      * @param string $bucket
+      * @return boolean
+      */
+-    public function _validBucketName($bucket)
++    public function _validBucketName($bucket, $location = null)
+     {
++        if (empty($location))
++            $location = ''; //US Standard region code is an empty string 
++        
++        if ($location == '') {
++            //US Standard Region
++            $maxLen = 255;
++            
++            //Capital letters, dashes and underscores allowed
++            $pregExpression = '/[^a-zA-Z0-9\._-]/';
++            
++            //Label can be an IP address
++            $isIpAddress = false;
++            
++            //Label can be empty or starting with dashes
++            $labelError = false;
++            
++        } else {
++            //More restricted rules apply
++            $maxLen = 63;
++            
++            //No Capital letters or underscores
++            $pregExpression = '/[^a-z0-9\.-]/';
++            
++            //Cannot be an IP address
++            $isIpAddress = preg_match('/(\d){1,3}\.(\d){1,3}\.(\d){1,3}\.(\d){1,3}/', $bucket);
++            
++            //Labels must not be empty and should start and end with letter or number
++            $labelError = false; 
++            $labels     = explode('.', $bucket);           
++            foreach ($labels as $label) {
++                if (empty($label)) {
++                    $labelError = true; 
++                    break;
++                }
++                
++                if ($label[0] == '-' || $label[strlen($label)-1] == '-') {
++                    $labelError = true;
++                    break;
++                }
++            }
++        }
++        
++        /*
++         * 
++         * certain US General limits can be accepted only with SOAP API calls
++         * @TODO implement soap api calls  
++         * 
++         */
++        if ($location == '' ) { //To be removed if SOAP API calls are implemented
++            $pregExpression = '/[^a-z0-9\.-]/';
++    
++            //Labels must not be empty and should start and end with letter or number
++            $labelError = false;
++            $labels     = explode('.', $bucket);
++            foreach ($labels as $label) {
++                if (empty($label)) {
++                    $labelError = true;
++                    break;
++                }
++            
++                if ($label[0] == '-' || $label[strlen($label)-1] == '-') {
++                    $labelError = true;
++                    break;
++                }
++            }
++        }        
++        
+         $len = strlen($bucket);
+-        if ($len < 3 || $len > 255) {
++        if ($len < 3 || $len > $maxLen) {
+             throw new Exception\InvalidArgumentException(""Bucket name \""$bucket\"" must be between 3 and 255 characters long"");","You should replace 255 for $maxLen
+",80402b06dbe3ac01bb4a78592d21e859baeb2808
+784044,2,"This actually makes the code harder to read. The previous line fit within the 120 character limit.  If it _did_ break the 120 character limit, the better change would be:  ``` foreach ($this->_rules['allResources']['byRoleId'] as     $roleIdCurent =""",2012-05-07 08:29:15,weierophinney,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1118#discussion_r784044,2012-05-07T20:29:15Z,2012-05-07T20:29:15Z,weierophinney,MEMBER,library/Zend/Acl/Acl.php,,220.0,,,75,"@@ -209,16 +216,23 @@ public function removeRole($role)
+             $roleId = $role;
+         }
+ 
+-        foreach ($this->_rules['allResources']['byRoleId'] as $roleIdCurrent => $rules) {
++        foreach ($this->_rules['allResources']['byRoleId'] 
++            as $roleIdCurrent => $rules) {","This actually makes the code harder to read. The previous line fit within the 120 character limit.
+
+If it _did_ break the 120 character limit, the better change would be:
+
+```
+foreach ($this->_rules['allResources']['byRoleId'] as
+    $roleIdCurent => $rules
+) {
+    ...
+}
+```
+
+This is more consistent with other rules - like putting implements on the following line, or, in the case of long parameter lists or conditions, putting the closing paren and opening brace on a line by themselves.
+",b7f2c9f3424def7207ca2c4853d12324c378871a
+783868,0,"false actually has a special meaning internally, and should not be removed from the signature.""",2012-05-07 08:06:49,weierophinney,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1108#discussion_r783868,2012-05-07T20:06:49Z,2012-05-07T20:06:49Z,weierophinney,MEMBER,library/Zend/EventManager/EventManager.php,,62.0,,,13,"@@ -59,7 +59,7 @@ class EventManager implements EventCollection, SharedEventCollectionAware
+ 
+     /**
+      * Shared connections
+-     * @var false|null|SharedEventCollection","false actually has a special meaning internally, and should not be removed from the signature.
+",261f39819d09f9d433ba8b7dff7a54503814eca5
+722631,0,"break the array values in multiple lines.  You can see the coding style here http://framework.zend.com/wiki/display/ZFDEV2/Coding+Standards""",2012-04-23 07:55:39,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1097#discussion_r722631,2012-04-23T19:55:39Z,2012-04-30T16:24:18Z,Maks3w,MEMBER,tests/Zend/Service/Twitter/SearchTest.php,,,,,1,"@@ -116,29 +193,26 @@ public function testAtomSearchRestrictsLanguageReturnsObject()
+ 
+         $this->twitter->setResponseType('atom');
+         $response = $this->twitter->execute('zend', array('lang' => 'de'));
+-
+         $this->assertInstanceOf('Zend\Feed\Reader\Feed\Atom', $response);
+-        var_dump($response);
+         $this->assertTrue((strpos($response->link('self'), 'lang=de') !== false));
+-
+     }
+ 
+-    public function testJsonSearchReturnThirtyResultsReturnsArray()
++    public function testJsonSearchReturnTwentyResultsReturnsArray()
+     {
+         $this->twitter->setResponseType('json');
+-        $response = $this->twitter->execute('zend', array('rpp' => '30'));
++        $response = $this->twitter->execute('php', array('rpp' => '20','lang'=>'en','result_type'=>'recent','include_entities'=>false));","break the array values in multiple lines.
+
+You can see the coding style here http://framework.zend.com/wiki/display/ZFDEV2/Coding+Standards
+",c757198eedb7bb041cb530bab6022e2168a85dff
+493240,0,"We still need to inject the locator, once we know we have a valid controller.""",2012-02-27 11:04:46,weierophinney,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/788#discussion_r493240,2012-02-27T22:04:46Z,2012-02-27T22:04:46Z,weierophinney,MEMBER,library/Zend/Mvc/Application.php,,346.0,,,33,"@@ -342,17 +351,14 @@ public function dispatch(MvcEvent $e)
+             }
+             goto complete;
+         }
+-
+-        if ($controller instanceof LocatorAware) {","We still need to inject the locator, once we know we have a valid controller.
+",b5eed6bbd486b2d056f792d3f30229c6048428e4
+489103,0,"@akrabat Oh, I see you point, I for some reason though the dsn was all encompassing including stuff like username and password.  I'll fix these pronto.""",2012-02-25 13:16:55,ralphschindler,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/819#discussion_r489103,2012-02-26T00:16:55Z,2012-03-02T19:00:39Z,ralphschindler,MEMBER,library/Zend/Db/Adapter/Driver/Pdo/Connection.php,,,,,1,"@@ -0,0 +1,280 @@
++<?php
++
++namespace Zend\Db\Adapter\Driver\Pdo;
++
++use Zend\Db\Adapter\Driver\ConnectionInterface,
++    Zend\Db\Adapter\Driver\DriverInterface,
++    Zend\Db\Adapter\Exception\InvalidQueryException;
++
++
++class Connection implements ConnectionInterface
++{
++    /**
++     * @var Pdo
++     */
++    protected $driver = null;
++
++    /**
++     * @var array
++     */
++    protected $connectionParameters = array();
++    
++    /**
++     * @var \PDO
++     */
++    protected $resource = null;
++
++    /**
++     * @var bool
++     */
++    protected $inTransaction = false;
++
++    /**
++     * @param array|\PDO $connectionInfo
++     */
++    public function __construct($connectionInfo = null)
++    {
++        if (is_array($connectionInfo)) {
++            $this->setConnectionParameters($connectionInfo);
++        } elseif ($connectionInfo instanceof \PDO) {
++            $this->setResource($connectionInfo);
++        }
++    }
++
++    /**
++     * @param Pdo $driver
++     * @return Connection
++     */
++    public function setDriver(Pdo $driver)
++    {
++        $this->driver = $driver;
++        return $this;
++    }
++
++    /**
++     * @param array $connectionParameters
++     */
++    public function setConnectionParameters(array $connectionParameters)
++    {
++        $this->connectionParameters = $connectionParameters;
++    }
++
++    /**
++     * @return array
++     */
++    public function getConnectionParameters()
++    {
++        return $this->connectionParameters;
++    }
++
++    /**
++     * @return null
++     */
++    public function getDefaultCatalog()
++    {
++        return null;
++    }
++
++    /**
++     * @return mixed
++     */
++    public function getDefaultSchema()
++    {
++        if (!$this->isConnected()) {
++            $this->connect();
++        }
++
++        /** @var $result \PDOStatement */
++        $result = $this->resource->query('SELECT DATABASE()');
++        $r = $result->fetch_row();
++        return $r[0];
++    }
++
++    public function setResource(\PDO $resource)
++    {
++        $this->resource = $resource;
++        return $this;
++    }
++
++    /**
++     * @return \PDO
++     */
++    public function getResource()
++    {
++        if ($this->resource == null) {
++            $this->connect();
++        }
++        return $this->resource;
++    }
++
++    /**
++     * @return Connection
++     * @throws \Exception
++     */
++    public function connect()
++    {
++        if ($this->resource) {
++            return $this;
++        }
++
++        // @todo method createKnownDsn
++
++        $dsn = $username = $password = $database = null;
++        $options = array();
++        foreach ($this->connectionParameters as $key => $value) {
++            switch (strtolower($key)) {
++                case 'dsn':
++                    $dsn = $value;
++                    break 2;","@akrabat Oh, I see you point, I for some reason though the dsn was all encompassing including stuff like username and password.  I'll fix these pronto.
+",d028cbaf710f22c7f5210301caaa2daafc476bcd
+622310,0,"I'd actually argue here we import MessageDescription, and change the signature of dispatch to: ```php public function dispatch(Message $request, Message $response = null); ```""",2012-03-29 05:57:51,weierophinney,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/963#discussion_r622310,2012-03-29T17:57:51Z,2012-03-29T17:57:51Z,weierophinney,MEMBER,documentation/manual/en/module_specs/Zend_Mvc-Controllers.xml,,17.0,,,5,"@@ -13,8 +13,8 @@
+ 
+   <programlisting language=""php""><![CDATA[
+ use Zend\Stdlib\Dispatchable,
+-    Zend\Stdlib\RequestDescription as Request,
+-    Zend\Stdlib\ResponseDescription as Response;","I'd actually argue here we import MessageDescription, and change the signature of dispatch to:
+
+``` php
+public function dispatch(Message $request, Message $response = null);
+```
+",f4a14bfe7d2f5cee1bd95041162a0d8b9a82f9b5
+518529,2,"d'oh! Spaces, not tabs.. even had it underlined. Sorry to make you go through all those!""",2012-03-05 05:11:20,mpinkston,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/888#discussion_r518529,2012-03-05T16:11:20Z,2012-03-09T20:34:49Z,mpinkston,CONTRIBUTOR,library/Zend/Di/Assertion.php,,1.0,,,1,"@@ -0,0 +1,28 @@
++<?php","d'oh! Spaces, not tabs.. even had it underlined. Sorry to make you go through all those!
+",93a9f59fb6434c592d42db9d1e82484cf438979e
+910056,2,"Is weird see a `max` method when one of the arguments is called `max` too""",2012-05-31 06:32:17,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1371#discussion_r910056,2012-05-31T18:32:17Z,2012-06-01T13:37:58Z,Maks3w,MEMBER,library/Zend/Math/Rand/Generator.php,,,,,1,"@@ -0,0 +1,343 @@
++<?php
++
++namespace Zend\Math\Rand;
++
++use Zend\Math\Rand\Exception;
++
++class Generator
++{
++    const POOL_SIZE          = 320;
++    const WRITES_BEFORE_MIX  = 16;
++
++    /**
++     * @var array
++     */
++    protected $sources = array();
++
++    /**
++     * @var string
++     */
++    protected $pool;
++
++    /**
++     * Randomness pool cursor position
++     *
++     * @var int
++     */
++    protected $poolCursorPos = 0;
++
++    /**
++     * Pool writes counter
++     * @var int
++     */
++    protected $poolWriteCount = 0;
++
++    /**
++     * Constructor
++     */
++    public function __construct()
++    {
++        // init entropy sources
++        $this->initSources();
++
++        // create randomness pool
++        $this->pool = '';
++        $numSources = count($this->sources);
++        $length     = (int) ceil(self::POOL_SIZE / $numSources);
++
++        $i = 0;
++        while (strlen($this->pool) < self::POOL_SIZE) {
++            /* @var $source Closure */
++            $source = $this->sources[$i];
++            if ($s = $source($length)) {
++                $this->pool .= $s;
++            }
++            $i = (++$i % $numSources);
++        }
++
++        $this->pool = substr($this->pool, 0, self::POOL_SIZE);
++
++        // define mixing hash algorithm
++        $this->hashAlgo = (mt_rand(0, 1) === 0) ? 'whirlpool' : 'sha512';
++    }
++
++    /**
++     * Generate random string of bytes of specified length
++     *
++     * @param int $length
++     * @return string
++     * @throws Exception\InvalidArgumentException
++     */
++    public function getBytes($length)
++    {
++        if ($length < 1 || $length > self::POOL_SIZE) {
++            throw new Exception\InvalidArgumentException(
++                'Length should be between 1 and ' . self::POOL_SIZE
++            );
++        }
++
++        // collect entropy, and write to pool
++        $size = (int) ceil($length / count($this->sources));
++
++        /* @var $source Closure */
++        foreach ($this->sources as $source) {
++            if ($s = $source($size)) {
++                $this->writeToPool($s);
++            }
++        }
++
++        // read to buffer
++        $rand = $this->readFromPool($length);
++
++        // invert and mix pool
++        $this->pool = ~$this->pool;
++        $this->mix();
++
++        // read to buffer
++        $rand ^= $this->readFromPool($length);
++
++        return $rand;
++    }
++
++    /**
++     * Generate random boolean
++     *
++     * @return bool
++     */
++    public function getBoolean()
++    {
++        $byte = $this->getBytes(1);
++        return (ord($byte) + 1) % 2 ? true : false;
++    }
++
++    /**
++     * Generate a random integer within given range.
++     * Uses 0..PHP_INT_MAX if no range is given
++     *
++     * @param int $min
++     * @param int $max
++     * @return int
++     * @throws Exception\InvalidArgumentException
++     */
++    public function getInteger($min = 0, $max = PHP_INT_MAX)
++    {
++        $tmp = (int) max($max, $min);","Is weird see a `max` method when one of the arguments is called `max` too
+",c14fc748ab8d86e664ed7281721465015bc0786b
+760278,0,"Can you remove the unnecesary import? `use Zend\Authentication\Storage\StorageInterface as AuthenticationStorage`""",2012-05-01 19:29:07,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1125#discussion_r760278,2012-05-02T07:29:07Z,2012-05-02T16:41:39Z,Maks3w,MEMBER,library/Zend/Authentication/Storage/Session.php,,36.0,,,15,"@@ -34,7 +34,7 @@
+  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+  */
+-class Session implements AuthenticationStorage
++class Session implements StorageInterface","Can you remove the unnecesary import? `use Zend\Authentication\Storage\StorageInterface as AuthenticationStorage`
+",46b6838097d3e5add1f6863e9b63b6e9e2ce83f8
+825588,1,"Thanks,  but no, it isn't, they were test keys removed before publishing :-)   but now that I think about it,, to compute the Authorization it reads the access key and the secret Key, we have to add it to the test.""",2012-05-15 05:59:45,dgasparri,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1226#discussion_r825588,2012-05-15T17:59:45Z,2012-05-23T16:24:28Z,dgasparri,NONE,tests/Zend/Service/Amazon/S3/S3Test.php,,190.0,,,105,"@@ -0,0 +1,202 @@
++<?php
++/**
++ * Zend Framework
++ *
++ * LICENSE
++ *
++ * This source file is subject to the new BSD license that is bundled
++ * with this package in the file LICENSE.txt.
++ * It is also available through the world-wide-web at this URL:
++ * http://framework.zend.com/license/new-bsd
++ * If you did not receive a copy of the license and are unable to
++ * obtain it through the world-wide-web, please send an email
++ * to license@zend.com so we can send you a copy immediately.
++ *
++ * @category   Zend
++ * @package    Zend_Service_Amazon_S3
++ * @subpackage UnitTests
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ */
++
++namespace ZendTest\Service\Amazon\S3;
++
++use Zend\Service\Amazon\S3\S3;
++
++/**
++ * @category   Zend
++ * @package    Zend_Service_Amazon_S3
++ * @subpackage UnitTests
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ * @group      Zend_Service
++ * @group      Zend_Service_Amazon
++ * @group      Zend_Service_Amazon_S3
++ */
++class S3Test extends \PHPUnit_Framework_TestCase
++{
++    /**
++     * Reference to Amazon service consumer object
++     *
++     * @var S3
++     */
++    protected $amazon;
++
++    /**
++     * Http Client stub
++     *
++     * @var \Zend\Http\Client
++     */
++    protected $httpClient;
++
++    /**
++     * Uri Http stub
++     *
++     * @var \Zend\Uri\Http
++     */
++    protected $uriHttp;
++    
++    /**
++     * Http Response stub
++     *
++     * @var \Zend\Http\Response
++     */
++    protected $httpResponse;
++
++    /**
++     * Sets up this test case
++     *
++     * @return void
++     */
++    public function setUp()
++    {
++        $accessKey = 'accessKey';
++        $secretKey = 'secretKey';
++
++        // Create a stub for Http Client
++        $this->httpClient = $this->getMockBuilder('Zend\Http\Client')->getMock();
++        // Create a stub for Http response for be used later.
++        $this->httpResponse = $this->getMockBuilder('Zend\Http\Response')->getMock();
++        // Create a stub for Uri\Http for later.
++        $this->uriHttp = $this->getMockBuilder('Zend\Uri\Http')->getMock();
++        
++        // Create a S3 instance
++        $this->amazon  = new S3($accessKey, $secretKey);
++        // Inject the stub into the application.
++        $this->amazon->setHttpClient($this->httpClient);
++        // Inject the stub into the application.
++        $this->amazon->setEndpoint($this->uriHttp);
++    }
++
++    /**
++     * Test get buckets
++     *
++     * @return void
++     */
++    public function testGetBuckets()
++    {
++        $expected  = array('quotes', 'samples');
++
++        // Http Response results
++        $this->httpResponse->expects($this->any())
++                           ->method('getStatusCode')
++                           ->will($this->returnValue(200));
++        $rawBody = <<<BODY
++<?xml version=""1.0"" encoding=""UTF-8""?>
++<ListAllMyBucketsResult xmlns=""http://doc.s3.amazonaws.com/2006-03-01"">
++    <Owner>
++        <ID>bcaf1ffd86f461ca5fb16fd081034f</ID>
++        <DisplayName>webfile</DisplayName>
++    </Owner>
++    <Buckets>
++        <Bucket>
++            <Name>quotes</Name>
++            <CreationDate>2006-02-03T16:45:09.000Z</CreationDate>
++        </Bucket>
++        <Bucket>
++            <Name>samples</Name>
++            <CreationDate>2006-02-03T16:41:58.000Z</CreationDate>
++        </Bucket>
++    </Buckets>
++</ListAllMyBucketsResult>
++BODY;
++        $this->httpResponse->expects($this->any())
++                           ->method('getBody')
++                           ->will($this->returnValue($rawBody));
++
++        // Expects to be called only once the method send() then return a Http Response.
++        $this->httpClient->expects($this->once())
++                         ->method('send')
++                         ->will($this->returnValue($this->httpResponse));
++
++        $buckets = $this->amazon->getBuckets();
++
++        $this->assertEquals($expected, $buckets);
++    }
++    
++    /**
++     * Test create bucket
++     *
++     * @return void
++     */
++    public function testCreateBuckets()
++    {
++        
++        //Valid bucket name
++        $bucket   = 'iamavalidbucket';
++        $location = null;
++        $this->amazon->setRequestDate(""Tue, 15 May 2012 15:18:31 +0000"");
++        
++        /**
++         * Check of request inside _makeRequest
++         * 
++         */
++        $this->uriHttp->expects($this->once())
++            ->method('getHost')
++            ->with()
++            ->will($this->returnValue('s3.amazonaws.com'));
++         
++        $this->uriHttp->expects($this->once())
++            ->method('setHost')
++            ->with('iamavalidbucket.s3.amazonaws.com');
++
++        $this->uriHttp->expects($this->once())
++            ->method('setPath')
++            ->with('/');
++                 
++        $this->httpClient->expects($this->once())
++             ->method('setUri')
++            ->with($this->uriHttp);  
++        
++        $this->httpClient->expects($this->once())
++            ->method('setMethod')
++            ->with('PUT');
++        
++        $this->httpClient->expects($this->once())
++            ->method('setHeaders')
++            ->with(array(
++                    ""Date""          => ""Tue, 15 May 2012 15:18:31 +0000"",
++                    ""Content-Type""  => ""application/xml"",
++                    ""Authorization"" => ""AWS AKIAIDCZ2WXN6NNB7YZA:Y+T4nZxI1wBi1Yn1BMnOK9CDiOM="",","Thanks,  but no, it isn't, they were test keys removed before publishing :-) 
+
+but now that I think about it,, to compute the Authorization it reads the access key and the secret Key, we have to add it to the test.
+",80402b06dbe3ac01bb4a78592d21e859baeb2808
+600527,2,"I see what you mean now, this is very strange. Let me try to fix that""",2012-03-24 09:35:34,andriesss,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/961#discussion_r600527,2012-03-24T20:35:34Z,2012-03-24T20:36:18Z,andriesss,CONTRIBUTOR,library/Zend/View/Helper/Doctype.php,,202.0,,,1,"@@ -188,17 +192,28 @@ public function isXhtml()
+     {
+         return (stristr($this->getDoctype(), 'xhtml') ? true : false);
+     }
+-	
++
+ 	/**
+ 	 * Is doctype HTML5? (HeadMeta uses this for validation)
+ 	 *
+-	 * @return booleean
++	 * @return boolean
+ 	 */
+-	public function isHtml5() {
++	public function isHtml5()
++    {","I see what you mean now, this is very strange. Let me try to fix that
+",97bdfb5f12854c6a92659b39f3fd26dd1bec2b47
+470018,0,"Shouldn't it (and all other calls to json_encode()) be Zend\Json\Json::encode()?""",2012-02-20 19:35:11,rafalwrzeszcz,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/801#discussion_r470018,2012-02-21T06:35:11Z,2012-02-22T16:44:59Z,rafalwrzeszcz,CONTRIBUTOR,library/Zend/View/Renderer/JsonRenderer.php,,,,,1,"@@ -0,0 +1,192 @@
++<?php
++/**
++ * Zend Framework
++ *
++ * LICENSE
++ *
++ * This source file is subject to the new BSD license that is bundled
++ * with this package in the file LICENSE.txt.
++ * It is also available through the world-wide-web at this URL:
++ * http://framework.zend.com/license/new-bsd
++ * If you did not receive a copy of the license and are unable to
++ * obtain it through the world-wide-web, please send an email
++ * to license@zend.com so we can send you a copy immediately.
++ *
++ * @category   Zend
++ * @package    Zend_View
++ * @subpackage Renderer
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ */
++
++namespace Zend\View\Renderer;
++
++use JsonSerializable,
++    Traversable,
++    Zend\Stdlib\IteratorToArray,
++    Zend\View\Exception,
++    Zend\View\Model,
++    Zend\View\Renderer,
++    Zend\View\Resolver;
++
++/**
++ * JSON renderer
++ *
++ * @todo       Should this use Zend\Json?
++ * @category   Zend
++ * @package    Zend_View
++ * @subpackage Renderer
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ */
++class JsonRenderer implements Renderer, TreeRendererInterface
++{
++    /**
++     * Whether or not to merge child models with no capture-to value set
++     * @var bool
++     */
++    protected $mergeUnnamedChildren = false;
++
++    /**
++     * @var Resolver
++     */
++    protected $resolver;
++
++    /**
++     * Return the template engine object, if any
++     *
++     * If using a third-party template engine, such as Smarty, patTemplate,
++     * phplib, etc, return the template engine object. Useful for calling
++     * methods on these objects, such as for setting filters, modifiers, etc.
++     *
++     * @return mixed
++     */
++    public function getEngine()
++    {
++        return $this;
++    }
++
++    /**
++     * Set the resolver used to map a template name to a resource the renderer may consume.
++     * 
++     * @todo   Determine use case for resolvers when rendering JSON
++     * @param  Resolver $resolver 
++     * @return Renderer
++     */
++    public function setResolver(Resolver $resolver)
++    {
++        $this->resolver = $resolver;
++    }
++
++    /**
++     * Set flag indicating whether or not to merge unnamed children
++     *
++     * @param  bool $mergeUnnamedChildren
++     * @return JsonRenderer
++     */
++    public function setMergeUnnamedChildren($mergeUnnamedChildren)
++    {
++        $this->mergeUnnamedChildren = (bool) $mergeUnnamedChildren;
++        return $this;
++    }
++    
++    /**
++     * Should we merge unnamed children?
++     *
++     * @return bool
++     */
++    public function mergeUnnamedChildren()
++    {
++        return $this->mergeUnnamedChildren;
++    }
++
++    /**
++     * Renders values as JSON
++     *
++     * @todo   Determine what use case exists for accepting both $nameOrModel and $values
++     * @param  string|Model $name The script/resource process, or a view model
++     * @param  null|array|\ArrayAccess Values to use during rendering
++     * @return string The script output.
++     */
++    public function render($nameOrModel, $values = null)
++    {
++        // use case 1: View Models
++        // Serialize variables in view model
++        if ($nameOrModel instanceof Model) {
++            if ($nameOrModel instanceof Model\JsonModel) {
++                $values = $nameOrModel->serialize();
++            } else {
++                $values = $this->recurseModel($nameOrModel);
++                $values = json_encode($values);","Shouldn't it (and all other calls to json_encode()) be Zend\Json\Json::encode()?
+",ab750ae8afb061b1919186cce13159132bf250ca
+409138,0,"Because the hostname will often be used to set a port or connect to a socket it could make sence to parse the hostname about port and socket, too""",2012-02-01 20:02:44,marc-mabe,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/765#discussion_r409138,2012-02-02T07:02:44Z,2012-02-03T20:55:31Z,marc-mabe,MEMBER,library/Zend/Db/Adapter/Driver/Mysqli/Connection.php,,95.0,,,95,"@@ -0,0 +1,180 @@
++<?php
++
++namespace Zend\Db\Adapter\Driver\Mysqli;
++use Zend\Db\Adapter;
++
++
++class Connection implements Adapter\DriverConnection
++{
++    /**
++     * @var \Zend\Db\Adapter\Driver\Mysqli
++     */
++    protected $driver = null;
++    
++    protected $connectionParams = array();
++    
++    /**
++     * @var \mysqli
++     */
++    protected $resource = null;
++
++    protected $inTransaction = false;    
++
++    public function __construct(array $connectionParameters = array())
++    {
++        if ($connectionParameters) {
++            $this->setConnectionParams($connectionParameters);
++        }
++    }
++
++    public function setDriver(Adapter\Driver $driver)
++    {
++        $this->driver = $driver;
++        return $this;
++    }
++    
++    public function setConnectionParams(array $connectionParameters)
++    {
++        $this->connectionParams = $connectionParameters;
++        return $this;
++    }
++
++    public function getConnectionParams()
++    {
++        return $this->connectionParams;
++    }
++    
++    public function getDefaultCatalog()
++    {
++        return null;
++    }
++    
++    public function getDefaultSchema()
++    {
++        if (!$this->isConnected()) {
++            $this->connect();
++        }
++        
++        $result = $this->resource->query('SELECT DATABASE()');
++        $r = $result->fetch_row();
++        return $r[0];
++    }
++    
++    /**
++     * @return \Mysqli
++     */
++    public function getResource()
++    {
++        return $this->resource;
++    }
++    
++    public function connect()
++    {
++        if ($this->resource) {
++            return;
++        }
++
++        // localize
++        $p = $this->connectionParams;
++
++        // given a list of key names, test for existence in $p
++        $findParameterValue = function(array $names) use ($p) {
++            foreach ($names as $name) {
++                if (isset($p[$name])) {
++                    return $p[$name];
++                }
++            }
++            return null;
++        };
++
++        $hostname = $findParameterValue(array('hostname', 'host'));
++        $username = $findParameterValue(array('username', 'user'));
++        $password = $findParameterValue(array('password', 'passwd', 'pw'));
++        $database = $findParameterValue(array('database', 'dbname', 'db', 'schema'));
++        $port     = (isset($p['port'])) ? (int) $p['port'] : null;
++        $socket   = (isset($p['socket'])) ? $p['socket'] : null;","Because the hostname will often be used to set a port or connect to a socket it could make sence to parse the hostname about port and socket, too
+",6eaff2c98b4a3a76789f1f2e7919e8bd445e9193
+911121,0,"I see. I tested using rand(8, 4) and with rand(4, 8) the first only show values between 6-8 and the second show values between 4-8  What I want to say? I want to say that the order matters so, IMHO, you have three options:  * throw an exception when the v""",2012-05-31 08:55:44,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1371#discussion_r911121,2012-05-31T20:55:44Z,2012-06-01T13:37:59Z,Maks3w,MEMBER,library/Zend/Math/Rand/Generator.php,,,,,1,"@@ -0,0 +1,343 @@
++<?php
++
++namespace Zend\Math\Rand;
++
++use Zend\Math\Rand\Exception;
++
++class Generator
++{
++    const POOL_SIZE          = 320;
++    const WRITES_BEFORE_MIX  = 16;
++
++    /**
++     * @var array
++     */
++    protected $sources = array();
++
++    /**
++     * @var string
++     */
++    protected $pool;
++
++    /**
++     * Randomness pool cursor position
++     *
++     * @var int
++     */
++    protected $poolCursorPos = 0;
++
++    /**
++     * Pool writes counter
++     * @var int
++     */
++    protected $poolWriteCount = 0;
++
++    /**
++     * Constructor
++     */
++    public function __construct()
++    {
++        // init entropy sources
++        $this->initSources();
++
++        // create randomness pool
++        $this->pool = '';
++        $numSources = count($this->sources);
++        $length     = (int) ceil(self::POOL_SIZE / $numSources);
++
++        $i = 0;
++        while (strlen($this->pool) < self::POOL_SIZE) {
++            /* @var $source Closure */
++            $source = $this->sources[$i];
++            if ($s = $source($length)) {
++                $this->pool .= $s;
++            }
++            $i = (++$i % $numSources);
++        }
++
++        $this->pool = substr($this->pool, 0, self::POOL_SIZE);
++
++        // define mixing hash algorithm
++        $this->hashAlgo = (mt_rand(0, 1) === 0) ? 'whirlpool' : 'sha512';
++    }
++
++    /**
++     * Generate random string of bytes of specified length
++     *
++     * @param int $length
++     * @return string
++     * @throws Exception\InvalidArgumentException
++     */
++    public function getBytes($length)
++    {
++        if ($length < 1 || $length > self::POOL_SIZE) {
++            throw new Exception\InvalidArgumentException(
++                'Length should be between 1 and ' . self::POOL_SIZE
++            );
++        }
++
++        // collect entropy, and write to pool
++        $size = (int) ceil($length / count($this->sources));
++
++        /* @var $source Closure */
++        foreach ($this->sources as $source) {
++            if ($s = $source($size)) {
++                $this->writeToPool($s);
++            }
++        }
++
++        // read to buffer
++        $rand = $this->readFromPool($length);
++
++        // invert and mix pool
++        $this->pool = ~$this->pool;
++        $this->mix();
++
++        // read to buffer
++        $rand ^= $this->readFromPool($length);
++
++        return $rand;
++    }
++
++    /**
++     * Generate random boolean
++     *
++     * @return bool
++     */
++    public function getBoolean()
++    {
++        $byte = $this->getBytes(1);
++        return (ord($byte) + 1) % 2 ? true : false;
++    }
++
++    /**
++     * Generate a random integer within given range.
++     * Uses 0..PHP_INT_MAX if no range is given
++     *
++     * @param int $min
++     * @param int $max
++     * @return int
++     * @throws Exception\InvalidArgumentException
++     */
++    public function getInteger($min = 0, $max = PHP_INT_MAX)
++    {
++        $tmp = (int) max($max, $min);","I see. I tested using rand(8, 4) and with rand(4, 8) the first only show values between 6-8 and the second show values between 4-8
+
+What I want to say? I want to say that the order matters so, IMHO, you have three options:
+- throw an exception when the values are incorrect
+- Guess the best order for the parameters and then change the docblock indicating the order doest not matter and the arguments are not called max/min
+- Continue without any check and throw unexpected values.
+
+I repeat, is my opinion and maybe I wrong. Anyway I prefer the first choice (throw an exception)
+",c14fc748ab8d86e664ed7281721465015bc0786b
+878036,0,"missing `@group Zend_Crypt` here""",2012-05-24 08:57:34,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1367#discussion_r878036,2012-05-24T20:57:34Z,2012-05-25T09:07:54Z,Maks3w,MEMBER,tests/Zend/Crypt/Key/Derivation/SaltedS2kTest.php,,33.0,,,20,"@@ -0,0 +1,65 @@
++<?php
++/**
++ * Zend Framework
++ *
++ * LICENSE
++ *
++ * This source file is subject to the new BSD license that is bundled
++ * with this package in the file LICENSE.txt.
++ * It is also available through the world-wide-web at this URL:
++ * http://framework.zend.com/license/new-bsd
++ * If you did not receive a copy of the license and are unable to
++ * obtain it through the world-wide-web, please send an email
++ * to license@zend.com so we can send you a copy immediately.
++ *
++ * @category   Zend
++ * @package    Zend_Crypt
++ * @subpackage UnitTests
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ */
++
++namespace ZendTest\Crypt\Key\Derivation;
++
++use Zend\Crypt\Key\Derivation\SaltedS2k;
++
++/**
++ * @category   Zend
++ * @package    Zend_Crypt
++ * @subpackage UnitTests
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ */","missing `@group Zend_Crypt` here
+",412a68488bf754973f25de9e8fdc1758441fe21a
+740968,0,"This should not be called """"EventsAware"""". """"Aware"""" interfaces are for hinting to the DIC that a setter needing auto-injection is present. I'd rename it to something like """"EventsCapableInterface"""" instead.""",2012-04-26 07:30:52,weierophinney,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1098#discussion_r740968,2012-04-26T19:30:52Z,2012-04-26T20:02:43Z,weierophinney,MEMBER,library/Zend/EventManager/EventsAware.php,,,,,1,"@@ -0,0 +1,41 @@
++<?php
++/**
++ * Zend Framework
++ *
++ * LICENSE
++ *
++ * This source file is subject to the new BSD license that is bundled
++ * with this package in the file LICENSE.txt.
++ * It is also available through the world-wide-web at this URL:
++ * http://framework.zend.com/license/new-bsd
++ * If you did not receive a copy of the license and are unable to
++ * obtain it through the world-wide-web, please send an email
++ * to license@zend.com so we can send you a copy immediately.
++ *
++ * @category   Zend
++ * @package    Zend_EventManager
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ */
++
++namespace Zend\EventManager;
++
++/**
++ * Interface to automate setter injection for an EventManager instance
++ *
++ * @category   Zend
++ * @package    Zend_EventManager
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
++ */
++interface EventsAware
++{","This should not be called ""EventsAware"". ""Aware"" interfaces are for hinting to the DIC that a setter needing auto-injection is present. I'd rename it to something like ""EventsCapableInterface"" instead.
+",719cba7663f10b6f5d1c4cbd3690fbc70996100b
+620489,2,"I don't touch this :/ bad manipulation sorry How i can change that ? i can update my pull request ?""",2012-03-28 23:13:22,blanchonvincent,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/978#discussion_r620489,2012-03-29T11:13:22Z,2012-03-31T17:37:42Z,blanchonvincent,CONTRIBUTOR,library/Zend/Module/Listener/ConfigListener.php,,10.0,,,1,"@@ -7,13 +7,16 @@
+     Zend\Config\Config,
+     Zend\Config\Factory as ConfigFactory,
+     Zend\Module\ModuleEvent,
+-    Zend\Stdlib\ArrayUtils,","I don't touch this :/ bad manipulation sorry
+How i can change that ? i can update my pull request ?
+",1e6dafc52418d6baeb3e0af7852b81b7055c0c6c
+622847,0,"The setServer method adds cookies to the header object, so it was being done twice.""",2012-03-29 07:40:53,SocalNick,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/975#discussion_r622847,2012-03-29T19:40:53Z,2012-05-04T22:37:04Z,SocalNick,CONTRIBUTOR,library/Zend/Http/PhpEnvironment/Request.php,,44.0,,,7,"@@ -38,10 +38,6 @@ public function __construct()
+         $this->setQuery(new Parameters($_GET));
+         $this->setServer(new Parameters($_SERVER));
+ 
+-        if ($_COOKIE) {
+-            $this->setCookies($_COOKIE);
+-        }
+-","The setServer method adds cookies to the header object, so it was being done twice.
+",43231c5e26723765c61045acb80f456fe146135d
+472262,0,"`if($connection && $connection->getFieldValue() ==  'close') `""",2012-02-21 07:00:11,Ocramius,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/804#discussion_r472262,2012-02-21T18:00:11Z,2012-02-21T18:00:11Z,Ocramius,MEMBER,library/Zend/Http/Client/Adapter/Socket.php,,334.0,,,39,"@@ -330,16 +330,19 @@ public function read()
+             $this->method == \Zend\Http\Request::METHOD_HEAD) {
+ 
+             // Close the connection if requested to do so by the server
+-            if (isset($headers['connection']) && $headers['connection'] == 'close') {
++            $connection = $headers->get('connection');
++            if ($connection !== false && $connection->getFieldValue() == 'close') {","`if($connection && $connection->getFieldValue() ==  'close')`
+",bd7e886637619921bc6ca79f7a1e6149aa7e7661
+839511,0,"Yes, that's true. I fixed also in the other subclasses of Zend\Crypt.""",2012-05-17 04:49:55,ezimuel,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1212#discussion_r839511,2012-05-17T16:49:55Z,2012-05-18T14:47:13Z,ezimuel,CONTRIBUTOR,library/Zend/Crypt/Exception/RuntimeException.php,,,,,1,"@@ -1,22 +1,36 @@
+ <?php
+ /**
+- * Zend Framework (http://framework.zend.com/)
++ * Zend Framework
+  *
+- * @link      http://github.com/zendframework/zf2 for the canonical source repository
+- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+- * @license   http://framework.zend.com/license/new-bsd New BSD License
+- * @package   Zend_Crypt
++ * LICENSE
++ *
++ * This source file is subject to the new BSD license that is bundled
++ * with this package in the file LICENSE.txt.
++ * It is also available through the world-wide-web at this URL:
++ * http://framework.zend.com/license/new-bsd
++ * If you did not receive a copy of the license and are unable to
++ * obtain it through the world-wide-web, please send an email
++ * to license@zend.com so we can send you a copy immediately.
++ *
++ * @category   Zend
++ * @package    Zend_Crypt
++ * @subpackage Exception
++ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
++ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+  */
+ 
+ namespace Zend\Crypt\Exception;
+ 
+ /**
++ * Runtime argument exception
++ *
+  * @category   Zend
+  * @package    Zend_Crypt
++ * @subpackage Exception
+  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+  */
+ class RuntimeException
+     extends \RuntimeException
+-    implements ExceptionInterface
+-{}
++    implements \Zend\Crypt\Exception\ExceptionInterface","Yes, that's true. I fixed also in the other subclasses of Zend\Crypt.
+",1d33d36a299d2e45eca951da6c22c29285b438d8
+508676,0,"Can also be a View\Variables object I assume? Also, should that array be an associative array?""",2012-03-01 09:49:33,akrabat,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/867#discussion_r508676,2012-03-01T20:49:33Z,2012-03-01T21:41:03Z,akrabat,CONTRIBUTOR,documentation/manual/en/module_specs/zend.view.renderer.php-renderer.xml,,,,,1,"@@ -0,0 +1,548 @@
++<?xml version=""1.0"" encoding=""utf-8""?>
++<section xmlns=""http://docbook.org/ns/docbook"" version=""5.0"" 
++    xml:id=""zend.view.renderer.php-renderer"">
++    <info><title>The PhpRenderer</title></info>
++
++    <para>
++        <classname>Zend\View\Renderer\PhpRenderer</classname> ""renders"" view scripts written in PHP,
++        capturing and returning the output. It composes Variable containers and/or View Models, a
++        plugin broker for <link linkend=""zend.view.helpers"">helpers</link>, and optional filtering
++        of the captured output.
++    </para>
++
++    <para>
++        The <classname>PhpRenderer</classname> is template system agnostic; you may use
++        <acronym>PHP</acronym> as your template language, or create instances of other template
++        systems and manipulate them within your view script. Anything you can do with PHP is
++        available to you.
++    </para>
++
++
++    <section xml:id=""zend.view.renderer.php-renderer.usage"">
++        <info><title>Usage</title></info>
++
++        <para>
++            Basic usage consists of instatiating or otherwise obtaining an instance of the
++            <classname>PhpRenderer</classname>, providing it with a resolver which will resolve
++            templates to PHP view scripts, and then calling its <methodname>render()</methodname>
++            method. 
++        </para>
++
++        <para>
++            Instantiating a renderer is trivial:
++        </para>
++
++        <programlisting language=""php""><![CDATA[
++use Zend\View\Renderer\PhpRenderer;
++
++$renderer = new PhpRenderer();
++]]></programlisting>
++
++        <para>
++            Zend Framework ships with several types of ""resolvers"", which are used to resolve a
++            template name to a resource a renderer can consume. The ones we will usually use with
++            the <classname>PhpRenderer</classname> are:
++        </para>
++
++        <itemizedlist>
++            <listitem>
++                <para>
++                    <classname>Zend\View\Resolver\TemplateMapResolver</classname>, which simply maps
++                    template names directly to view scripts.
++                </para>
++            </listitem>
++
++            <listitem>
++                <para>
++                    <classname>Zend\View\Resolver\TemplatePathStack</classname>, which creates a
++                    LIFO stack of script directories in which to search for a view script. By
++                    default, it appends the suffix "".phtml"" to the requested template name, and then
++                    loops through the script directories; if it finds a file matching the requested
++                    template, it returns the full file path.
++                </para>
++            </listitem>
++
++            <listitem>
++                <para>
++                    <classname>Zend\View\Resolver\AggregateResolver</classname>, which allows
++                    attaching a FIFO queue of resolvers to consult.
++                </para>
++            </listitem>
++        </itemizedlist>
++
++        <para>
++            We suggest using the <classname>AggregateResolver</classname>, as it allows you to
++            create a multi-tiered strategy for resolving template names.
++        </para>
++
++        <para>
++            Programmatically, you would then do something like this:
++        </para>
++
++        <programlisting language=""php""><![CDATA[
++use Zend\View\Renderer\PhpRenderer,
++    Zend\View\Resolver;
++
++$renderer = new PhpRenderer();
++
++$resolver = new Resolver\AggregateResolver();
++
++$map = new Resolver\TemplateMapResolver(array(
++    'layout'      => __DIR__ . '/view/layout.phtml',
++    'index/index' => __DIR__ . '/view/index/index.phtml',
++));
++$stack = new Resolver\TemplatePathStack(array(
++    __DIR__ . '/view',
++    $someOtherPath,
++));
++
++$resolver->attach($map)    // this will be consulted first
++         ->attach($stack);
++]]></programlisting>
++
++        <para>
++            You can also specify a specific priority value when registering resolvers, with high,
++            positive integers getting higher priority, and low, negative integers getting low
++            priority, when resolving.
++        </para>
++
++        <para>
++            In an MVC application, you can configure this via DI quite easily:
++        </para>
++
++        <programlisting language=""php""><![CDATA[
++return array(
++    'di' => array(
++        'instance' => array(
++            'Zend\View\Resolver\AggregateResolver' => array(
++                'injections' => array(
++                    'Zend\View\Resolver\TemplateMapResolver',
++                    'Zend\View\Resolver\TemplatePathStack',
++                ),
++            ),
++
++            'Zend\View\Resolver\TemplateMapResolver' => array(
++                'parameters' => array(
++                    'map'  => array(
++                        'layout'      => __DIR__ . '/view/layout.phtml',
++                        'index/index' => __DIR__ . '/view/index/index.phtml',
++                    ),
++                ),
++            ),
++            'Zend\View\Resolver\TemplatePathStack' => array(
++                'parameters' => array(
++                    'paths'  => array(
++                        'application' => __DIR__ . '/view',
++                        'elsewhere'   => $someOtherPath,
++                    ),
++                ),
++            ),
++            'Zend\View\Renderer\PhpRenderer' => array(
++                'parameters' => array(
++                    'resolver' => 'Zend\View\Resolver\AggregateResolver',
++                ),
++            ),
++        ),
++    ),
++);
++]]></programlisting>
++
++        <para>
++            Now that we have our <classname>PhpRenderer</classname> instance, and it can find
++            templates, let's inject some variables. This can be done in 4 different ways.
++        </para>
++
++        <itemizedlist>
++            <listitem>
++                <para>
++                    Pass an array (or <classname>ArrayAccess</classname> instance) of items as the","Can also be a View\Variables object I assume?
+Also, should that array be an associative array?
+",d81e4b941339fa55c8c48b678e751f65e07b077c
+741240,0,"Thats only a helper method and should not part of an interface""",2012-04-26 08:14:29,marc-mabe,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1108#discussion_r741240,2012-04-26T20:14:29Z,2012-04-27T07:19:33Z,marc-mabe,MEMBER,library/Zend/EventManager/EventCollection.php,,,,,1,"@@ -108,4 +110,64 @@ public function getListeners($event);
+      * @return void
+      */
+     public function clearListeners($event);
++
++    /**
++     * Set the event class to utilize
++     *
++     * @param  string $class
++     * @return EventCollection
++     */
++    public function setEventClass($class);
++
++    /**
++     * Get the identifier(s) for this EventManager
++     *
++     * @return array
++     */
++    public function getIdentifiers();
++
++    /**
++     * Set the identifiers (overrides any currently set identifiers)
++     *
++     * @param string|int|array|Traversable $identifiers
++     * @return EventCollection
++     */
++    public function setIdentifiers($identifiers);
++
++    /**
++     * Add some identifier(s) (appends to any currently set identifiers)
++     *
++     * @param string|int|array|Traversable $identifiers
++     * @return EventCollection
++     */
++    public function addIdentifiers($identifiers);
++
++    /**
++     * Attach a listener aggregate
++     *
++     * @param  ListenerAggregate $aggregate
++     * @param  int $priority If provided, a suggested priority for the aggregate to use
++     * @return mixed return value of {@link ListenerAggregate::attach()}
++     */
++    public function attachAggregate(ListenerAggregate $aggregate, $priority = 1);
++
++    /**
++     * Detach a listener aggregate
++     *
++     * @param  ListenerAggregate $aggregate
++     * @return mixed return value of {@link ListenerAggregate::detach()}
++     */
++    public function detachAggregate(ListenerAggregate $aggregate);
++
++    /**
++     * Prepare arguments
++     *
++     * @param  array $args
++     * @return ArrayObject
++     */
++    public function prepareArgs(array $args);","Thats only a helper method and should not part of an interface
+",261f39819d09f9d433ba8b7dff7a54503814eca5
+754764,0,"What are `$hash` and `$header` for?""",2012-04-30 17:21:03,akrabat,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1048#discussion_r754764,2012-05-01T05:21:03Z,2012-05-01T05:21:03Z,akrabat,CONTRIBUTOR,tests/Zend/Http/Client/CurlTest.php,,328.0,,,25,"@@ -313,4 +313,26 @@ public function testHeadRequest()
+         $this->client->send();
+         $this->assertEquals('', $this->client->getResponse()->getBody());
+     }
++
++    public function testAuthorizeHeader()
++    {
++        // We just need someone to talk to
++        $this->client->setUri($this->baseuri. 'testHttpAuth.php');
++        $adapter = new Adapter\Curl();
++        $this->client->setAdapter($adapter);
++
++        $uid = 'alice';
++        $pwd = 'secret';
++
++        $hash   = base64_encode($uid . ':' . $pwd);
++        $header = 'Authorization: Basic ' . $hash;","What are `$hash` and `$header` for?
+",f40605463679ecc8befad6673be2638c518e7a6d
+633880,0,"I added the type hinting for $db""",2012-04-02 03:46:00,ezimuel,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/972#discussion_r633880,2012-04-02T15:46:00Z,2012-04-02T16:34:57Z,ezimuel,CONTRIBUTOR,library/Zend/Log/Writer/Db.php,,,,,1,"@@ -39,74 +39,59 @@
+  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+  */
+ class Db extends AbstractWriter
+-{
++{   
+     /**
+-     * Database adapter instance
++     * Db adapter instance
+      *
+-     * @var DbAdapter
++     * @var Adapter
+      */
+-    protected $_db;
+-
++    protected $db;
++    
+     /**
+-     * Name of the log table in the database
+-     *
+-     * @var string
++     * Table name
++     * 
++     * @var string 
+      */
+-    protected $_table;
++    protected $table;
+ 
+     /**
+      * Relates database columns names to log data field keys.
+      *
+      * @var null|array
+      */
+-    protected $_columnMap;
++    protected $columnMap;
+ 
+     /**
+-     * Class constructor
+-     *
+-     * @param DbAdapter $db   Database adapter instance
+-     * @param string $table         Log table in database
+-     * @param array $columnMap
+-     * @return void
++     * Field separator for sub-elements
++     * 
++     * @var string 
+      */
+-    public function __construct($db, $table, $columnMap = null)
+-    {
+-        $this->_db        = $db;
+-        $this->_table     = $table;
+-        $this->_columnMap = $columnMap;
+-    }
+-
++    protected $separator = '_';
++    
+     /**
+-     * Create a new instance of Zend_Log_Writer_Db
++     * Constructor
+      *
+-     * @param  array|\Zend\Config\Config $config
+-     * @return self
++     * @param Adapter $db 
++     * @param string $table
++     * @param array $columnMap
++     * @param string $separator
+      */
+-    static public function factory($config = array())
++    public function __construct($db, $table, $columnMap = null, $separator = null)","I added the type hinting for $db
+",01ed5acc654a3311ca056931d75d5c7eeb2608f4
+515577,1,"You're twisting my words a little bit, but it's ok :-)  Your examples are strange. [`krsort()`](http://php.net/manual/en/function.krsort.php) is designed to sort arrays while maintaining keys (i.e. associations, as the name suggests) - hence it should not""",2012-03-04 00:09:43,Thinkscape,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/880#discussion_r515577,2012-03-04T11:09:43Z,2012-03-08T18:03:04Z,Thinkscape,MEMBER,library/Zend/Stdlib/IsAssocArray.php,,,,,1,"@@ -24,7 +24,7 @@ public static function test($value, $allowEmpty = false)
+             if ($allowEmpty && count($value) == 0) {
+                 return true;
+             }
+-            return count(array_filter(array_keys($value), 'is_string')) > 0;
++            return (array_values($value) !== $value);","You're twisting my words a little bit, but it's ok :-)
+
+Your examples are strange. [`krsort()`](http://php.net/manual/en/function.krsort.php) is designed to sort arrays while maintaining keys (i.e. associations, as the name suggests) - hence it should not be used with numerical arrays (take a look at the [example provided in php manual](http://php.net/manual/en/function.krsort.php)). There are a [lot more array functions](http://www.php.net/manual/en/array.sorting.php) that will manipulate keys in an array, shuffling them around or changing altogether...  only a few of those functions are safe with numerical arrays (i.e. in a sense that you can still do a `for($x;$x<count(),$x++)` loop through them.)
+
+> Any array with at least one string key is an associative array
+
+I have never seen such (reverse) definition of associative array in my life ;) By this definition, the following ...
+
+``` php
+<?php   
+    $whatAmI = array(
+        2012  =>  'Year When The World Ends' );
+        -9920 =>  false 
+    );
+```
+
+... is **not** an associative array. (!?)
+
+Of course, first priority is the stability, so if any component relies on that wicked definition (@ralphschindler, chirp in ;) then we should investigate.
+",c936279621c98bfa7e5079c214d0809e6c71b818
+325108,1,"If you could do some profiling, that would be great. I'll merge as-is for now, and we can revisit if needed.""",2012-01-03 10:16:53,weierophinney,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/686#discussion_r325108,2012-01-03T21:16:53Z,2012-01-03T21:16:53Z,weierophinney,MEMBER,library/Zend/Cache/Storage/Adapter/Memcached.php,,73.0,,,42,"@@ -48,25 +55,28 @@ class Memcached extends AbstractAdapter
+     /**
+      * Constructor
+      *
+-     * @param  array $options Option
++     * @param  null|array|Traversable|MemcachedOptions $options
+      * @throws Exception
+      * @return void
+      */
+     public function __construct($options = null)
+     {
+-        if (!extension_loaded('memcached')) {
+-            throw new Exception\ExtensionNotLoadedException(""Memcached extension is not loaded"");
++        if (static::$extMemcachedMajorVersion === null) {
++            $v = (string) phpversion('memcached');
++            static::$extMemcachedMajorVersion = ($v !== '') ? (int)$v[0] : 0;
+         }
+-        
+-        $this->memcached= new MemcachedResource();
+-        
+-        if (!empty($options)) {
+-            $this->setOptions($options);
++
++        if (static::$extMemcachedMajorVersion < 1) {
++            throw new Exception\ExtensionNotLoadedException('Need ext/memcached version >= 1.0.0');
+         }
+ 
+-        $options= $this->getOptions();
++        $this->memcached = new MemcachedResource();","If you could do some profiling, that would be great. I'll merge as-is for now, and we can revisit if needed.
+",6071178d584e0f8d76e3e6332f9be3abc9300488
+760277,0,"Can you remove the unnecesary import? `use Zend\Authentication\Storage as AuthenticationStorage`""",2012-05-01 19:29:02,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1125#discussion_r760277,2012-05-02T07:29:02Z,2012-05-02T16:41:39Z,Maks3w,MEMBER,library/Zend/Authentication/Storage/NonPersistent.php,,38.0,,,14,"@@ -37,7 +37,7 @@
+  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+  */
+-class NonPersistent implements AuthenticationStorage
++class NonPersistent implements StorageInterface","Can you remove the unnecesary import? `use Zend\Authentication\Storage as AuthenticationStorage`
+",46b6838097d3e5add1f6863e9b63b6e9e2ce83f8
+785128,2,"Another bug introduced by alias abuse. Tests for this file fail.""",2012-05-07 11:09:34,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1071#discussion_r785128,2012-05-07T23:09:34Z,2012-05-07T23:09:34Z,Maks3w,MEMBER,library/Zend/Http/Client.php,,30.0,,,6,"@@ -25,11 +25,13 @@
+     Zend\Uri\Http,
+     Zend\Http\Header\Cookie,
+     Zend\Http\Header\SetCookie,
++    Zend\Http\Request as HttpRequest,
++    Zend\Http\Response as HttpResponse,
++    Zend\Http\Response\Stream as HttpResponseStream,","Another bug introduced by alias abuse. Tests for this file fail.
+",d3e604314eb9ecdd80bd3513bdc3276ccd08d422
+838956,0,"I don't know what happen here but this Component is using the new exceptions. This should be, at least, `Crypt\Exception\ExceptionInterface`""",2012-05-17 03:22:45,Maks3w,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/1212#discussion_r838956,2012-05-17T15:22:45Z,2012-05-18T14:47:12Z,Maks3w,MEMBER,tests/Zend/Crypt/PublicKey/RSATest.php,,,,,1,"@@ -356,7 +355,7 @@ public function testConstructorLoadsPassphrasedKeys()
+                 'passPhrase' => '0987654321',
+                 'pemString'  => $keys->privateKey->toString()
+             ));
+-        } catch (Crypt\Exception\RuntimeException $e) {
++        } catch (Crypt\Exception $e) {","I don't know what happen here but this Component is using the new exceptions. This should be, at least, `Crypt\Exception\ExceptionInterface`
+",1d33d36a299d2e45eca951da6c22c29285b438d8
+438544,0,"I don't think that tabs can occur there, also there should be at least one space, correct? Then I'd do: [ ]+""",2012-02-10 05:38:51,DASPRiD,zendframework,zf2,,https://github.com/zendframework/zendframework/pull/784#discussion_r438544,2012-02-10T16:38:51Z,2012-03-06T06:39:01Z,DASPRiD,MEMBER,library/Zend/Http/Response.php,,,,,1,"@@ -179,15 +179,15 @@ public static function fromString($string)
+         if (!is_array($lines) || count($lines)==1) {
+             $lines = preg_split ('/\n/',$string);
+         }
+-        
++
+         $firstLine = array_shift($lines);
+ 
+         $response = new static();
+         $matches = null;
+-        if (!preg_match('/^HTTP\/(?P<version>1\.[01]) (?P<status>\d{3}) (?P<reason>.*)$/', $firstLine, $matches)) {
++        if (!preg_match('/^HTTP\/(?P<version>1\.[01]) (?P<status>\d{3})\s*(?P<reason>.*)$/', $firstLine, $matches)) {","I don't think that tabs can occur there, also there should be at least one space, correct? Then I'd do: [ ]+
+",142b67722ffafee66ccbcaf756356163d2cbaa63

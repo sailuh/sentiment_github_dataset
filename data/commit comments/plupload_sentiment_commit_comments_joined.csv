@@ -1,0 +1,18 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+821217,2,"Here's the fix to an issue I alerted the Plupload folks about.  Yay improved security! Lack of alerts from moxiecode to their customers regarding this issue...not so awesome... :/ Lack of credit to me for finding this (in the commit message, a tweet fro""",2011-12-26 11:06:23,greggles,moxiecode,plupload,e2eb226d107a8fba5d529871fcefdc153f08eec0,greggles,392568,"Here's the fix to an issue I alerted the Plupload folks about. 
+Yay improved security!
+Lack of alerts from moxiecode to their customers regarding this issue...not so awesome... :/
+Lack of credit to me for finding this (in the commit message, a tweet from moxiecode, etc.) not so awesome... :/ 
+",2011-12-26T22:06:23Z,2011-12-26T22:06:36Z
+614660,2,"Crap...""",2011-09-27 05:02:13,jayarjo,moxiecode,plupload,3560d3affbbe7354dae702516480cd5767adb0f7,jayarjo,150075,"Crap...
+",2011-09-27T17:02:13Z,2011-09-27T17:02:13Z
+491198,1,"Custom demo seems working again now, thanks!  Now trying to integrate it within Symfony 1.4.11 forms starting from the demo you provided..""",2011-07-22 02:06:40,djvdorp,moxiecode,plupload,60995b634bc5505d9ab4418818ed7666f5153feb,djvdorp,827540,"Custom demo seems working again now, thanks!
+
+Now trying to integrate it within Symfony 1.4.11 forms starting from the demo you provided..
+",2011-07-22T14:06:40Z,2011-07-22T14:06:40Z
+336429,1,"Awesome!""",2011-04-10 09:21:03,hrach,moxiecode,plupload,1be7ed76b26db5fdd3a79d52e05946ddc3043c9c,hrach,284263,"Awesome!
+",2011-04-10T21:21:03Z,2011-04-10T21:21:03Z
+194960,1,"It's working well now! Thank you!!""",2010-11-16 03:10:43,jnlin,moxiecode,plupload,f58bd0d760a6f9bd1495916ad0a1c1a2fa04dd6b,jnlin,284245,"It's working well now! Thank you!!
+",2010-11-16T14:10:43Z,2010-11-16T14:10:43Z
+48024,1,"Great idea. Instead of having a problem, automate it away.""",2010-02-15 03:45:11,olleolleolle,moxiecode,plupload,2307b3a27d6d7b776093d8d0297e60cb40b7a83f,olleolleolle,211,"Great idea. Instead of having a problem, automate it away.
+",2010-02-15T14:45:11Z,2010-02-15T14:45:11Z

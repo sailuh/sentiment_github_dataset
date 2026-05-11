@@ -1,0 +1,35 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1525162,1,"tenchyoo!!! for evriting!""",2012-07-01 00:37:27,sashastevanovic2412,vmg,redcarpet,c6f93455a1c3c7d7608fbde197d44f5a3119bf94,sashastevanovic2412,1910870,"tenchyoo!!! for evriting!
+",2012-07-01T12:37:27Z,2012-07-01T12:37:27Z
+3832225,1,"Thanks bro, missed it! :smile: """,2013-08-09 20:20:46,robin850,vmg,redcarpet,674eda396486055baa0217c4bc8edb8cc7540363,robin850,354185,"Thanks bro, missed it! :smile: 
+",2013-08-10T08:20:46Z,2013-08-10T08:20:46Z
+3686352,1,"Good catch! Thanks a lot! :heart:   This has been fixed in 103ca1e5fe205771989a29866447acb7881baaf1 and acc9e924cea986ed83b5cb2253dee2202ab6bbd3.""",2013-07-22 01:48:06,robin850,vmg,redcarpet,a5fafa4d684906f20e621d4f254e299462eca74a,robin850,354185,"Good catch! Thanks a lot! :heart: 
+
+This has been fixed in 103ca1e5fe205771989a29866447acb7881baaf1 and acc9e924cea986ed83b5cb2253dee2202ab6bbd3.
+",2013-07-22T13:48:06Z,2013-07-22T13:48:06Z
+3686475,1,"Super, thank you! Happy to help :)""",2013-07-22 02:02:49,parkr,vmg,redcarpet,a5fafa4d684906f20e621d4f254e299462eca74a,parkr,237985,"Super, thank you! Happy to help :)
+",2013-07-22T14:02:49Z,2013-07-22T14:02:49Z
+3511471,1,"Yay! :yellow_heart:  """,2013-06-26 06:12:54,robin850,vmg,redcarpet,7184f9e8ff130e010be0b6db2875d840a2f12edc,robin850,354185,"Yay! :yellow_heart:  
+",2013-06-26T18:12:54Z,2013-06-26T18:12:54Z
+2397166,1,"I'd love to know why they're a terrible idea :)""",2013-01-07 13:43:44,x3ro,vmg,redcarpet,27616ac53414cd04ccc2455ce7022b6ff0774d33,x3ro,243719,"I'd love to know why they're a terrible idea :)
+",2013-01-08T00:43:44Z,2013-01-08T00:43:44Z
+1664574,1,"Nice spotting, sir. Thank you!""",2012-08-02 09:04:26,vmg,vmg,redcarpet,c9fecdd1be9a6592f940e05e18769225b1c811b1,vmg,42793,"Nice spotting, sir. Thank you!
+",2012-08-02T21:04:26Z,2012-08-02T21:04:26Z
+791484,1,":heart:""",2011-12-13 08:43:05,brianmario,vmg,redcarpet,d5f98111026ff138b86aeb13e31fde89140fb5ef,brianmario,11571,":heart:
+",2011-12-13T19:43:05Z,2011-12-13T19:43:05Z
+791514,1,"I actually found the problem on my end, thanks!""",2011-12-13 08:46:23,brianmario,vmg,redcarpet,d5f98111026ff138b86aeb13e31fde89140fb5ef,brianmario,11571,"I actually found the problem on my end, thanks!
+",2011-12-13T19:46:23Z,2011-12-13T19:46:23Z
+3265828,1,"Didn't forget. :smiley: I don't have push access to RubyGems for redcarpet.""",2013-05-22 02:30:01,mattr-,vmg,redcarpet,477e92da016c256b2d117094b9b6b2e184b79880,mattr-,77174,"Didn't forget. :smiley: I don't have push access to RubyGems for redcarpet.
+",2013-05-22T14:30:01Z,2013-05-22T14:30:01Z
+3265874,1,"Oh, I see :)  Can you please merge #247 so that it's easier to build the extension in my vendored Git submodule? Thank you.   On Wed, May 22, 2013 at 11:30 AM, Matt Rogers <notifications@github.com>wrote:  > Didn't forget. [image: :smiley:] I don't h""",2013-05-22 02:34:37,djanowski,vmg,redcarpet,477e92da016c256b2d117094b9b6b2e184b79880,djanowski,2268,"Oh, I see :)  Can you please merge #247 so that it's easier to build the
+extension in my vendored Git submodule? Thank you.
+
+On Wed, May 22, 2013 at 11:30 AM, Matt Rogers notifications@github.comwrote:
+
+> Didn't forget. [image: :smiley:] I don't have push access to RubyGems for
+> redcarpet.
+> 
+> —
+> Reply to this email directly or view it on GitHubhttps://github.com/vmg/redcarpet/commit/477e92da016c256b2d117094b9b6b2e184b79880#commitcomment-3265828
+> .
+",2013-05-22T14:34:37Z,2013-05-22T14:34:37Z

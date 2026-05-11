@@ -1,0 +1,7 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+232603,0,"Not sure about what kind of line lengths the project adheres to, but this diff is showing so funky indentation here.""",2011-01-05 00:27:46,jszakmeister,clojure,clojure,b43bf20e1ba864c817ada237042cfdc8922831c0,jszakmeister,448087,"Not sure about what kind of line lengths the project adheres to, but this diff is showing so funky indentation here.
+",2011-01-05T11:27:46Z,2011-01-05T11:27:46Z
+1194246,1,"As long as we're nit-picking this check-in :) and wearing my autodoc hat, a doc string on IKVReduce and kvreduce might be nice (assuming it's supposed to be available for public implementation). To see an example of how this comes out in the autodoc, see h""",2012-04-10 07:09:50,tomfaulhaber,clojure,clojure,68ec7ed0d0d88e346b8e069281a116883bc6494b,tomfaulhaber,37207,"As long as we're nit-picking this check-in :) and wearing my autodoc hat, a doc string on IKVReduce and kvreduce might be nice (assuming it's supposed to be available for public implementation). To see an example of how this comes out in the autodoc, see http://clojure.github.com/clojure/branch-master/clojure.core-api.html#clojure.core.protocols/InternalReduce
+",2012-04-10T19:09:50Z,2012-04-10T19:09:50Z
+1197186,1,"doc added, thanks""",2012-04-11 00:04:14,richhickey,clojure,clojure,68ec7ed0d0d88e346b8e069281a116883bc6494b,richhickey,34045,"doc added, thanks
+",2012-04-11T12:04:14Z,2012-04-11T12:04:14Z

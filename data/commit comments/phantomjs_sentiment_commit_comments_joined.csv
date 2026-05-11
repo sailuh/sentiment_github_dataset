@@ -1,0 +1,27 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+901648,0,"I still don't understand what this stuff has to do with WebKit.  Anyway, would be cool to actually find the root cause: the change I made here was just in the way I set the HTML for the frame.  I can only assume that the frame requires a """"physical"""" fil""",2012-01-25 08:48:42,detro,ariya,phantomjs,1531595d2e2a44c3b9ef425d78fa38614e3ab493,detro,114508,"I still don't understand what this stuff has to do with WebKit.
+
+Anyway, would be cool to actually find the root cause: the change I made here was just in the way I set the HTML for the frame.
+
+I can only assume that the frame requires a ""physical"" file on the filesystem, so your use of temporary file was fulfilling that need.
+In my patch I set the script directly as a buffer.
+",2012-01-25T19:48:42Z,2012-01-25T19:48:42Z
+2369226,2,"Fortunately, `delayCallback` is never called; but, this `isFunc` is a blatant error.  My bad...""",2012-12-31 04:32:47,execjosh,ariya,phantomjs,f52044cd3106266aa8efc1fae05e8c923315a5e5,execjosh,189989,"Fortunately, `delayCallback` is never called; but, this `isFunc` is a blatant error.  My bad...
+",2012-12-31T15:32:47Z,2012-12-31T15:32:47Z
+437164,2,"Crap!""",2011-06-18 01:57:20,detro,ariya,phantomjs,bd18d7c838ade10d11aaeb89e7b5a38e708ea06e,detro,114508,"Crap!
+",2011-06-18T13:57:20Z,2011-06-18T13:57:20Z
+592383,0,"config unlikely needs it. There is no confusion there since if you pass the config as the string, then you would have use the full command-line options already.  cookies.txt is a good name, that's the convention browser uses to store the cookies (regardl""",2011-09-15 11:33:01,ariya,ariya,phantomjs,5449251a6c1db1f0af1959e7e07b04c467295761,ariya,7288,"config unlikely needs it. There is no confusion there since if you pass the config as the string, then you would have use the full command-line options already.
+
+cookies.txt is a good name, that's the convention browser uses to store the cookies (regardless the contents format).
+
+I believe the description for the argument is not ambiguous. First of all, the format should not be mentioned because it's kind of internal and we may change it if we have to. Also, CookieJar does not mean anything (implementation details).
+",2011-09-15T23:33:01Z,2011-09-15T23:33:01Z
+645380,0,"I have been trying to figure out how this is ACTUALLY linked to the """"phantom"""" class to make use of it. And it is not. At least, I can't see how.  In here the loaded configuration is injected into a """"arbitrary created"""" WebPage object. That object is then lo""",2011-10-11 11:44:37,detro,ariya,phantomjs,26f7185bf618080c915c750eb68a9f71190b5a72,detro,114508,"I have been trying to figure out how this is ACTUALLY linked to the ""phantom"" class to make use of it.
+And it is not. At least, I can't see how.
+
+In here the loaded configuration is injected into a ""arbitrary created"" WebPage object. That object is then lost there, as we go out of scope.
+
+Am I missing something?
+",2011-10-11T23:44:37Z,2011-10-11T23:44:37Z
+382311,2,"yep, it's work, but i need to add user and password for proxy connection=( Can u added this feature. May be --proxy=login:pass@server:port""",2011-05-12 23:33:23,krim,ariya,phantomjs,a7a1322ea12d716559add8f2e46ad6aded5c7f11,krim,224101,"yep, it's work, but i need to add user and password for proxy connection=( Can u added this feature. May be --proxy=login:pass@server:port
+",2011-05-13T11:33:23Z,2011-05-13T11:33:23Z

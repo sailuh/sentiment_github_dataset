@@ -1,0 +1,115 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3330638,1,"clearly already done: https://github.com/django/django/commit/59235816bd063cb8b24acfc92ae1b5cd09a1f7ba ;-)""",2013-05-31 07:22:18,ptone,django,django,6786920fd8a1dfa43bba8333548c2496847298af,ptone,40845,"clearly already done: https://github.com/django/django/commit/59235816bd063cb8b24acfc92ae1b5cd09a1f7ba ;-)
+",2013-05-31T19:22:18Z,2013-05-31T19:22:18Z
+3242099,1,"Thanks for pointers, actually /home/lechup/.virtualenvs/django-sprint/local/lib/python2.7/site-packages/django/ is a symlink to /home/lechup/github/django/django/ .  I'll try that .pth thing, but I think it is not the case.  PS: Pastebin? I though abou""",2013-05-18 09:42:30,lechup,django,django,92ebb29c5376c1811e8607e96bddc90d24e44e2a,lechup,957803,"Thanks for pointers, actually /home/lechup/.virtualenvs/django-sprint/local/lib/python2.7/site-packages/django/ is a symlink to /home/lechup/github/django/django/ .
+
+I'll try that .pth thing, but I think it is not the case.
+
+PS: Pastebin? I though about it but to late (when I've already seen big letters)... Thanks for pointing this out. :+1: 
+",2013-05-18T21:42:30Z,2013-05-18T21:47:43Z
+2712666,0,":+1: """,2013-02-27 23:26:08,mjtamlyn,django,django,481f3f13b54a5cacc5b67b32c4ada267fc709d21,mjtamlyn,389581,":+1: 
+",2013-02-28T10:26:08Z,2013-02-28T10:26:08Z
+2282627,1,"Thanks, fixed in 0cdfa76e68 """,2012-12-10 05:51:22,claudep,django,django,5fa5621f574f9ae211ed756c3e2ad453470dae8a,claudep,143192,"Thanks, fixed in 0cdfa76e68 
+",2012-12-10T16:51:22Z,2012-12-10T16:51:22Z
+2039801,0,"If my note above is valid then this one is concerned too.""",2012-10-23 04:11:14,nvictor,django,django,9305c0e12d43c4df999c3301a1f0c742264a657e,nvictor,76629,"If my note above is valid then this one is concerned too.
+",2012-10-23T16:11:14Z,2012-10-23T16:11:14Z
+1526217,0,"@akaariai small comment typo.""",2012-07-01 15:35:20,charettes,django,django,e74787391e8fdf87d9a92138028911746809bd7c,charettes,9293,"@akaariai small comment typo.
+",2012-07-02T03:35:20Z,2012-07-02T03:35:20Z
+1526845,0,"For some reason moving the skips to decorators will skip the tests in all cases.  The diff is this ``` +@skipUnless(connection.vendor == 'postgresql', +            """"This test only valid for PostgreSQL"""") +@skipUnlessDBFeature('supports_transactions')  class""",2012-07-01 20:52:27,akaariai,django,django,f572ee0c65ec5eac9edb0cb3e35c96ec86d89ffb,akaariai,125285,"For some reason moving the skips to decorators will skip the tests in all cases.
+
+The diff is this
+
+```
++@skipUnless(connection.vendor == 'postgresql',
++            ""This test only valid for PostgreSQL"")
++@skipUnlessDBFeature('supports_transactions')
+ class TestPostgresAutocommit(TransactionTestCase):
+     """"""
+     Tests to make sure psycopg2's autocommit mode is restored after entering
+@@ -225,11 +226,6 @@ class TestPostgresAutocommit(TransactionTestCase):
+     def tearDown(self):
+         connections[DEFAULT_DB_ALIAS] = self._old_backend
+
+-TestPostgresAutocommit = skipUnless(connection.vendor == 'postgresql',
+-    ""This test only valid for PostgreSQL"")(TestPostgresAutocommit)
+-TestPostgresAutoCommit = skipUnlessDBFeature('supports_transactions')(
+-    TestPostgresAutocommit)
+```
+
+With the change when running under PostgreSQL:
+Ran 11 tests in 4.925s
+With master:
+Ran 14 tests in 6.307s
+
+The problem seems to be the check for transaction_support. Luckily this isn't needed at all, AFAICS postgresql always supports transactions.
+
+So, maybe I should remove the transaction_support check, move the vendor check to decorator and move the tearDown directly below setUp?
+",2012-07-02T08:52:27Z,2012-07-02T08:52:27Z
+1492612,0,"There's a similar issue in django-piston - here was my fix: https://bitbucket.org/jespern/django-piston/pull-request/25/compatibility-fix-for-json-emitter-with  I think we should just document the problem, given that the workaround isn't too bad. Doing any""",2012-06-22 02:44:09,spookylukey,django,django,cec6bd5a59547dc97fe98975c570fc27a1e970be,spookylukey,62745,"There's a similar issue in django-piston - here was my fix: https://bitbucket.org/jespern/django-piston/pull-request/25/compatibility-fix-for-json-emitter-with
+
+I think we should just document the problem, given that the workaround isn't too bad. Doing anything else would just perpetuate the problems that simplejson has caused.
+",2012-06-22T14:44:09Z,2012-06-22T14:44:09Z
+3990989,2,"Also, these tests have a typo (""""Firs"""") in their names  I suspect that this could the reason they weren't found when fixing this ticket.  And also suspect I'm the one that introduced these tests  :-( """,2013-09-01 03:00:52,ramiro,django,django,1c0c879be3a21affec3d5eb2d6b6e4f0a0803aec,ramiro,40661,"Also, these tests have a typo (""Firs"") in their names
+
+I suspect that this could the reason they weren't found when fixing this ticket.
+
+And also suspect I'm the one that introduced these tests  :-(
+",2013-09-01T15:00:52Z,2013-09-01T15:00:52Z
+3336079,2,"Thanks for fixing my mess. I'm very sorry.""",2013-06-02 06:57:17,claudep,django,django,590a41164e558fec8b54399d296c67dfffce6970,claudep,143192,"Thanks for fixing my mess. I'm very sorry.
+",2013-06-02T18:57:17Z,2013-06-02T18:57:17Z
+2681274,2,"crap, you are absolutely correct, my fault, revert is coming""",2013-02-23 12:09:55,HonzaKral,django,django,2b48fcc607010065c0f8107baf669dd41b164f3c,honzakral,32132,"crap, you are absolutely correct, my fault, revert is coming
+",2013-02-23T23:09:55Z,2013-02-23T23:09:55Z
+2621078,2,"Doh... Sorry :-(""",2013-02-13 20:41:46,claudep,django,django,142ec8b2835c242339b930c47a70a3c7036df91d,claudep,143192,"Doh... Sorry :-(
+",2013-02-14T07:41:46Z,2013-02-14T07:41:46Z
+2370821,2,"Hrmpf, why doesn't my python show those :(""",2013-01-01 01:16:42,apollo13,django,django,3aa4b8165da23a2f094d0eeffacbda5484f4c1f6,apollo13,81547,"Hrmpf, why doesn't my python show those :(
+",2013-01-01T12:16:42Z,2013-01-01T12:16:42Z
+2550215,2,"Hey django 1.4.3 meet this bug again :(""",2013-02-03 00:03:20,james4388,django,django,9d8492c169d54b727ab387132456d4c1526cff06,james4388,174132,"Hey django 1.4.3 meet this bug again :(
+",2013-02-03T11:03:20Z,2013-02-03T11:03:20Z
+3738287,0,"There is an issue with this new test, in the case the used test settings are not set to use a MD5-based password hasher. `create_users` called in `setUp()` will use the hasher from current settings, then `authenticate` will fail because of not matching has""",2013-07-29 02:34:54,claudep,django,django,5dbca13f3baa2e1bafd77e84a80ad6d8a074712e,claudep,143192,"There is an issue with this new test, in the case the used test settings are not set to use a MD5-based password hasher. `create_users` called in `setUp()` will use the hasher from current settings, then `authenticate` will fail because of not matching hasher, and `CountingMD5PasswordHasher`is never called.
+A workaround might be to reset self.user password at the start of the test
+
+```
+@@ -125,6 +126,8 @@ class BaseModelBackendTest(object):
+     @override_settings(PASSWORD_HASHERS=('django.contrib.auth.tests.test_auth_backends.CountingMD5PasswordHasher',))
+     def test_authentication_timing(self):
+         """"""Hasher is run once regardless of whether the user exists. Refs #20760.""""""
++        self.user.set_password('test')
++        self.user.save()
+         CountingMD5PasswordHasher.calls = 0
+         username = getattr(self.user, self.UserModel.USERNAME_FIELD)
+         authenticate(username=username, password='test')
+```
+",2013-07-29T14:34:54Z,2013-07-29T14:34:54Z
+2699615,0,"Ok, I need to look into this more. Without this change, on Python 3 it was failing when it tries to feed Py3 ``str`` objects to hash construction in ``learn_cache_key``, saying they needed to be bytes.""",2013-02-26 11:00:58,carljm,django,django,6a8f95d812797a0c7af85df27c51f588c8649c69,carljm,61586,"Ok, I need to look into this more. Without this change, on Python 3 it was failing when it tries to feed Py3 `str` objects to hash construction in `learn_cache_key`, saying they needed to be bytes.
+",2013-02-26T22:00:58Z,2013-02-26T22:00:58Z
+2683395,0,"The standard usage of a """"Form"""" is usually:      if request.method == 'POST':         form = MyFooForm(request.POST)  Since """"AuthenticationForm""""'s __init__ accepts an extra """"request"""" parameter it becomes a little non-consistent since you have to use: """,2013-02-24 10:51:13,Oni,django,django,22d82a7742c3b091857fda8612273360459110ee,Oni,38935,"The standard usage of a ""Form"" is usually:
+
+```
+if request.method == 'POST':
+    form = MyFooForm(request.POST)
+```
+
+Since ""AuthenticationForm""'s **init** accepts an extra ""request"" parameter it becomes a little non-consistent since you have to use:
+
+```
+if request.method == 'POST':
+    form = AuthenticationForm(data=request.POST)
+```
+
+Is it a necessary inconsistency?
+
+Possible solution:
+
+```
+def __init__(self, *args, **kwargs):
+    self.request = kwargs.pop('request', None)
+    self.user_cache = None
+    super(AuthenticationForm, self).__init__(*args, **kwargs)
+```
+",2013-02-24T21:51:13Z,2013-02-24T21:59:35Z
+1740903,0,"Breaks CSRF middleware in python 2.7""",2012-08-20 13:44:39,georgemarshall,django,django,62954ba04c86c4cea3b17a872ba6a0837730e17d,georgemarshall,132688,"Breaks CSRF middleware in python 2.7
+",2012-08-21T01:44:39Z,2012-08-21T01:44:39Z
+1474953,0,"Most likely this is due to the fact that Tastypie is doing `simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True, ensure_ascii=False)` and passing a `DjangoJSONEncoder` which is no longer a simplejson encoder anymore, so simplejson passes to i""",2012-06-18 20:48:07,maraujop,django,django,cec6bd5a59547dc97fe98975c570fc27a1e970be,maraujop,252257,"Most likely this is due to the fact that Tastypie is doing `simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True, ensure_ascii=False)` and passing a `DjangoJSONEncoder` which is no longer a simplejson encoder anymore, so simplejson passes to it kwargs it doesn't accept. So I'm leaning towards patching this in Tastypie.
+
+Thanks, cheers
+",2012-06-19T08:48:07Z,2012-06-19T08:55:06Z

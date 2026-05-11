@@ -1,0 +1,1002 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+1217114,2,"I'm concerned that this code is too functional at such a low level. I can imagine it being a hotspot. Obviously we will see when we do performance testing but usually you want C-like code when doing operations like this one to avoid a lot of CPU and memor""",2012-07-23 05:02:02,spullara,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1217114,2012-07-23T17:02:02Z,2012-08-08T19:28:58Z,spullara,NONE,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/protocol/Buffer.scala,,,,,1,"@@ -0,0 +1,188 @@
++package com.twitter.finagle.mysql.protocol
++
++import java.lang.{Float => JFloat, Double => JDouble}
++import java.sql.{Time, Date, Timestamp}
++
++/**
++ * Defines classes to read and write to/from a byte buffer 
++ * in little endian byte order.
++ */
++
++class BufferReader(val buffer: Array[Byte], private[this] var offset: Int = 0) {
++  require(offset >= 0)
++  require(buffer != null)
++
++  def readable(width: Int = 1): Boolean = offset + width <= buffer.size
++
++   /**
++   * Reads multi-byte numeric values stored in a byte array. 
++   * Starts at offset and reads offset+width bytes. The values are
++   * assumed to be stored with the low byte first at data(offset) 
++   * (i.e. little endian) and the result is returned as a Long.
++   */
++  def read(width: Int): Long = {","I'm concerned that this code is too functional at such a low level. I can imagine it being a hotspot. Obviously we will see when we do performance testing but usually you want C-like code when doing operations like this one to avoid a lot of CPU and memory overhead.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1218344,2,"i'm sure the protocol has something to say about this, right?  probably it's even configurable? :-(""",2012-07-23 06:55:33,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1218344,2012-07-23T18:55:33Z,2012-08-08T19:28:59Z,mariusae,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/protocol/Buffer.scala,,,,,1,"@@ -0,0 +1,188 @@
++package com.twitter.finagle.mysql.protocol
++
++import java.lang.{Float => JFloat, Double => JDouble}
++import java.sql.{Time, Date, Timestamp}
++
++/**
++ * Defines classes to read and write to/from a byte buffer 
++ * in little endian byte order.
++ */
++
++class BufferReader(val buffer: Array[Byte], private[this] var offset: Int = 0) {
++  require(offset >= 0)
++  require(buffer != null)
++
++  def readable(width: Int = 1): Boolean = offset + width <= buffer.size
++
++   /**
++   * Reads multi-byte numeric values stored in a byte array. 
++   * Starts at offset and reads offset+width bytes. The values are
++   * assumed to be stored with the low byte first at data(offset) 
++   * (i.e. little endian) and the result is returned as a Long.
++   */
++  def read(width: Int): Long = {
++    val n = (offset until offset + width).zipWithIndex.foldLeft(0L) {
++      case (result, (b,i)) => result | ((buffer(b) & 0xFFL) << (i*8))
++    }
++    offset += width
++    n
++  }
++
++  def readByte = read(1).toByte
++  def readUnsignedByte = read(1).toShort
++  def readShort = read(2).toShort
++  def readUnsignedShort = read(2).toInt
++  def readInt24 = read(3).toInt
++  def readInt = read(4).toInt
++  def readLong = read(8)
++  def readFloat = JFloat.intBitsToFloat(readInt)
++  def readDouble = JDouble.longBitsToDouble(readLong)
++
++  def skip(n: Int) = offset += n
++  def take(n: Int) = {
++    val res = buffer.drop(offset).take(n)
++    offset += n
++    res
++  }
++  def takeRest = take(buffer.size - offset)
++
++  /**
++  * Read MySQL data field - a variable length encoded binary.
++  * Depending on the first byte, read a different width from
++  * the data array.
++  */
++  def readLengthCodedBinary: Long = {
++    val firstByte = readByte
++    if(firstByte < 251)
++      firstByte
++    else
++      firstByte match {
++        case 252 => read(2)
++        case 253 => read(3)
++        case 254 => read(8)
++        case _ => -1 //NULL
++      }
++  }
++
++  def readNullTerminatedString: String = {
++    val result = new StringBuilder()
++    while(buffer(offset) != 0)
++      result += readByte.toChar
++
++    readByte //consume null byte
++    result.toString
++  }
++
++  def readLengthCodedString: String = {
++    val size = readUnsignedByte
++
++    if(size == 0xFB) 
++      return """" // NULL string.
++
++    val strBytes = new Array[Byte](size)
++    Array.copy(buffer, offset, strBytes, 0, size)
++    offset += size
++    new String(strBytes)
++  }
++
++  /**
++   * Read a MySQL binary encoded Timestamp from the buffer.
++   */
++  def readTimestamp: Timestamp = {
++    val len = readUnsignedByte
++    if(len == 0)
++      return new Timestamp(0)
++
++    var year, month, day, hour, min, sec, nano = 0
++
++    if(readable(4)) {
++      year = readUnsignedShort
++      month = readUnsignedByte
++      day = readUnsignedByte
++    }
++
++    if(readable(3)) {
++      hour = readUnsignedByte
++      min = readUnsignedByte
++      sec = readUnsignedByte
++    }
++
++    if(readable(4))
++      nano = readInt
++
++    val fmt = ""%04d-%02d-%02d %02d:%02d:%02d""
++    val ts = Timestamp.valueOf(fmt.format(year,month,day,hour,min,sec))
++    ts.setNanos(nano)
++    ts
++  }
++
++  def readDate: Date = new Date(readTimestamp.getTime)
++
++  /**
++   * Read a MySQL binary encoded Time field from the buffer.
++   */
++   def readTime: Time = {
++    val len = readUnsignedByte
++    if(len == 0)
++      return new Time(0)
++
++    val sign = if(readByte == 1) -1 else 1
++    val days = readInt
++    val hour = readUnsignedByte
++    val min = readUnsignedByte
++    val sec = readUnsignedByte
++
++    Time.valueOf(""%02d:%02d:%02d"".format(hour, min, sec))
++   }
++
++}
++
++class BufferWriter(val buffer: Array[Byte], private[this] var offset: Int = 0) {
++  require(offset >= 0)
++  require(buffer != null)
++
++  def writable(width: Int = 1): Boolean = offset + width <= buffer.size
++
++  /**
++   * Write multi-byte numeric values onto the the buffer by
++   * widening n accross 'width' byte chunks starting at buffer(offset)
++   */
++  def write(n: Long, width: Int): BufferWriter = {
++    (0 until width) foreach { i =>
++      buffer(i + offset) = ((n >> (i*8)) & 0xFF).toByte
++    }
++    offset += width
++    this
++  }
++
++  def writeBoolean(b: Boolean) = if(b) writeByte(0) else writeByte(1)
++  def writeByte(n: Byte) = write(n, 1)
++  def writeShort(n: Short) = write(n, 2)
++  def writeUnsignedShort(n: Int) = write(n, 2)
++  def writeInt24(n: Int) = write(n,  3)
++  def writeInt(n: Int) = write(n, 4)
++  def writeLong(n: Long) = write(n, 8)
++  def writeFloat(f: Float) = writeInt(JFloat.floatToIntBits(f))
++  def writeDouble(d: Double) = writeLong(JDouble.doubleToLongBits(d))
++
++  def skip(n: Int) = offset += n
++  def fill(n: Int, b: Byte) = {
++    (offset until offset + n) foreach { j => buffer(j) = b ; offset += 1 }
++    this
++  }
++  def fillRest(b: Byte) = fill(buffer.size - offset, b)
++
++  def writeNullTerminatedString(str: String) = {
++    Array.copy(str.getBytes, 0, buffer, offset, str.length)
++    buffer(offset + str.length) = '\0'.toByte
++    offset += str.length + 1
++    this
++  }
++
++  def writeLengthCodedString(str: String) = {
++    buffer(offset) = str.length.toByte
++    Array.copy(str.getBytes, 0, buffer, offset+1, str.length)","i'm sure the protocol has something to say about this, right?  probably it's even configurable? :-(
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1217384,0,"You'll need to save the reader index here so that it is restored next time. See the [FrameDecoder example](http://docs.jboss.org/netty/3.1/api/org/jboss/netty/handler/codec/frame/FrameDecoder.html)""",2012-07-23 05:30:14,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1217384,2012-07-23T17:30:14Z,2012-08-08T19:28:58Z,mariusae,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/codec/PacketFrameDecoder.scala,,36.0,,,1,"@@ -0,0 +1,38 @@
++package com.twitter.finagle.mysql.codec
++
++import com.twitter.finagle.mysql.protocol.{Packet, BufferReader}
++import com.twitter.finagle.mysql.util.BufferUtil
++import org.jboss.netty.buffer.ChannelBuffer
++import org.jboss.netty.channel.{Channel, ChannelHandlerContext}
++import org.jboss.netty.handler.codec.frame.FrameDecoder
++
++/**
++ * MySQL packets are a length encoded set of bytes written
++ * in little endian byte order.
++ *
++ * The built in LengthFieldBasedFrameDecoder in Netty
++ * doesn't seem to support byte buffers that are encoded in
++ * little endian. Thus, a simple custom FrameDecoder is
++ * needed to defrag a ChannelBuffer into a logical MySQL packet.
++ */
++class PacketFrameDecoder extends FrameDecoder {
++  override def decode(ctx: ChannelHandlerContext, channel: Channel, buffer: ChannelBuffer): Packet = {
++    if(buffer.readableBytes < Packet.headerSize)
++      return null
++
++    val header = new Array[Byte](Packet.headerSize)
++    buffer.readBytes(header)
++    val br = new BufferReader(header)
++
++    val (length, seq) = (br.readInt24, br.readByte)
++
++    if(buffer.readableBytes < length)
++      return null
++","You'll need to save the reader index here so that it is restored next time. See the [FrameDecoder example](http://docs.jboss.org/netty/3.1/api/org/jboss/netty/handler/codec/frame/FrameDecoder.html)
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1218339,0,"(for future performance optimization) - we should try to use `ChannelBuffer`s as much as possible throughout as it allows us to reduce the amount of copying we do.""",2012-07-23 06:54:53,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1218339,2012-07-23T18:54:53Z,2012-08-08T19:28:59Z,mariusae,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/protocol/Buffer.scala,,,,,1,"@@ -0,0 +1,188 @@
++package com.twitter.finagle.mysql.protocol
++
++import java.lang.{Float => JFloat, Double => JDouble}
++import java.sql.{Time, Date, Timestamp}
++
++/**
++ * Defines classes to read and write to/from a byte buffer 
++ * in little endian byte order.
++ */
++
++class BufferReader(val buffer: Array[Byte], private[this] var offset: Int = 0) {","(for future performance optimization) - we should try to use `ChannelBuffer`s as much as possible throughout as it allows us to reduce the amount of copying we do.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1218606,0,"As in, a rogue library that has a malicious toString method?  We can completely remove it but the problem of sql injection is still there if the a user builds their own sql statement.""",2012-07-23 07:25:17,roanta,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1218606,2012-07-23T19:25:17Z,2012-08-08T19:28:59Z,roanta,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/util/Query.scala,,26.0,,,1,"@@ -0,0 +1,75 @@
++package com.twitter.finagle.mysql.util
++
++import java.util.regex.Pattern
++
++class TooFewQueryParametersException(t: Throwable) extends Exception(t)
++class TooManyQueryParametersException(t: Throwable) extends Exception(t)
++
++object Query {
++  val wildcard = Pattern.compile(""\\?"")
++
++  /**
++   * Injects the string representation of each param sequentially
++   * into the sql string.
++   */
++  def injectParams(sql: String, params: Seq[Any]): String = {
++    def inject(param: Any): String = param match {
++      case p: Product => inject(p.productIterator.toIterable)
++      case i: Iterable[_] => i.toSeq.map(inject(_)).mkString("","")
++      case any => any.toString
++    }
++
++    replace(sql, params, inject)
++  }
++
++  /**
++   * Expands the wildcard in the sql to its full representation.
++   * Useful for prepared statements.
++   */
++  def expandParams(sql: String, params: Seq[Any]): String = {
++    def expand(param: Any): String = param match {
++      case p: Product => expand(p.productIterator.toIterable)
++      case a: Array[Byte] => ""?""
++      case i: Iterable[_] => i.toSeq.map(expand(_)).mkString("","")
++      case _ => ""?""
++    }
++
++    replace(sql, params, expand)
++  }
++
++
++  def flatten(params: Seq[Any]): Seq[Any] = params flatMap {
++    case p: Product => flatten(p.productIterator.toSeq)
++    case i: Iterable[_] => flatten(i.toSeq)
++    case x => Seq(x)
++  }
++
++  /**
++   * Replace each wildcard instance in sql with the output from
++   * running f(param(i))
++   */
++  private def replace(sql: String, params: Seq[Any], f: Any => String): String = {
++    if(params.isEmpty) {
++      return sql
++    }
++
++    val matcher = Query.wildcard.matcher(sql)","As in, a rogue library that has a malicious toString method?
+
+We can completely remove it but the problem of sql injection is still there if the a user builds their own sql statement.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+283419,2,"Oh crap, sorry about that. Let me fix it up quickly.""",2011-12-09 07:16:04,bmatheny,twitter,finagle,,https://github.com/twitter/finagle/pull/50#discussion_r283419,2011-12-09T18:16:04Z,2011-12-09T18:16:04Z,bmatheny,CONTRIBUTOR,finagle-memcached/src/main/scala/com/twitter/finagle/memcached/protocol/text/client/DecodingToResponse.scala,,34.0,,,20,"@@ -24,11 +24,14 @@ abstract class AbstractDecodingToResponse[R <: AnyRef] extends OneToOneDecoder {
+       parseResponse(tokens)
+     case ValueLines(lines) =>
+       parseValues(lines)
++    case StatLines(lines) =>
++      parseStatLines(lines)
+     case _ => throw new IllegalArgumentException(""Expecting a Decoding"")
+   }
+ 
+   protected def parseResponse(tokens: Seq[ChannelBuffer]): R
+   protected def parseValues(valueLines: Seq[TokensWithData]): R
++  protected def parseStatLines(lines: Seq[Tokens]): R","Oh crap, sorry about that. Let me fix it up quickly.
+",40147951e059eab2b230a4192abd73c2101a4c56
+1230345,0,"I've implemented your suggestions. Removing the noise caused by wrapping the sets in Option[...] and not passing around the decoder in the Defragging class cleaned up the code a lot.  The changes actually reduced the amount of cases by 1, but I think it d""",2012-07-24 10:09:14,roanta,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1230345,2012-07-24T22:09:14Z,2012-08-08T19:29:01Z,roanta,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/codec/ResultDecoder.scala,,,,,1,"@@ -0,0 +1,168 @@
++package com.twitter.finagle.mysql.codec
++
++import com.twitter.finagle.mysql.ClientError
++import com.twitter.finagle.mysql.protocol._
++import com.twitter.logging.Logger
++import org.jboss.netty.buffer.ChannelBuffer
++import org.jboss.netty.channel._
++
++sealed abstract class State
++case object Idle extends State
++case object WaitingForGreeting extends State
++case class PacketDefragger(
++    firstPacket: Option[Packet] = None,
++    setOne: Option[List[Packet]] = None,
++    setTwo: Option[List[Packet]] = None,
++    setOneExpected: Boolean = true,
++    setTwoExpected: Boolean = true,
++    decoder: (Packet, List[Packet], List[Packet]) => Result
++  ) extends State","I've implemented your suggestions. Removing the noise caused by wrapping the sets in Option[...] and not passing around the decoder in the Defragging class cleaned up the code a lot.
+
+The changes actually reduced the amount of cases by 1, but I think it did result in more understandable code. 
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1226729,0,"I need to find a better way to represent corrupt data. From what I understand, it isn't idiomatic to throw exceptions that are not future encoded within Finagle.""",2012-07-24 04:31:36,roanta,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1226729,2012-07-24T16:31:36Z,2012-08-08T19:29:01Z,roanta,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/protocol/Buffer.scala,,,,,1,"@@ -0,0 +1,188 @@
++package com.twitter.finagle.mysql.protocol
++
++import java.lang.{Float => JFloat, Double => JDouble}
++import java.sql.{Time, Date, Timestamp}
++
++/**
++ * Defines classes to read and write to/from a byte buffer 
++ * in little endian byte order.
++ */
++
++class BufferReader(val buffer: Array[Byte], private[this] var offset: Int = 0) {
++  require(offset >= 0)
++  require(buffer != null)
++
++  def readable(width: Int = 1): Boolean = offset + width <= buffer.size
++
++   /**
++   * Reads multi-byte numeric values stored in a byte array. 
++   * Starts at offset and reads offset+width bytes. The values are
++   * assumed to be stored with the low byte first at data(offset) 
++   * (i.e. little endian) and the result is returned as a Long.
++   */
++  def read(width: Int): Long = {
++    val n = (offset until offset + width).zipWithIndex.foldLeft(0L) {
++      case (result, (b,i)) => result | ((buffer(b) & 0xFFL) << (i*8))
++    }
++    offset += width
++    n
++  }
++
++  def readByte = read(1).toByte
++  def readUnsignedByte = read(1).toShort
++  def readShort = read(2).toShort
++  def readUnsignedShort = read(2).toInt
++  def readInt24 = read(3).toInt
++  def readInt = read(4).toInt
++  def readLong = read(8)
++  def readFloat = JFloat.intBitsToFloat(readInt)
++  def readDouble = JDouble.longBitsToDouble(readLong)
++
++  def skip(n: Int) = offset += n
++  def take(n: Int) = {
++    val res = buffer.drop(offset).take(n)
++    offset += n
++    res
++  }
++  def takeRest = take(buffer.size - offset)
++
++  /**
++  * Read MySQL data field - a variable length encoded binary.
++  * Depending on the first byte, read a different width from
++  * the data array.
++  */
++  def readLengthCodedBinary: Long = {
++    val firstByte = readByte
++    if(firstByte < 251)
++      firstByte
++    else
++      firstByte match {
++        case 252 => read(2)
++        case 253 => read(3)
++        case 254 => read(8)
++        case _ => -1 //NULL
++      }
++  }
++
++  def readNullTerminatedString: String = {
++    val result = new StringBuilder()
++    while(buffer(offset) != 0)
++      result += readByte.toChar
++
++    readByte //consume null byte
++    result.toString
++  }
++
++  def readLengthCodedString: String = {
++    val size = readUnsignedByte
++
++    if(size == 0xFB) 
++      return """" // NULL string.
++
++    val strBytes = new Array[Byte](size)
++    Array.copy(buffer, offset, strBytes, 0, size)
++    offset += size
++    new String(strBytes)
++  }
++
++  /**
++   * Read a MySQL binary encoded Timestamp from the buffer.
++   */
++  def readTimestamp: Timestamp = {
++    val len = readUnsignedByte
++    if(len == 0)
++      return new Timestamp(0)
++
++    var year, month, day, hour, min, sec, nano = 0
++
++    if(readable(4)) {","I need to find a better way to represent corrupt data. From what I understand, it isn't idiomatic to throw exceptions that are not future encoded within Finagle.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+184733,2,"um. this is wrong :-(""",2011-10-21 10:09:10,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/42#discussion_r184733,2011-10-21T22:09:10Z,2011-10-21T23:08:31Z,mariusae,CONTRIBUTOR,finagle-core/src/main/scala/com/twitter/finagle/Service.scala,,1.0,,,1,"@@ -1,217 +1,1200 @@
+-package com.twitter.finagle","um. this is wrong :-(
+",def695588971129e15382d618f3b035ec01bc2c7
+1217557,2,"Does this regular expression work if I have ? within quotes? I also don't know why we are doing the replacement rather than leaving it to the server? This seems pretty dangerous.""",2012-07-23 05:44:10,spullara,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1217557,2012-07-23T17:44:10Z,2012-08-08T19:28:59Z,spullara,NONE,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/util/Query.scala,,26.0,,,1,"@@ -0,0 +1,75 @@
++package com.twitter.finagle.mysql.util
++
++import java.util.regex.Pattern
++
++class TooFewQueryParametersException(t: Throwable) extends Exception(t)
++class TooManyQueryParametersException(t: Throwable) extends Exception(t)
++
++object Query {
++  val wildcard = Pattern.compile(""\\?"")
++
++  /**
++   * Injects the string representation of each param sequentially
++   * into the sql string.
++   */
++  def injectParams(sql: String, params: Seq[Any]): String = {
++    def inject(param: Any): String = param match {
++      case p: Product => inject(p.productIterator.toIterable)
++      case i: Iterable[_] => i.toSeq.map(inject(_)).mkString("","")
++      case any => any.toString
++    }
++
++    replace(sql, params, inject)
++  }
++
++  /**
++   * Expands the wildcard in the sql to its full representation.
++   * Useful for prepared statements.
++   */
++  def expandParams(sql: String, params: Seq[Any]): String = {
++    def expand(param: Any): String = param match {
++      case p: Product => expand(p.productIterator.toIterable)
++      case a: Array[Byte] => ""?""
++      case i: Iterable[_] => i.toSeq.map(expand(_)).mkString("","")
++      case _ => ""?""
++    }
++
++    replace(sql, params, expand)
++  }
++
++
++  def flatten(params: Seq[Any]): Seq[Any] = params flatMap {
++    case p: Product => flatten(p.productIterator.toSeq)
++    case i: Iterable[_] => flatten(i.toSeq)
++    case x => Seq(x)
++  }
++
++  /**
++   * Replace each wildcard instance in sql with the output from
++   * running f(param(i))
++   */
++  private def replace(sql: String, params: Seq[Any], f: Any => String): String = {
++    if(params.isEmpty) {
++      return sql
++    }
++
++    val matcher = Query.wildcard.matcher(sql)","Does this regular expression work if I have ? within quotes? I also don't know why we are doing the replacement rather than leaving it to the server? This seems pretty dangerous.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1218482,2,"I would like this to not be in the API at all. It is very difficult to get this right such that you don't introduce SQL injection attacks like the current implementation allows.""",2012-07-23 07:12:40,spullara,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1218482,2012-07-23T19:12:40Z,2012-08-08T19:28:59Z,spullara,NONE,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/util/Query.scala,,26.0,,,1,"@@ -0,0 +1,75 @@
++package com.twitter.finagle.mysql.util
++
++import java.util.regex.Pattern
++
++class TooFewQueryParametersException(t: Throwable) extends Exception(t)
++class TooManyQueryParametersException(t: Throwable) extends Exception(t)
++
++object Query {
++  val wildcard = Pattern.compile(""\\?"")
++
++  /**
++   * Injects the string representation of each param sequentially
++   * into the sql string.
++   */
++  def injectParams(sql: String, params: Seq[Any]): String = {
++    def inject(param: Any): String = param match {
++      case p: Product => inject(p.productIterator.toIterable)
++      case i: Iterable[_] => i.toSeq.map(inject(_)).mkString("","")
++      case any => any.toString
++    }
++
++    replace(sql, params, inject)
++  }
++
++  /**
++   * Expands the wildcard in the sql to its full representation.
++   * Useful for prepared statements.
++   */
++  def expandParams(sql: String, params: Seq[Any]): String = {
++    def expand(param: Any): String = param match {
++      case p: Product => expand(p.productIterator.toIterable)
++      case a: Array[Byte] => ""?""
++      case i: Iterable[_] => i.toSeq.map(expand(_)).mkString("","")
++      case _ => ""?""
++    }
++
++    replace(sql, params, expand)
++  }
++
++
++  def flatten(params: Seq[Any]): Seq[Any] = params flatMap {
++    case p: Product => flatten(p.productIterator.toSeq)
++    case i: Iterable[_] => flatten(i.toSeq)
++    case x => Seq(x)
++  }
++
++  /**
++   * Replace each wildcard instance in sql with the output from
++   * running f(param(i))
++   */
++  private def replace(sql: String, params: Seq[Any], f: Any => String): String = {
++    if(params.isEmpty) {
++      return sql
++    }
++
++    val matcher = Query.wildcard.matcher(sql)","I would like this to not be in the API at all. It is very difficult to get this right such that you don't introduce SQL injection attacks like the current implementation allows.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1226409,0,"I read the spec wrong. This of course managed to work because I haven't dealt with string lengths that don't fit into a unsigned byte. I'll fix it to use the length coded binary.""",2012-07-24 04:00:57,roanta,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1226409,2012-07-24T16:00:57Z,2012-08-08T19:29:01Z,roanta,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/protocol/Buffer.scala,,,,,1,"@@ -0,0 +1,188 @@
++package com.twitter.finagle.mysql.protocol
++
++import java.lang.{Float => JFloat, Double => JDouble}
++import java.sql.{Time, Date, Timestamp}
++
++/**
++ * Defines classes to read and write to/from a byte buffer 
++ * in little endian byte order.
++ */
++
++class BufferReader(val buffer: Array[Byte], private[this] var offset: Int = 0) {
++  require(offset >= 0)
++  require(buffer != null)
++
++  def readable(width: Int = 1): Boolean = offset + width <= buffer.size
++
++   /**
++   * Reads multi-byte numeric values stored in a byte array. 
++   * Starts at offset and reads offset+width bytes. The values are
++   * assumed to be stored with the low byte first at data(offset) 
++   * (i.e. little endian) and the result is returned as a Long.
++   */
++  def read(width: Int): Long = {
++    val n = (offset until offset + width).zipWithIndex.foldLeft(0L) {
++      case (result, (b,i)) => result | ((buffer(b) & 0xFFL) << (i*8))
++    }
++    offset += width
++    n
++  }
++
++  def readByte = read(1).toByte
++  def readUnsignedByte = read(1).toShort
++  def readShort = read(2).toShort
++  def readUnsignedShort = read(2).toInt
++  def readInt24 = read(3).toInt
++  def readInt = read(4).toInt
++  def readLong = read(8)
++  def readFloat = JFloat.intBitsToFloat(readInt)
++  def readDouble = JDouble.longBitsToDouble(readLong)
++
++  def skip(n: Int) = offset += n
++  def take(n: Int) = {
++    val res = buffer.drop(offset).take(n)
++    offset += n
++    res
++  }
++  def takeRest = take(buffer.size - offset)
++
++  /**
++  * Read MySQL data field - a variable length encoded binary.
++  * Depending on the first byte, read a different width from
++  * the data array.
++  */
++  def readLengthCodedBinary: Long = {
++    val firstByte = readByte
++    if(firstByte < 251)
++      firstByte
++    else
++      firstByte match {
++        case 252 => read(2)
++        case 253 => read(3)
++        case 254 => read(8)
++        case _ => -1 //NULL
++      }
++  }
++
++  def readNullTerminatedString: String = {
++    val result = new StringBuilder()
++    while(buffer(offset) != 0)
++      result += readByte.toChar
++
++    readByte //consume null byte
++    result.toString
++  }
++
++  def readLengthCodedString: String = {","I read the spec wrong. This of course managed to work because I haven't dealt with string lengths that don't fit into a unsigned byte. I'll fix it to use the length coded binary.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1353603,1,"love this.  we'll move it under finagle-example when it's ready for prime time.""",2012-08-10 05:28:29,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1353603,2012-08-10T17:28:29Z,2012-08-10T17:38:48Z,mariusae,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/Example.scala,,141.0,,,141,"@@ -0,0 +1,141 @@
++import com.twitter.conversions.time._
++import com.twitter.util.Try
++import com.twitter.finagle.mysql._
++import com.twitter.finagle.mysql.protocol._
++import com.twitter.util.Future
++import java.net.InetSocketAddress
++import java.sql.Date
++
++case class SwimmingRecord(
++  event: String, 
++  time: Float, 
++  name: String,
++  nationality: String,
++  date: Date
++) extends {
++
++  def toArray = Array(event, time, name, nationality, date)
++
++  override def toString = {
++    def q(s: String) = ""'"" + s + ""'""
++    ""("" + q(event) + "","" + time + "","" + q(name) + "","" + q(nationality) + "","" + q(date.toString) + "")""
++  }
++}
++
++object SwimmingRecord {
++  val createTableSQL = 
++  """"""CREATE TEMPORARY TABLE IF NOT EXISTS `finagle-mysql-example` (
++    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
++    `event` varchar(30) DEFAULT NULL,
++    `time` float DEFAULT NULL,
++    `name` varchar(40) DEFAULT NULL,
++    `nationality` varchar(20) DEFAULT NULL,
++    `date` date DEFAULT NULL,
++    PRIMARY KEY (`id`)
++  ) ENGINE=InnoDB DEFAULT CHARSET=utf8""""""
++  
++  val records = List(
++    SwimmingRecord(""50 m freestyle"", 20.91F, ""Cesar Cielo"", ""Brazil"", Date.valueOf(""2009-12-18"")),
++    SwimmingRecord(""100 m freestyle"", 46.91F, ""Cesar Cielo"", ""Brazil"", Date.valueOf(""2009-08-02"")),
++    SwimmingRecord(""50 m backstroke"", 24.04F, ""Liam Tancock"", ""Great Britain"", Date.valueOf(""2009-08-02"")),
++    SwimmingRecord(""100 m backstroke"", 51.94F, ""Aaron Peirsol"", ""United States"", Date.valueOf(""2009-07-08"")),
++    SwimmingRecord(""50 m butterfly"", 22.43F, ""Rafael Munoz"", ""Spain"", Date.valueOf(""2009-05-05"")),
++    SwimmingRecord(""100 m butterfly"", 49.82F, ""Michael Phelps"", ""United States"", Date.valueOf(""2009-07-29""))
++  )
++}
++
++object Main {
++  def main(args: Array[String]): Unit = {
++    val options = parseArgs(Map(), args.toList)
++    val host = options.getOrElse(""host"", ""localhost"").asInstanceOf[String]
++    val port = options.getOrElse(""port"", 3306).asInstanceOf[Int]
++    val username = options.getOrElse(""username"", ""<user>"").asInstanceOf[String]
++    val password = options.getOrElse(""password"", ""<password>"").asInstanceOf[String]
++    val dbname = ""test""
++
++    val client = Client(host+"":""+port, username, password, dbname)
++    if (createTable(client) && insertValues(client)) {
++      val query = ""SELECT * FROM `finagle-mysql-example` WHERE `date` BETWEEN '2009-06-01' AND '2009-8-31'""
++      val qres: Future[Seq[_]] = client.select(query) { row =>
++        // row.valueOf returns an Option[Value]
++        val event = row.valueOf(""event"") map {
++          case StringValue(s) => s
++          case _ => ""Default""
++        }
++
++        val nationality = row.valueOf(""nationality"") map {
++          case StringValue(s) => s
++          case _ => ""Default""
++        }
++
++        val date = row.valueOf(""date"") map {
++          case DateValue(d) => d
++          case _ => new Date(0)
++        }
++
++        // Of course this could cause a runtime error if there isn't a field name
++        // ""time"" or if the Value at the field named time is not of type
++        // FloatValue(_)
++        val FloatValue(time) = row.valueOf(""time"").get
++
++        val StringValue(name) = row.valueOf(""name"").get
++
++        (name, time)
++      }
++
++      qres onSuccess { res =>
++        res.foreach(println)
++      } onFailure {
++        e => println(""Failed query with %s"".format(e))
++      }
++    }
++  }
++
++  def createTable(client: Client): Boolean = {
++    val res = client.query(SwimmingRecord.createTableSQL).get(1.second) onFailure {
++      case e => println(""Failed with %s when attempting to create table"".format(e))
++    }
++
++    res.isReturn
++  }
++
++  def insertValues(client: Client): Boolean = {
++    val insertSQL = ""INSERT INTO `finagle-mysql-example` (`event`, `time`, `name`, `nationality`, `date`) VALUES (?,?,?,?,?)""
++    var insertResults: Seq[Try[_]] = Seq()
++    // create a prepared statement on the server
++    // and insert swimming records.
++    val preparedFuture = client.prepare(insertSQL).get(1.second)
++    preparedFuture onSuccess { ps =>
++      insertResults = for (r <- SwimmingRecord.records) yield {
++        ps.parameters = r.toArray
++        client.execute(ps).get(1.second) onFailure {
++          case e => println(""Failed with %s when attempting to insert %s"".format(e, r))
++        }
++      }
++    } onFailure {
++      case e => println(""Failed with %s when attempting to create a prepared statement"".format(e))
++    }
++
++    // close prepared statement on the server
++    for(ps <- preparedFuture) {
++      client.closeStatement(ps).get(1.second) onFailure {
++        e => println(""Unable to close PreparedStatement: %s"".format(e))
++      }
++    }
++
++    preparedFuture.isReturn && insertResults.forall(_.isReturn)
++  }
++
++  def parseArgs(parsed: Map[String, Any], args: List[String]): Map[String, Any] = args match {
++    case Nil => parsed
++    case ""-host"" :: value :: tail =>
++      parseArgs(parsed + (""host"" -> value), tail) 
++    case ""-port"" :: value :: tail => 
++      parseArgs(parsed + (""port"" -> value.toInt), tail)
++    case ""-u"" :: value :: tail => 
++      parseArgs(parsed + (""username"" -> value), tail)
++    case ""-p"" :: value :: tail => 
++      parseArgs(parsed + (""password"" -> value), tail)
++    case unknown :: tail => parsed
++  }
++}","love this.  we'll move it under finagle-example when it's ready for prime time.
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1353766,1,"very nice. FOR LATER: i think we could improve this a bit further by embedding expectOK and defragDecoder into the state as well; but let’s leave it as-is for now.  (I find it much easier to understand than the previous version)""",2012-08-10 05:42:38,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1353766,2012-08-10T17:42:38Z,2012-08-10T17:43:04Z,mariusae,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/codec/Endec.scala,,177.0,,,177,"@@ -0,0 +1,177 @@
++package com.twitter.finagle.mysql.codec
++
++import com.twitter.finagle.mysql.ClientError
++import com.twitter.finagle.mysql.protocol._
++import com.twitter.logging.Logger
++import org.jboss.netty.buffer.{ChannelBuffer, ChannelBuffers}
++import org.jboss.netty.channel._
++
++sealed trait State
++case object Idle extends State
++case object WaitingForGreeting extends State
++case class Defragging(
++  expected: Int,
++  packets: Seq[Seq[Packet]]
++) extends State
++
++/**
++ * Encoder: Encodes a Request into a ChannelBuffer.
++ * Decoder: Decodes a Packet into a POJO.
++ * 
++ * There are specific packets received from MySQL that can
++ * be easily decoded based on their first byte. However, more complex 
++ * results need to be defragged as they arrive in the pipeline.
++ * To accomplish this, this handler needs to contain some state.
++ * 
++ * Some of state is volatile because it is shared between handleDownstream
++ * and handleUpstream events which are usually executed
++ * on separate threads.
++ */
++class Endec extends SimpleChannelHandler {
++  private[this] val log = Logger(""finagle-mysql"")
++  private[this] var state: State = WaitingForGreeting
++  private[this] var defragDecoder: (Packet, Seq[Packet], Seq[Packet]) => Result = _ 
++  @volatile private[this] var expectPrepareOK: Boolean = false
++  @volatile private[this] var expectBinaryResults: Boolean = false
++
++  /**
++   * Netty downstream handler. The message should contain a packet from
++   * the MySQL server.
++   */
++  override def messageReceived(ctx: ChannelHandlerContext, evt: MessageEvent) = evt.getMessage match {
++    case packet: Packet =>
++      val decodedResult = decode(packet)
++      decodedResult map { Channels.fireMessageReceived(ctx, _) }
++
++    case unknown =>
++      Channels.disconnect(ctx.getChannel)
++      log.error(""Endec: Expected Packet and received: "" + unknown.getClass.getName)
++  }
++
++  /**
++   * Netty upstream handler. The message should contain a 
++   * Request object.
++   */
++  override def writeRequested(ctx: ChannelHandlerContext, evt: MessageEvent) = evt.getMessage match {
++    // Synthesize a response for a CloseRequest because we don't
++    // expect one from the server.
++    case req: CommandRequest if req.cmd == Command.COM_STMT_CLOSE =>
++      val buffer = encode(req)
++      Channels.write(ctx, evt.getFuture, buffer, evt.getRemoteAddress)
++      Channels.fireMessageReceived(ctx, CloseStatementOK)
++
++    case req: Request => 
++      val buffer = encode(req)
++      Channels.write(ctx, evt.getFuture, buffer, evt.getRemoteAddress)
++
++    case unknown => 
++      log.error(""Endec: Expected Request and received: "" + unknown.getClass.getName)
++  }
++
++  /**
++   * Logical entry point for the Decoder.
++   * Decodes a packet based on the current state
++   * of this decoder.
++   */
++  def decode(packet: Packet): Option[Result] = state match {
++    case WaitingForGreeting =>
++      transition(Idle)
++      Some(ServersGreeting.decode(packet))
++
++    case Idle            => decodePacket(packet)
++    case Defragging(_,_) => defrag(packet)
++  }
++
++  /**
++   * Logical entry point for the Encoder.
++   * Encodes a request into ChannelBuffer. 
++   * Note, some requests change the state of the decoder.
++   */
++  def encode(req: Request): ChannelBuffer = req match {
++    case r: CommandRequest =>
++      expectPrepareOK = (r.cmd == Command.COM_STMT_PREPARE)
++      expectBinaryResults = (r.cmd == Command.COM_STMT_EXECUTE)
++      r.toChannelBuffer
++
++    case r: Request => 
++      r.toChannelBuffer
++  }
++
++  private[this] def transition(s: State) = state = s
++
++  /**
++   * Decode the packet into a Result object based on the
++   * first byte in the packet body (field_count). Some bytes denote the
++   * start of a longer transmission. In those cases, transition
++   * into the Defragging state.
++   */
++  private[this] def decodePacket(packet: Packet): Option[Result] = packet.body(0) match {
++    case Packet.OkByte if expectPrepareOK =>
++      def expected(n: Int) = if (n > 0) 1 else 0
++
++      val ok = PreparedOK.decode(packet)
++      val numSetsExpected = expected(ok.numOfParams) + expected(ok.numOfColumns)
++
++      defragDecoder = PreparedStatement.decode
++      transition(Defragging(numSetsExpected, Nil))
++      defrag(packet)
++
++    case Packet.OkByte    => Some(OK.decode(packet))
++    case Packet.EofByte   => Some(EOF.decode(packet))
++    case Packet.ErrorByte => Some(Error.decode(packet))
++
++    case byte =>
++      defragDecoder = ResultSet.decode(expectBinaryResults)
++      transition(Defragging(2, Nil))
++      defrag(packet)
++  }
++
++  /**
++   * Defrags a set of packets expected from the server. This handles defragging 
++   * packets for a ResultSet and a PreparedStatement. 
++   * 
++   * For a PreparedStatement the packet sequences are not neccessarily 
++   * defragged in order and the order needs to be determined based on the 
++   * PreparedOK meta data. This happens when the PreparedStatement is decoded
++   * in order to simplify this method.
++   */
++  private[this] def defrag(packet: Packet): Option[Result] = (state, packet.body(0)) match {
++    // header packet, no sets expected to follow
++    case (Defragging(0, Nil), _) =>
++      transition(Idle)
++      Some(defragDecoder(packet, Nil, Nil))
++
++    // header packet, some sets expected to follow
++    case (Defragging(expected, Nil), _) =>
++      transition(Defragging(expected, Seq(Seq(packet), Nil)))
++      None
++
++    // first set complete, no sets expected to follow
++    case (Defragging(1, Seq(header, xs)), Packet.EofByte) =>
++      transition(Idle)
++      Some(defragDecoder(header(0), xs.reverse, Nil))
++
++    // first set complete, 1 set expected to follow
++    case (Defragging(2, Seq(header, xs)), Packet.EofByte) =>
++      transition(Defragging(2, Seq(header, xs, Nil)))
++      None
++
++    // prepend onto first set
++    case (Defragging(expected, Seq(header, xs)), _) =>
++      transition(Defragging(expected, Seq(header, packet +: xs)))
++      None
++
++    // second set complete - no sets can follow.
++    case (Defragging(2, Seq(header, xs, ys)), Packet.EofByte) =>
++      transition(Idle)
++      Some(defragDecoder(header(0), xs.reverse, ys.reverse))
++
++    // prepend onto second set
++    case (Defragging(2, Seq(header, xs, ys)), _) =>
++      transition(Defragging(2, Seq(header, xs, packet +: ys)))
++      None
++
++    case _ =>
++        throw new ClientError(""Endec: Unexpected state when defragmenting packets."")
++  }
++}","very nice. FOR LATER: i think we could improve this a bit further by embedding expectOK and defragDecoder into the state as well; but let’s leave it as-is for now.  (I find it much easier to understand than the previous version)
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+1217254,0,"It does: Endianess is Netty (and in Java generally) is handled by the underlying `ChannelBuffer`. So to do this “properly” you could either demand a little endian `ChannelBuffer` factory, or override the `LengthFieldBasedFrameDecoder` and wrap the incomin""",2012-07-23 05:17:30,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/98#discussion_r1217254,2012-07-23T17:17:30Z,2012-08-08T19:28:58Z,mariusae,CONTRIBUTOR,finagle-mysql/src/main/scala/com/twitter/finagle/mysql/codec/PacketFrameDecoder.scala,,,,,1,"@@ -0,0 +1,38 @@
++package com.twitter.finagle.mysql.codec
++
++import com.twitter.finagle.mysql.protocol.{Packet, BufferReader}
++import com.twitter.finagle.mysql.util.BufferUtil
++import org.jboss.netty.buffer.ChannelBuffer
++import org.jboss.netty.channel.{Channel, ChannelHandlerContext}
++import org.jboss.netty.handler.codec.frame.FrameDecoder
++
++/**
++ * MySQL packets are a length encoded set of bytes written
++ * in little endian byte order.
++ *
++ * The built in LengthFieldBasedFrameDecoder in Netty
++ * doesn't seem to support byte buffers that are encoded in
++ * little endian. Thus, a simple custom FrameDecoder is
++ * needed to defrag a ChannelBuffer into a logical MySQL packet.","It does: Endianess is Netty (and in Java generally) is handled by the underlying `ChannelBuffer`. So to do this “properly” you could either demand a little endian `ChannelBuffer` factory, or override the `LengthFieldBasedFrameDecoder` and wrap the incoming buffer with one that is little endian.
+
+However, this is so trivial, that it’s both simpler and clearer to do it “manually” as you have done.
+
+But remove the comment I think :-)
+",6758be5ae94a86241390214f303ddbbeae9d9e2c
+110076,0,"given that this could be arbitrary data, do we want to do a hex dump instead? (ChannelBuffers.hexDump(commandName))""",2011-09-01 04:01:27,mariusaeriksen,twitter,finagle,,https://github.com/twitter/finagle/pull/35#discussion_r110076,2011-09-01T16:01:27Z,2011-09-01T17:16:47Z,mariusae,CONTRIBUTOR,finagle-memcached/src/main/scala/com/twitter/finagle/memcached/protocol/text/server/DecodingToCommand.scala,,,,,1,"@@ -80,7 +81,7 @@ class DecodingToCommand extends AbstractDecodingToCommand[Command] {
+       case REPLACE   => tupled(Replace)(validateStorageCommand(args, data))
+       case APPEND    => tupled(Append)(validateStorageCommand(args, data))
+       case PREPEND   => tupled(Prepend)(validateStorageCommand(args, data))
+-      case _         => throw new NonexistentCommand(commandName.toString)
++      case _         => throw new NonexistentCommand(commandName.toString(CharsetUtil.UTF_8))","given that this could be arbitrary data, do we want to do a hex dump instead? (ChannelBuffers.hexDump(commandName))
+",f184819f073e361e345bfb32ecd818de1df11353

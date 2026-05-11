@@ -1,0 +1,5 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2906232,1,"They work for me with clang.  What else is there?  (Plus I think these are so standard that most compilers should support them)""",2013-03-29 04:17:07,hadley,hadley,devtools,b34ec2ba878f894012f1bef60bda547f66593224,hadley,4196,"They work for me with clang.  What else is there?  (Plus I think these are so standard that most compilers should support them)
+",2013-03-29T15:17:07Z,2013-03-29T15:17:07Z
+1713914,1,"Nice. I didn't know this package existed. I like keeping logic out of my templates. :)""",2012-08-14 07:49:05,yoni,hadley,devtools,d77b9ddab5b837dc7d3c55c718209af02ff388e8,yoni,122477,"Nice. I didn't know this package existed. I like keeping logic out of my templates. :)
+",2012-08-14T19:49:05Z,2012-08-14T19:49:05Z

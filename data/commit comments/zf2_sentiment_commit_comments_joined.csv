@@ -1,0 +1,3 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2025441,0,"@DASPRiD this introduced a bug where query params get url decoded.""",2012-10-19 09:31:27,SocalNick,zendframework,zf2,b5973b58a47b6c1cfb896e7d4242c36df63135c1,SocalNick,294123,"@DASPRiD this introduced a bug where query params get url decoded.
+",2012-10-19T21:31:27Z,2012-10-19T21:31:27Z

@@ -1,0 +1,222 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+1119881,0,"you need a blank line after the title so that the next few lines go to `\description{}`; BTW, usually I do not end the title with a period""",2012-07-08 12:21:27,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/320#discussion_r1119881,2012-07-09T00:21:27Z,2012-07-09T12:04:27Z,yihui,OWNER,R/defaults.R,,,,,1,"@@ -97,3 +97,11 @@ opts_knit = new_defaults(
+ ## tangle: whether I'm in tangle mode; child: whether I'm in child
+ ## document mode; parent: whether I need to add parent preamble to the
+ ## child output
++
++#' Template for creating reusable chunk options.","you need a blank line after the title so that the next few lines go to `\description{}`; BTW, usually I do not end the title with a period
+",111378e937c82a96a88d5d68f4eac974e5f4ea0a
+1113823,0,"remove it""",2012-07-06 03:50:36,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/313#discussion_r1113823,2012-07-06T15:50:36Z,2012-07-06T16:53:54Z,yihui,OWNER,R/hooks-html.R,,,,,1,"@@ -75,13 +75,60 @@ opts_knit$set(animation.fun = hook_ffmpeg_html)
+ 
+ ## use SciAnimator to create animations
+ hook_scianimator = function(x, options) {
++  # pull out all the relevant plot options
++  fig.num = options$fig.num
++  fig.cur = options$fig.cur %n% 0L
++
++  # Don't print out intermediate plots if we're animating
++  if(fig.cur < fig.num) return('')
++
++  # set up the r2swf run
++  scianimator.opts = options$aniopts
++  fig.fname = str_c(sub(str_c(fig.num, '$'), '%d', x[1]), '.', x[2])
++  fig.name = sprintf(fig.fname, 1:fig.num)
++  base = opts_knit$get('base.url') %n% ''
++  fig.pos = paste(paste0(base, shQuote(fig.name,  ""sh"")), collapse = "", "")
++
++
+   # write the div and js code here
++  id = sub(paste(""animation"", fig.num, '$',sep = ''), '', x[1])
++  sharpid =  paste0(""#"", id)
++  sprintf(""<div class=\""scianimator\""><div id=%s style=\""display: inline-block;\""></div></div>\n<script type=\""text/javascript\"">\n(function($) { \n$(document).ready(function() { \n$(\'%s\').scianimator({ \n\'images\': [%s],\n\'delay\': %s,\n\'controls\': [\'first\', \'previous\', \'play\', \'next\', \'last\', \'loop\', \'speed\'], \n}); \n$(\'%s\').scianimator(\'play\'); \n}); \n})(jQuery); \n</script> \n</div>"", 
++          id, sharpid, fig.pos, options$interval * 1000, sharpid)
+ }
+ 
++opts_knit$set(animation.fun = hook_scianimator)
++
++
+ hook_r2swf = function(x, options) {
+   # use the R2SWF package to create Flash animations
++  require(R2SWF)
++  # pull out all the relevant plot options
++  fig.num <- options$fig.num
++  fig.cur = options$fig.cur %n% 0L
++
++  # Don't print out intermediate plots if we're animating
++  if(fig.cur < fig.num) return('')
++
++  # set up the r2swf run
++  r2swf.opts = options$aniopts
++  fig.fname = str_c(sub(str_c(fig.num, '$'), '%d', x[1]), '.', x[2])
++  fig.name = sprintf(fig.fname, 1:fig.num)
++  swf.fname = str_c(sub(paste(fig.num, '$',sep = ''), '', x[1]), "".swf"")
++  output = paste0('./', swf.fname)
++  if(is.na(r2swf.opts)) r2swf.opts = NULL
++  #setwd(""F:/myR""); knitr::knit2html(""knitr-test001.Rmd"")
++  
++  if(is.null(options$out.width)) options$out.width = options$fig.width * options$dpi
++  #if(is.null(options$out.height)) options$out.height = options$fig.width * options$dpi
++  
++  swfhtml = swf2html(file2swf(files = fig.name, output, interval = options$interval),
++           output = FALSE, fragment =TRUE,  width=options$out.width, height=options$out.height)
++  sprintf(paste('<div align=\""%s\"">\n', swfhtml, '\n</div>'), options$fig.align)		   		
+ }
+ 
++opts_knit$set(animation.fun = hook_r2swf)","remove it
+",27296eb35cfee86390ccd211b6ebcb1634f495e6
+692864,1,"I'm just greedy -- could you please fix the link of the HTML file as well? it should be `.Rhtml` now; and also `.Rtex` below  thanks :smile:""",2012-04-16 15:22:38,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/204#discussion_r692864,2012-04-17T03:22:38Z,2012-04-17T03:33:26Z,yihui,OWNER,_posts/2011-12-03-minimal.md,,,,,1,"@@ -61,7 +61,7 @@ Two main differences among different file formats are: they use different syntax
+   - Rnw source: [knitr-minimal.Rnw](https://github.com/yihui/knitr/blob/master/inst/examples/knitr-minimal.Rnw)
+   - PDF output: [knitr-minimal.pdf](https://github.com/downloads/yihui/knitr/knitr-minimal.pdf)
+ - GFM
+-  - md source: [knitr-minimal\_knit\_.md](https://github.com/yihui/knitr/raw/master/inst/examples/knitr-minimal_knit_.md)
++  - md source: [knitr-minimal.Rmd](https://raw.github.com/yihui/knitr/master/inst/examples/knitr-minimal.Rmd)
+   - output: [knitr-minimal.md](https://github.com/yihui/knitr/blob/master/inst/examples/knitr-minimal.md) (GitHub does the job of parsing the md file to HTML)
+ - HTML
+   - html source: [knitr-minimal\_knit\_.html](https://github.com/yihui/knitr/blob/master/inst/examples/knitr-minimal_knit_.html)","I'm just greedy -- could you please fix the link of the HTML file as well? it should be `.Rhtml` now; and also `.Rtex` below
+
+thanks :smile:
+",2d6db16207af64d7fc7e863cdaa09a9e9d4f561d
+2047008,2,"sorry I did not realize you were already there...""",2012-11-06 08:15:26,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/419#discussion_r2047008,2012-11-06T19:15:26Z,2012-11-06T19:15:26Z,yihui,OWNER,DESCRIPTION,,17.0,,,5,"@@ -14,7 +14,7 @@ Authors@R: c(person(""Hadley"", ""Wickham"", email = ""hadley@rice.edu"", role =
+     role = ""ctb""), person(""Michel"", ""Kuhlmann"", role = ""ctb""),
+     person(""Alastair"", ""Andrew"", role = ""ctb""), person(""Jim"", ""Hester"", role =
+     ""ctb""), person(""Yihui"", ""Xie"", email = ""xie@yihui.name"", role = c(""aut"",
+-    ""cre"")))
++    ""cre"")), person(""Michel"", ""Kuhlmann"", role = ""ctb""))","sorry I did not realize you were already there...
+",77ab4ffe0c6f8f4be0fed9241261cff69c60b40d
+1119879,1,"in the future you can ignore the stuff generated by roxygen2 like NAMESPACE and Rd files, and just send me the R code; I can run roxygen by myself. That will make the pull request shorter and easier to review :)""",2012-07-08 12:20:02,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/320#discussion_r1119879,2012-07-09T00:20:02Z,2012-07-09T12:04:27Z,yihui,OWNER,NAMESPACE,,39.0,,,4,"@@ -36,6 +36,7 @@ export(knit_theme)
+ export(opts_chunk)
+ export(opts_current)
+ export(opts_knit)
++export(opts_template)","in the future you can ignore the stuff generated by roxygen2 like NAMESPACE and Rd files, and just send me the R code; I can run roxygen by myself. That will make the pull request shorter and easier to review :)
+",111378e937c82a96a88d5d68f4eac974e5f4ea0a
+1114427,2,"Yes :(""",2012-07-06 04:51:58,taiyun,yihui,knitr,,https://github.com/yihui/knitr/pull/313#discussion_r1114427,2012-07-06T16:51:58Z,2012-07-06T16:53:54Z,taiyun,CONTRIBUTOR,NAMESPACE,,18.0,,,5,"@@ -14,6 +14,8 @@ export(build_dep)
+ export(eclipse_theme)
+ export(fig_path)
+ export(hook_ffmpeg_html)
++export(hook_scianimator)
++export(hook_r2swf)","Yes :(
+",27296eb35cfee86390ccd211b6ebcb1634f495e6
+1061172,2,"sorry. forgot to commit my changes for `knitr-lang.md`""",2012-06-27 04:05:19,ramnathv,yihui,knitr,,https://github.com/yihui/knitr/pull/294#discussion_r1061172,2012-06-27T16:05:19Z,2012-06-27T16:05:19Z,ramnathv,CONTRIBUTOR,inst/examples/knitr-lang.Rmd,,,,,1,"@@ -28,3 +28,11 @@ NF {
+ }
+ END { print i }
+ ```
++
++## Ruby ##","sorry. forgot to commit my changes for `knitr-lang.md`
+",64663f66028da0e65adcc1dc4e86c04a2813c0c6
+1113789,0,"use `library(R2SWF)`""",2012-07-06 03:47:36,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/313#discussion_r1113789,2012-07-06T15:47:36Z,2012-07-06T16:53:53Z,yihui,OWNER,R/hooks-html.R,,,,,1,"@@ -75,13 +75,60 @@ opts_knit$set(animation.fun = hook_ffmpeg_html)
+ 
+ ## use SciAnimator to create animations
+ hook_scianimator = function(x, options) {
++  # pull out all the relevant plot options
++  fig.num = options$fig.num
++  fig.cur = options$fig.cur %n% 0L
++
++  # Don't print out intermediate plots if we're animating
++  if(fig.cur < fig.num) return('')
++
++  # set up the r2swf run
++  scianimator.opts = options$aniopts
++  fig.fname = str_c(sub(str_c(fig.num, '$'), '%d', x[1]), '.', x[2])
++  fig.name = sprintf(fig.fname, 1:fig.num)
++  base = opts_knit$get('base.url') %n% ''
++  fig.pos = paste(paste0(base, shQuote(fig.name,  ""sh"")), collapse = "", "")
++
++
+   # write the div and js code here
++  id = sub(paste(""animation"", fig.num, '$',sep = ''), '', x[1])
++  sharpid =  paste0(""#"", id)
++  sprintf(""<div class=\""scianimator\""><div id=%s style=\""display: inline-block;\""></div></div>\n<script type=\""text/javascript\"">\n(function($) { \n$(document).ready(function() { \n$(\'%s\').scianimator({ \n\'images\': [%s],\n\'delay\': %s,\n\'controls\': [\'first\', \'previous\', \'play\', \'next\', \'last\', \'loop\', \'speed\'], \n}); \n$(\'%s\').scianimator(\'play\'); \n}); \n})(jQuery); \n</script> \n</div>"", 
++          id, sharpid, fig.pos, options$interval * 1000, sharpid)
+ }
+ 
++opts_knit$set(animation.fun = hook_scianimator)
++
++
+ hook_r2swf = function(x, options) {
+   # use the R2SWF package to create Flash animations
++  require(R2SWF)","use `library(R2SWF)`
+",27296eb35cfee86390ccd211b6ebcb1634f495e6
+1094564,0,"the `envir` argument is not used anywhere in this function, so please remove it  it is not worth many arguments for this R function; I think you can just write `rst2pdf(input, rst2pdf = 'rst2pdf', options = '')` and users can specify extra options like `o""",2012-07-03 05:33:49,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/300#discussion_r1094564,2012-07-03T17:33:49Z,2012-07-04T05:29:40Z,yihui,OWNER,R/utils.R,,,,,1,"@@ -333,32 +333,81 @@ knit_global = function() {
+   .knitEnv$knit_global
+ }
+ 
+-#' Convert Rnw to PDF using knit() and texi2pdf()
++#' Convert reST to PDF using the ReportLab library through rst2pdf
+ #'
+-#' Knit the input Rnw document to a tex document, and compile it using
+-#' \code{texi2pdf}.
++#' Knit the input Rrst document to a rst file, and compile it using
++#' \code{rst2pdf} (which converts from rst to PDF using the ReportLab
++#' open-source library).
++#' @param rst2pdfpath a character string which gives the path of the rst2pdf 
++#'   program used to compile the reST document to PDF. The script will try
++#'   to use the path specified in the \samp{RST2PDF} environment variable. If
++#'   the \samp{RST2PDF} environment variable is not set, the script with
++#'   default to using 'rst2pdf'.
++#' @param stylesheet a character string specifying a custom reST stylesheet
++#'   to use
++#' @author Alex Zvoleff
++#' @export
++#' @seealso \code{\link{knit2pdf}}, \code{\link{knit}}
++#' @examples ## compile a reST file using rst2pdf
++#'
++#' ## knit2pdf(...)
++rst2pdf = function(input, output = NULL, rst2pdfpath = NULL, stylesheet = NULL, envir = parent.frame()){","the `envir` argument is not used anywhere in this function, so please remove it
+
+it is not worth many arguments for this R function; I think you can just write `rst2pdf(input, rst2pdf = 'rst2pdf', options = '')` and users can specify extra options like `options='-o foo.pdf -s bar.css -v'` if they want
+",7bcbd8bba2ede584f55d1acfe0db02435bbf0a6e
+1061065,1,"done!""",2012-06-27 03:52:40,ramnathv,yihui,knitr,,https://github.com/yihui/knitr/pull/294#discussion_r1061065,2012-06-27T15:52:40Z,2012-06-27T16:04:43Z,ramnathv,CONTRIBUTOR,inst/examples/knitr-lang.Rmd,,,,,1,"@@ -28,3 +28,11 @@ NF {
+ }
+ END { print i }
+ ```
++
++## Ruby ##","done!
+",64663f66028da0e65adcc1dc4e86c04a2813c0c6
+1061110,1,"and for `knitr-lang.md` too :)""",2012-06-27 03:57:52,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/294#discussion_r1061110,2012-06-27T15:57:52Z,2012-06-27T16:04:43Z,yihui,OWNER,inst/examples/knitr-lang.Rmd,,,,,1,"@@ -28,3 +28,11 @@ NF {
+ }
+ END { print i }
+ ```
++
++## Ruby ##","and for `knitr-lang.md` too :)
+",64663f66028da0e65adcc1dc4e86c04a2813c0c6
+1098324,1,"Agreed - thanks.""",2012-07-03 17:30:13,azvoleff,yihui,knitr,,https://github.com/yihui/knitr/pull/300#discussion_r1098324,2012-07-04T05:30:13Z,2012-07-04T05:30:13Z,azvoleff,CONTRIBUTOR,R/utils.R,,,,,1,"@@ -333,32 +333,75 @@ knit_global = function() {
+   .knitEnv$knit_global
+ }
+ 
+-#' Convert Rnw to PDF using knit() and texi2pdf()
++#' Convert reST to PDF using the ReportLab library through rst2pdf
+ #'
+-#' Knit the input Rnw document to a tex document, and compile it using
+-#' \code{texi2pdf}.
++#' Knit the input Rrst document to a rst file, and compile it using
++#' \code{rst2pdf} (which converts from rst to PDF using the ReportLab
++#' open-source library).
++#' @param rst2pdfpath a character string which gives the path of the rst2pdf 
++#'   program used to compile the reST document to PDF. The script will try
++#'   to use the path specified in the \samp{RST2PDF} environment variable. If
++#'   the \samp{RST2PDF} environment variable is not set, the script with
++#'   default to using 'rst2pdf'.
++#' @param stylesheet a character string specifying a custom reST stylesheet
++#'   to use
++#' @author Alex Zvoleff
++#' @export
++#' @seealso \code{\link{knit2pdf}}, \code{\link{knit}}
++#' @examples ## compile a reST file using rst2pdf
++#'
++#' ## rst2pdf(...)
++rst2pdf = function(input, rst2pdfpath = ""rst2pdf"", options = NULL) {
++  rst2pdf_args = input","Agreed - thanks.
+",7bcbd8bba2ede584f55d1acfe0db02435bbf0a6e
+1061201,1,"thanks!""",2012-06-27 04:09:31,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/294#discussion_r1061201,2012-06-27T16:09:31Z,2012-06-27T16:09:31Z,yihui,OWNER,inst/examples/knitr-lang.Rmd,,,,,1,"@@ -28,3 +28,11 @@ NF {
+ }
+ END { print i }
+ ```
++
++## Ruby ##","thanks!
+",64663f66028da0e65adcc1dc4e86c04a2813c0c6
+724562,0,"sure, I will do that. You can also selectively commit files (and even lines) in git""",2012-04-23 16:14:22,yihui,yihui,knitr,,https://github.com/yihui/knitr/pull/213#discussion_r724562,2012-04-24T04:14:22Z,2012-04-24T04:14:22Z,yihui,OWNER,NAMESPACE,,21.0,,,4,"@@ -18,6 +18,7 @@ export(hook_plot_custom)
+ export(hook_plot_html)
+ export(hook_plot_md)
+ export(hook_plot_tex)
++export(hook_plot_rest)","sure, I will do that. You can also selectively commit files (and even lines) in git
+",11e84baf88ed0bcc80380036843aaa3386fd8529

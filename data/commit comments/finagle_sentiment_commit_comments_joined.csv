@@ -1,0 +1,5 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2505064,0,"Are you sure you meant to open source this?  This doesn't look like the protocol of any redis I'm familiar with.  Is this for a private fork?""",2013-01-25 17:17:39,mosesn,twitter,finagle,be06dfdbab5385de62016d441c539adf33798f2c,mosesn,156562,"Are you sure you meant to open source this?  This doesn't look like the protocol of any redis I'm familiar with.  Is this for a private fork?
+",2013-01-26T04:17:39Z,2013-01-26T04:17:39Z
+253862,1,"Right, Thanks for the clarification.""",2011-01-27 19:49:35,gseitz,twitter,finagle,aa3b9fd249b6a1bbb30e4ac472ea7a234e79d021,gseitz,158412,"Right, Thanks for the clarification.
+",2011-01-28T06:49:35Z,2011-01-28T06:49:35Z

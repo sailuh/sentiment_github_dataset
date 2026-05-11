@@ -1,0 +1,7 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2515045,2,"Ouch, that 'edit' button is evil. I also expected it to create a pull request.""",2013-01-28 10:35:30,ijuma,sbt,sbt,c597b48eda67f9d11ea4f35559864db06892f12d,ijuma,24747,"Ouch, that 'edit' button is evil. I also expected it to create a pull request.
+",2013-01-28T21:35:30Z,2013-01-28T21:35:30Z
+405412,1,"Is it worth removing the precompiledStub for 2.8.0? It seems to me that no-one sane would use 2.8.0 instead of 2.8.1. :)""",2011-05-29 05:55:30,ijuma,sbt,sbt,9002720933c620f9287209f52e8eff57e70b8c6b,ijuma,24747,"Is it worth removing the precompiledStub for 2.8.0? It seems to me that no-one sane would use 2.8.0 instead of 2.8.1. :)
+",2011-05-29T17:55:30Z,2011-05-29T17:55:30Z
+3489562,2,"The name is weird IMO. This is not a stack""",2013-06-24 01:51:27,harrah,sbt,sbt,1cc2f57e158389759c77c62bacade638d83ec12c,harrah,72742,"This is definitely meant for you to experiment with.  The `private[sbt]` is to clearly mark it as experimental so binary/source incompatible changes can be made whenever.  Put code that uses it in `package sbt {...}` in a `project/*.scala` file with a `// THIS USES AN EXPERIMENTAL sbt API`.  Plugins using this API should not get published as usual, should be clearly marked, etc...
+",2013-06-24T13:51:27Z,2013-06-24T13:51:27Z

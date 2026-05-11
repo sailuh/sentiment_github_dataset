@@ -1,0 +1,3 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+1048296,2,"sad bug :(""",2012-03-06 02:22:19,sokra,bartaz,impress.js,0a82172d25a6528719e1625174bfcf6dd8aa2166,sokra,1365881,"sad bug :(
+",2012-03-06T13:22:19Z,2012-03-06T13:22:19Z

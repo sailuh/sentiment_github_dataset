@@ -1,0 +1,151 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3414320,1,"Great addition, thanks Ben!""",2013-06-12 19:27:27,dosire,gitlabhq,gitlabhq,fc80592ea1cb67cd65498a8b5f332848696b0356,dosire,22061,"Great addition, thanks Ben!
+",2013-06-13T07:27:27Z,2013-06-13T07:27:27Z
+2044385,0,"@SaitoWu Also why we need shared repositories if we have umask?""",2012-10-23 22:14:31,randx,gitlabhq,gitlabhq,e09bff082eade2ce35e6ef8af3e265b37f6a0483,dzaporozhets,305940,"@SaitoWu Also why we need shared repositories if we have umask?
+",2012-10-24T10:14:31Z,2012-10-24T10:14:31Z
+2009025,0,"You should consider using PR and have someone else merge it after a review, instead of hastily pushing your commits. Even for small changes. ;)""",2012-10-17 00:25:31,riyad,gitlabhq,gitlabhq,31f1cebe4bc545fc00947475211ab52d84b356ce,riyad,99679,"You should consider using PR and have someone else merge it after a review, instead of hastily pushing your commits. Even for small changes. ;)
+",2012-10-17T12:25:31Z,2012-10-17T12:26:09Z
+1918995,0,":-1: It now takes 2 controllers to serve a single resource""",2012-09-27 20:20:32,NARKOZ,gitlabhq,gitlabhq,3574826920eb958c5e59e86bb79b0773c187abfb,NARKOZ,253398,":-1: It now takes 2 controllers to serve a single resource
+",2012-09-28T08:20:32Z,2012-09-28T08:20:32Z
+1214783,2,"May I ask why you introduce all these non-semantic elements into the layout? I know that bootstrap provides these, but I don't think that it's a good practice to use them directly.  Especially with elements classes like """"right"""", it makes it harder to resty""",2012-04-15 23:31:15,arthurschreiber,gitlabhq,gitlabhq,c0df0cd70c9036c2b3bf11f823d61a3618e6d16a,arthurschreiber,2195,"May I ask why you introduce all these non-semantic elements into the layout? I know that bootstrap provides these, but I don't think that it's a good practice to use them directly.
+
+Especially with elements classes like ""right"", it makes it harder to restyle the elements using just CSS, as you always have to change the HTML structure, too. (Or you overwrite the styling of the ""right"" class with left alignment, which is just confusing and plain weird.)
+
+Instead, you should use semantic class names and make use of the '@extend' function of sass to extend your semantic classes with bootstrap functionality. 
+",2012-04-16T11:31:15Z,2012-04-16T11:31:15Z
+1182927,0,"@randx relying on very specific releases of MySQL sounds like a bad idea. Just my $0.02.""",2012-04-06 09:22:35,ariejan,gitlabhq,gitlabhq,17a88bb6a21cc8b6125bd2e36c1f62f4bd13300e,ariejan,1913,"@randx relying on very specific releases of MySQL sounds like a bad idea. Just my $0.02.
+",2012-04-06T21:22:35Z,2012-04-06T21:22:35Z
+1967741,0,"It's their responsibility to manage uploads.""",2012-10-09 01:29:47,NARKOZ,gitlabhq,gitlabhq,9ba1224867665844b117fa037e1465bb706b3685,NARKOZ,253398,"It's their responsibility to manage uploads.
+",2012-10-09T13:29:47Z,2012-10-09T13:29:47Z
+2416193,0,"@randx Shouldn't 'Resque' be changed here as well?""",2013-01-10 08:29:02,tristanvanbokkem,gitlabhq,gitlabhq,66ecfa77e5105c8a8151db899e3d3a09dba3024e,tvb,1263414,"@randx Shouldn't 'Resque' be changed here as well?
+",2013-01-10T19:29:02Z,2013-01-10T19:29:02Z
+3942726,2,"@Razer6 you are right. I did not noticed #4594 :(""",2013-08-25 23:58:30,randx,gitlabhq,gitlabhq,6b206c9d965c664053ff0139736357ea096f4766,dzaporozhets,305940,"@Razer6 you are right. I did not noticed #4594 :(
+",2013-08-26T11:58:30Z,2013-08-26T11:58:30Z
+2466138,2,"@riyad But you added it in Pull Request. And this code is in master. So we got a broken build for one day :(""",2013-01-19 21:39:09,randx,gitlabhq,gitlabhq,75447fb044d767a5bda7c707e58a0456318c021a,dzaporozhets,305940,"@riyad But you added it in Pull Request. And this code is in master. So we got a broken build for one day :(
+",2013-01-20T08:39:09Z,2013-01-20T08:39:09Z
+2466383,2,"Ouch ... sorry. :(""",2013-01-20 00:59:52,riyad,gitlabhq,gitlabhq,75447fb044d767a5bda7c707e58a0456318c021a,riyad,99679,"Ouch ... sorry. :(
+",2013-01-20T11:59:52Z,2013-01-20T11:59:52Z
+2465208,2,"Oh, sorry! I did not know it existed, but he had to feel the fail tests and help pages respectively. """,2013-01-19 09:34:40,zzet,gitlabhq,gitlabhq,75447fb044d767a5bda7c707e58a0456318c021a,zzet,510788,"Oh, sorry! I did not know it existed, but he had to feel the fail tests and help pages respectively.
+",2013-01-19T20:34:40Z,2013-01-19T20:34:40Z
+1933510,2,"@randx Is there a specific reason why these got removed? :( The color-coding was quite helpful. Are you planing on redoing it (differently)?""",2012-10-02 00:09:33,riyad,gitlabhq,gitlabhq,663dd6fad6e0a992f7ba1ccff4e58de84463abe6,riyad,99679,"@randx Is there a specific reason why these got removed? :( The color-coding was quite helpful. Are you planing on redoing it (differently)?
+",2012-10-02T12:09:33Z,2012-10-02T12:10:27Z
+1073388,2,"travis always failed now :(""",2012-03-12 04:50:08,randx,gitlabhq,gitlabhq,92e2303fb338772b7f779d091d225dc5afe261aa,dzaporozhets,305940,"travis always failed now :(
+",2012-03-12T15:50:08Z,2012-03-12T15:50:08Z
+3990961,1,"Nice, one less fork!""",2013-09-01 02:49:30,dosire,gitlabhq,gitlabhq,84992cd0fac36846ebfde5800d52158258107ecc,dosire,22061,"Nice, one less fork!
+",2013-09-01T14:49:30Z,2013-09-01T14:49:30Z
+3942798,1,"@Razer6 0093554 :)""",2013-08-26 00:07:54,randx,gitlabhq,gitlabhq,6b206c9d965c664053ff0139736357ea096f4766,dzaporozhets,305940,"@Razer6 0093554 :)
+",2013-08-26T12:07:54Z,2013-08-26T12:07:54Z
+3942848,1,"@randx :+1: for the quick fix :smile: """,2013-08-26 00:13:44,Razer6,gitlabhq,gitlabhq,6b206c9d965c664053ff0139736357ea096f4766,Razer6,278301,"@randx :+1: for the quick fix :smile: 
+",2013-08-26T12:13:44Z,2013-08-26T12:13:44Z
+3832990,1,"OH GOD THANK YOU!""",2013-08-10 04:04:18,MrKeiKun,gitlabhq,gitlabhq,01be32043af7ffb6981086f7fc05891bed578c15,MrKeiKun,4362134,"OH GOD THANK YOU!
+",2013-08-10T16:04:18Z,2013-08-10T16:04:18Z
+2477676,2,"fixed. I think that tests for Rails core is bad idea. Don't you think so too? Have you read good article from DHH about it?!""",2013-01-22 04:24:25,vsizov,gitlabhq,gitlabhq,69ec189ad25000caa247aad944eda2398045b612,vsizov,417636,"fixed. I think that tests for Rails core is bad idea. Don't you think so too?
+Have you read good article from DHH about it?!
+",2013-01-22T15:24:25Z,2013-01-22T15:24:38Z
+2289117,2,"@randx please use """"()"""" for arguments in method definitions trying to find the """" """" among the """"_"""" slows down code reading :(""",2012-12-11 05:15:38,riyad,gitlabhq,gitlabhq,ca936d2784773652530e7b02af40b925ca45a4d6,riyad,99679,"@randx please use ""()"" for arguments in method definitions
+trying to find the "" "" among the ""_"" slows down code reading :(
+",2012-12-11T16:15:38Z,2012-12-11T16:16:12Z
+2277953,2,"There is `addgroup git gitlab` and `usermod -a -G git gitlab` ... seems I mixed them together, sorry.""",2012-12-09 03:14:04,riyad,gitlabhq,gitlabhq,a76a34dd1d0719521790eb8bd30cd368dc7a331c,riyad,99679,"There is `addgroup git gitlab` and `usermod -a -G git gitlab` ... seems I mixed them together, sorry.
+",2012-12-09T14:14:04Z,2012-12-09T14:14:04Z
+1244278,2,"I know. But i dont want to wait. its a bad thing. I'll handle it""",2012-04-22 23:56:57,randx,gitlabhq,gitlabhq,9cb51c6ea29660bfd3cca8fd4e64090cf2d5ac6e,dzaporozhets,305940,"I know. But i dont want to wait. its a bad thing. I'll handle it
+",2012-04-23T11:56:57Z,2012-04-23T11:56:57Z
+1073446,2,"Yes, that's weird becaus running specs against 1.9.3-p125 _works on my machine_. I'll disable it for now until I can find a working fix in my own fork.""",2012-03-12 05:02:20,ariejan,gitlabhq,gitlabhq,92e2303fb338772b7f779d091d225dc5afe261aa,ariejan,1913,"Yes, that's weird becaus running specs against 1.9.3-p125 _works on my machine_. I'll disable it for now until I can find a working fix in my own fork.
+",2012-03-12T16:02:20Z,2012-03-12T16:02:20Z
+1964078,2,"People who use Capistrano deploy will have serious problems: (""",2012-10-08 08:47:15,zzet,gitlabhq,gitlabhq,9ba1224867665844b117fa037e1465bb706b3685,zzet,510788,"People who use Capistrano deploy will have serious problems: (
+",2012-10-08T20:47:15Z,2012-10-08T20:47:15Z
+3399981,1,"@Razer6 hope so :)""",2013-06-11 04:55:01,randx,gitlabhq,gitlabhq,964f7a1196c56a100242525eb3b8a4b69118d2ff,dzaporozhets,305940,"@Razer6 hope so :)
+",2013-06-11T16:55:01Z,2013-06-11T16:55:01Z
+4029026,1,"Thanks this fixed my issue!""",2013-09-05 15:28:09,moises-silva,gitlabhq,gitlabhq,9ae26cd128122936adf07e03aeecb221b5a72ecf,moises-silva,680665,"Thanks this fixed my issue!
+",2013-09-06T03:28:09Z,2013-09-06T03:28:09Z
+3383333,1,"haha fast fix""",2013-06-08 03:44:36,MrKeiKun,gitlabhq,gitlabhq,05bc65895c083cf89e44e72c80918cda761cfaa1,MrKeiKun,4362134,"haha
+fast fix
+",2013-06-08T15:44:36Z,2013-06-08T15:44:36Z
+3133816,1,"\o/ Thanks!""",2013-05-02 05:43:41,PotHix,gitlabhq,gitlabhq,ae006dd90ba635c1c7ee7c5c56b5570bb50a3f83,PotHix,14836,"\o/
+Thanks!
+",2013-05-02T17:43:41Z,2013-05-02T17:43:41Z
+3047340,1,"yay @randx thanks!""",2013-04-19 02:31:36,senny,gitlabhq,gitlabhq,827a0018a998e7100c91fad48df166c67fcf0e1b,senny,5402,"yay @randx thanks!
+",2013-04-19T14:31:36Z,2013-04-19T14:31:36Z
+3065860,1,"I'm at Railsberry conference now. If someone can provide a clean fix - it will be great :smile: """,2013-04-22 20:07:03,randx,gitlabhq,gitlabhq,b1a8fdd84d5a7cdbdb5ef3829b59a73db0f4d2dd,dzaporozhets,305940,"I'm at Railsberry conference now. If someone can provide a clean fix - it will be great :smile: 
+",2013-04-23T08:07:03Z,2013-04-23T08:07:03Z
+3077339,1,"You must also edit huge_commit.html.haml  Then everything is fine ;- )""",2013-04-24 01:55:30,b-connect,gitlabhq,gitlabhq,ad5ea14210cc6dcb674c421e296b67ed2d0e6dbc,erik-seifert,4093180,"You must also edit huge_commit.html.haml
+
+Then everything is fine ;- )
+",2013-04-24T13:55:30Z,2013-04-24T13:55:30Z
+2842512,1,"@AlexDenisov lol. I dont have command button :) Feel free to send PR""",2013-03-20 00:35:22,randx,gitlabhq,gitlabhq,72db22d385ad98eea44bdc880ca08c95f867241e,dzaporozhets,305940,"@AlexDenisov lol. I dont have command button :) Feel free to send PR
+",2013-03-20T11:35:22Z,2013-03-20T11:35:22Z
+2581114,1,"Is 5.0 coming in February now instead of 4.2, or still planning 5.0 for March 22nd?  (I'm just excited for the release!)""",2013-02-07 08:58:37,bentaber,gitlabhq,gitlabhq,210e9cd489bc0c413474ad347e6ce065f3ec7c81,bentaber,175805,"Is 5.0 coming in February now instead of 4.2, or still planning 5.0 for March 22nd?  (I'm just excited for the release!)
+",2013-02-07T19:58:37Z,2013-02-07T19:58:37Z
+2466491,1,"@tommytomatoe no lolz for anyone on this anymore :tongue:""",2013-01-20 02:28:44,riyad,gitlabhq,gitlabhq,fa46fc94a73f00c0a6d231279a9518aad9a8b5f0,riyad,99679,"@tommytomatoe no lolz for anyone on this anymore :tongue:
+",2013-01-20T13:28:44Z,2013-01-20T13:28:44Z
+2465829,1,"hehe. I was waiting for the loolz. Thanks :-)""",2013-01-19 16:41:55,tommytomatoe,gitlabhq,gitlabhq,fa46fc94a73f00c0a6d231279a9518aad9a8b5f0,tommytomatoe,827756,"hehe. I was waiting for the loolz. Thanks :-)
+",2013-01-20T03:41:55Z,2013-01-20T03:41:55Z
+2452245,1,"@riyad thanks. much better now ;)""",2013-01-17 02:28:58,randx,gitlabhq,gitlabhq,bddead9efff5ca6b067d6cda20c224651a443a4b,dzaporozhets,305940,"@riyad thanks. much better now ;)
+",2013-01-17T13:28:58Z,2013-01-17T13:28:58Z
+2348649,1,"piece of art :smile: """,2012-12-22 03:05:29,riyad,gitlabhq,gitlabhq,988e6ac2058881429ced53323e954c2e029de2c9,riyad,99679,"piece of art :smile: 
+",2012-12-22T14:05:29Z,2012-12-22T14:05:29Z
+2313292,1,"will be great""",2012-12-14 23:23:28,randx,gitlabhq,gitlabhq,b01f8b63c2c13f8d6b9111771fb4f1422214d91c,dzaporozhets,305940,"will be great
+",2012-12-15T10:23:28Z,2012-12-15T10:23:43Z
+2289137,1,"@riyad you are right :)""",2012-12-11 05:19:20,randx,gitlabhq,gitlabhq,ca936d2784773652530e7b02af40b925ca45a4d6,dzaporozhets,305940,"@riyad you are right :)
+",2012-12-11T16:19:20Z,2012-12-11T16:19:20Z
+2105353,1,"BTW, thanks for this! It worked perfectly in Gitlab 3.0 (once I figured out what user I needed to run as).""",2012-11-05 11:38:39,compwright,gitlabhq,gitlabhq,37e39e4176757019fb6e9d437b86229497e63b57,compwright,138688,"BTW, thanks for this! It worked perfectly in Gitlab 3.0 (once I figured out what user I needed to run as).
+",2012-11-05T22:38:39Z,2012-11-05T22:38:39Z
+1991348,1,"Anyway thanks for the quick fix. :)""",2012-10-13 07:17:42,riyad,gitlabhq,gitlabhq,16ceae895e32c2474de04c42307d914bf9a4c304,riyad,99679,"Anyway thanks for the quick fix. :)
+",2012-10-13T19:17:42Z,2012-10-13T19:17:42Z
+1991338,1,"Fixed in #1695. The fix seems to have been so obvious, we did it the same way. ;) I also added comments to make this special case more obvious. :)""",2012-10-13 07:13:32,riyad,gitlabhq,gitlabhq,16ceae895e32c2474de04c42307d914bf9a4c304,riyad,99679,"Fixed in #1695. The fix seems to have been so obvious, we did it the same way. ;) I also added comments to make this special case more obvious. :)
+",2012-10-13T19:13:32Z,2012-10-13T19:13:55Z
+1969612,1,"@tsigo I just realized that too. :) It's not even specific to notes any more.""",2012-10-09 06:29:10,riyad,gitlabhq,gitlabhq,37e579ce10376ef16f9e9f28b81b0ca788438204,riyad,99679,"@tsigo I just realized that too. :)
+It's not even specific to notes any more.
+",2012-10-09T18:29:10Z,2012-10-09T18:29:41Z
+1961043,1,"it is perfect. Thanks""",2012-10-07 23:19:49,vsizov,gitlabhq,gitlabhq,317c928198aac43d4e00d1645318a373a33974cf,vsizov,417636,"it is perfect. Thanks
+",2012-10-08T11:19:49Z,2012-10-08T11:19:49Z
+1940359,1,"Really nice, thanks!""",2012-10-03 01:54:06,maxlazio,gitlabhq,gitlabhq,2985697af788c33b3d5b4731ec60e9b5055f97b5,maxlazio,819559,"Really nice, thanks!
+",2012-10-03T13:54:06Z,2012-10-03T13:54:06Z
+1918951,1,"@tsigo thank you. didnt know about aliases in factories :)""",2012-09-27 20:09:01,randx,gitlabhq,gitlabhq,9cabe04368024f44881e4269a008156f1629ab86,dzaporozhets,305940,"@tsigo thank you. didnt know about aliases in factories :)
+",2012-09-28T08:09:01Z,2012-09-28T08:09:01Z
+3950027,1,"As you see we frequently forget to update these references, master should be fine for now. But it might be a good idea if we start moving functionality.""",2013-08-26 17:41:46,dosire,gitlabhq,gitlabhq,3bc4845874112242d6e885731c033ffe85ee98dd,dosire,22061,"As you see we frequently forget to update these references, master should be fine for now. But it might be a good idea if we start moving functionality.
+",2013-08-27T05:41:46Z,2013-08-27T05:41:46Z
+3157907,0,"If i access the /deploy_keys on a project and there is a key that is always assigned to multiple Projects, i see the key multiple times, think you must call uniq or do a group deploy_key_id via sql   If i add the key, the -@enabled_keys remove all duplic""",2013-05-06 19:00:51,0xCCD,gitlabhq,gitlabhq,caf065007a49a58f8005c0a8d2cb0140719af8d2,0xCCD,1156088,"If i access the /deploy_keys on a project and there is a key that is always assigned to multiple Projects, i see the key multiple times, think you must call uniq or do a group deploy_key_id via sql 
+
+If i add the key, the -@enabled_keys remove all duplications
+",2013-05-07T07:00:51Z,2013-05-07T07:00:51Z
+3122941,2,"Actually, turning `--follow` on unconditionally may be a bad idea. Git mantainers currently acknowledge that it is a 'bolted-on hack', and performs badly in complicated cases, like renaming a file in multiple branches and merging, or deleting file in a bra""",2013-04-30 22:42:05,himikof,gitlabhq,gitlabhq,b1a8fdd84d5a7cdbdb5ef3829b59a73db0f4d2dd,himikof,43698,"Actually, turning `--follow` on unconditionally may be a bad idea. Git mantainers currently acknowledge that it is a 'bolted-on hack', and performs badly in complicated cases, like renaming a file in multiple branches and merging, or deleting file in a branch and merging with the resolution of keeping the file. In our repository there are a lot of such cases, so file/directory history is quite broken now.
+See: 
+http://lists-archives.com/git/742310-gsoc-better-git-log-follow-support.html
+http://kerneltrap.org/mailarchive/git/2007/6/19/249599
+http://kerneltrap.org/mailarchive/git/2007/6/19/249600
+
+Maybe it should be configurable? At least globally, or on a per-repo basis.
+",2013-05-01T10:42:05Z,2013-05-01T10:42:05Z
+2090761,2,"?? This makes no sense. Why is importing git repos from github/gitorious/sf an issue?  git clone repo git push repo to new remote  All done!  Or even better, login to server, add new project, cd to repo  git clone --bare repo  All done!""",2012-11-01 13:48:40,dubcanada,gitlabhq,gitlabhq,9014fb7525504dedaaca3b586af028455dc4004b,dubcanada,120325,"?? This makes no sense. Why is importing git repos from github/gitorious/sf an issue?
+
+git clone repo
+git push repo to new remote
+
+All done!
+
+Or even better, login to server, add new project, cd to repo
+
+git clone --bare repo
+
+All done!
+",2012-11-02T00:48:40Z,2012-11-02T00:48:40Z
+1882345,0,"Great, but as I understand this is don't work for Gitlab instances which uses LDAP or OAuth. I understand correctly?""",2012-09-20 03:04:04,AlexDenisov,gitlabhq,gitlabhq,9aafe77e708174aac697a8dcafc99b90e96be36e,AlexDenisov,1175576,"Great, but as I understand this is don't work for Gitlab instances which uses LDAP or OAuth. I understand correctly?
+",2012-09-20T15:04:04Z,2012-09-20T15:04:04Z
+1882517,0,"Also can be written as:  ```ruby class UserLogin < UserBasic   expose :private_token end ```""",2012-09-20 03:27:49,NARKOZ,gitlabhq,gitlabhq,9aafe77e708174aac697a8dcafc99b90e96be36e,NARKOZ,253398,"Also can be written as:
+
+``` ruby
+class UserLogin < UserBasic
+  expose :private_token
+end
+```
+",2012-09-20T15:27:49Z,2012-09-20T15:27:49Z
+1233862,0,"It's fine, it's a Ruby 1.9 hash.  https://peepcode.com/blog/2011/rip-ruby-hash-rocket-syntax""",2012-04-19 10:02:53,mutewinter,gitlabhq,gitlabhq,3fd3e1fcdf69e8544b25193a6e2a53716c65096c,mutewinter,305901,"It's fine, it's a Ruby 1.9 hash.
+
+https://peepcode.com/blog/2011/rip-ruby-hash-rocket-syntax
+",2012-04-19T22:02:53Z,2012-04-19T22:02:53Z
+2016145,1,"This line saved my ass. Thanks!  I did a fresh install and after that, the SSH Keys added by the users didn't appear in git's authorized_keys file for some reason. (No errors where shown)  With this line it works like a charm :+1: """,2012-10-18 00:01:07,IsNull,gitlabhq,gitlabhq,51ef5b929708d3ad90b6db6afbb78ee24eeb8aa1,IsNull,439313,"This line saved my ass. Thanks!
+
+I did a fresh install and after that, the SSH Keys added by the users didn't appear in git's authorized_keys file for some reason. (No errors where shown)
+
+With this line it works like a charm :+1: 
+",2012-10-18T12:01:07Z,2012-10-18T12:01:07Z

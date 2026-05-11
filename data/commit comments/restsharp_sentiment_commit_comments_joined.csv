@@ -1,0 +1,5 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+183949,1,"Cool, this was my headache. I will try this later, need to go to work now """,2010-11-02 20:13:46,neman,restsharp,RestSharp,269d80de00174882519f7ec04afa09ff9b7b7505,neman,350314,"Cool, this was my headache. I will try this later, need to go to work now 
+",2010-11-03T07:13:46Z,2010-11-03T07:13:46Z
+1213948,1,":muscle: :lipstick: :kissing_face: """,2012-04-15 18:26:48,paulcbetts,restsharp,RestSharp,8d210ec96499cb69b5a1a0887cdff2bd91fddc43,anaisbetts,1396,":muscle: :lipstick: :kissing_face: 
+",2012-04-16T06:26:48Z,2012-04-16T06:26:48Z

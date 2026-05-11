@@ -1,0 +1,15 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3068152,1,"this probably should not be here ;-)""",2013-04-23 02:16:37,stefanfoulis,divio,django-cms,74da34df44482d8ace569f19533489a1a6913753,stefanfoulis,14330,"this probably should not be here ;-)
+",2013-04-23T14:16:37Z,2013-04-23T14:16:37Z
+47129,1,"fork commits get applied much quicker than a diff in a ticket.. :)""",2010-02-10 21:45:27,digi604,divio,django-cms,82b898aab4d55dd823514c5e664c02f052d3d245,digi604,25490,"fork commits get applied much quicker than a diff in a ticket.. :)
+",2010-02-11T08:45:27Z,2010-02-11T08:45:27Z
+3064706,2,"Oops, my bad sorry. I was using 2.4.0 rc1 ... this is correct for 2.4.1 (which is now the default installed by pip).""",2013-04-22 15:12:58,RantyDave,divio,django-cms,f69b9fea7e32ecd83fc2ee591422909387113e35,RantyDave,4230547,"Oops, my bad sorry. I was using 2.4.0 rc1 ... this is correct for 2.4.1 (which is now the default installed by pip).
+",2013-04-23T03:12:58Z,2013-04-23T03:12:58Z
+474867,2,"Seriously, this is really immature (not to say unprofessional). Sorry about that folks.""",2011-07-12 23:45:22,chrisglass,divio,django-cms,42806a6c425c72f62c51e13ae6b1146c14bd7264,chrisglass,25211,"Seriously, this is really immature (not to say unprofessional). Sorry about that folks.
+",2011-07-13T11:45:22Z,2011-07-13T11:45:22Z
+231593,2,"Wtf I thought I fixed that weeks ago...""",2011-01-04 00:50:36,ojii,divio,django-cms,818280f6001cce60b2cb33aa1cd4b263eacd8f67,ojii,141122,"Wtf I thought I fixed that weeks ago...
+",2011-01-04T11:50:36Z,2011-01-04T11:50:36Z
+216556,2,"was this really necessary? I really hate the idea of a additional dependency just because of readability.""",2010-12-13 05:35:08,digi604,divio,django-cms,67bdd37451a8425eeb4d0a9eeb478b327cadca7a,digi604,25490,"was this really necessary? I really hate the idea of a additional dependency just because of readability.
+",2010-12-13T16:35:08Z,2010-12-13T16:35:08Z
+3064663,2,"Really? I used """"com.middleware.language.LanguageCookieMiddleware' and was told it didn't exist. The CMS started when I removed the line :(""",2013-04-22 14:59:40,RantyDave,divio,django-cms,f69b9fea7e32ecd83fc2ee591422909387113e35,RantyDave,4230547,"Really? I used ""com.middleware.language.LanguageCookieMiddleware' and was told it didn't exist. The CMS started when I removed the line :(
+",2013-04-23T02:59:40Z,2013-04-23T02:59:40Z

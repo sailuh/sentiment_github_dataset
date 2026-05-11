@@ -1,0 +1,430 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3419817,1,"#3828 was the right issue ;)""",2013-06-13 07:23:11,svbergerem,diaspora,diaspora,c6d158bd811d6bb18c5bc059fb173f2dfd485eda,svbergerem,3798614,"#3828 was the right issue ;)
+",2013-06-13T19:23:11Z,2013-06-13T19:23:11Z
+1256918,0,"you mean, like, don't ask for stuff or no interaction at all?  Because I really like people to read what it will do, especially if they don't get to change stuff before it does it. And so, maybe we can keep the """"press enter to continue..."""" stuff, and tell""",2012-04-25 05:10:44,Raven24,diaspora,diaspora,3ff94b0312d5cc655fceac5651c7d78bf3334c0a,Raven24,117366,"you mean, like, don't ask for stuff or no interaction at all? 
+Because I really like people to read what it will do, especially if they don't get to change stuff before it does it. And so, maybe we can keep the ""press enter to continue..."" stuff, and tell the user about everything that is going to happen.
+",2012-04-25T17:10:44Z,2012-04-25T17:10:44Z
+1258247,1,"Completed work! [The show must go on](http://www.youtube.com/watch?v=4ADh8Fs3YdU) :]""",2012-04-25 08:42:20,movilla,diaspora,diaspora,a9dd997f23fb71d53efdab055be361e89e1ef5de,movilla,1108789,"Completed work! [The show must go on](http://www.youtube.com/watch?v=4ADh8Fs3YdU) :]
+",2012-04-25T20:42:20Z,2012-04-25T20:44:06Z
+1145597,0,"one was making StatusMessages, which now define a custom parser. before our merged branch, they actually were aliases, but now the are not.  in JS, streams are always just posts.""",2012-03-28 10:04:29,maxwell,diaspora,diaspora,9008e661d71f826d90ae37f795ef09f0897ac970,maxwell,69663,"one was making StatusMessages, which now define a custom parser. before our merged branch, they actually were aliases, but now the are not.
+
+in JS, streams are always just posts.
+",2012-03-28T22:04:29Z,2012-03-28T22:04:29Z
+884121,0,"hmm so this is causing jquery to add a param and an a cachebusting string, which is making client_side_validations barf....""",2012-01-19 12:07:17,maxwell,diaspora,diaspora,5626948b3fa9d1c9c423809ee64f0ff3c19b4e5e,maxwell,69663,"hmm so this is causing jquery to add a param and an a cachebusting string, which is making client_side_validations barf....
+",2012-01-19T23:07:17Z,2012-01-19T23:07:17Z
+817721,0,"The other side of the issue is that if you do a move instead of a copy on setup you got a problem. Having another file might be a solution but if you want for any reason custom modifications in it and having it in the version control is not so good, also w""",2011-12-22 23:42:31,MrZYX,diaspora,diaspora,2817fb95defba736757ad4bf3597dd769617c24b,jhass,141294,"The other side of the issue is that if you do a move instead of a copy on setup you got a problem. Having another file might be a solution but if you want for any reason custom modifications in it and having it in the version control is not so good, also we would basically have to double maintain the currently available settings. The issue that you have to port new settings manually exists already, for every env. So either we improve app_config.rb a lot to handle all the defaults (double maintaining them again) or I would get back to my old idea of having a default config and let the user override them in a not tracked file. 
+",2011-12-23T10:42:31Z,2011-12-23T10:45:22Z
+705889,1,"<3""",2011-11-09 06:31:37,prellele,diaspora,diaspora,22dc8f44ef849496659fe1a627c1e0f70afaddbc,prellele,752591,"<3
+",2011-11-09T17:31:37Z,2011-11-09T17:31:37Z
+699344,0,"I added that because there's a test relying on the order -> randomly failing under postgres without it.""",2011-11-06 21:13:58,MrZYX,diaspora,diaspora,35216808e05c1011eae37e3c9502c225a966236c,jhass,141294,"I added that because there's a test relying on the order -> randomly failing under postgres without it.
+",2011-11-07T08:13:58Z,2011-11-07T08:13:58Z
+657291,0,"oh just noticed daniel change it here b46200224e""",2011-10-17 12:52:18,grzuy,diaspora,diaspora,61ae84319337286ffee9f96c1eefcc02a63580a9,grzuy,456459,"oh just noticed daniel change it here b46200224e
+",2011-10-18T00:52:18Z,2011-10-18T00:52:18Z
+654071,0,"no its just wrong""",2011-10-15 16:39:12,maxwell,diaspora,diaspora,88c6db5de424f2670d54abbac4239488ee958e17,maxwell,69663,"no its just wrong
+",2011-10-16T04:39:12Z,2011-10-16T04:39:12Z
+446147,1," Uhm oh yeah. Hmm I would just go with Name (Handle)""",2011-06-23 19:45:39,MrZYX,diaspora,diaspora,8935c577229fb5d247fd30d0bb574d4346935f74,jhass,141294," Uhm oh yeah. Hmm I would just go with Name (Handle)
+",2011-06-24T07:45:39Z,2011-06-24T07:45:39Z
+399903,1,"that is a good idea.""",2011-05-25 07:00:06,sarahmei,diaspora,diaspora,c6d61c68c01bbc7d2841b83771339b1bb3de35d1,sarahmei,56125,"that is a good idea.
+",2011-05-25T19:00:06Z,2011-05-25T19:00:06Z
+395580,0,"the flashsocket JS  plugin already does this.""",2011-05-23 07:01:27,maxwell,diaspora,diaspora,ff1168a6ba8c907ff9cb70e28f0b048149b8a549,maxwell,69663,"the flashsocket JS  plugin already does this.
+",2011-05-23T19:01:27Z,2011-05-23T19:01:44Z
+392938,1,"hmm mine looks like rvm ree@diaspora :P""",2011-05-20 10:07:28,MrZYX,diaspora,diaspora,e9dbcc7972e14cf83b9d2925b30b8d97bd82eedd,jhass,141294,"hmm mine looks like rvm ree@diaspora :P
+",2011-05-20T22:07:28Z,2011-05-20T22:07:28Z
+383537,0,"No it's not, try it yourself run it and do a git diff""",2011-05-13 22:34:35,MrZYX,diaspora,diaspora,92bef0945594804942a94c81a8805b3b66afccfb,jhass,141294,"No it's not, try it yourself run it and do a git diff
+",2011-05-14T10:34:35Z,2011-05-14T10:34:35Z
+298377,2,"BOSH BOSH BOSH""",2011-03-10 20:33:53,maxwell,diaspora,diaspora,5748639c087f3974ac58183e0fb35e6234c45a7b,maxwell,69663,"BOSH BOSH BOSH
+",2011-03-11T07:33:53Z,2011-03-11T07:33:53Z
+255538,0,"OTOH, """"also commented on your contact's %{object}"""" would be feasible because it could be translated to the equivalent of """"also commented on the %{object} of your contact"""".""",2011-01-29 23:59:39,CAFxX,diaspora,diaspora,c8dd16b60c38073ea426139e9b5c026ff1dde45d,CAFxX,408018,"OTOH, ""also commented on your contact's %{object}"" would be feasible because it could be translated to the equivalent of ""also commented on the %{object} of your contact"".
+",2011-01-30T10:59:39Z,2011-01-30T10:59:39Z
+226135,1,"zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg""",2010-12-25 07:49:22,danielgrippi,diaspora,diaspora,9c50f900eda130803d1c16a232339ca381986847,danielgrippi,136649,"zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg zomg
+",2010-12-25T18:49:22Z,2010-12-25T18:49:22Z
+217164,0,"I don't want to blame you all, but you shouldn't take joindiaspora.com that much as reference. Especially in this topic it's far more common to have an open sign up. Just keep in mind that with every commit you're not only deploying to joindiaspora.com but""",2010-12-13 19:29:25,MrZYX,diaspora,diaspora,2ac54eeffed07125aeb0603a9175d0b7cb1f5c6f,jhass,141294,"I don't want to blame you all, but you shouldn't take joindiaspora.com that much as reference. Especially in this topic it's far more common to have an open sign up. Just keep in mind that with every commit you're not only deploying to joindiaspora.com but to probably a thousand, at least a few hundred pods ;)  
+",2010-12-14T06:29:25Z,2010-12-14T06:29:25Z
+199155,0,"The only processes  which l will see RAILS_ENV as defined in server.sh are those started from script/server. You can only export to your children. So no, I don't think it's scary in that sense.""",2010-11-21 07:36:08,leamas,diaspora,diaspora,a3395b6de8c50a500fa1e33aed0c6b8f4052482f,leamas,405541,"The only processes  which l will see RAILS_ENV as defined in server.sh are those started from script/server. You can only export to your children. So no, I don't think it's scary in that sense.
+",2010-11-21T18:36:08Z,2010-11-21T18:36:08Z
+183582,0,"whoops i meant removing REDFINGER""",2010-11-02 11:04:17,maxwell,diaspora,diaspora,a22060d1fbc57a057650e2a56e75d72386982943,maxwell,69663,"whoops i meant removing REDFINGER
+",2010-11-02T22:04:17Z,2010-11-02T22:04:17Z
+168395,0,"Alright, one more try at 51a02409c867eb0e7e3965f13a48e7fb6b154bcd""",2010-10-13 10:20:14,rsofaer,diaspora,diaspora,3f9a51fa3fb783ea0fe71aa8cc2dc4da542fd067,rsofaer,212750,"Alright, one more try at 51a02409c867eb0e7e3965f13a48e7fb6b154bcd
+",2010-10-13T22:20:14Z,2010-10-13T22:20:22Z
+165822,0,"Passing true to an association is supposed to reload it (vs. object.reload, which just reloads the object itself but not its associations).   I don't know why it's different between ruby versions, unless mongomapper works differently under 1.9.2. Hmm.""",2010-10-10 07:17:39,sarahmei,diaspora,diaspora,e3ec00595d49c68268807a5bf218f08419e640ed,sarahmei,56125,"Passing true to an association is supposed to reload it (vs. object.reload, which just reloads the object itself but not its associations). 
+
+I don't know why it's different between ruby versions, unless mongomapper works differently under 1.9.2. Hmm.
+",2010-10-10T19:17:39Z,2010-10-10T19:17:39Z
+148118,1,"Clever! I'll be stealing this :)""",2010-09-15 15:51:22,cv,diaspora,diaspora,0c6c4af277cc1217920490d7fb803e1640fadb90,cv,5445,"Clever! I'll be stealing this :)
+",2010-09-16T03:51:22Z,2010-09-16T03:51:22Z
+258466,0,"Diaspora is the reimplementation of the Internet on top of the web in a certain sense."""" - makes no sense to me.""",2011-02-01 23:39:32,adrpac,diaspora,diaspora,4c15b1a01c6f02dccf5a78f2593003a0dc7ce4fb,adrianpacala,9934,"""Diaspora is the reimplementation of the Internet on top of the web in a certain sense."" - makes no sense to me.
+",2011-02-02T10:39:32Z,2011-02-02T10:39:32Z
+424704,2,"In 4 months, nobody will be able to understand this.""",2011-06-10 01:28:07,denschub,diaspora,diaspora,0847d099500e92509481338dd127f9c391777f9c,denschub,344777,"In 4 months, nobody will be able to understand this.
+",2011-06-10T13:28:07Z,2011-06-10T13:28:07Z
+1890903,2,"This would make line 32 of config/application.yml.example somewhat misleading... :(""",2012-09-22 00:43:16,hfase01,diaspora,diaspora,48dcccf7b3904072e41645a143df75adc3c818a0,hfase01,1084200,"This would make line 32 of config/application.yml.example somewhat misleading... :(
+",2012-09-22T12:43:16Z,2012-09-22T12:43:16Z
+1772111,2,"sorry, I even forgot to actually commit what I wanted. :/ """,2012-08-27 09:11:37,maxwell,diaspora,diaspora,fb909fcb4893b33b5fe66dbf631df466aaabc08d,maxwell,69663,"sorry, I even forgot to actually commit what I wanted. :/ 
+",2012-08-27T21:11:37Z,2012-08-27T21:11:37Z
+1479796,2,"fyi I don't think this has worked since this change, no flash messages :(""",2012-06-19 14:48:41,dmorley,diaspora,diaspora,72f718c8c35a5b2a1fae1141d565725dbfef63e2,dmorley,481091,"fyi I don't think this has worked since this change, no flash messages :(
+",2012-06-20T02:48:41Z,2012-06-20T02:48:41Z
+1300812,2,"u broke tests :(""",2012-05-07 03:49:03,maxwell,diaspora,diaspora,bd6a9cfe007ab3a6f9240f77c9d93540b19ecbeb,maxwell,69663,"u broke tests :(
+",2012-05-07T15:49:03Z,2012-05-07T15:49:03Z
+1200212,2,"looks like this didn't work :(""",2012-04-11 12:54:18,maxwell,diaspora,diaspora,3bfaa3fa24c56ff725a77ab1d85e6837b6d2a3b0,maxwell,69663,"looks like this didn't work :(
+",2012-04-12T00:54:18Z,2012-04-12T00:54:18Z
+1191860,2,"That broke features/activity_stream.feature:3 :(""",2012-04-09 21:38:50,MrZYX,diaspora,diaspora,11d9b50f3a4ff9cc1d03513c95287c2be842c45c,jhass,141294,"That broke features/activity_stream.feature:3 :(
+",2012-04-10T09:38:50Z,2012-04-10T09:38:50Z
+1193312,2,"This very well could break stuff. Its the worst code in the world :(""",2012-04-10 03:34:26,maxwell,diaspora,diaspora,11d9b50f3a4ff9cc1d03513c95287c2be842c45c,maxwell,69663,"This very well could break stuff. Its the worst code in the world :(
+",2012-04-10T15:34:26Z,2012-04-10T15:34:26Z
+1228809,2,":( this doesnt work. it broke cubbies oembed :(""",2012-04-18 10:10:11,maxwell,diaspora,diaspora,e6b403434f5726b964e8428db9886be9cc73ae0f,maxwell,69663,":( this doesnt work. it broke cubbies oembed :(
+",2012-04-18T22:10:11Z,2012-04-18T22:10:11Z
+1228926,2,"I was afraid this could happen. It probably needs the URLs it can match against, too. Since I never used Cubbies, I have no idea how a URL looks there :/""",2012-04-18 10:46:10,Raven24,diaspora,diaspora,e6b403434f5726b964e8428db9886be9cc73ae0f,Raven24,117366,"I was afraid this could happen.
+It probably needs the URLs it can match against, too. Since I never used Cubbies, I have no idea how a URL looks there :/
+",2012-04-18T22:46:10Z,2012-04-18T22:46:10Z
+1023584,2,"it didnt work :(""",2012-02-28 12:12:16,maxwell,diaspora,diaspora,61b4e77bdeee691bbc2d2e7a83d2a42f6f77575d,maxwell,69663,"it didnt work :(
+",2012-02-28T23:12:16Z,2012-02-28T23:12:16Z
+946652,2,"omg sorry, can't read diffs anymore ... minor cerebral blackout  - red line means """"deleted""""""",2012-02-08 08:50:58,Raven24,diaspora,diaspora,8fb3ad710ff12fb36e3f953891da85acf39766ca,Raven24,117366,"omg sorry, can't read diffs anymore ... minor cerebral blackout 
+- red line means ""deleted""
+",2012-02-08T19:50:58Z,2012-02-08T19:50:58Z
+902243,2,"evil is such a judgmental word. :(""",2012-01-25 11:22:17,sarahmei,diaspora,diaspora,d69953b0d6df4e7f52dafa82c9c73627f00fed1d,sarahmei,56125,"evil is such a judgmental word. :(
+",2012-01-25T22:22:17Z,2012-01-25T22:22:17Z
+886261,2,"kk awesome, but that console.log is going to mess up the cukes :(""",2012-01-20 03:57:33,sarahmei,diaspora,diaspora,b4e0483a189ba00a4c397ceb7fefc2890a1e21d5,sarahmei,56125,"kk awesome, but that console.log is going to mess up the cukes :(
+",2012-01-20T14:57:33Z,2012-01-20T14:57:33Z
+836670,2,":( I'd rather like to see it replaced, not removed. Now it's a clear regression.""",2012-01-04 01:05:32,MrZYX,diaspora,diaspora,d661bfb629f76aae5a947a0b4304d8952959f433,jhass,141294,":( I'd rather like to see it replaced, not removed. Now it's a clear regression.
+",2012-01-04T12:05:32Z,2012-01-04T12:05:32Z
+783749,2,"broke jasmine:ci :(""",2011-12-09 17:54:34,sarahmei,diaspora,diaspora,8666c6e20999c909345977bc1ca6193ba8d5c0d8,sarahmei,56125,"broke jasmine:ci :(
+",2011-12-10T04:54:34Z,2011-12-10T04:54:34Z
+769625,2,"Sorry! My poor English... :(""",2011-12-05 06:15:31,geckoxx,diaspora,diaspora,548c22510249959b9e3c0ca29e042f15d2e178c8,geckoxx,688816,"Sorry! My poor English... :(
+",2011-12-05T17:15:31Z,2011-12-05T17:15:31Z
+701340,2,"sorry, totally tried to be @MrZyx, because he said postgres i think... sorry all.""",2011-11-07 12:43:54,maxwell,diaspora,diaspora,35216808e05c1011eae37e3c9502c225a966236c,maxwell,69663,"sorry, totally tried to be @MrZyx, because he said postgres i think... sorry all.
+",2011-11-07T23:43:54Z,2011-11-07T23:43:54Z
+685590,2,"I'm also a bit sad to see this go.  But if it's too taxing on the servers, it's too taxing ...""",2011-10-31 06:25:20,Pistos,diaspora,diaspora,95aac2f3529d6be1c2b17956a24245fe76559de3,Pistos,2885,"I'm also a bit sad to see this go.  But if it's too taxing on the servers, it's too taxing ...
+",2011-10-31T17:25:20Z,2011-10-31T17:25:20Z
+685662,2,"^ FUCK TAXES!  :(""",2011-10-31 06:45:07,Nygu,diaspora,diaspora,95aac2f3529d6be1c2b17956a24245fe76559de3,Nygu,415588,"^ FUCK TAXES!
+
+:(
+",2011-10-31T17:45:07Z,2011-10-31T17:45:07Z
+589870,2,"No moar YouTube and vimeo? No moar hearts? :("""" +1""",2011-09-14 09:39:39,Strubbl,diaspora,diaspora,6b9ad7c4c6ba2d1ceda4981966523ea46d9df968,Strubbl,97055,"""No moar YouTube and vimeo? No moar hearts? :("" +1
+",2011-09-14T21:39:39Z,2011-09-14T21:39:39Z
+503047,2,"Am I the only one who gets angry when sites use 'via' backwards that way?  Sending likes and comments back to the original is an intriguing idea. On Jul 29, 2011 12:54 AM, """"Nygu"""" < reply@reply.github.com> wrote: > I guess we can at least agree that we don'""",2011-07-29 02:22:10,MikeSofaer,diaspora,diaspora,6e25a6a0f1112256c80c7a182e7eaaf4f633fc08,MikeSofaer,9626,"Am I the only one who gets angry when sites use 'via' backwards that way?
+
+Sending likes and comments back to the original is an intriguing idea.
+On Jul 29, 2011 12:54 AM, ""Nygu"" <
+reply@reply.github.com>
+wrote:
+
+> I guess we can at least agree that we don't need 2 pictures (poster and
+> resharer).
+> 
+> Raphael, having the image be the original poster is not a bad idea in my
+> opinion... but in that case probably the whole design of the feature should
+> have been different. If you put the picture of the original poster, it would
+> make sense if likes and comments went to the original post as well. The
+> resharer would be expanding the public.
+> 
+> Right now the resharer is taking a copy of the post which he wants his own
+> comments/likes on. So in this case, the resharer should have the avatar, the
+> poster should have the mention as the people are actually responding to the
+> resharer.
+> 
+> So I would make it:
+> 
+> 'Resharer' via 'Poster'
+> 
+> > (post)
+> > About x time ago, original link, amount of reshares (total likes?)
+> > Public, time ago, like, reshare original, comment
+> 
+> Maybe throw in a nice reshare icon too.
+> ## 
+> 
+> Reply to this email directly or view it on GitHub:
+> 
+> https://github.com/diaspora/diaspora/commit/6e25a6a0f1112256c80c7a182e7eaaf4f633fc08#commitcomment-502563
+",2011-07-29T14:22:10Z,2011-07-29T14:22:10Z
+460634,2,"it's not the best idea to use spinning asterisks for loaders.  they're not perfectly symmetric and look awkward when spinning (jumpy).  i'd suggest reverting these changes.""",2011-07-04 08:04:38,danielgrippi,diaspora,diaspora,3467c8d996280eb38004fd74ee848dee9afb9b24,danielgrippi,136649,"it's not the best idea to use spinning asterisks for loaders.  they're not perfectly symmetric and look awkward when spinning (jumpy).  i'd suggest reverting these changes.
+",2011-07-04T20:04:38Z,2011-07-04T20:04:38Z
+450912,2,"Rebase FAIL!""",2011-06-27 18:29:29,MikeSofaer,diaspora,diaspora,a0214a0a35b1edcfcbf6f8d5cd452c4cc8556341,MikeSofaer,9626,"Rebase FAIL!
+",2011-06-28T06:29:29Z,2011-06-28T06:29:29Z
+392940,2,"hm and now it's overwritten :(""",2011-05-20 10:09:01,MrZYX,diaspora,diaspora,e9dbcc7972e14cf83b9d2925b30b8d97bd82eedd,jhass,141294,"hm and now it's overwritten :(
+",2011-05-20T22:09:01Z,2011-05-20T22:09:01Z
+321263,2,"whoops sorry.  I shouldn't commit while sick, or after 7""",2011-03-29 05:38:51,maxwell,diaspora,diaspora,aa478ddd5cc6e5a6def1590d999343233ef820b7,maxwell,69663,"whoops sorry.  I shouldn't commit while sick, or after 7
+",2011-03-29T17:38:51Z,2011-03-29T17:38:51Z
+308364,2,"Oh and all those animated gifs in my timeline now, DRIVE ME COMPLETELY CRAZY. I really hate them…""",2011-03-20 09:15:27,MrZYX,diaspora,diaspora,275098a3095ff036d4b64e8d0703839aa208af66,jhass,141294,"Oh and all those animated gifs in my timeline now, DRIVE ME COMPLETELY CRAZY. I really hate them…
+",2011-03-20T20:15:27Z,2011-03-20T20:15:27Z
+303159,2,"oh, you really actually limited it to 5? Not sure if like :\""",2011-03-15 11:51:07,MrZYX,diaspora,diaspora,20f5105e5dea748973e9dbe4be334d87e9489ff1,jhass,141294,"oh, you really actually limited it to 5? Not sure if like :\
+",2011-03-15T22:51:07Z,2011-03-15T22:51:07Z
+274646,2,"I also don't like it. I feel like I miss the new posts.""",2011-02-17 04:21:04,MrZYX,diaspora,diaspora,41f077e03937630212b8c59ffc179d97d383aee5,jhass,141294,"I also don't like it. I feel like I miss the new posts.
+",2011-02-17T15:21:04Z,2011-02-17T15:21:04Z
+251282,2,"i was afraid it'd do unimaginable things!""",2011-01-25 17:38:49,OhaiBBQ,diaspora,diaspora,82930163484c0ad5ce09f9294354049e56f72bd0,ohaibbq,437360,"i was afraid it'd do unimaginable things!
+",2011-01-26T04:38:49Z,2011-01-26T04:38:49Z
+221380,2,":( - IMO enter is far more often accidently hit""",2010-12-18 22:09:32,MrZYX,diaspora,diaspora,7b4da226172cbdda0d7db401d85b7b9e9793652e,jhass,141294,":( - IMO enter is far more often accidently hit
+",2010-12-19T09:09:32Z,2010-12-19T09:09:32Z
+222337,2,"yeah sorry wasn't thinking.""",2010-12-20 08:41:17,maxwell,diaspora,diaspora,e7cca604e6672b0a9f5c1bfe28111ed0a2799535,maxwell,69663,"yeah sorry wasn't thinking.
+",2010-12-20T19:41:17Z,2010-12-20T19:41:17Z
+217153,2,"I also take responsibility for not thinking of this since you asked me to pull it in...  sorry, my bad.""",2010-12-13 19:00:31,maxwell,diaspora,diaspora,2ac54eeffed07125aeb0603a9175d0b7cb1f5c6f,maxwell,69663,"I also take responsibility for not thinking of this since you asked me to pull it in...  sorry, my bad.
+",2010-12-14T06:00:31Z,2010-12-14T06:00:31Z
+207530,2,"all this reverts are bad as I already updated 99translations. So much lost now :(""",2010-12-01 20:24:30,MrZYX,diaspora,diaspora,d5c32b6a56a268a636ccc7a9be6dfc9b7f37bd8c,jhass,141294,"all this reverts are bad as I already updated 99translations. So much lost now :(
+",2010-12-02T07:24:30Z,2010-12-02T07:24:30Z
+204032,2,"Oh shit, probably my fault. Sorry :(""",2010-11-27 16:58:16,sarahmei,diaspora,diaspora,8f67f9030764f571ddecef04797f8ee674c2931d,sarahmei,56125,"Oh shit, probably my fault. Sorry :(
+",2010-11-28T03:58:16Z,2010-11-28T03:58:16Z
+170956,2,"CRAP.  my bad.""",2010-10-17 16:23:52,danielgrippi,diaspora,diaspora,108bf9d99e8b52bc15cc60cc57dffbf830a5f7c9,danielgrippi,136649,"CRAP.  my bad.
+",2010-10-18T04:23:52Z,2010-10-18T04:23:52Z
+172691,2,"Umpf! There was indeed an error. This is all on my side, and my bad. Sigh, sorry for taking your time. Case closed.  --alec""",2010-10-19 09:15:16,leamas,diaspora,diaspora,7aa49b277cd9a6ad2c0e8322773c29f20c487e46,leamas,405541,"Umpf! There was indeed an error. This is all on my side, and my bad. Sigh, sorry for taking your time. Case closed.
+
+--alec
+",2010-10-19T21:15:16Z,2010-10-19T21:15:16Z
+4017160,1,"doesn't really matter ... it was actually set to 'true' in the old code, so this is already an improvement :P""",2013-09-04 10:18:03,Raven24,diaspora,diaspora,72e421b38fd894da5d263ccf9804c917c759d739,Raven24,117366,"doesn't really matter ... it was actually set to 'true' in the old code, so this is already an improvement :P
+",2013-09-04T22:18:03Z,2013-09-04T22:18:03Z
+1345881,2,"weird""",2012-05-17 12:03:34,maxwell,diaspora,diaspora,27aff7fb1e2572063b025970952311c852a192f7,maxwell,69663,"weird
+",2012-05-18T00:03:34Z,2012-05-18T00:03:34Z
+1312297,2,"that seems to do the trick.  ... now some cuke is failing, though :/""",2012-05-09 08:47:56,Raven24,diaspora,diaspora,b1dac3e2161a202f43208b256c59660a2f8ca5f3,Raven24,117366,"that seems to do the trick.
+
+... now some cuke is failing, though :/
+",2012-05-09T20:47:56Z,2012-05-09T20:47:56Z
+1269944,2,"Thank you.  I fixed this last night then lost Internet :( """,2012-04-28 03:30:38,maxwell,diaspora,diaspora,008ed32e9ea69ad936a95b45c29428860a832b65,maxwell,69663,"Thank you.  I fixed this last night then lost Internet :(
+",2012-04-28T15:30:38Z,2012-04-28T15:30:38Z
+1205239,2,"I guess we should move it back. This is pretty weird tho""",2012-04-12 15:44:21,maxwell,diaspora,diaspora,37c3c3a860599312d10fdd67374ed5dba6b66445,maxwell,69663,"I guess we should move it back. This is pretty weird tho
+",2012-04-13T03:44:21Z,2012-04-13T03:44:21Z
+1192332,2,"bummer :/""",2012-04-09 23:57:54,Raven24,diaspora,diaspora,79acc2c4cfa478da6440779f55a6ae65993465b5,Raven24,117366,"bummer :/
+",2012-04-10T11:57:54Z,2012-04-10T11:57:54Z
+1193401,2,"Nope, it did work, fixing one failure just did cause another one. After the third iteration I just didn't feel like continuing...""",2012-04-10 03:55:05,MrZYX,diaspora,diaspora,79acc2c4cfa478da6440779f55a6ae65993465b5,jhass,141294,"Nope, it did work, fixing one failure just did cause another one. After the third iteration I just didn't feel like continuing...
+",2012-04-10T15:55:05Z,2012-04-10T15:55:05Z
+1193392,2,"Theres no need to be rude.    And I think you just want to use an instance variable, that is how we do the """"@me"""" stuff (sorry to github user @me)""",2012-04-10 03:51:44,maxwell,diaspora,diaspora,749b403d134837010cb97273b7a397b0d44dc741,maxwell,69663,"Theres no need to be rude. 
+
+ And I think you just want to use an instance variable, that is how we do the ""@me"" stuff (sorry to github user @me)
+",2012-04-10T15:51:44Z,2012-04-10T15:52:04Z
+1191899,2,"Nevermind, sorry""",2012-04-09 21:48:06,MrZYX,diaspora,diaspora,11d9b50f3a4ff9cc1d03513c95287c2be842c45c,jhass,141294,"Nevermind, sorry
+",2012-04-10T09:48:06Z,2012-04-10T09:48:12Z
+1188756,2,"whoa, weird...""",2012-04-09 05:02:21,danielgrippi,diaspora,diaspora,b59c54c131e3948258236e81537e33ec45bf6d38,danielgrippi,136649,"whoa, weird...
+",2012-04-09T17:02:21Z,2012-04-09T17:02:21Z
+1151858,2,"Thanks Steven. For a dot release, 3.1 sure changed a lot of fundamental things. :(""",2012-03-29 15:23:43,sarahmei,diaspora,diaspora,fc4b8d2af0f8225e9252262f70f67029cde017d0,sarahmei,56125,"Thanks Steven. For a dot release, 3.1 sure changed a lot of fundamental things. :(
+",2012-03-30T03:23:43Z,2012-03-30T03:23:43Z
+932785,2,"I BLAME @maxwell """,2012-02-03 21:51:06,denniscollective,diaspora,diaspora,3991903b56855d4ce0478744b8429b8bfdf38bec,dnsco,69591,"I BLAME @maxwell 
+",2012-02-04T08:51:06Z,2012-02-04T08:51:06Z
+890466,2,"Ah crap.  Thanks for pointing this out""",2012-01-22 08:57:01,maxwell,diaspora,diaspora,25a15259bc10291258ac941c56e00991afe5ebc7,maxwell,69663,"Ah crap.  Thanks for pointing this out
+",2012-01-22T19:57:01Z,2012-01-22T19:57:01Z
+890336,2,"this fixed """"uninitialized constant HoptoadNotifier"""" for me, without diaspora is not runable :(""",2012-01-22 06:58:41,prellele,diaspora,diaspora,98bdf680034e531ca7006bb4c39662bcb50b053e,prellele,752591,"this fixed ""uninitialized constant HoptoadNotifier"" for me, without diaspora is not runable :(
+",2012-01-22T17:58:41Z,2012-01-22T17:58:48Z
+890376,2,"one thought i did have would be to use it in config.ru, but then we lose the ability to use AppConfig :(""",2012-01-22 07:22:32,maxwell,diaspora,diaspora,98bdf680034e531ca7006bb4c39662bcb50b053e,maxwell,69663,"one thought i did have would be to use it in config.ru, but then we lose the ability to use AppConfig :(
+",2012-01-22T18:22:32Z,2012-01-22T18:22:32Z
+890379,2,"also slightly annoying about this.  resque has built in hoptoad support, so upgrading this means we need another gem to get resque airbrake to work again :( (actually, it would be easier to write out own but still :( )""",2012-01-22 07:24:06,maxwell,diaspora,diaspora,98bdf680034e531ca7006bb4c39662bcb50b053e,maxwell,69663,"also slightly annoying about this.  resque has built in hoptoad support, so upgrading this means we need another gem to get resque airbrake to work again :( (actually, it would be easier to write out own but still :( )
+",2012-01-22T18:24:06Z,2012-01-22T18:26:53Z
+890251,2,":( for placeholder tests.""",2012-01-22 05:50:18,sarahmei,diaspora,diaspora,c3b9bb9a9ad01f21f82bbbdb0699cf73a52e2af7,sarahmei,56125,":( for placeholder tests.
+",2012-01-22T16:50:18Z,2012-01-22T16:50:18Z
+698752,2,"WTF?????""",2011-11-06 10:49:33,MrZYX,diaspora,diaspora,484f46d70f6b0721780bfe99fec857bc7633739d,jhass,141294,"WTF?????
+",2011-11-06T21:49:33Z,2011-11-06T21:49:33Z
+651271,2,"bad joke""",2011-10-13 17:36:54,maxwell,diaspora,diaspora,44b0887e0a7a13be841b0d96398bc77cf72adfbf,maxwell,69663,"bad joke
+",2011-10-14T05:36:54Z,2011-10-14T05:36:54Z
+605452,2,"all i can do is edit the acm calendar... sorry bro""",2011-09-22 04:53:15,maxwell,diaspora,diaspora,2e96f0121e315c834ad678e2e27b467da7e4b311,maxwell,69663,"all i can do is edit the acm calendar... sorry bro
+",2011-09-22T16:53:15Z,2011-09-22T16:53:15Z
+594920,2,"scratch that... it's under 70 seconds now.  (hyperthreading is weird.)""",2011-09-16 17:48:45,danielgrippi,diaspora,diaspora,b706edf76f4480ebe7154ca7506c8b5ddccbbefe,danielgrippi,136649,"scratch that... it's under 70 seconds now.  (hyperthreading is weird.)
+",2011-09-17T05:48:45Z,2011-09-17T05:48:45Z
+587948,2,"No moar YouTube and vimeo?  No moar hearts? :(""",2011-09-13 20:17:00,MrZYX,diaspora,diaspora,6b9ad7c4c6ba2d1ceda4981966523ea46d9df968,jhass,141294,"No moar YouTube and vimeo?  No moar hearts? :(
+",2011-09-14T08:17:00Z,2011-09-14T08:20:21Z
+584200,2,"whoops, my bad""",2011-09-12 08:26:28,MrZYX,diaspora,diaspora,41effa7bd2be8b4355e51a620d05b80897bce6d0,jhass,141294,"whoops, my bad
+",2011-09-12T20:26:28Z,2011-09-12T20:26:28Z
+514565,2,"CI really doesn't like this commit...""",2011-08-04 15:05:10,rsofaer,diaspora,diaspora,6a56e3298c36fdb4306433a29611fbf95c23a429,rsofaer,212750,"CI really doesn't like this commit...
+",2011-08-05T03:05:10Z,2011-08-05T03:05:10Z
+505034,2,"Losing this is unfortunate... I think it helped a lot with not leaving missing translations around.""",2011-07-31 03:50:11,rsofaer,diaspora,diaspora,b7b1c6b2769df2d1674fdceb21b02ea5c28244a3,rsofaer,212750,"Losing this is unfortunate... I think it helped a lot with not leaving missing translations around.
+",2011-07-31T15:50:11Z,2011-07-31T15:50:11Z
+502425,2,"this is crazy, but this is what making the build fail... thoughts?""",2011-07-28 17:39:09,maxwell,diaspora,diaspora,ddd4424df81b6f8606837024ad3d961ee7974d7d,maxwell,69663,"this is crazy, but this is what making the build fail... thoughts?
+",2011-07-29T05:39:09Z,2011-07-29T05:39:09Z
+503886,2,"YOU BROKE  MY CONTACTS PAGE????""",2011-07-29 12:10:15,rsofaer,diaspora,diaspora,ca2413ff6bf7347dac9a2cfb076af4d2099f378d,rsofaer,212750,"YOU BROKE
+
+MY CONTACTS PAGE????
+",2011-07-30T00:10:15Z,2011-07-30T00:10:15Z
+456346,2,"I kind of want to get rid of all of these... the smileys in particular look worse than ascii smileys.""",2011-06-30 10:59:53,rsofaer,diaspora,diaspora,2c4f835998c3b533591d90b16fa08a4894fc4446,rsofaer,212750,"I kind of want to get rid of all of these... the smileys in particular look worse than ascii smileys.
+",2011-06-30T22:59:53Z,2011-06-30T22:59:53Z
+451977,2,"Goddamn it, committed as you again!  I could push -f it, but I'm hesitant to do that on master.  :-(""",2011-06-28 05:31:45,MikeSofaer,diaspora,diaspora,c2565127c79d57ea8bce9691c4e1cae9427558da,MikeSofaer,9626,"Goddamn it, committed as you again!  I could push -f it, but I'm hesitant to do that on master.  :-(
+",2011-06-28T17:31:45Z,2011-06-28T17:31:45Z
+360378,2,"Yeah, this was definitely lacking.  We should probably make it attempt reconnect automatically a couple times, once we've determined that it doesn't close unreasonably fast.""",2011-04-27 17:23:54,rsofaer,diaspora,diaspora,d28a2cdb1e2e08e9ecbaf471b00b11b358fcd11d,rsofaer,212750,"Yeah, this was definitely lacking.  We should probably make it attempt reconnect automatically a couple times, once we've determined that it doesn't close unreasonably fast.
+",2011-04-28T05:23:54Z,2011-04-28T05:23:54Z
+341054,2,"agh, that's annoying, I'll test it and find a different solution, then.""",2011-04-13 06:55:24,rsofaer,diaspora,diaspora,8c0dcdde08faa5bb11637ff73e6bfb6fdda2c9c2,rsofaer,212750,"agh, that's annoying, I'll test it and find a different solution, then.
+",2011-04-13T18:55:24Z,2011-04-13T18:55:24Z
+314082,2,"I think this breaks video embedding :\""",2011-03-24 06:11:37,MrZYX,diaspora,diaspora,535e686b2ce343e12cfecb4f5bdd4e51dea80ec4,jhass,141294,"I think this breaks video embedding :\
+",2011-03-24T17:11:37Z,2011-03-24T17:12:17Z
+311930,2,"Oooops totally my fault. Yeah, couldnt find pending, ill look into xit and xdescribe once I'm on a computer.""",2011-03-22 17:38:15,zhitomirskiyi,diaspora,diaspora,87fb4b0552bc0c4e126b1ff6caf20e47e474ff7c,zhitomirskiyi,212747,"Oooops totally my fault. Yeah, couldnt find pending, ill look into xit and xdescribe once I'm on a computer.
+",2011-03-23T04:38:15Z,2011-03-23T04:38:15Z
+290163,2,"Yeah, this was pretty much just getting rid of some postgres syntax errors""",2011-03-03 07:56:41,rsofaer,diaspora,diaspora,9d92161430d7404d867e3009c6703eddd492e38e,rsofaer,212750,"Yeah, this was pretty much just getting rid of some postgres syntax errors
+",2011-03-03T18:56:41Z,2011-03-03T18:56:41Z
+284329,2,"hm dunno how that happend :\""",2011-02-26 02:23:11,MrZYX,diaspora,diaspora,782dc55d6303a0c34e5efb876ea8a1bab948b647,jhass,141294,"hm dunno how that happend :\
+",2011-02-26T13:23:11Z,2011-02-26T13:23:11Z
+214963,2,"Ruby 1.9 requires a full path (e.g. File.join(Rails.root, 'app', etc etc)) :(""",2010-12-10 04:01:53,sarahmei,diaspora,diaspora,416a36ea9a035dc5cf897ad471eb26fb6b518405,sarahmei,56125,"Ruby 1.9 requires a full path (e.g. File.join(Rails.root, 'app', etc etc)) :(
+",2010-12-10T15:01:53Z,2010-12-10T15:01:53Z
+214777,2,"that broke everything!  rack aborted no such file to load -- app/models/services/facebook""",2010-12-09 21:43:01,harrykipper,diaspora,diaspora,416a36ea9a035dc5cf897ad471eb26fb6b518405,harrykipper,517513,"that broke everything!
+
+rack aborted
+no such file to load -- app/models/services/facebook
+",2010-12-10T08:43:01Z,2010-12-10T08:43:01Z
+208105,2,"don't pull.  master is broken!  will fix soon.""",2010-12-02 10:23:45,danielgrippi,diaspora,diaspora,93da0ddd2530aefcc40ef09a39c104a4097d8985,danielgrippi,136649,"don't pull.  master is broken!  will fix soon.
+",2010-12-02T21:23:45Z,2010-12-02T21:23:45Z
+202544,2,"Just trying to shorten it so it doesn't look so weird.  I can change it back.""",2010-11-24 11:57:31,rsofaer,diaspora,diaspora,d443b15c971eda740f94c5f3ec92f1d694f0b140,rsofaer,212750,"Just trying to shorten it so it doesn't look so weird.  I can change it back.
+",2010-11-24T22:57:31Z,2010-11-24T22:57:31Z
+201035,2,"WTF is up with this file? A merge conflict gets checked in and it doesn't break the build. Can we just remove it from git?""",2010-11-23 05:40:06,sarahmei,diaspora,diaspora,c9c84794af21d03dcc6b1a6480b7964035935575,sarahmei,56125,"WTF is up with this file? A merge conflict gets checked in and it doesn't break the build. Can we just remove it from git?
+",2010-11-23T16:40:06Z,2010-11-23T16:40:06Z
+179989,2,"BAD. ASS.""",2010-10-28 09:14:05,sarahmei,diaspora,diaspora,0dcffc62274c49758bbff821c117ad15e3ceb418,sarahmei,56125,"BAD. ASS.
+",2010-10-28T21:14:05Z,2010-10-28T21:14:05Z
+181801,2,"merge commits suck.  sorry about this.  i thought i was up to date, shouldn't have worked on master directly on my local.""",2010-10-31 08:38:12,danielgrippi,diaspora,diaspora,dc330012d685d8a6c62fc8e9e08c30d2beba29ac,danielgrippi,136649,"merge commits suck.  sorry about this.  i thought i was up to date, shouldn't have worked on master directly on my local.
+",2010-10-31T19:38:12Z,2010-10-31T19:38:12Z
+148090,2,"It's always sad to see a reference like that go, but it was probably a good move.""",2010-09-15 14:10:13,meltingice,diaspora,diaspora,5d87ca0904eb793084ca81eb56d1a44ed9f1b60e,meltingice,126393,"It's always sad to see a reference like that go, but it was probably a good move.
+",2010-09-16T02:10:13Z,2010-09-16T02:10:13Z
+148269,2,"AGPL == epic fail. Don’t count on getting all that many contributors.""",2010-09-15 21:38:53,mikl,diaspora,diaspora,4c15b1a01c6f02dccf5a78f2593003a0dc7ce4fb,mikl,10263,"AGPL == epic fail. Don’t count on getting all that many contributors.
+",2010-09-16T09:38:53Z,2010-09-16T09:38:53Z
+181069,2,"AGPL sucks""",2010-10-29 15:46:44,bbhoss,diaspora,diaspora,4c15b1a01c6f02dccf5a78f2593003a0dc7ce4fb,bbhoss,7044,"AGPL sucks
+",2010-10-30T03:46:44Z,2010-10-30T03:46:44Z
+392923,2,"boo!  sorry dudes.""",2011-05-20 09:55:31,danielgrippi,diaspora,diaspora,16351227f7069e7c57683d92aecb0a48901549de,danielgrippi,136649,"boo!  sorry dudes.
+",2011-05-20T21:55:31Z,2011-05-20T21:55:31Z
+2000018,2,"Yeah there's quite some legacy stuff still, especially in the routes.rb file. It became an inconsistent mess again since my last refactor of it. Guess it's time for another one…  All that new hotness and beta stuff really were just experiments that becam""",2012-10-15 12:05:41,MrZYX,diaspora,diaspora,7e0c8bdf687ced533fc1cb3271ea920786c63680,jhass,141294,"Yeah there's quite some legacy stuff still, especially in the routes.rb file. It became an inconsistent mess again since my last refactor of it. Guess it's time for another one…
+
+All that new hotness and beta stuff really were just experiments that became makr.io or whatever. We ripped out already most of it, so except for the single post view there shouldn't be any user facing stuff left, just messy code.
+",2012-10-16T00:05:41Z,2012-10-16T00:08:23Z
+425706,2,"I was to stupid to not realise that ruby per default is greedy. Which IMHO is shit! See my next commit.""",2011-06-10 12:44:16,paddyez,diaspora,diaspora,0847d099500e92509481338dd127f9c391777f9c,paddyez,462904,"I was to stupid to not realise that ruby per default is greedy. Which IMHO is shit! See my next commit.
+",2011-06-11T00:44:16Z,2011-06-11T00:44:16Z
+3171636,1,"I needed to update it about a month ago :)""",2013-05-08 05:31:34,krynnotaur,diaspora,diaspora,0ca40d0abc330a9a42f8cc99eca8ff0765af7e9c,krynnotaur,74408,"I needed to update it about a month ago :)
+",2013-05-08T17:31:34Z,2013-05-08T17:31:34Z
+2952412,1,"Well, we didn't have a migration in a while but it is in the usual update workflow. Rails will also print a pretty clear error message in case you miss it. So I don't think that's necessary :)""",2013-04-04 23:25:33,MrZYX,diaspora,diaspora,0f05506f8df0eaa0b080d2735f9d1257d3afea44,jhass,141294,"Well, we didn't have a migration in a while but it is in the usual update workflow. Rails will also print a pretty clear error message in case you miss it. So I don't think that's necessary :)
+",2013-04-05T11:25:33Z,2013-04-05T11:25:33Z
+1890906,1,"Good catch, wanna send a pull request? :)""",2012-09-22 00:47:38,MrZYX,diaspora,diaspora,48dcccf7b3904072e41645a143df75adc3c818a0,jhass,141294,"Good catch, wanna send a pull request? :)
+",2012-09-22T12:47:38Z,2012-09-22T12:47:38Z
+1855445,1,"thank youuuu""",2012-09-14 01:51:26,prellele,diaspora,diaspora,8279eb22621d2063b2ba3214c62657787b63ba8b,prellele,752591,"thank youuuu
+",2012-09-14T13:51:26Z,2012-09-14T13:51:26Z
+1840823,1,"Yay, thanks for this! :)""",2012-09-11 16:19:26,DeadSuperHero,diaspora,diaspora,ab0ad630dfb9adcca3a7a4fa46a5d3650e2c211a,DeadSuperHero,401560,"Yay, thanks for this! :)
+",2012-09-12T04:19:26Z,2012-09-12T04:19:26Z
+1630830,1,"doesn't matter, just a string. but thanks for checking ;)""",2012-07-25 09:56:41,Raven24,diaspora,diaspora,c7f66ee647c9ab4c19f71e7950a271a8bed2d4e0,Raven24,117366,"doesn't matter, just a string. but thanks for checking ;)
+",2012-07-25T21:56:41Z,2012-07-25T21:56:41Z
+1385606,1,"Dennis, you rock. Seriously.""",2012-05-28 13:52:35,DeadSuperHero,diaspora,diaspora,f68f14aa5bbd9079573756f85dd83c1402b5d718,DeadSuperHero,401560,"Dennis, you rock. Seriously.
+",2012-05-29T01:52:35Z,2012-05-29T01:52:35Z
+1367491,1,"cool, thank you.  I was just going to write a request for this :)""",2012-05-23 05:53:41,maxwell,diaspora,diaspora,348c5ac522c4d2ff13edeaecc29b2e4c4f4bde19,maxwell,69663,"cool, thank you.  I was just going to write a request for this :)
+",2012-05-23T17:53:41Z,2012-05-23T18:05:21Z
+1571528,1,"Just to let you know I really thank you for this. :)""",2012-07-11 22:36:00,jmallach,diaspora,diaspora,5c534521cc2236af9957553240c740d1947b43eb,jmallach,929712,"Just to let you know I really thank you for this. :)
+",2012-07-12T10:36:00Z,2012-07-12T10:36:00Z
+1351383,1,"whenever i see deleted code, i get all happy and stuff.""",2012-05-19 05:06:15,danielgrippi,diaspora,diaspora,125b013c109e6a74a6b7ae51f52c833c7c100e7b,danielgrippi,136649,"whenever i see deleted code, i get all happy and stuff.
+",2012-05-19T17:06:15Z,2012-05-19T17:06:15Z
+1351780,1,"@stevenh512  <3 @danielgrippi I wish github supported likes on comments so I could like your comment, bro.""",2012-05-19 11:31:22,denniscollective,diaspora,diaspora,125b013c109e6a74a6b7ae51f52c833c7c100e7b,dnsco,69591,"@stevenh512  <3
+@danielgrippi I wish github supported likes on comments so I could like your comment, bro.
+",2012-05-19T23:31:22Z,2012-05-19T23:31:22Z
+1328360,1,"Good call on adding the wiki guides. :)""",2012-05-14 02:52:20,DeadSuperHero,diaspora,diaspora,6661f91e1d280455fa16ca4d4b4f6b88316f587b,DeadSuperHero,401560,"Good call on adding the wiki guides. :)
+",2012-05-14T14:52:20Z,2012-05-14T14:52:20Z
+1272708,1,"OMG TESTS YES :heart:""",2012-04-29 17:08:37,denniscollective,diaspora,diaspora,008ed32e9ea69ad936a95b45c29428860a832b65,dnsco,69591,"OMG TESTS YES :heart:
+",2012-04-30T05:08:37Z,2012-04-30T05:08:37Z
+1258266,1,"Great! Thank you again!""",2012-04-25 08:47:12,MrZYX,diaspora,diaspora,a9dd997f23fb71d53efdab055be361e89e1ef5de,jhass,141294,"Great! Thank you again!
+",2012-04-25T20:47:12Z,2012-04-25T20:47:12Z
+1248751,1,"You based good looks off of my posts? BEST. DAY. EVER. <3 :)""",2012-04-23 19:01:07,DeadSuperHero,diaspora,diaspora,c667dac248c5c4dcb068163ac2103d609cc8e116,DeadSuperHero,401560,"You based good looks off of my posts? BEST. DAY. EVER. <3 :)
+",2012-04-24T07:01:07Z,2012-04-24T07:01:07Z
+1234439,1,"Awesome, I'll play with this when I get home to make use of more og love. :)""",2012-04-19 13:56:38,DeadSuperHero,diaspora,diaspora,307ee15884fdd07c87044b0939e5d738d6e41d12,DeadSuperHero,401560,"Awesome, I'll play with this when I get home to make use of more og love. :)
+",2012-04-20T01:56:38Z,2012-04-20T01:56:38Z
+1234703,1,"it works now!""",2012-04-19 16:04:24,maxwell,diaspora,diaspora,307ee15884fdd07c87044b0939e5d738d6e41d12,maxwell,69663,"it works now!
+",2012-04-20T04:04:24Z,2012-04-20T04:04:24Z
+1209899,1,"great to see railsadmin in master :)""",2012-04-13 23:22:49,prellele,diaspora,diaspora,ecc1a84b42b4ebb806171c99ab5f2cd9f6c13661,prellele,752591,"great to see railsadmin in master :)
+",2012-04-14T11:22:49Z,2012-04-14T11:22:49Z
+1210113,1,"Yeah, it's pretty nice.. it'll be nicer once it's an actual gem (pretty big git dependency, my Heroku slug size is up to 97mb) but I'm not complaining :grin:  While I haven't tested this, I have a feeling anyone using TheRubyRacer instead of Node.js as t""",2012-04-14 03:02:19,stevenh512,diaspora,diaspora,ecc1a84b42b4ebb806171c99ab5f2cd9f6c13661,stevenh512,110500,"Yeah, it's pretty nice.. it'll be nicer once it's an actual gem (pretty big git dependency, my Heroku slug size is up to 97mb) but I'm not complaining :grin:
+
+While I haven't tested this, I have a feeling anyone using TheRubyRacer instead of Node.js as their javascript runtime might have a little problem since this pulls in ExecJS and CoffeeScript outside the assets group. Of course I don't see any reason why anyone **should** be using TheRubyRacer at this point, it's far from the best option as far as JS runtimes go, but it seems to be the answer people are finding when they upgrade to Rails 3.1+ (not just Diaspora related) and run into ExecJS problems.
+",2012-04-14T15:02:19Z,2012-04-14T15:02:19Z
+1207883,1,"cool thanks, I will do that!""",2012-04-13 05:07:48,maxwell,diaspora,diaspora,37c3c3a860599312d10fdd67374ed5dba6b66445,maxwell,69663,"cool thanks, I will do that!
+",2012-04-13T17:07:48Z,2012-04-13T17:07:48Z
+1175254,1,"lololol good catch""",2012-04-04 13:16:54,maxwell,diaspora,diaspora,5866ebe638e76de8155bb495617d61e73654d1a1,maxwell,69663,"lololol good catch
+",2012-04-05T01:16:54Z,2012-04-05T01:16:54Z
+1109950,1,"Thanks!  I think this is all good stuff.  We should now just make it half as long :)""",2012-03-20 07:38:58,maxwell,diaspora,diaspora,1eaa6a25e99579bb3b9cc8f5325529f43041d446,maxwell,69663,"Thanks!  I think this is all good stuff.  We should now just make it half as long :)
+",2012-03-20T18:38:58Z,2012-03-20T18:38:58Z
+1098120,1,"You just made my day. Thank you so much. """,2012-03-17 05:11:50,maxwell,diaspora,diaspora,e413a6e70a9633d02f83f7e7f7479278dadb2bbc,maxwell,69663,"You just made my day. Thank you so much. 
+",2012-03-17T16:11:50Z,2012-03-17T16:12:32Z
+927815,1,"This is awesome!""",2012-02-02 10:01:38,denniscollective,diaspora,diaspora,4f7dda6012986fb6addd7ffb5e4d48a9c97f4424,dnsco,69591,"This is awesome!
+",2012-02-02T21:01:38Z,2012-02-02T21:01:38Z
+928580,1,"Pinning something seems more like bookmarking or saving a post, but that's not same as liking a post. I want to let the other person know that I appreciated it, it made me laugh/smile, or enjoyed it. Pinning does not convey that. I agree with Rekado also t""",2012-02-02 14:03:23,lunachik,diaspora,diaspora,d06ccb9ba94c0868cf55718b8a27ff804ea10a60,lunachik,1121452,"Pinning something seems more like bookmarking or saving a post, but that's not same as liking a post. I want to let the other person know that I appreciated it, it made me laugh/smile, or enjoyed it. Pinning does not convey that. I agree with Rekado also that it shifts it to myself, but my intention is to aimed toward the poster.
+
+Also, hearing that there will be a big UI shift reminds of when Facebook would make similar kinds of changes and everyone freaked out. I hope that doesn't happen on D*. 
+",2012-02-03T01:03:23Z,2012-02-03T01:03:23Z
+927297,1,"I believe @maxwell is writing a blog article about the redesign right now, if he's not, I will.  The change of verbiage to """"Pin"""" was just the first step in making you guys aware that tons of stuff is about to happen.  :)  It'll make more sense in a f""",2012-02-02 07:34:07,denniscollective,diaspora,diaspora,d06ccb9ba94c0868cf55718b8a27ff804ea10a60,dnsco,69591,"I believe @maxwell is writing a blog article about the redesign right now, if he's not, I will.
+
+The change of verbiage to ""Pin"" was just the first step in making you guys aware that tons of stuff is about to happen.
+
+:)
+
+It'll make more sense in a few days, also, we're not sure it's going to stay ""Pin"", but we wanted to try it on for size.
+",2012-02-02T18:34:07Z,2012-02-02T18:36:26Z
+1312868,0,"Ben, we have an email address that you can send exploit info to. It's exploits@joindiaspora.com""",2012-05-09 10:36:21,DeadSuperHero,diaspora,diaspora,4c644c336bc96f6ce6658531e85fa5f3ec6683cf,DeadSuperHero,401560,"Ben, we have an email address that you can send exploit info to. It's
+exploits@joindiaspora.com
+",2012-05-09T22:36:21Z,2012-05-09T22:36:21Z
+1141141,0,"Yeah, that's something that'll need to be changed in the i18n files, this at least solves the part of #3048 that I think everyone would agree should be fixed. The other part of the issue (rendering the password input as a regular text field on failed login""",2012-03-27 16:57:17,stevenh512,diaspora,diaspora,f5fdb8ade18d8191a94ada6c850d1299d2b6f13a,stevenh512,110500,"Yeah, that's something that'll need to be changed in the i18n files, this at least solves the part of #3048 that I think everyone would agree should be fixed. The other part of the issue (rendering the password input as a regular text field on failed login) I personally think is a bad idea from a security perspective, especially on mobile where you could be signing in from literally anywhere. I have an old/slow smartphone myself and also have problems with my hands (chemo-induced neuropathy that is just now starting to heal.. 6 years later lol) and I've never had problems entering a password into a mobile site's login forms.. and my passwords are ridiculous.
+",2012-03-28T04:57:17Z,2012-03-28T04:57:50Z
+928253,0,"we try to remember, but when we push broken code we need to fix it as soon as possible (we don't have a versioning scheme) and in that stressed moment forget about ci.  also, it's difficult to explain ci to open source commiters, and when a commmit needs""",2012-02-02 12:07:19,denniscollective,diaspora,diaspora,b55cadb4a4ff15921bd91d056eeba36b7d60814a,dnsco,69591,"we try to remember, but when we push broken code we need to fix it as soon as possible (we don't have a versioning scheme) and in that stressed moment forget about ci.
+
+also, it's difficult to explain ci to open source commiters, and when a commmit needs ci-skip vs not.
+",2012-02-02T23:07:19Z,2012-02-02T23:07:19Z
+890365,0,"Its not actually about being before the cookies.  The problem is that you need to guarantee that SSL is loaded BEFORE both cookies, and more importantly, static assets.  In this current configuration, if serve static assets are turned on, they are not upgr""",2012-01-22 07:16:59,maxwell,diaspora,diaspora,98bdf680034e531ca7006bb4c39662bcb50b053e,maxwell,69663,"Its not actually about being before the cookies.  The problem is that you need to guarantee that SSL is loaded BEFORE both cookies, and more importantly, static assets.  In this current configuration, if serve static assets are turned on, they are not upgraded to SSL as they are served before the SSL is upgraded.
+
+Here is my current middleware stack from a production instance servering static assets:
+""use ActionDispatch::Static
+use ActiveSupport::Cache::Strategy::LocalCache
+use Rack::Runtime
+use Rails::Rack::Logger
+use ActionDispatch::ShowExceptions
+use ActionDispatch::RemoteIp
+use Rack::Sendfile
+use ActionDispatch::Callbacks
+use ActiveRecord::ConnectionAdapters::ConnectionManagement
+use ActiveRecord::QueryCache
+use Rack::SSL
+use ActionDispatch::Cookies
+use ActionDispatch::Session::CookieStore
+use ActionDispatch::Flash
+use ActionDispatch::ParamsParser
+use Rack::MethodOverride
+use ActionDispatch::Head
+use ActionDispatch::BestStandardsSupport
+use Warden::Manager
+use ClientSideValidations::Middleware::Validators
+use Sass::Plugin::Rack
+use OAuth2::Provider::Rack::Middleware
+use Rack::MobileDetect
+use Rack::GoogleAnalytics
+use Rack::Piwik
+use OmniAuth::Builder
+run Diaspora::Application.routes""
+
+This is not good.
+",2012-01-22T18:16:59Z,2012-01-22T18:20:21Z
+890368,0,"If you could figure out how Hoptoad used to figure out a way to jump to the top of the middleware stack, we should do that for SSL.""",2012-01-22 07:18:10,maxwell,diaspora,diaspora,98bdf680034e531ca7006bb4c39662bcb50b053e,maxwell,69663,"If you could figure out how Hoptoad used to figure out a way to jump to the top of the middleware stack, we should do that for SSL.
+",2012-01-22T18:18:10Z,2012-01-22T18:18:10Z
+883095,0,"Also, it is simplier setup for new pod runners, as SSL is required.  If you want the optimization of doing it via reverse proxy, you can enable it in the settings, but this is about creating the right defaults for Diaspora in a domain we can control.""",2012-01-19 07:30:19,maxwell,diaspora,diaspora,18e895c2475c65148c4086361e49e6a07428d7f7,maxwell,69663,"Also, it is simplier setup for new pod runners, as SSL is required.  If you want the optimization of doing it via reverse proxy, you can enable it in the settings, but this is about creating the right defaults for Diaspora in a domain we can control.
+",2012-01-19T18:30:19Z,2012-01-19T18:30:19Z
+771431,0,"This broke oauth.feature somehow.""",2011-12-05 19:53:54,sarahmei,diaspora,diaspora,0d41c9c5f3b4e7a451c603385305fb17779e813f,sarahmei,56125,"This broke oauth.feature somehow.
+",2011-12-06T06:53:54Z,2011-12-06T06:53:54Z
+775715,0,"I think this broke OAuth2, diaspora-client seems to dislike oauth2 0.5""",2011-12-07 02:08:12,MrZYX,diaspora,diaspora,0d41c9c5f3b4e7a451c603385305fb17779e813f,jhass,141294,"I think this broke OAuth2, diaspora-client seems to dislike oauth2 0.5
+",2011-12-07T13:08:12Z,2011-12-07T13:08:12Z
+586524,2,"Meh. Ok. For now then we can't support mysql/1.9. It's more important to maintain proper equality of utf-8 strings in other configurations.  That said I don't think it's a good long term solution. I'll hack at it and see if I can make it work somehow. """,2011-09-13 06:33:26,sarahmei,diaspora,diaspora,eb85cdab5b0d26edf497b1818b95240ac47c1335,sarahmei,56125,"Meh. Ok. For now then we can't support mysql/1.9. It's more important to maintain proper equality of utf-8 strings in other configurations.
+
+That said I don't think it's a good long term solution. I'll hack at it and see if I can make it work somehow. 
+",2011-09-13T18:33:26Z,2011-09-13T18:33:26Z
+570368,0,"SSL is used so that GitHub does not cache the image."""" - http://about.travis-ci.org/docs/user/status-images See https://github.com/travis-ci/travis-ci/issues/231""",2011-09-05 05:05:24,MrZYX,diaspora,diaspora,dca26ee3a327c5e913a13f4bec63b84c3595cda5,jhass,141294,"""SSL is used so that GitHub does not cache the image."" - http://about.travis-ci.org/docs/user/status-images
+See https://github.com/travis-ci/travis-ci/issues/231
+",2011-09-05T17:05:24Z,2011-09-05T17:05:24Z
+411785,1,"I was thinking last night we should maybe build some of this into appconfig, so we could just say AppConfig.service.twitter? or something like that.  I have made many typos with these damn hashes.. :P  #justathought""",2011-06-02 05:10:27,maxwell,diaspora,diaspora,82ca293825f23629e85c9f53cf8f6a4179449880,maxwell,69663,"I was thinking last night we should maybe build some of this into appconfig, so we could just say AppConfig.service.twitter? or something like that.  I have made many typos with these damn hashes.. :P  #justathought
+",2011-06-02T17:10:27Z,2011-06-02T17:10:27Z
+275117,0,"It's totaly weired. I think there is a caching issue. Suddenly there are the other languages strings in the cached hash. Only for :javascripts though. If you want to reproduce: Open two browsers, login in with two different users, change the language of us""",2011-02-17 10:47:28,MrZYX,diaspora,diaspora,dfa5d875c5cb8f71cb6db51440bca553ba0a5d35,jhass,141294,"It's totaly weired. I think there is a caching issue. Suddenly there are the other languages strings in the cached hash. Only for :javascripts though. If you want to reproduce: Open two browsers, login in with two different users, change the language of user1 to somewhat except english, leave user2s at english, load any page with user1 and then load any page with user2. Notice that the :javascripts strings for user2 are in the language of user1. However it doesn't happen if there is enough time between request1 and request2, I think it's cause the cache is rebuild then.
+",2011-02-17T21:47:28Z,2011-02-17T21:47:57Z
+228571,0,"I get you now, using something like the GA code would be a easy fix for that like you suggest:  ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';  If the AppConfig[:pod_uri].protocol exists that is""",2010-12-29 13:07:52,dmorley,diaspora,diaspora,c92f80b2eb9a2cab52d96f886602bbdae56f160a,dmorley,481091,"I get you now, using something like the GA code would be a easy fix for that like you suggest:
+
+('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+
+If the AppConfig[:pod_uri].protocol exists that is even easier!
+",2010-12-30T00:07:52Z,2010-12-30T00:07:52Z
+215470,0,"error_page  497   https://<%= @url %>  www.<%= @url %>:7894$request_uri;  or sometime of the like here will fix the resque web redirect to non ssl """,2010-12-10 18:44:36,dmorley,diaspora,diaspora,8798f05ff7536672787974bed68a82578ae6fe55,dmorley,481091,"error_page  497   https://<%= @url %>  www.<%= @url %>:7894$request_uri;
+
+or sometime of the like here will fix the resque web redirect to non ssl
+",2010-12-11T05:44:36Z,2010-12-11T05:44:36Z
+200910,0,"Ultimately, they should just say """"Facebook"""" and """"Twitter"""". Then we could place the text """"Login with"""" somewhere nearby""",2010-11-23 02:50:43,Hexagon,diaspora,diaspora,c9c84794af21d03dcc6b1a6480b7964035935575,Hexagon,419737,"Ultimately, they should just say ""Facebook"" and ""Twitter"". Then we could place the text ""Login with"" somewhere nearby
+",2010-11-23T13:50:43Z,2010-11-23T13:50:43Z
+164319,2,"Did you absolutely mean to put a password in this commit?""",2010-10-07 13:17:53,justinlynn,diaspora,diaspora,8fae836b654ef6a2760c26d7f665d55b13d06c42,jaesharp,31369,"Did you absolutely mean to put a password in this commit?
+",2010-10-08T01:17:53Z,2010-10-08T01:17:53Z
+164329,0,"That password isn't actually the password, it's just a random string, so I don't think I'll filter-branch it out.  Thanks for your vigilance, though.""",2010-10-07 13:41:19,rsofaer,diaspora,diaspora,8fae836b654ef6a2760c26d7f665d55b13d06c42,rsofaer,212750,"That password isn't actually the password, it's just a random string, so I don't think I'll filter-branch it out.  Thanks for your vigilance, though.
+",2010-10-08T01:41:19Z,2010-10-08T01:41:19Z
+149401,0,"@ cryptix The user might not be a root, but he might have sudo privileges, because he might be in the admin group that is in the sudoers, but not necessarily root, in fact if the user is root there will be other issues, so its better to check for sudo priv""",2010-09-17 02:08:11,hemanth,diaspora,diaspora,87feb5bba52ce40c22c6047d56cff35831f0ad8b,hemanth,18315,"@ cryptix The user might not be a root, but he might have sudo privileges, because he might be in the admin group that is in the sudoers, but not necessarily root, in fact if the user is root there will be other issues, so its better to check for sudo privilege. So effective user id is not useful here. 
+",2010-09-17T14:08:11Z,2010-09-17T14:12:34Z
+248282,2,"This is making it so no one can log in. You're caching the authenticity tokens, which don't cache. :(""",2011-01-22 12:43:14,sarahmei,diaspora,diaspora,338e17ff8779ea802e4a775476101fac9da54be0,sarahmei,56125,"This is making it so no one can log in. You're caching the authenticity tokens, which don't cache. :(
+",2011-01-22T23:43:14Z,2011-01-22T23:43:14Z
+209722,2,"sorry about forgetting to rebase!""",2010-12-04 15:53:15,maxwell,diaspora,diaspora,8fb97072df7a2e24a3833ff1633e481223a3eb74,maxwell,69663,"sorry about forgetting to rebase!
+",2010-12-05T02:53:15Z,2010-12-05T02:53:15Z
+2395463,2,"Spambots on GitHub? Now I've seen everything. :(  >""",2013-01-07 08:34:28,DeadSuperHero,diaspora,diaspora,ff173e233c2f4e797206f2705a2ee4147c61d275,DeadSuperHero,401560,"Spambots on GitHub? Now I've seen everything. :(
+
+",2013-01-07T19:34:28Z,2013-01-07T19:34:28Z
+890425,1,"lol i think back to top might be on the login page :P""",2012-01-22 08:05:42,maxwell,diaspora,diaspora,cc1ac843cc520acb26eb0f6482593057600c7e83,maxwell,69663,"lol i think back to top might be on the login page :P
+",2012-01-22T19:05:42Z,2012-01-22T19:05:42Z
+1151724,1,"If anyone was getting logged out of their pod while trying to link a Facebook, Twitter or Tumblr account after the 3.1 upgrade, this is why. Glad CSRF was mentioned in the code chat today or I wouldn't have thought about it. :grin:""",2012-03-29 14:00:19,stevenh512,diaspora,diaspora,fc4b8d2af0f8225e9252262f70f67029cde017d0,stevenh512,110500,"If anyone was getting logged out of their pod while trying to link a Facebook, Twitter or Tumblr account after the 3.1 upgrade, this is why. Glad CSRF was mentioned in the code chat today or I wouldn't have thought about it. :grin:
+",2012-03-30T02:00:19Z,2012-03-30T02:00:47Z

@@ -1,0 +1,63 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2919936,0,"I'm using the Synology Package, and I'm having the same issue.""",2013-04-01 02:56:27,heliostatic,midgetspy,Sick-Beard,fb37d332b333b43e7bcae46b619ae6b7ef94e266,heliostatic,70898,"I'm using the Synology Package, and I'm having the same issue.
+",2013-04-01T14:56:27Z,2013-04-01T14:56:27Z
+2974447,0,"1st attempt: sickbeard.log.2-Apr-08 18:07:08 WARNING MAIN :: DB error: database is locked sickbeard.log.2:Apr-08 18:07:09 INFO MAIN :: [3/4] Updating history to reflect the correct action... sickbeard.log.2-Apr-08 18:07:09 DEBUG MAIN :: sickbeard.db: SE""",2013-04-09 01:03:21,jasperroel,midgetspy,Sick-Beard,fb37d332b333b43e7bcae46b619ae6b7ef94e266,jasperroel,1370303,"1st attempt:
+sickbeard.log.2-Apr-08 18:07:08 WARNING MAIN :: DB error: database is locked
+sickbeard.log.2:Apr-08 18:07:09 INFO MAIN :: [3/4] Updating history to reflect the correct action...
+sickbeard.log.2-Apr-08 18:07:09 DEBUG MAIN :: sickbeard.db: SELECT \* FROM history WHERE action < 3276800 AND action >= 800
+sickbeard.log.2-Apr-08 18:07:31 WARNING MAIN :: DB error: database is locked
+
+2nd attempt:
+sickbeard.log.2:Apr-08 18:09:35 INFO MAIN :: [3/4] Updating history to reflect the correct action...
+sickbeard.log.2-Apr-08 18:09:35 DEBUG MAIN :: sickbeard.db: SELECT \* FROM history WHERE action < 3276800 AND action >= 800
+sickbeard.log.2-Apr-08 18:13:51 INFO MAIN :: Signal 15 caught, saving and exiting...
+
+(I shut it down after a couple of minutes)
+
+Then I modfied it a bit (basically reverted to the previous version and added logging):
+
+Apr-08 18:31:11 DEBUG MAIN :: sickbeard.db: SELECT \* FROM history WHERE action/100 < 32768 AND action/100 >= 8
+Apr-08 18:31:11 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3202, 71663, 20121011182046L]
+Apr-08 18:31:12 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3204, 71663, 20121011184646L]
+Apr-08 18:31:12 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3204, 71663, 20121011191146L]
+Apr-08 18:31:12 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3202, 75734, 20121011191659L]
+Apr-08 18:31:13 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3204, 71663, 20121011193721L]
+Apr-08 18:31:13 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3204, 75734, 20121011194127L]
+Apr-08 18:31:14 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3204, 71663, 20121011194736L]
+Apr-08 18:31:14 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3204, 75734, 20121011194851L]
+Apr-08 18:31:14 DEBUG MAIN :: sickbeard.db: UPDATE history SET action = ? WHERE showid = ? AND date = ? with args [3204, 71663, 20121011195134L]
+
+Seems like some IDs are repeated a lot?
+
+Here's a quick count: 
+grep ""sickbeard.db: UPDATE history SET action ="" \* | wc -l
+18258
+
+For comparison: Here's the stats at the bottom of the my SickBeard page: 57 shows (17 active) | 2893/5264 episodes downloaded
+
+Hope that helps!
+",2013-04-09T13:03:21Z,2013-04-09T13:04:19Z
+1194856,2,"That didn't work out for me !  Anyway how to revert it back to the old script ?""",2012-04-10 09:15:48,fyelles,midgetspy,Sick-Beard,23a667239d7cada64edd1e6cb9070ac3cd700642,fyelles,488019,"That didn't work out for me ! 
+Anyway how to revert it back to the old script ?
+",2012-04-10T21:15:48Z,2012-04-10T21:15:48Z
+300747,2,"I am sorry to see this code removed, but if you want it to simplify, I can understand that... But then, there is no reason to read the permission of the parent and set it to the child, you could actually use shutil.copymode and then you could remove impor""",2011-03-13 22:30:27,nberlee,midgetspy,Sick-Beard,21f0d2634760d2bdaf04e5b72dbb5ede9655c7a0,nberlee,602493,"I am sorry to see this code removed, but if you want it to simplify, I can understand that...
+But then, there is no reason to read the permission of the parent and set it to the child, you could actually use shutil.copymode and then you could remove import stat at the beginning of the file....
+",2011-03-14T09:30:27Z,2011-03-14T09:31:35Z
+120481,1,"lol, thanks... thought I had included a comment about it's origin in the commit""",2010-07-30 09:23:49,mattsch,midgetspy,Sick-Beard,14fc80367eb1aaff6dfc4a6269a67a6decff4697,mattsch,134440,"lol, thanks... thought I had included a comment about it's origin in the commit
+",2010-07-30T21:23:49Z,2010-07-30T21:23:49Z
+838962,2,"This is pretty irritating, the flag should be an english one, failing that a british one as the language originates from Blighty!""",2012-01-04 14:47:59,martzuk,midgetspy,Sick-Beard,fde11e11cb12bc7e967dbcdaaf747551b3e1cc4b,martzuk,1249518,"This is pretty irritating, the flag should be an english one, failing that a british one as the language originates from Blighty!
+",2012-01-05T01:47:59Z,2012-01-05T01:47:59Z
+265347,2,"Oh, sorry didn't see that :/""",2011-02-08 19:11:52,Goilio,midgetspy,Sick-Beard,b241316ca0c125acf570bb90bbbd1a334c9c69dc,Goilio,608157,"Oh, sorry didn't see that :/
+",2011-02-09T06:11:52Z,2011-02-09T06:11:52Z
+232419,2,"Maybe this was a bad idea""",2011-01-04 17:20:54,generica,midgetspy,Sick-Beard,60f010ba7034662c8dac308f785f9433be2b2704,generica,447797,"Maybe this was a bad idea
+",2011-01-05T04:20:54Z,2011-01-05T04:20:54Z
+2921301,0,"sounds like you guys used other peoples forks/branches that modified the db schema. revert their changes or start fresh with a new sickbeard.db (or hack db_version down.. but stuff may be broken as we cant predict what other peoples fork/branches may have """,2013-04-01 05:43:00,thezoggy,midgetspy,Sick-Beard,fb37d332b333b43e7bcae46b619ae6b7ef94e266,thezoggy,500882,"sounds like you guys used other peoples forks/branches that modified the db schema. revert their changes or start fresh with a new sickbeard.db (or hack db_version down.. but stuff may be broken as we cant predict what other peoples fork/branches may have done to your data)
+",2013-04-01T17:43:00Z,2013-04-01T17:43:00Z
+1009110,0,"Indeed, I was quite fond of this functionality for I used the ssl connection with a signed certificate for remote connections and the non-ssl connection when I was on my own lan.""",2012-02-24 08:29:11,loekg,midgetspy,Sick-Beard,c302fd02033df500318ddc9f2782732fb17bff27,loekg,1470708,"Indeed, I was quite fond of this functionality for I used the ssl connection with a signed certificate for remote connections and the non-ssl connection when I was on my own lan.
+",2012-02-24T19:29:11Z,2012-02-24T19:29:11Z
+373548,0,"Could you please install an https certificate for momo? If money is an object, you can request a free valid certificate(s) here: http://www.startssl.com/?app=1""",2011-05-07 11:39:32,nberlee,midgetspy,Sick-Beard,32be2cabcddacc6e1d99f27cbc311fb6c2f98c48,nberlee,602493,"Could you please install an https certificate for momo? If money is an object, you can request a free valid certificate(s) here: http://www.startssl.com/?app=1
+",2011-05-07T23:39:32Z,2011-05-07T23:39:32Z
+1192080,2,"I agree this is a big ugly hack that will break more than it will fix. The original script should be kept for other systems.  If necessary you can use uname to discover distro/version and switch proper logic using that. (but I guess there are better solu""",2012-04-09 22:45:00,duststorm,midgetspy,Sick-Beard,23a667239d7cada64edd1e6cb9070ac3cd700642,duststorm,475534,"I agree this is a big ugly hack that will break more than it will fix.
+The original script should be kept for other systems. 
+If necessary you can use uname to discover distro/version and switch proper logic using that. (but I guess there are better solutions)
+",2012-04-10T10:45:00Z,2012-04-10T10:45:27Z

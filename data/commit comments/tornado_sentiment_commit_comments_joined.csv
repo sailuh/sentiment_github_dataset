@@ -1,0 +1,7 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+2182796,1,"This is a very important fix and I would love to see it in the next stable version as soon as possible. Is there an approximate date I could expect this to be released?""",2012-11-20 07:01:22,mchruszcz,facebook,tornado,bff07405549a6eb173a4cfc9bbc3fc7c6da5cdd7,mchruszcz,120160,"This is a very important fix and I would love to see it in the next stable version as soon as possible. Is there an approximate date I could expect this to be released?
+",2012-11-20T18:01:22Z,2012-11-20T18:01:22Z
+3140007,0,"Hey there! Why was that changed? What if ```HTTP/1.0 404 \r\n``` header will be passed there(like PHP sometimes does)? """,2013-05-03 01:40:31,superduper,facebook,tornado,86404402d4d98e5559346b1533b8566af87978bd,superduper,902950,"Hey there! Why was that changed? What if `HTTP/1.0 404 \r\n` header will be passed there(like PHP sometimes does)? 
+",2013-05-03T13:40:31Z,2013-05-03T13:40:31Z
+62087,2,"I really don't like this change - why did we commit this? What is the goal?""",2010-04-04 11:00:03,finiteloop,facebook,tornado,e391fd289ed085671344504cc5b1fa84f5a3c774,finiteloop,58667,"I really don't like this change - why did we commit this? What is the goal?
+",2010-04-04T23:00:03Z,2010-04-04T23:00:03Z

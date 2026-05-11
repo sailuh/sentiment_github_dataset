@@ -1,0 +1,5 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+660274,1,"Yay, finally! Push it to NuGet! :-)""",2011-10-18 17:24:03,mhart,SamSaffron,MiniProfiler,bcea578dd47d7f9ccf1f495cf67c360cdece5f2a,mhart,367936,"Yay, finally! Push it to NuGet! :-)
+",2011-10-19T05:24:03Z,2011-10-19T05:24:03Z
+1584663,0,"sure, I am fine to change it to whitelist mode UNLESS it is development or test""",2012-07-15 20:08:18,SamSaffron,SamSaffron,MiniProfiler,e35239a90408b545f09b02f04d3f32895d20cc0e,SamSaffron,5213,"sure, I am fine to change it to whitelist mode UNLESS it is development or test
+",2012-07-16T08:08:18Z,2012-07-16T08:08:18Z

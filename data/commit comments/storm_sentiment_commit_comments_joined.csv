@@ -1,0 +1,5 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3190143,1,"I am. Okay cool I didn't know clojure did that!""",2013-05-10 09:52:19,jasonjckn,nathanmarz,storm,98d24466c3ab48f0a2f8fc71440d8f5e114bcd3a,jasonjckn,550839,"I am. Okay cool I didn't know clojure did that!
+",2013-05-10T21:52:19Z,2013-05-10T21:52:19Z
+775915,1,"fantastic, thanks!""",2011-12-07 03:35:00,earle,nathanmarz,storm,b8bb84c5e4c01f73ca7a013f26d7e6ab5ce8f86b,earle,409741,"fantastic, thanks!
+",2011-12-07T14:35:00Z,2011-12-07T14:35:00Z

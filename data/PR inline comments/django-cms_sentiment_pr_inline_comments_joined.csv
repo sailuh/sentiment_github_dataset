@@ -1,0 +1,135 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+52442,0,"can we have string formatting using %s here? the + operator just fails too often compared to %s""",2011-06-26 23:59:33,ojii,divio,django-cms,,https://github.com/django-cms/django-cms/pull/889#discussion_r52442,2011-06-27T11:59:33Z,2011-06-27T12:37:33Z,ojii,CONTRIBUTOR,cms/plugins/file/cms_plugins.py,,,,,1,"@@ -20,6 +20,6 @@ class FilePlugin(CMSPluginBase):
+     def icon_src(self, instance):
+         file_icon = instance.get_icon_url()
+         if file_icon: return file_icon
+-        return settings.CMS_MEDIA_URL + u""images/plugins/file.png""
++        return settings.STATIC_URL + u""cms/"" + u""images/plugins/file.png""","can we have string formatting using %s here? the + operator just fails too often compared to %s
+",297793624b8226e587f4ae3569aa6c9ac1d360c2
+28023,0,"The initial code has not used regex so I have opted for this. I also do not see much difference. It could fail only if somebody would have admin attached under something like ``/123/admin/cms/page/``.""",2011-05-10 00:05:24,mitar,divio,django-cms,,https://github.com/django-cms/django-cms/pull/781#discussion_r28023,2011-05-10T12:05:24Z,2011-05-21T10:58:24Z,mitar,CONTRIBUTOR,cms/utils/page_resolver.py,,,,,1,"@@ -44,12 +44,12 @@ def get_page_from_request(request, use_path=None):
+     # Check if this is called from an admin request
+     if admin_base and request.path.startswith(admin_base):
+         # if so, get the page ID to query the page
+-        page_id = [bit for bit in request.path.split('/') if bit][-1]
+-        if not page_id or not page_id.isdigit():
++        page_ids = [bit for bit in request.path.split('/') if bit.isdigit()]","The initial code has not used regex so I have opted for this. I also do not see much difference. It could fail only if somebody would have admin attached under something like `/123/admin/cms/page/`.
+",f1118329e4dba47fa362829c15e1cc18cc36cd22
+4866,0,"Will this not break SSL?""",2011-02-27 20:54:29,chrisglass,divio,django-cms,,https://github.com/django-cms/django-cms/pull/723#discussion_r4866,2011-02-28T07:54:29Z,2011-03-11T13:27:08Z,chrisglass,CONTRIBUTOR,cms/media/cms/js/plugins/jquery.tweet.js,,,,,1,"@@ -0,0 +1,58 @@
++/**
++ * jquery.twitter.js
++ * @author: Angelo Dini
++ * @copyright http://www.divio.ch under the BSD Licence
++ * @version: 0.2.0
++ */
++(function($) {
++	// tweet meme plugin
++	$.fn.tweetme = function(options) {
++		return this.each(function () {
++			// save options
++			var options = $.extend({
++				url: $(this).text(),
++				source: 'username',
++				style: 'normal',
++				service: 'retwt.me',
++				width: 50,
++				height: 61
++			}, options);
++			// create start url
++			var url = 'http://api.tweetmeme.com/button.js?';
++			// serialize options
++			$.each(options, function (key, value) {
++				url += key + '=' + value + '&';
++			});
++			// save iframe
++			var iframe = '<iframe src=""' + url + '"" width=""' + options.width + '"" height=""' + options.height + '"" scrolling=""no"" frameborder=""0""></iframe>';
++			// add iframe
++			$(this).html(iframe);
++		});
++	};
++	
++	// official twitter button
++	$.fn.twitter = function (options) {
++		return this.each(function () {
++			// save options
++			var options = $.extend({
++				url: $(this).text(),
++				dataCount: 'none', /* none | horizontal | vertical */
++				dataUrl: '',
++				dataText: '',
++				dataLang: ''
++			}, options);
++			// save link
++			var iframe = '<a href=""' + options.url + '"" class=""twitter-share-button"" data-count=""' + options.dataCount + '"" data-url=""' + options.dataUrl + '"" data-text=""' + options.dataText + '"" data-lang=""' + options.dataLang + '"">Tweet</a>';
++				iframe += '<script type=""text/javascript"" src=""http://platform.twitter.com/widgets.js""></script>';","Will this not break SSL?
+",d71a1595b974c2c50dd9d4fa924f2f6cbe2aeb14
+76600,0,"should use re.escape on those bits""",2011-07-28 03:54:48,ojii,divio,django-cms,,https://github.com/django-cms/django-cms/pull/908#discussion_r76600,2011-07-28T15:54:48Z,2011-07-29T12:01:19Z,ojii,CONTRIBUTOR,cms/middleware/multilingual.py,,,,,1,"@@ -37,22 +37,28 @@ def patch_response(content, pages_root, language):
+     # Notice that (?=...) and (?!=...) do not consume input or produce a group in the match object.
+     # If the regex matches, the extracted path we want is stored in the fourth group (\4).
+     quoted_root = urllib.quote(pages_root)
+-    HREF_URL_FIX_RE = re.compile(ur'<a([^>]+)href=(""|\')(?=%s)(?!(%s|%s|%s))(%s(.*?))(""|\')(.*?)>' % (
++    ignore_paths = map(lambda l: quoted_root + l[0] + ""/"" , settings.CMS_LANGUAGES)
++    ignore_paths += [settings.MEDIA_URL, settings.ADMIN_MEDIA_PREFIX]
++    if settings.STATIC_URL:
++        ignore_paths += [settings.STATIC_URL]
++        
++    HREF_URL_FIX_RE = re.compile(ur'<a([^>]+)href=(""|\')(?=%s)(?!(%s))(%s(.*?))(""|\')(.*?)>' % (
+         quoted_root,
+-        ""|"".join(map(lambda l: quoted_root + l[0] + ""/"" , settings.CMS_LANGUAGES)),
+-        settings.MEDIA_URL,
+-        settings.ADMIN_MEDIA_PREFIX,
++        ""|"".join(ignore_paths),","should use re.escape on those bits
+",7b21d2f4b5a902d60e270ea8a667954a7e39ceb2
+162975,0,"I mean the 'cms' template namespace. It should only be used if you specifically want to change the builtin templates, never for your own 'normal' templates. Same goes for 'menus'. """,2011-10-10 08:53:51,ojii,divio,django-cms,,https://github.com/django-cms/django-cms/pull/1044#discussion_r162975,2011-10-10T20:53:51Z,2011-10-11T18:54:56Z,ojii,CONTRIBUTOR,docs/getting_started/configuration.rst,,,,,1,"@@ -35,6 +35,12 @@ Example::
+     ``js`` and ``css`` sekizai namespaces, for more information, see 
+     :ref:`sekizai-namespaces`.
+ 
++.. warning::
++
++    django-CMS relies on a number of templates to function correctly; using a
++    template name that clashes with them may lead to issues. Thus, it is
++    recommended you avoid using ``cms/content.html``, ``cms/dummy.html``, and
++    ``cms/new.html`` as options for :setting:`CMS_TEMPLATES`","I mean the 'cms' template namespace. It should only be used if you specifically want to change the builtin templates, never for your own 'normal' templates. Same goes for 'menus'. 
+",27db2cef4febdf02aabbd94add8c55cfb30689eb
+154534,1,"Yeah, that's reasonable. The clearest way of doing it might be to iterate over the dict items and set them in context. Or we could do it like below. What do you prefer?      context_dict = context.push()     context_dict.update({         'installed_plugin""",2011-10-04 08:03:53,hedberg,divio,django-cms,,https://github.com/django-cms/django-cms/pull/1033#discussion_r154534,2011-10-04T20:03:53Z,2011-10-04T20:49:18Z,hedberg,CONTRIBUTOR,cms/plugin_rendering.py,,154.0,,,1,"@@ -151,7 +151,6 @@ def render_placeholder_toolbar(placeholder, context, content, name_fallback=None
+     installed_plugins = plugin_pool.get_all_plugins(slot, page)
+     name = get_placeholder_conf(slot, template, ""name"", title(slot))
+     name = _(name)
+-    context.push()","Yeah, that's reasonable.
+The clearest way of doing it might be to iterate over the dict items and set them in context. Or we could do it like below. What do you prefer?
+
+```
+context_dict = context.push()
+context_dict.update({
+    'installed_plugins': installed_plugins,
+    'language': get_language_from_request(request),
+    'placeholder_label': name,
+    'placeholder': placeholder,
+    'page': page,
+})
+toolbar = render_to_string(""cms/toolbar/placeholder.html"", context)
+context.pop()
+```
+",5211759577cd429dc44cc295fa85d595b0229c8d
+15075,1,"well since it's an undocumented feature, I'd say break it. To do it like Django does ;-)""",2011-04-03 19:41:34,ojii,divio,django-cms,,https://github.com/django-cms/django-cms/pull/756#discussion_r15075,2011-04-04T07:41:34Z,2011-04-04T16:21:05Z,ojii,CONTRIBUTOR,cms/models/pagemodel.py,,,,,1,"@@ -1019,6 +1019,12 @@ class Page(MPTTModel):
+             pass
+         return sibling
+ 
++    def get_previous_fitlered_sibling(self, **filters):","well since it's an undocumented feature, I'd say break it. To do it like Django does ;-)
+",84881755d824daea00d6180f49ef66ba4eef3c95
+279510,0,"django-reversion, not django-revision.""",2011-12-07 22:56:41,kezabelle,divio,django-cms,,https://github.com/django-cms/django-cms/pull/1109#discussion_r279510,2011-12-08T09:56:41Z,2011-12-08T17:58:42Z,kezabelle,CONTRIBUTOR,docs/upgrade/2.1.3.rst,,,,,1,"@@ -0,0 +1,130 @@
++*************************************
++Upgrading from 2.1.3 and django 1.2.5
++*************************************
++
++Upgrading dependancies
++======================
++
++Upgrade both your version of django CMS and django by running
++the following commands.
++
++.. code-block:: bash
++
++    pip install --upgrade django-cms==2.2 django==1.3.1
++
++If you are using django-revision make sure to have atleast","django-reversion, not django-revision.
+",6d376e72a8a24a14c5b45f3826cbbbdbf0118d2c

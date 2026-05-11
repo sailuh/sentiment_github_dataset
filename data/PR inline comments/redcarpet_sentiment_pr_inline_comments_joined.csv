@@ -1,0 +1,69 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+5538576,1,"the folks on the ruby-talk mailing list also recommended `rb_reg_new_str` as well and it actually works!""",2013-08-01 07:32:05,mattr-,vmg,redcarpet,,https://github.com/vmg/redcarpet/pull/186#discussion_r5538576,2013-08-01T19:32:05Z,2013-08-05T10:02:04Z,mattr-,COLLABORATOR,ext/redcarpet/html.c,,269.0,,,1,"@@ -260,8 +260,14 @@ static inline void escape_href(struct buf *ob, const uint8_t *source, size_t len
+ 	if (ob->size)
+ 		bufputc(ob, '\n');
+ 
+-	if ((options->flags & HTML_TOC) && (level <= options->toc_data.nesting_level))
+-		bufprintf(ob, ""<h%d id=\""toc_%d\"">"", level, options->toc_data.header_count++);
++	if ((options->flags & HTML_TOC) && (level <= options->toc_data.nesting_level)) {
++		VALUE str = rb_str_new2(bufcstr(text));
++		VALUE pattern = rb_str_new2("" "");
++		VALUE heading = rb_funcall(str, rb_intern(""gsub""), 2, pattern, rb_str_new2(""-""));
++		heading = rb_funcall(heading, rb_intern(""downcase""), 0);
++		bufprintf(ob, ""<h%d id=\""%s\"">"", level, StringValueCStr(heading));
++		options->toc_data.header_count++;","the folks on the ruby-talk mailing list also recommended `rb_reg_new_str` as well and it actually works!
+",bc53371d31d3cdef42d7513040f78d91ef8b4706
+5437557,0,"This was based on my experience on Ubuntu 12.04 LTS. Although ruby 1.9.3 was included by default, it lacked (at least) SSL support which lead bundle to choke on use of https in `source """"https://rubygems.org/""""` in the Gemfile.  Also, aren't there possibl""",2013-07-26 22:34:30,eric-brechemier,vmg,redcarpet,,https://github.com/vmg/redcarpet/pull/285#discussion_r5437557,2013-07-27T10:34:30Z,2013-07-27T13:39:38Z,eric-brechemier,CONTRIBUTOR,CONTRIBUTING.md,,,,,1,"@@ -2,14 +2,31 @@
+ 
+ 1. [Fork the repository.][fork]
+ 2. [Create a topic branch.][branch]
+-3. Write a failing test to capture existing bug or lack of feature.
+-4. Run `rake test` to verify that test fails.
+-5. Implement your feature or bug fix.
+-6. Ensure tests pass.
+-7. If it's a new feature or a bug fix, please add an entry to the changelog file.
+-8. Add, commit, and push your changes.
+-9. [Submit a pull request.][pr]
++3. [Install RVM.][rvm]
++4. Install ruby 1.9.3:
++
++        rvm install 1.9.3
++        rvm use 1.9.3 --default
++        ruby --version
++","This was based on my experience on Ubuntu 12.04 LTS. Although ruby 1.9.3 was included by default, it lacked (at least) SSL support which lead bundle to choke on use of https in `source ""https://rubygems.org/""` in the Gemfile.
+
+Also, aren't there possible incompatibilities between ruby 1.9.x and ruby 2.0.0? If the code base supports both, I think RVM should be mandated to run the unit tests in both ruby 1.9.2 and/or 1.9.3 and ruby 2.0.0.
+
+@robin850 What do you think?
+",6a2ae76ec2341d6b88994a7794be2a5abb9dd900
+5525587,1,"Why this change? :smile:  """,2013-07-31 21:31:59,robin850,vmg,redcarpet,,https://github.com/vmg/redcarpet/pull/186#discussion_r5525587,2013-08-01T09:31:59Z,2013-08-05T10:02:04Z,robin850,COLLABORATOR,ext/redcarpet/html.c,,733.0,,,30,"@@ -724,6 +730,7 @@ static inline void escape_href(struct buf *ob, const uint8_t *source, size_t len
+ 	/* Prepare the options pointer */
+ 	memset(options, 0x0, sizeof(struct html_renderopt));
+ 	options->flags = render_flags;
++	options->toc_data.nesting_level = 99;","Why this change? :smile:  
+",bc53371d31d3cdef42d7513040f78d91ef8b4706
+4394317,1,"Can you also remove this change? since Sundown has been deprecated, Redcarpet will never pull code from Sundown anymore. Thanks!""",2013-05-26 00:22:42,robin850,vmg,redcarpet,,https://github.com/vmg/redcarpet/pull/241#discussion_r4394317,2013-05-26T12:22:42Z,2013-05-26T12:22:42Z,robin850,COLLABORATOR,sundown,,1.0,,,2,"@@ -1 +1 @@
+-Subproject commit 0e7d0cc653874fef49a3ef25c01bc2ccd726c9bf
++Subproject commit 3b65796d268b3f1038c037dbd1e037e011b9c57d","Can you also remove this change? since Sundown has been deprecated, Redcarpet will never pull code from Sundown anymore. Thanks!
+",32bd2635fb9d969d7cae46951ff5be8815cd2758
+5529226,2,"I can't find an rb_reg_new_str in the C API anywhere. :cry:""",2013-08-01 01:26:05,mattr-,vmg,redcarpet,,https://github.com/vmg/redcarpet/pull/186#discussion_r5529226,2013-08-01T13:26:05Z,2013-08-05T10:02:04Z,mattr-,COLLABORATOR,ext/redcarpet/html.c,,269.0,,,1,"@@ -260,8 +260,14 @@ static inline void escape_href(struct buf *ob, const uint8_t *source, size_t len
+ 	if (ob->size)
+ 		bufputc(ob, '\n');
+ 
+-	if ((options->flags & HTML_TOC) && (level <= options->toc_data.nesting_level))
+-		bufprintf(ob, ""<h%d id=\""toc_%d\"">"", level, options->toc_data.header_count++);
++	if ((options->flags & HTML_TOC) && (level <= options->toc_data.nesting_level)) {
++		VALUE str = rb_str_new2(bufcstr(text));
++		VALUE pattern = rb_str_new2("" "");
++		VALUE heading = rb_funcall(str, rb_intern(""gsub""), 2, pattern, rb_str_new2(""-""));
++		heading = rb_funcall(heading, rb_intern(""downcase""), 0);
++		bufprintf(ob, ""<h%d id=\""%s\"">"", level, StringValueCStr(heading));
++		options->toc_data.header_count++;","I can't find an rb_reg_new_str in the C API anywhere. :cry:
+",bc53371d31d3cdef42d7513040f78d91ef8b4706
+321536,2,"Well, this is a tricky issue. If the original document was ASCII-8bit, returning UTF-8 strings for the intermediate steps is risky. That's why I didn't like the idea of transcoding in the first place.""",2011-12-31 07:11:07,vmg,vmg,redcarpet,,https://github.com/vmg/redcarpet/pull/96#discussion_r321536,2011-12-31T18:11:07Z,2011-12-31T18:11:07Z,vmg,OWNER,ext/redcarpet/rc_render.c,,47.0,,,5,"@@ -44,7 +44,7 @@
+ buf2str(const struct buf *text)
+ {
+ 	if (!text || !text->size) return Qnil;
+-	return redcarpet_str_new(text->data, text->size);
++	return redcarpet_str_new(text->data, text->size, rb_enc_get(text->data));","Well, this is a tricky issue. If the original document was ASCII-8bit, returning UTF-8 strings for the intermediate steps is risky. That's why I didn't like the idea of transcoding in the first place.
+",62832384f6f3030c8313bb93e6a0e8167de94725

@@ -1,0 +1,344 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+1568258,1,"Ahhh, I think we should be fine without it.  Seems pretty obvious...""",2012-09-10 05:25:21,andre-d,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/510#discussion_r1568258,2012-09-10T17:25:21Z,2012-09-11T17:38:26Z,andre-d,CONTRIBUTOR,r2/r2/lib/db/tdb_cassandra.py,,,,,1,"@@ -1435,6 +1444,85 @@ def _set_values(cls, row_key, col_values,
+ 
+         # can we be smarter here?
+         thing_cache.delete(cls._cache_key_id(row_key))
++    
++    @classmethod
++    @will_write
++    def _remove(cls, key, columns):
++        cls._cf.remove(key, columns)
++        thing_cache.delete(cls._cache_key_id(key))
++
++class DenormalizedView(View):
++    """"""Store the entire underlying object inside the View column.""""""
++
++    # Do we need to check for _dirty?","Ahhh, I think we should be fine without it.  Seems pretty obvious...
+",e8909474e6922fc545473c2ae3e07afb66ec65c2
+1751760,0,"ThingJsonTemplate is for wrapped things as far as I know, I will need to look into the difference.""",2012-10-03 04:09:22,andre-d,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/551#discussion_r1751760,2012-10-03T16:09:22Z,2012-10-10T00:06:21Z,andre-d,CONTRIBUTOR,r2/r2/lib/jsontemplates.py,,,,,1,"@@ -566,21 +566,31 @@ def render(self, thing, *a, **kw):
+         try:
+             content = thing.content
+         except AttributeError:
+-            content = thing.revisions
++            content = thing.listing
+         return ObjectTemplate(content.render() if thing else {})
+ 
+-class WikiViewJsonTemplate(ThingJsonTemplate):
++class WikiPageListingJsonTemplate(JsonTemplate):
+     def render(self, thing, *a, **kw):
+-        edit_date = time.mktime(thing.edit_date.timetuple())
++        pages = [p.name for p in thing.linear_pages]
++        return ObjectTemplate(dict(pages=pages))
++
++class WikiViewJsonTemplate(JsonTemplate):","ThingJsonTemplate is for wrapped things as far as I know, I will need to look into the difference.
+",997659f18845ae69967e132b17db7a4c06b92829
+42391,0,"It's fine to inline the params here:      text = text.replace(html_entity, '')""",2011-06-09 07:24:58,chromakode,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/94#discussion_r42391,2011-06-09T19:24:58Z,2011-06-14T19:17:24Z,chromakode,CONTRIBUTOR,r2/r2/lib/filters.py,,190.0,,,26,"@@ -179,6 +181,16 @@ def markdown_souptest(text, nofollow=False, target=None, lang=None):
+ 
+     return smd
+ 
++def html_sanitize(text):
++    """"""Strip out all html entities""""""
++    entities = htmlentitydefs.entitydefs.keys()
++    for e in entities:
++        html_entity = '&' + e + ';'
++        replacement = ''
++        text = text.replace(html_entity,replacement)","It's fine to inline the params here:
+
+```
+text = text.replace(html_entity, '')
+```
+",e18cd832d8fbf8fb0a65d5209dca08959032d1bc
+1518766,0,"No as some of the more global checks are overridden by some of the more local checks, this is on purpose.""",2012-09-03 10:51:33,andre-d,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/510#discussion_r1518766,2012-09-03T22:51:33Z,2012-09-11T17:38:25Z,andre-d,CONTRIBUTOR,r2/r2/controllers/validator/wiki.py,,,,,1,"@@ -0,0 +1,246 @@
++# The contents of this file are subject to the Common Public Attribution
++# License Version 1.0. (the ""License""); you may not use this file except in
++# compliance with the License. You may obtain a copy of the License at
++# http://code.reddit.com/LICENSE. The License is based on the Mozilla Public
++# License Version 1.1, but Sections 14 and 15 have been added to cover use of
++# software over a computer network and provide for limited attribution for the
++# Original Developer. In addition, Exhibit A has been modified to be consistent
++# with Exhibit B.
++#
++# Software distributed under the License is distributed on an ""AS IS"" basis,
++# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
++# the specific language governing rights and limitations under the License.
++#
++# The Original Code is reddit.
++#
++# The Original Developer is the Initial Developer.  The Initial Developer of
++# the Original Code is reddit Inc.
++#
++# All portions of the code written by reddit are Copyright (c) 2006-2012 reddit
++# Inc. All Rights Reserved.
++###############################################################################
++
++from validator import Validator
++from pylons import c, g, request
++from os.path import normpath
++from r2.lib.db import tdb_cassandra
++from r2.models.wiki import WikiPage, WikiRevision
++from pylons.controllers.util import abort, redirect_to
++import datetime
++import json
++
++MAX_PAGE_NAME_LENGTH = g.wiki_max_page_name_length
++
++MAX_SEPERATORS = g.wiki_max_page_seperators
++
++def jsonAbort(code, reason=None, **data):
++    data['code'] = code
++    data['reason'] = reason if reason else 'UNKNOWN_ERROR'
++    if c.extension == 'json':
++        request.environ['usable_error_content'] = json.dumps(data)
++    abort(code)
++
++def may_revise(page=None):
++    if not c.user_is_loggedin:
++        # Users who are not logged in may not contribute
++        return False
++    
++    if c.is_mod:
++        # Mods may always contribute
++        return True
++    
++    if page and page.restricted and not page.special:
++        # People may not contribute to restricted pages
++        # (Except for special pages)
++        return False
++
++    if c.site.is_wikibanned(c.user):
++        # Users who are wiki banned in the subreddit may not contribute
++        return False
++    
++    if page and not may_view(page):
++        # Users who are not allowed to view the page may not contribute to the page
++        return False
++    
++    if not c.user.can_wiki():","No as some of the more global checks are overridden by some of the more local checks, this is on purpose.
+",e8909474e6922fc545473c2ae3e07afb66ec65c2
+2258364,0,"https://github.com/andre-d/reddit/commit/20345bd280dd430e2159588065209dc1ba427059#commitcomment-2179577""",2012-11-28 11:32:32,chromakode,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/588#discussion_r2258364,2012-11-28T22:32:32Z,2012-11-30T16:52:17Z,chromakode,CONTRIBUTOR,r2/r2/controllers/validator/wiki.py,,291.0,,,212,"@@ -253,16 +286,41 @@ def run(self, page, *versions):
+             except AbortWikiError:
+                 return
+         return tuple([wp] + validated)
++    
++    def param_docs(self):
++        doc = dict.fromkeys(self.param, _('a wiki revision ID'))","https://github.com/andre-d/reddit/commit/20345bd280dd430e2159588065209dc1ba427059#commitcomment-2179577
+",f9ec2f3b62832f4399fdbb1c7062c19cff0dc323
+1594644,0,"One of those is the htmldiff output, not markdown and cannot really be applied in the template""",2012-09-12 18:35:13,andre-d,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/523#discussion_r1594644,2012-09-13T06:35:13Z,2012-09-13T06:35:13Z,andre-d,CONTRIBUTOR,r2/r2/templates/wikibasepage.html,,60.0,,,60,"@@ -0,0 +1,67 @@
++﻿## The contents of this file are subject to the Common Public Attribution
++## License Version 1.0. (the ""License""); you may not use this file except in
++## compliance with the License. You may obtain a copy of the License at
++## http://code.reddit.com/LICENSE. The License is based on the Mozilla Public
++## License Version 1.1, but Sections 14 and 15 have been added to cover use of
++## software over a computer network and provide for limited attribution for the
++## Original Developer. In addition, Exhibit A has been modified to be
++## consistent with Exhibit B.
++##
++## Software distributed under the License is distributed on an ""AS IS"" basis,
++## WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
++## the specific language governing rights and limitations under the License.
++##
++## The Original Code is reddit.
++##
++## The Original Developer is the Initial Developer.  The Initial Developer of
++## the Original Code is reddit Inc.
++##
++## All portions of the code written by reddit are Copyright (c) 2006-2012
++## reddit Inc. All Rights Reserved.
++###############################################################################
++
++<%def name=""actionsbar(actions)"">
++    %for action in actions:
++        <a class=""wikiaction wikiaction-${action[0]}
++        %if action[0] == thing.action[0]:
++            wikiaction-current
++        %endif
++        ""
++        %if action[2]:
++            href=""${thing.base_url}/${action[0]}/${c.page}""
++        %else:
++            href=""${thing.base_url}/${action[0]}""
++        %endif
++        >${action[1]}</a>
++    %endfor
++</%def>
++
++<span>
++    <h1 class=""wikititle"">
++        %if thing.title:
++            ${thing.title}
++        %endif
++        %if c.page:
++            <strong>${c.page}</strong>
++        %endif
++    </h1>
++    
++    %if thing.pageactions:
++        <span class=""pageactions"">
++            ${actionsbar(thing.pageactions)}
++        </span>
++    %endif
++</span>
++    
++<br/>
++
++%if thing.description:
++    <br/>
++    <span><h2>${unsafe(thing.description)}</h2></span>","One of those is the htmldiff output, not markdown and cannot really be applied in the template
+",ee3cfa9bba881285731d4d4b85eb9bfd927ba405
+1621959,1,"I meant where exactly in all of the statements in the `try`. That's basically what I said :P""",2012-09-17 07:10:54,chromakode,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/530#discussion_r1621959,2012-09-17T19:10:54Z,2012-09-17T19:10:54Z,chromakode,CONTRIBUTOR,r2/r2/controllers/api.py,,1257.0,,,4,"@@ -1254,6 +1254,12 @@ def POST_subreddit_stylesheet(self, form, jquery,
+                 form.set_html('#conflict_diff', e.htmldiff)
+                 form.find('.errors').show()
+                 return
++            except ValueError:","I meant where exactly in all of the statements in the `try`. That's basically what I said :P
+",85d5af09c59b8bdbce1883e8de97bc5d9ad468af
+1364225,0,"I think this would incorrectly urlencode the domain component of a URL with internationalized domain name, wouldn't it?""",2012-08-13 05:16:51,spladug,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/490#discussion_r1364225,2012-08-13T17:16:51Z,2012-08-13T17:16:51Z,spladug,CONTRIBUTOR,r2/r2/templates/link.xml,,36.0,,,12,"@@ -32,6 +33,7 @@
+       url = thing.mousedown_url
+    else:
+       url = permalink
++   url = quote_plus(url.encode('utf8'), '/:')","I think this would incorrectly urlencode the domain component of a URL with internationalized domain name, wouldn't it?
+",846d1965c552aa579ec8efc69fdb4ee4c32f1e2c
+477055,0,"I've been working on overhauling the JS code organization, and the mishmash of initialization code in `reddit.js` is best considered legacy. Could you please move this initialization code to its own file/object like `r.timeago` (see `r.analytics` as an ex""",2012-02-22 08:06:04,chromakode,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/341#discussion_r477055,2012-02-22T19:06:04Z,2012-02-23T09:25:36Z,chromakode,CONTRIBUTOR,r2/r2/public/static/js/reddit.js,,,,,1,"@@ -1235,6 +1235,28 @@ $(function() {
+         $(""#shortlink-text"").click(function() {
+             $(this).select();
+         });
++        
++        /* Load fuzzy time i18n strings */
++        $.timeago.settings.strings = {
++            prefixAgo: null,
++            prefixFromNow: null,
++            suffixAgo: r.strings.ta_ago,
++            suffixFromNow: r.strings.ta_suffixFromNow,
++            seconds: r.strings.ta_seconds,
++            minute: r.strings.ta_minute,
++            minutes: r.strings.ta_minutes,
++            hour: r.strings.ta_hour,
++            hours: r.strings.ta_hours,
++            day: r.strings.ta_day,
++            days: r.strings.ta_days,
++            month: r.strings.ta_month,
++            months: r.strings.ta_months,
++            year: r.strings.ta_year,
++            years: r.strings.ta_years
++        };
++        
++        /* Init fuzzy time on time elements */
++        $(""time.fuzzy-time"").timeago();","I've been working on overhauling the JS code organization, and the mishmash of initialization code in `reddit.js` is best considered legacy. Could you please move this initialization code to its own file/object like `r.timeago` (see `r.analytics` as an example) and init it at the bottom of `base.js`?
+",d74c5c2204b1988304cc4537edc5f24169bbd77a
+1500110,0,"The recent OAuth merge included some changes to abort() to add additional info: https://github.com/reddit/reddit/blob/master/r2/r2/lib/base.py#L66  Instead of creating Yet Another Abort With Error Message (I'm pretty sure we have two now), is it possible """,2012-08-30 06:39:04,chromakode,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/510#discussion_r1500110,2012-08-30T18:39:04Z,2012-09-11T17:38:25Z,chromakode,CONTRIBUTOR,r2/r2/controllers/validator/wiki.py,,,,,1,"@@ -0,0 +1,246 @@
++# The contents of this file are subject to the Common Public Attribution
++# License Version 1.0. (the ""License""); you may not use this file except in
++# compliance with the License. You may obtain a copy of the License at
++# http://code.reddit.com/LICENSE. The License is based on the Mozilla Public
++# License Version 1.1, but Sections 14 and 15 have been added to cover use of
++# software over a computer network and provide for limited attribution for the
++# Original Developer. In addition, Exhibit A has been modified to be consistent
++# with Exhibit B.
++#
++# Software distributed under the License is distributed on an ""AS IS"" basis,
++# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
++# the specific language governing rights and limitations under the License.
++#
++# The Original Code is reddit.
++#
++# The Original Developer is the Initial Developer.  The Initial Developer of
++# the Original Code is reddit Inc.
++#
++# All portions of the code written by reddit are Copyright (c) 2006-2012 reddit
++# Inc. All Rights Reserved.
++###############################################################################
++
++from validator import Validator
++from pylons import c, g, request
++from os.path import normpath
++from r2.lib.db import tdb_cassandra
++from r2.models.wiki import WikiPage, WikiRevision
++from pylons.controllers.util import abort, redirect_to
++import datetime
++import json
++
++MAX_PAGE_NAME_LENGTH = g.wiki_max_page_name_length
++
++MAX_SEPERATORS = g.wiki_max_page_seperators
++
++def jsonAbort(code, reason=None, **data):
++    data['code'] = code
++    data['reason'] = reason if reason else 'UNKNOWN_ERROR'
++    if c.extension == 'json':
++        request.environ['usable_error_content'] = json.dumps(data)","The recent OAuth merge included some changes to abort() to add additional info: https://github.com/reddit/reddit/blob/master/r2/r2/lib/base.py#L66
+
+Instead of creating Yet Another Abort With Error Message (I'm pretty sure we have two now), is it possible to use/adapt some of that code?
+",e8909474e6922fc545473c2ae3e07afb66ec65c2
+4589857,1,"Sure!""",2013-06-07 02:56:15,andre-d,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/809#discussion_r4589857,2013-06-07T14:56:15Z,2013-06-07T17:47:46Z,andre-d,CONTRIBUTOR,r2/r2/public/static/js/ui.js,,,,,1,"@@ -29,8 +29,59 @@ r.ui.init = function() {
+     })
+ 
+     r.ui.PermissionEditor.init()
++
++    $('.inline-editor').each(function(idx, el) {
++        $(el).data('InlineEditor', new r.ui.InlineEditor({el: el}))
++    })
+ }
+ 
++r.ui.InlineEditor = Backbone.View.extend({
++    editing: false,
++    needscreation: true,
++    
++    events: {
++        'click':    'edit',
++        'submit form': 'save',
++        'blur input': 'blur'
++    },
++
++    edit: function() {
++        if (this.editing) {
++            return;
++        }
++        if (this.needscreation) {
++            this.create();
++        }
++        this.$el.addClass('editing')
++        this.$input.focus().val('').val(this.$span.text())
++        this.editing = true;","Sure!
+",d86f704046a689876b0df20e441d0a4aefcc13c2
+2258732,2,"Ah, I finally see -- you're setting the revision id params and overriding the page name param with the appropriate name. Coulda saved me a lot of time if you'd replied to Logans' and my comments with clarification! :(""",2012-11-28 11:58:04,chromakode,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/588#discussion_r2258732,2012-11-28T22:58:04Z,2012-11-30T16:52:17Z,chromakode,CONTRIBUTOR,r2/r2/controllers/validator/wiki.py,,291.0,,,212,"@@ -253,16 +286,41 @@ def run(self, page, *versions):
+             except AbortWikiError:
+                 return
+         return tuple([wp] + validated)
++    
++    def param_docs(self):
++        doc = dict.fromkeys(self.param, _('a wiki revision ID'))","Ah, I finally see -- you're setting the revision id params and overriding the page name param with the appropriate name. Coulda saved me a lot of time if you'd replied to Logans' and my comments with clarification! :(
+",f9ec2f3b62832f4399fdbb1c7062c19cff0dc323
+2168733,0,"Seems like it should be set as an error that the controller can, optionally, check.  EDIT: validator -> controller""",2012-11-19 05:28:50,kemitche,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/577#discussion_r2168733,2012-11-19T16:28:50Z,2012-11-19T16:29:09Z,kemitche,CONTRIBUTOR,r2/r2/controllers/validator/wiki.py,,208.0,,,131,"@@ -188,16 +195,35 @@ def run(self, page):
+             return self.set_error('INVALID_PAGE_NAME', code=400)
+         
+         if ' ' in page:
+-            new_name = page.replace(' ', '_')
+-            url = '%s/%s' % (c.wiki_base_url, new_name)
+-            redirect_to(url)
++            page = page.replace(' ', '_')
+         
+         if not page_match_regex.match(page):
+             return self.set_error('INVALID_PAGE_NAME', code=400)
+         
+         page = normalize_page(page)
+         
+-        c.page = page
++        if WikiPage.is_impossible(page):
++            return self.set_error('INVALID_PAGE_NAME', code=400)
++        
++        return (page, page != original_page)","Seems like it should be set as an error that the controller can, optionally, check.
+
+EDIT: validator -> controller
+",c7ee74884207f3f2f2fc8ed938643dd285180df2
+1546528,0,"This function still feels like a big hack to me. I don't think you should create another `abort` method to pass the data you need. I'd recommend creating an exception class (similar to [`ForbiddenError`](https://github.com/reddit/reddit/commit/633a7104913""",2012-09-06 05:20:09,chromakode,reddit,reddit,,https://github.com/reddit-archive/reddit/pull/510#discussion_r1546528,2012-09-06T17:20:09Z,2012-09-11T17:38:25Z,chromakode,CONTRIBUTOR,r2/r2/lib/base.py,,,,,1,"@@ -63,7 +64,15 @@ def is_local_address(ip):
+     # TODO: support the /20 and /24 private networks? make this configurable?
+     return ip.startswith('10.')
+ 
+-def abort(code_or_exception=None, detail="""", headers=None, comment=None):
++def jsonabort(code, reason=None, **data):
++    body = None
++    if c.render_style == 'api':
++        data['code'] = code
++        data['reason'] = reason if reason else 'UNKNOWN_ERROR'
++        body = json.dumps(data)
++    abort(code, body=body)","This function still feels like a big hack to me. I don't think you should create another `abort` method to pass the data you need. I'd recommend creating an exception class (similar to [`ForbiddenError`](https://github.com/reddit/reddit/commit/633a7104913ef35a284349996481e67e0e9b092e#L2R166)) that encapsulates the info you need to pass, and formatting it in the error controller. 
+",e8909474e6922fc545473c2ae3e07afb66ec65c2

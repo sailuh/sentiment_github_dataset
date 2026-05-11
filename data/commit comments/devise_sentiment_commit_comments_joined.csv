@@ -1,0 +1,81 @@
+comment_id,polarity,text,created_at_gold,author_login_gold,owner,repo,commit_id,author_login_kaiaulu,author_id,body,created_at_kaiaulu,updated_at
+3260294,1,"@agrobbin if you put a sample application on github that reproduces the issue, we would love to take a look at it too!""",2013-05-21 09:15:03,josevalim,plataformatec,devise,8a93c340802c9674cfcc39eec12793bd63cf5776,josevalim,9582,"@agrobbin if you put a sample application on github that reproduces the issue, we would love to take a look at it too!
+",2013-05-21T21:15:03Z,2013-05-21T21:15:03Z
+832292,0,"this doesn't make sense""",2012-01-02 11:01:48,fschwahn,plataformatec,devise,a1464dbad77da0d38413fd004fbbe0c808b3210c,fschwahn,57876,"this doesn't make sense
+",2012-01-02T22:01:48Z,2012-01-02T22:01:48Z
+160298,0,"Should this have the `=%>` at the end of it? If not I can submit a pull request, it seems to work, but not sure if it was a typo.""",2010-10-01 09:40:22,dewski,plataformatec,devise,b87dc8407982fa57efbf7018755df158f96f413b,dewski,79995,"Should this have the `=%>` at the end of it? If not I can submit a pull request, it seems to work, but not sure if it was a typo.
+",2010-10-01T21:40:22Z,2010-10-01T21:40:22Z
+60755,1,"@benschwarz as far as I lives in Russia, I have to tend to develop interfaces for at least two languages - Russian and English. I18n is best for it ;)""",2010-03-31 09:32:52,Bregor,plataformatec,devise,597a930c74e92c2883e445198a3970e8856df9b6,Bregor,745,"@benschwarz as far as I lives in Russia, I have to tend to develop interfaces for at least two languages - Russian and English. I18n is best for it ;)
+",2010-03-31T21:32:52Z,2010-03-31T21:32:52Z
+833201,2,"Because we are locked in a version of webrat since it has Rails 3.x related bugs. :(""",2012-01-02 23:51:00,josevalim,plataformatec,devise,b71028dc73759efda798409b56690e11a6c4795f,josevalim,9582,"Because we are locked in a version of webrat since it has Rails 3.x related bugs. :(
+",2012-01-03T10:51:00Z,2012-01-03T10:51:00Z
+107038,2,"Yes. You will have to change your session key :(""",2010-07-11 22:01:16,josevalim,plataformatec,devise,e567c00dd811b8392e606e3e14ca3b68115b903c,josevalim,9582,"Yes. You will have to change your session key :(
+",2010-07-12T10:01:16Z,2010-07-12T10:01:16Z
+3259445,0,"@andhapp can you elaborate on the problem you're facing that led you here? I am also ending up here and wondering why `password` and `remember_me` aren't part of the default permitted parameters.""",2013-05-21 07:32:07,agrobbin,plataformatec,devise,8a93c340802c9674cfcc39eec12793bd63cf5776,agrobbin,46724,"@andhapp can you elaborate on the problem you're facing that led you here? I am also ending up here and wondering why `password` and `remember_me` aren't part of the default permitted parameters.
+",2013-05-21T19:32:07Z,2013-05-21T19:32:07Z
+1548524,0,"I agree that we should do a smooth change, although it will not break production environments (a already set password with a length of 6, still works, right?) . So, I propose we do this:  * New applications come with this new definition (but it can be chan""",2012-07-06 05:37:16,rodrigoflores,plataformatec,devise,2950434ed344610770ad83dd77c9f45b9f01713c,rodrigoflores,51603,"I agree that we should do a smooth change, although it will not break production environments (a already set password with a length of 6, still works, right?) . So, I propose we do this:
+- New applications come with this new definition (but it can be changed);
+- We add a deprecation warning telling that conf will change. If you want to continue using 6 passwords as minimum, set this on the configuration. So, in the minor version after the next minor version (I'm talking about the Devise 2.3 or 3.0) we set this as default.
+
+Wdyt ? 
+",2012-07-06T17:37:16Z,2012-07-06T17:37:35Z
+1469909,2,"Ugh...we're inheriting from `Devise::PasswordsController` and this was kind of surprising for us, considering it landed in a patch release.""",2012-06-17 22:18:40,exviva,plataformatec,devise,ff75341c757c76ddcab863cac7ab77254dcd230d,exviva,80070,"Ugh...we're inheriting from `Devise::PasswordsController` and this was kind of surprising for us, considering it landed in a patch release.
+",2012-06-18T10:18:40Z,2012-06-18T10:18:40Z
+1310651,0,"This change breaks routing that worked with subdomains in the past (2.0.4) as it redirects a failed login request to /users/sign_in as opposed to /[subdomain]/users/sign_in.  Can this change be removed for the 2.1.0 release?  It's the only breaking chang""",2012-05-09 03:00:35,remomueller,plataformatec,devise,b37a74533d50ccb2088b8bc752f1a7439468daf8,remomueller,316479,"This change breaks routing that worked with subdomains in the past (2.0.4) as it redirects a failed login request to /users/sign_in as opposed to /[subdomain]/users/sign_in.
+
+Can this change be removed for the 2.1.0 release?  It's the only breaking change (for me) that I've noted. Thanks!
+",2012-05-09T15:00:35Z,2012-05-09T15:00:35Z
+562509,0,"Fails in Chromium 1{4,5}, Firefox 6 when browser validation is on (with simple_form)   Input source:      <input class=""""string email required"""" id=""""user_email"""" maxlength=""""255"""" name=""""user[email]"""" pattern=""""\A[^@]+@([^@\.]+\.)+[^@\.]+\z"""" placeholder=""""login""",2011-08-31 08:06:21,Bregor,plataformatec,devise,7b1418be3b33ac77cb185c15e641292767112f08,Bregor,745,"Fails in Chromium 1{4,5}, Firefox 6 when browser validation is on (with simple_form) 
+
+Input source:
+
+```
+<input class=""string email required"" id=""user_email"" maxlength=""255"" name=""user[email]"" pattern=""\A[^@]+@([^@\.]+\.)+[^@\.]+\z"" placeholder=""login@yamoney.ru"" required=""required"" size=""30"" type=""email"" value="""">
+```
+
+Result:
+
+<div class=""thumbnail""><a href=""https://skitch.com/pipopolam/fim2u/call-center""><img src=""https://img.skitch.com/20110831-r62saphj15tmd7u3bq4h7muyg7.preview.jpg"" alt=""Call center"" /></a><br /><span>Uploaded with <a href=""http://skitch.com"">Skitch</a>!</span></div>
+",2011-08-31T20:06:21Z,2011-08-31T20:07:19Z
+437133,1,"Yes, it would be really cool if you could update the wiki. But don't forget to say it will only work from version 1.4.0 forward!""",2011-06-18 01:18:47,josevalim,plataformatec,devise,c0017ce76d53fb67ec51f60c8b33b3ccaa30ffcf,josevalim,9582,"Yes, it would be really cool if you could update the wiki. But don't forget
+to say it will only work from version 1.4.0 forward!
+",2011-06-18T13:18:47Z,2011-06-18T13:18:47Z
+437195,0,"Done. https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-account-without-providing-a-password/7c78d5bbca25ac87c7cf11e7ef4e2f0864180556""",2011-06-18 02:30:47,karlfreeman,plataformatec,devise,c0017ce76d53fb67ec51f60c8b33b3ccaa30ffcf,karlfreeman,139095,"Done. https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-account-without-providing-a-password/7c78d5bbca25ac87c7cf11e7ef4e2f0864180556
+",2011-06-18T14:30:47Z,2011-06-18T14:30:47Z
+60785,0,"@jnicklas, as I wrote my message I wondered how many people from the EU would make comment.  What I really wonder is why the authentication library should handle the i18n at all. Surely this could be handled by rails.   In my opinion the generated views""",2010-03-31 10:34:06,benschwarz,plataformatec,devise,597a930c74e92c2883e445198a3970e8856df9b6,benschwarz,924,"@jnicklas, as I wrote my message I wondered how many people from the EU would make comment. 
+What I really wonder is why the authentication library should handle the i18n at all. Surely this could be handled by rails. 
+
+In my opinion the generated views should only be used as an entry point to the library anyway. 
+",2010-03-31T22:34:06Z,2010-03-31T22:34:06Z
+2721643,0,"As a PSA to anyone else, you'll want to clear the pending notifications array after sending them because `after_commit` can be called multiple times. If you don't you'll end up spamming your new user with multiple copies of the email message. Also `after_c""",2013-03-01 02:17:02,pixeltrix,plataformatec,devise,18a18e4c726cd88d031fb7ed53e88fb063b366a6,pixeltrix,6321,"As a PSA to anyone else, you'll want to clear the pending notifications array after sending them because `after_commit` can be called multiple times. If you don't you'll end up spamming your new user with multiple copies of the email message. Also `after_commit` won't be called if your record isn't a new record or hasn't been changed - in this case your `send_devise_notification` method will be something like this:
+
+``` ruby
+  def send_devise_notification(notification)
+    if new_record? || changed?
+      pending_notifications << notification
+    else
+      devise_mailer.send(notification, self).deliver
+    end
+  end
+```
+
+You'll want to check for `new_record?` and `changed?` because `User.new.changed? => false`.
+",2013-03-01T13:17:02Z,2013-03-01T13:17:02Z
+1548501,2,"Unfortunately people don't read the CHANGELOG. :( Given everyone's feedback, I think the best solution is: make the default to be nil and provide an initializer that checks if `config.password_length` is set. If not, show the user a warning message, saying""",2012-07-06 05:31:48,josevalim,plataformatec,devise,2950434ed344610770ad83dd77c9f45b9f01713c,josevalim,9582,"Unfortunately people don't read the CHANGELOG. :( Given everyone's feedback, I think the best solution is: make the default to be nil and provide an initializer that checks if `config.password_length` is set. If not, show the user a warning message, saying we are now defaulting to 8..120, but if he wants to keep the previous value, he should set it in his initializer.
+
+This way, everyone is kind of forced to upgrade do 8..120, but users will at least receive a warning.
+",2012-07-06T17:31:48Z,2012-07-06T17:32:17Z
+107037,2,"This line break our apps :(  The only solution I know is change the session key to make their cookies expired. """,2010-07-11 21:57:59,kaichen,plataformatec,devise,e567c00dd811b8392e606e3e14ca3b68115b903c,kaichen,4048,"This line break our apps :(
+
+The only solution I know is change the session key to make their cookies expired. 
+",2010-07-12T09:57:59Z,2010-07-12T09:57:59Z
+3846873,1,"If you are signed in and you are redirected to new_session_path, it will redirect you to after_sign_in_path_for automatically. :) So it does an extra hop but for the user it works the same.""",2013-08-12 20:16:09,josevalim,plataformatec,devise,3dccf3c6ffcf87be23a9bc584b0aeded1a5aad59,josevalim,9582,"If you are signed in and you are redirected to new_session_path, it will redirect you to after_sign_in_path_for automatically. :) So it does an extra hop but for the user it works the same.
+",2013-08-13T08:16:09Z,2013-08-13T08:16:09Z
+1297392,1,"I didn't know you could invoke warden so easily: `warden.authenticate!` is great.   Even less setup and test code = Bravo!!""",2012-05-05 23:27:28,mattconnolly,plataformatec,devise,5e845ee2656dea114c751fe9e5fdd2c86ec7daab,mattconnolly,416108,"I didn't know you could invoke warden so easily: `warden.authenticate!` is great. 
+
+Even less setup and test code = Bravo!!
+",2012-05-06T11:27:28Z,2012-05-06T11:27:28Z
+2123921,1,"@josevalim are you sure that we need this `indifferent_hash.rb` file? :)""",2012-11-08 08:07:02,nashby,plataformatec,devise,ec5bfe9119d0e1e633629793b0de1f58f89622dc,nashby,200500,"@josevalim are you sure that we need this `indifferent_hash.rb` file? :)
+",2012-11-08T19:07:02Z,2012-11-08T19:07:02Z
+38033,1,"You don't need this change. :) You just need to change the arrays referenced by this hash, which are not frozen, right?""",2009-12-09 11:38:52,josevalim,plataformatec,devise,9095d525b2d3b0e50a4e676d4ee51ecb3647842d,josevalim,9582,"You don't need this change. :) You just need to change the arrays referenced by this hash, which are not frozen, right?
+",2009-12-09T22:38:52Z,2009-12-09T22:38:52Z

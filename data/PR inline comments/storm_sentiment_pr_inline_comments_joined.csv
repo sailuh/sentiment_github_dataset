@@ -1,0 +1,444 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+3522995,2,"I wonder if there's a better way to do this. This feels a bit dirty.""",2013-03-25 11:55:07,nathanmarz,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/517#discussion_r3522995,2013-03-25T22:55:07Z,2013-03-26T02:24:36Z,nathanmarz,OWNER,src/clj/backtype/storm/daemon/supervisor.clj,,88.0,,,6,"@@ -85,8 +85,8 @@
+   (let [local-assignment (assigned-executors (:port worker-heartbeat))]
+     (and local-assignment
+          (= (:storm-id worker-heartbeat) (:storm-id local-assignment))
+-         (= (set (:executors worker-heartbeat)) (set (:executors local-assignment))))
+-    ))
++         (= (disj (set (:executors worker-heartbeat)) Constants/SYSTEM_EXECUTOR_ID)","I wonder if there's a better way to do this. This feels a bit dirty.
+",b12a1b9bb16ff04536b75b07a06f446a90d313ed
+3524596,2,"I'll move it to a new pull request... but when you merge a pull request all the commits get squished anyways... it's effectively like just moving this it's own commit. """,2013-03-25 14:25:55,jasonjckn,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/517#discussion_r3524596,2013-03-26T01:25:55Z,2013-03-26T02:24:36Z,jasonjckn,COLLABORATOR,src/clj/backtype/storm/daemon/supervisor.clj,,,,,1,"@@ -117,7 +117,12 @@
+ (defn- wait-for-worker-launch [conf id start-time]
+   (let [state (worker-state conf id)]    
+     (loop []
+-      (let [hb (.get state LS-WORKER-HEARTBEAT)]
++      (let [hb (try (.get state LS-WORKER-HEARTBEAT)","I'll move it to a new pull request... but when you merge a pull request all the commits get squished anyways... it's effectively like just moving this it's own commit. 
+",b12a1b9bb16ff04536b75b07a06f446a90d313ed
+3524570,0,"I could disj it at the worker.clj level, so that system executor doesn't heart beat.  The semantics of this supervisor function are still consistent  (defn matches-an-assignment? [worker-heartbeat assigned-executors] Yes you need to disj to do matching""",2013-03-25 14:23:19,jasonjckn,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/517#discussion_r3524570,2013-03-26T01:23:19Z,2013-03-26T02:24:36Z,jasonjckn,COLLABORATOR,src/clj/backtype/storm/daemon/supervisor.clj,,88.0,,,6,"@@ -85,8 +85,8 @@
+   (let [local-assignment (assigned-executors (:port worker-heartbeat))]
+     (and local-assignment
+          (= (:storm-id worker-heartbeat) (:storm-id local-assignment))
+-         (= (set (:executors worker-heartbeat)) (set (:executors local-assignment))))
+-    ))
++         (= (disj (set (:executors worker-heartbeat)) Constants/SYSTEM_EXECUTOR_ID)","I could disj it at the worker.clj level, so that system executor doesn't heart beat. 
+The semantics of this supervisor function are still consistent 
+(defn matches-an-assignment? [worker-heartbeat assigned-executors]
+Yes you need to disj to do matching check because scheduler never assigns a system executor. And it shouldn't.
+Can you elaborate? I thought a lot about this, and this is what I came up with.
+",b12a1b9bb16ff04536b75b07a06f446a90d313ed
+3146242,0,"How about the following method? The 2nd parameter is driven from storm_conf. We add it here to make plugin development easier, and ensure all plugins use """"java.security.auth.login.config"""" in storm configuration.        /**      * Invoked once immediate""",2013-02-25 14:08:44,anfeng,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/469#discussion_r3146242,2013-02-26T01:08:44Z,2013-03-11T17:50:23Z,anfeng,COLLABORATOR,src/jvm/backtype/storm/security/auth/ITransportPlugin.java,,16.0,,,1,"@@ -0,0 +1,30 @@
++package backtype.storm.security.auth;
++
++import java.io.IOException;
++import org.apache.thrift7.TProcessor;
++import org.apache.thrift7.server.TServer;
++import org.apache.thrift7.transport.TTransport;
++import org.apache.thrift7.transport.TTransportException;
++
++/**
++ * Interface for Thrift Transport plugin
++ * 
++ * Each plugin should have a constructor 
++ *  Foo(Configuration login_conf)
++ */
++public interface ITransportPlugin {","How about the following method? The 2nd parameter is driven from storm_conf. We add it here to make plugin development easier, and ensure all plugins use ""java.security.auth.login.config"" in storm configuration.  
+
+```
+/**
+ * Invoked once immediately after construction
+ * @param storm_conf Storm configuration 
+ * @param login_conf login configuration
+ */
+void prepare(Map storm_conf, javax.security.auth.login.Configuration login_conf);
+```
+",4b669806530007fc92721fe1a2baa8646f479b5d
+2955687,0,"If the class isn't found there should be a runtime error. The user has done something wrong in this case and should be notified – silently using the default serializer is confusing and could be dangerous (e.g., the user was expecting encryption). """,2013-02-10 07:16:36,nathanmarz,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/461#discussion_r2955687,2013-02-10T18:16:36Z,2013-02-12T05:46:46Z,nathanmarz,OWNER,src/jvm/backtype/storm/serialization/SerializationFactory.java,,,,,1,"@@ -32,7 +33,25 @@ public static Kryo getKryo(Map conf) {
+         IKryoFactory kryoFactory = (IKryoFactory) Utils.newInstance((String) conf.get(Config.TOPOLOGY_KRYO_FACTORY));
+         Kryo k = kryoFactory.getKryo(conf);        
+         k.register(byte[].class);
+-        k.register(ListDelegate.class);
++
++        /* tuple payload serializer could be specified via configuration */
++        String payloadSerializerName = (String)conf.get(Config.TOPOLOGY_TUPLE_SERIALIZER);
++        if (payloadSerializerName==null) 
++            k.register(ListDelegate.class, new ListDelegateSerializer()); //use default payload serializer
++        else {
++            try {
++                Class serializerClass  = Class.forName(payloadSerializerName);","If the class isn't found there should be a runtime error. The user has done something wrong in this case and should be notified – silently using the default serializer is confusing and could be dangerous (e.g., the user was expecting encryption). 
+",01c41476b2d010a0e554bd73550e03e2c23a7ed4
+6660880,0,"These can also be added back in when uploadCredentials has it's own pull request""",2013-09-30 03:31:37,revans2,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/511#discussion_r6660880,2013-09-30T15:31:37Z,2013-09-30T19:42:51Z,revans2,CONTRIBUTOR,storm-core/test/clj/backtype/storm/security/auth/auth_test.clj,,,,,1,"@@ -118,32 +124,165 @@
+ 
+ (defmacro with-server [args & body]
+   `(let [server# (launch-server ~@args)]
+-      ~@body
+-      (.stop server#)
+-      ))
++     ~@body
++     (.stop server#)
++     ))
+ 
+-(deftest Simple-authentication-test 
++(deftest Simple-authentication-test
+   (let [a-port (available-port)]
+-    (with-server [a-port nil nil ""backtype.storm.security.auth.SimpleTransportPlugin""]
++    (with-server [a-port nil nil ""backtype.storm.security.auth.SimpleTransportPlugin"" nil]
+       (let [storm-conf (merge (read-storm-config)
+                               {STORM-THRIFT-TRANSPORT-PLUGIN ""backtype.storm.security.auth.SimpleTransportPlugin""})
+             client (NimbusClient. storm-conf ""localhost"" a-port nimbus-timeout)
+             nimbus_client (.getClient client)]
+         (.activate nimbus_client ""security_auth_test_topology"")
+         (.close client))
+-
++      
+       (let [storm-conf (merge (read-storm-config)
+                               {STORM-THRIFT-TRANSPORT-PLUGIN ""backtype.storm.security.auth.digest.DigestSaslTransportPlugin""
+-                               ""java.security.auth.login.config"" ""test/clj/backtype/storm/security/auth/jaas_digest.conf""})]
++                               ""java.security.auth.login.config"" ""test/clj/backtype/storm/security/auth/jaas_digest.conf""
++                               STORM-NIMBUS-RETRY-TIMES 0})]
+         (testing ""(Negative authentication) Server: Simple vs. Client: Digest""
+           (is (thrown-cause?  java.net.SocketTimeoutException
+                               (NimbusClient. storm-conf ""localhost"" a-port nimbus-timeout))))))))
+   
++(deftest negative-whitelist-authorization-test 
++  (let [a-port (available-port)]
++    (with-server [a-port nil
++                  ""backtype.storm.security.auth.authorizer.SimpleWhitelistAuthorizer"" 
++                  ""backtype.storm.testing.SingleUserSimpleTransport"" nil]
++      (let [storm-conf (merge (read-storm-config)
++                              {STORM-THRIFT-TRANSPORT-PLUGIN ""backtype.storm.testing.SingleUserSimpleTransport""})
++            client (NimbusClient. storm-conf ""localhost"" a-port nimbus-timeout)
++            nimbus_client (.getClient client)]
++        (testing ""(Negative authorization) Authorization plugin should reject client request""
++          (is (thrown-cause? AuthorizationException
++                             (.activate nimbus_client ""security_auth_test_topology""))))
++        (.close client)))))
++
++(deftest positive-whitelist-authorization-test 
++    (let [a-port (available-port)]
++      (with-server [a-port nil
++                    ""backtype.storm.security.auth.authorizer.SimpleWhitelistAuthorizer"" 
++                    ""backtype.storm.testing.SingleUserSimpleTransport"" {SimpleWhitelistAuthorizer/WHITELIST_USERS_CONF [""user""]}]
++        (let [storm-conf (merge (read-storm-config)
++                                {STORM-THRIFT-TRANSPORT-PLUGIN ""backtype.storm.testing.SingleUserSimpleTransport""})
++              client (NimbusClient. storm-conf ""localhost"" a-port nimbus-timeout)
++              nimbus_client (.getClient client)]
++          (testing ""(Positive authorization) Authorization plugin should accept client request""
++            (.activate nimbus_client ""security_auth_test_topology""))
++          (.close client)))))
++
++(deftest simple-acl-user-auth-test
++  (let [cluster-conf (merge (read-storm-config)
++                       {NIMBUS-ADMINS [""admin""]
++                        NIMBUS-SUPERVISOR-USERS [""supervisor""]})
++        authorizer (SimpleACLAuthorizer. )
++        admin-user (mk-subject ""admin"")
++        supervisor-user (mk-subject ""supervisor"")
++        user-a (mk-subject ""user-a"")
++        user-b (mk-subject ""user-b"")]
++  (.prepare authorizer cluster-conf) 
++  (is (= true (.permit authorizer (ReqContext. user-a) ""submitTopology"" {})))
++  (is (= true (.permit authorizer (ReqContext. user-b) ""submitTopology"" {})))
++  (is (= true (.permit authorizer (ReqContext. admin-user) ""submitTopology"" {})))
++  (is (= false (.permit authorizer (ReqContext. supervisor-user) ""submitTopology"" {})))
++
++  (is (= true (.permit authorizer (ReqContext. user-a) ""fileUpload"" nil)))
++  (is (= true (.permit authorizer (ReqContext. user-b) ""fileUpload"" nil)))
++  (is (= true (.permit authorizer (ReqContext. admin-user) ""fileUpload"" nil)))
++  (is (= false (.permit authorizer (ReqContext. supervisor-user) ""fileUpload"" nil)))
++
++  (is (= true (.permit authorizer (ReqContext. user-a) ""getNimbusConf"" nil)))
++  (is (= true (.permit authorizer (ReqContext. user-b) ""getNimbusConf"" nil)))
++  (is (= true (.permit authorizer (ReqContext. admin-user) ""getNimbusConf"" nil)))
++  (is (= false (.permit authorizer (ReqContext. supervisor-user) ""getNimbusConf"" nil)))
++
++  (is (= true (.permit authorizer (ReqContext. user-a) ""getClusterInfo"" nil)))
++  (is (= true (.permit authorizer (ReqContext. user-b) ""getClusterInfo"" nil)))
++  (is (= true (.permit authorizer (ReqContext. admin-user) ""getClusterInfo"" nil)))
++  (is (= false (.permit authorizer (ReqContext. supervisor-user) ""getClusterInfo"" nil)))
++
++  (is (= false (.permit authorizer (ReqContext. user-a) ""fileDownload"" nil)))
++  (is (= false (.permit authorizer (ReqContext. user-b) ""fileDownload"" nil)))
++  (is (= true (.permit authorizer (ReqContext. admin-user) ""fileDownload"" nil)))
++  (is (= true (.permit authorizer (ReqContext. supervisor-user) ""fileDownload"" nil)))
++
++  (is (= true (.permit authorizer (ReqContext. user-a) ""killTopology"" {TOPOLOGY-USERS [""user-a""]})))
++  (is (= false (.permit authorizer (ReqContext. user-b) ""killTopology"" {TOPOLOGY-USERS [""user-a""]})))
++  (is (= true (.permit authorizer (ReqContext. admin-user) ""killTopology"" {TOPOLOGY-USERS [""user-a""]})))
++  (is (= false (.permit authorizer (ReqContext. supervisor-user) ""killTopolgy"" {TOPOLOGY-USERS [""user-a""]})))
++
++  (is (= true (.permit authorizer (ReqContext. user-a) ""uploadNewCredentials"" {TOPOLOGY-USERS [""user-a""]})))","These can also be added back in when uploadCredentials has it's own pull request
+",82c7ff3c6cabfda1be11ff3066372b269297c7de
+3146197,0,"This method is synchronized since javax.security.auth.login.Configuration:getConfiguration() depends on system property """"java.security.auth.login.config"""". We need to make sure that the login configuration object is based on the given storm configuration, """,2013-02-25 14:05:43,anfeng,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/469#discussion_r3146197,2013-02-26T01:05:43Z,2013-03-11T17:50:23Z,anfeng,COLLABORATOR,src/jvm/backtype/storm/security/auth/AuthUtils.java,,,,,1,"@@ -0,0 +1,81 @@
++package backtype.storm.security.auth;
++
++import javax.security.auth.login.Configuration;
++import javax.security.auth.login.AppConfigurationEntry;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++
++import backtype.storm.Config;
++import backtype.storm.utils.Utils;
++
++import java.io.IOException;
++import java.net.URL;
++import java.net.URLClassLoader;
++import java.util.Map;
++
++public class AuthUtils {
++    public static final String LOGIN_CONTEXT_SERVER = ""StormServer""; 
++    public static final String LOGIN_CONTEXT_CLIENT = ""StormClient""; 
++    public static final String SERVICE = ""storm_thrift_server"";
++    private static final Logger LOG = LoggerFactory.getLogger(AuthUtils.class);
++
++    /**
++     * Construct a JAAS configuration object per storm configuration file
++     * @param storm_conf Storm configuration 
++     * @return
++     */
++    public static synchronized Configuration GetConfiguration(Map storm_conf) {","This method is synchronized since javax.security.auth.login.Configuration:getConfiguration() depends on system property ""java.security.auth.login.config"". We need to make sure that the login configuration object is based on the given storm configuration, and is not impacted due to 2 threads w/ different storm conf files.  
+",4b669806530007fc92721fe1a2baa8646f479b5d
+6660610,0,"uploadNewCredentials is not an operation that is currently supported by nimbus.  We can put it back in as part of a future pull request.""",2013-09-30 03:23:58,revans2,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/511#discussion_r6660610,2013-09-30T15:23:58Z,2013-09-30T19:42:51Z,revans2,CONTRIBUTOR,storm-core/src/jvm/backtype/storm/security/auth/authorizer/SimpleACLAuthorizer.java,,,,,1,"@@ -0,0 +1,95 @@
++package backtype.storm.security.auth.authorizer;
++
++import java.util.Arrays;
++import java.util.Map;
++import java.util.Set;
++import java.util.HashSet;
++import java.util.Collection;
++
++import backtype.storm.Config;
++import backtype.storm.security.auth.IAuthorizer;
++import backtype.storm.security.auth.ReqContext;
++import backtype.storm.security.auth.AuthUtils;
++import backtype.storm.security.auth.IPrincipalToLocal;
++
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++
++/**
++ * An authorization implementation that simply checks if a user is allowed to perform specific
++ * operations.
++ */
++public class SimpleACLAuthorizer implements IAuthorizer {
++    private static final Logger LOG = LoggerFactory.getLogger(SimpleACLAuthorizer.class);
++
++    protected Set<String> _userCommands = new HashSet<String>(Arrays.asList(""submitTopology"", ""fileUpload"", ""getNimbusConf"", ""getClusterInfo""));
++    protected Set<String> _supervisorCommands = new HashSet<String>(Arrays.asList(""fileDownload""));
++    protected Set<String> _topoCommands = new HashSet<String>(Arrays.asList(""killTopology"",""rebalance"",""activate"",""deactivate"",""getTopologyConf"",""getTopology"",""getUserTopology"",""getTopologyInfo"",""uploadNewCredentials""));","uploadNewCredentials is not an operation that is currently supported by nimbus.  We can put it back in as part of a future pull request.
+",82c7ff3c6cabfda1be11ff3066372b269297c7de
+3305153,0,"The default implementation for javax.security.auth.login.Configuration is dependent on system property java.security.auth.login.config. see http://docs.oracle.com/javase/6/docs/jre/api/security/jaas/spec/com/sun/security/auth/login/ConfigFile.html  Auth""",2013-03-08 11:07:47,anfeng,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/469#discussion_r3305153,2013-03-08T22:07:47Z,2013-03-11T17:50:23Z,anfeng,COLLABORATOR,src/jvm/backtype/storm/security/auth/AuthUtils.java,,,,,1,"@@ -0,0 +1,81 @@
++package backtype.storm.security.auth;
++
++import javax.security.auth.login.Configuration;
++import javax.security.auth.login.AppConfigurationEntry;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++
++import backtype.storm.Config;
++import backtype.storm.utils.Utils;
++
++import java.io.IOException;
++import java.net.URL;
++import java.net.URLClassLoader;
++import java.util.Map;
++
++public class AuthUtils {
++    public static final String LOGIN_CONTEXT_SERVER = ""StormServer""; 
++    public static final String LOGIN_CONTEXT_CLIENT = ""StormClient""; 
++    public static final String SERVICE = ""storm_thrift_server"";
++    private static final Logger LOG = LoggerFactory.getLogger(AuthUtils.class);
++
++    /**
++     * Construct a JAAS configuration object per storm configuration file
++     * @param storm_conf Storm configuration 
++     * @return
++     */
++    public static synchronized Configuration GetConfiguration(Map storm_conf) {
++        Configuration.setConfiguration(null);
++
++        //exam system property first
++        String orig_loginConfigurationFile = System.getProperty(""java.security.auth.login.config"");
++
++        //try to find login file from Storm configuration  
++        String loginConfigurationFile = (String)storm_conf.get(""java.security.auth.login.config"");
++        if (loginConfigurationFile==null)
++            loginConfigurationFile = orig_loginConfigurationFile;
++
++        Configuration login_conf = null;
++        if ((loginConfigurationFile != null) && (loginConfigurationFile.length()>0)) { 
++            System.setProperty(""java.security.auth.login.config"", loginConfigurationFile);","The default implementation for javax.security.auth.login.Configuration is dependent on system property java.security.auth.login.config. see http://docs.oracle.com/javase/6/docs/jre/api/security/jaas/spec/com/sun/security/auth/login/ConfigFile.html
+
+AuthUtils:GetConfiguration() is trying to the storm config to obtain login Configuration object. The last setProperty() is try to bring system property to previous state.
+",4b669806530007fc92721fe1a2baa8646f479b5d
+1810292,1,"I learned something new in clojure core.  that hasn't happened for a while :) """,2012-10-10 06:46:46,jasonjckn,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/327#discussion_r1810292,2012-10-10T18:46:46Z,2012-10-10T19:09:40Z,jasonjckn,COLLABORATOR,src/clj/backtype/storm/daemon/executor.clj,,,,,1,"@@ -343,19 +344,19 @@
+     ret
+     ))
+ 
++(defn sleep-until-true [wait-fn]","I learned something new in clojure core.  that hasn't happened for a while :) 
+",f129bbc55d3666c415e1bcaf71b3585af5d98dc5
+3291182,0,"Nathan, JAAS configuration is wide used industry standard (http://docs.oracle.com/javase/1.5.0/docs/guide/security/jaas/tutorials/LoginConfigFile.html), and we should avoid invent a new wheel here. For example, ZK is taking a similar approach, see http://""",2013-03-07 12:59:20,anfeng,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/469#discussion_r3291182,2013-03-07T23:59:20Z,2013-03-11T17:50:23Z,anfeng,COLLABORATOR,src/jvm/backtype/storm/security/auth/AuthUtils.java,,,,,1,"@@ -0,0 +1,81 @@
++package backtype.storm.security.auth;
++
++import javax.security.auth.login.Configuration;
++import javax.security.auth.login.AppConfigurationEntry;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++
++import backtype.storm.Config;
++import backtype.storm.utils.Utils;
++
++import java.io.IOException;
++import java.net.URL;
++import java.net.URLClassLoader;
++import java.util.Map;
++
++public class AuthUtils {
++    public static final String LOGIN_CONTEXT_SERVER = ""StormServer""; 
++    public static final String LOGIN_CONTEXT_CLIENT = ""StormClient""; 
++    public static final String SERVICE = ""storm_thrift_server"";
++    private static final Logger LOG = LoggerFactory.getLogger(AuthUtils.class);
++
++    /**
++     * Construct a JAAS configuration object per storm configuration file
++     * @param storm_conf Storm configuration 
++     * @return
++     */
++    public static synchronized Configuration GetConfiguration(Map storm_conf) {
++        Configuration.setConfiguration(null);
++
++        //exam system property first
++        String orig_loginConfigurationFile = System.getProperty(""java.security.auth.login.config"");","Nathan, JAAS configuration is wide used industry standard (http://docs.oracle.com/javase/1.5.0/docs/guide/security/jaas/tutorials/LoginConfigFile.html), and we should avoid invent a new wheel here. For example, ZK is taking a similar approach, see http://hbase.apache.org/book/zk.sasl.auth.html.
+The standard JAAS configuration also enables us to use JDK lib for authentication (javax.security.auth.*). 
+",4b669806530007fc92721fe1a2baa8646f479b5d
+3276242,0,"Tests cannot rely on sleeping to work correctly. This needs to be changed to only return when the Nimbus server is ready to receive requests.""",2013-03-06 21:06:27,nathanmarz,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/469#discussion_r3276242,2013-03-07T08:06:27Z,2013-03-11T17:50:23Z,nathanmarz,OWNER,test/clj/backtype/storm/security/auth/auth_test.clj,,,,,1,"@@ -0,0 +1,226 @@
++(ns backtype.storm.security.auth.auth-test
++  (:use [clojure test])
++  (:require [backtype.storm.daemon [nimbus :as nimbus]])
++  (:import [org.apache.thrift7 TException])
++  (:import [org.apache.thrift7.transport TTransportException])
++  (:import [java.nio ByteBuffer])
++  (:import [backtype.storm Config])
++  (:import [backtype.storm.utils NimbusClient])
++  (:import [backtype.storm.security.auth AuthUtils ThriftServer ThriftClient 
++                                         ReqContext ReqContext$OperationType])
++  (:use [backtype.storm bootstrap util])
++  (:use [backtype.storm.daemon common])
++  (:use [backtype.storm bootstrap testing])
++  (:import [backtype.storm.generated Nimbus Nimbus$Client])
++  )
++
++(bootstrap)
++
++(def nimbus-timeout (Integer. 30))
++
++(defn mk-authorization-handler [storm-conf]
++  (let [klassname (storm-conf NIMBUS-AUTHORIZER) 
++        aznClass (if klassname (Class/forName klassname))
++        aznHandler (if aznClass (.newInstance aznClass))] 
++    (if aznHandler (.prepare aznHandler storm-conf))
++    (log-debug ""authorization class name:"" klassname
++               "" class:"" aznClass
++               "" handler:"" aznHandler)
++    aznHandler
++    ))
++
++(defn nimbus-data [storm-conf inimbus]
++  (let [forced-scheduler (.getForcedScheduler inimbus)]
++    {:conf storm-conf
++     :inimbus inimbus
++     :authorization-handler (mk-authorization-handler storm-conf)
++     :submitted-count (atom 0)
++     :storm-cluster-state nil
++     :submit-lock (Object.)
++     :heartbeats-cache (atom {})
++     :downloaders nil
++     :uploaders nil
++     :uptime (uptime-computer)
++     :validator nil
++     :timer nil
++     :scheduler nil
++     }))
++
++(defn update-req-context! [nimbus storm-name storm-conf operation]
++  (let [req (ReqContext/context)]
++    (.setOperation req operation)
++    (if storm-conf (.setTopologyConf req storm-conf) 
++      (let [topologyConf { TOPOLOGY-NAME storm-name} ]
++        (.setTopologyConf req topologyConf)))
++    req))
++
++(defn check-authorization! [nimbus storm-name storm-conf operation]
++  (let [aclHandler (:authorization-handler nimbus)]
++    (log-debug ""check-authorization with handler: "" aclHandler)
++    (if aclHandler
++      (let [req (update-req-context! nimbus storm-name storm-conf operation)]
++        (if-not (.permit aclHandler req)
++          (throw (RuntimeException. (str operation "" on topology "" storm-name "" is not authorized"")))
++          )))))
++
++(defn dummy-service-handler [conf inimbus]
++  (let [nimbus (nimbus-data conf inimbus)]
++    (reify Nimbus$Iface
++      (^void submitTopologyWithOpts [this ^String storm-name ^String uploadedJarLocation ^String serializedConf ^StormTopology topology
++                                     ^SubmitOptions submitOptions]
++        (check-authorization! nimbus storm-name nil (ReqContext$OperationType/SUBMIT_TOPOLOGY)))
++      
++      (^void killTopology [this ^String storm-name]
++        (check-authorization! nimbus storm-name nil (ReqContext$OperationType/KILL_TOPOLOGY)))
++      
++      (^void killTopologyWithOpts [this ^String storm-name ^KillOptions options]
++        (check-authorization! nimbus storm-name nil (ReqContext$OperationType/KILL_TOPOLOGY)))
++
++      (^void rebalance [this ^String storm-name ^RebalanceOptions options]
++        (check-authorization! nimbus storm-name nil (ReqContext$OperationType/REBALANCE_TOPOLOGY)))
++
++      (activate [this storm-name]
++        (check-authorization! nimbus storm-name nil (ReqContext$OperationType/ACTIVATE_TOPOLOGY)))
++
++      (deactivate [this storm-name]
++        (check-authorization! nimbus storm-name nil (ReqContext$OperationType/DEACTIVATE_TOPOLOGY)))
++
++      (beginFileUpload [this])
++
++      (^void uploadChunk [this ^String location ^ByteBuffer chunk])
++
++      (^void finishFileUpload [this ^String location])
++
++      (^String beginFileDownload [this ^String file])
++
++      (^ByteBuffer downloadChunk [this ^String id])
++
++      (^String getNimbusConf [this])
++
++      (^String getTopologyConf [this ^String id])
++
++      (^StormTopology getTopology [this ^String id])
++
++      (^StormTopology getUserTopology [this ^String id])
++
++      (^ClusterSummary getClusterInfo [this])
++      
++      (^TopologyInfo getTopologyInfo [this ^String storm-id]))))
++
++(defn launch-test-server [server-port login-cfg aznClass transportPluginClass] 
++  (let [conf1 (merge (read-storm-config)
++                    {NIMBUS-AUTHORIZER aznClass 
++                     NIMBUS-HOST ""localhost""
++                     NIMBUS-THRIFT-PORT server-port
++                     STORM-THRIFT-TRANSPORT-PLUGIN transportPluginClass})
++        conf (if login-cfg (merge conf1 {""java.security.auth.login.config"" login-cfg}) conf1)
++        nimbus (nimbus/standalone-nimbus)
++        service-handler (dummy-service-handler conf nimbus)
++        server (ThriftServer. conf (Nimbus$Processor. service-handler) (int (conf NIMBUS-THRIFT-PORT)))]
++    (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (.stop server))))
++    (.serve server)))
++
++(defn launch-server-w-wait [server-port ms login-cfg aznClass transportPluginClass]","Tests cannot rely on sleeping to work correctly. This needs to be changed to only return when the Nimbus server is ready to receive requests.
+",4b669806530007fc92721fe1a2baa8646f479b5d
+6589021,0,"Why are we renaming these functions? If we stick the original func name, we will have less code to worry about. No?""",2013-09-25 11:08:57,anfeng,nathanmarz,storm,,https://github.com/nathanmarz/storm/pull/625#discussion_r6589021,2013-09-25T23:08:57Z,2013-09-25T23:08:57Z,anfeng,COLLABORATOR,storm-core/src/clj/backtype/storm/cluster.clj,,233.0,,,17,"@@ -230,7 +230,7 @@
+       (assignment-info [this storm-id callback]
+         (when callback
+           (swap! assignment-info-callback assoc storm-id callback))
+-        (maybe-deserialize (get-data cluster-state (assignment-path storm-id) (not-nil? callback)))
++        (maybe-deserialize-clj-bytes (get-data cluster-state (assignment-path storm-id) (not-nil? callback)))","Why are we renaming these functions? If we stick the original func name, we will have less code to worry about. No?
+",b99a90bee654d5862736dc1d14999f36f8141783

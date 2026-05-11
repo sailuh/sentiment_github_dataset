@@ -1,0 +1,269 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+901338,0,"This is not going to work. The module is included before the configuration options are applied.""",2012-05-30 04:37:18,josevalim,plataformatec,devise,,https://github.com/heartcombo/devise/pull/1884#discussion_r901338,2012-05-30T16:37:18Z,2012-06-04T18:47:33Z,josevalim,CONTRIBUTOR,lib/devise/models/confirmable.rb,,,,,1,"@@ -32,28 +33,31 @@ module Confirmable
+       included do
+         before_create :generate_confirmation_token, :if => :confirmation_required?
+         after_create  :send_on_create_confirmation_instructions, :if => :confirmation_required?
+-        before_update :postpone_email_change_until_confirmation, :if => :postpone_email_change?
++        before_update :postpone_confirmable_attribute_change_until_confirmation, :if => :postpone_confirmable_attribute_change?
+         after_update  :send_confirmation_instructions, :if => :reconfirmation_required?
++
++        alias_attribute :confirmable_attribute, confirmable_attribute","This is not going to work. The module is included before the configuration options are applied.
+",d11c0e750905981bba9f8cefb9bca693464d0578
+2367778,0,"`:current_password`""",2012-12-10 07:55:22,josevalim,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2172#discussion_r2367778,2012-12-10T18:55:22Z,2013-02-04T03:29:57Z,josevalim,CONTRIBUTOR,README.md,,,,,1,"@@ -162,6 +162,25 @@ current_member
+ member_session
+ ```
+ 
++### Rails 4 Beta
++
++By default Devise will whitelist [:email, :password, :password_confirmation, :password_current] on install. However in Rails 4.0, Strong Parameters requires any additional parameters to be explicitly permitted. As permission logic should be in the controller by nature, you would need to create a custom controller and define your permissions there.
++
++```ruby
++#config/routes.rb
++devise_for :users, :controllers => { :registrations => ""custom_controller"" }
++
++#apps/controllers/registrations_controller.rb
++class RegistrationsController < Devise::RegistrationsController
++  before_filter :permissions
++
++  def permissions
++    # Redefine the list of permissible parameters
++    devise_permitted [:name, :email, :password, :password_confirmation, :password_current]","`:current_password`
+",5a96778c678f2bce91bcdd63b16206a516002649
+3853324,0,"I think that better that this hack is initialize the variables in the `initialize` method""",2013-04-18 01:36:55,rafaelfranca,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2380#discussion_r3853324,2013-04-18T13:36:55Z,2013-04-19T13:38:55Z,rafaelfranca,COLLABORATOR,lib/devise/models/confirmable.rb,,,,,1,"@@ -220,16 +220,19 @@ def postpone_email_change_until_confirmation
+         end
+ 
+         def postpone_email_change?
++          @bypass_postpone ||= false # Hack for suppressing uninitialized constant warning","I think that better that this hack is initialize the variables in the `initialize` method
+",b871bd503631914a01b357ec9e93e4e189489270
+541055,0,"Although the implementation is different, it would be convenient if the signature for compare is the same (we can simply ignore the salt). Also, please add information to this BCrypt class saying it is special because the salt is actually bundled with the""",2012-03-09 09:50:51,josevalim,plataformatec,devise,,https://github.com/heartcombo/devise/pull/1709#discussion_r541055,2012-03-09T20:50:51Z,2012-03-09T22:19:42Z,josevalim,CONTRIBUTOR,lib/devise/encryptors/bcrypt.rb,,,,,1,"@@ -0,0 +1,14 @@
++module Devise
++  module Encryptors
++    class BCrypt < Base
++      def self.digest(password, salt, stretches, pepper)
++        ::BCrypt::Engine.hash_secret(""#{password}#{pepper}"",salt, stretches)
++      end
++
++      def compare(encrypted_password, password, stretches, pepper)","Although the implementation is different, it would be convenient if the signature for compare is the same (we can simply ignore the salt). Also, please add information to this BCrypt class saying it is special because the salt is actually bundled with the password. :)
+",45298c0a37799d2fc46ed0538bbc3776fb08f227
+4651234,1,"Let's go with `ensure_reset_password_token!` here too. You can also change the line 47 of this file to call this new method. :)""",2013-06-11 19:05:55,josevalim,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2464#discussion_r4651234,2013-06-12T07:05:55Z,2013-06-12T22:10:21Z,josevalim,CONTRIBUTOR,lib/devise/models/recoverable.rb,,,,,1,"@@ -47,7 +47,12 @@ def send_reset_password_instructions
+         generate_reset_password_token! if should_generate_reset_token?
+         send_devise_notification(:reset_password_instructions)
+       end
+-
++      
++      def get_or_create_reset_password_token","Let's go with `ensure_reset_password_token!` here too. You can also change the line 47 of this file to call this new method. :)
+",b194882b2320cabf0d5187505f3bf80da9b9122b
+3603402,0,"@lucasmazza This proposed API is a little bit weird.  ```ruby parameters_sanitizer.permit(:sessions, :pin, :foo, :bar) ```  Is `:sessions` a parameter or the name of controller?  Maybe  ```ruby parameters_sanitizer_for(:sessions).permit(:pin, :""",2013-04-01 04:39:07,rafaelfranca,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2358#discussion_r3603402,2013-04-01T16:39:07Z,2013-04-10T15:34:32Z,rafaelfranca,COLLABORATOR,lib/devise/parameter_sanitizer.rb,,,,,1,"@@ -0,0 +1,65 @@
++module Devise
++  class ParameterSanitizer
++    attr_reader :allowed_params
++
++    # Return a list of parameter names permitted to be mass-assigned for the
++    # passed controller.
++    def permitted_params_for(controller_name)
++      allowed_params.fetch(key_for_controller_name(controller_name), [])
++    end
++
++    # Set up a new parameter sanitizer with a set of allowed parameters. This
++    # gets initialized on each request so that parameters may be augmented or
++    # changed as needed via before_filter.
++    def initialize
++      @allowed_params = {
++        :confirmations_controller => [:email],
++        :passwords_controller => authentication_keys + [:password, :password_confirmation, :reset_password_token],
++        :registrations_controller => authentication_keys + [:password, :password_confirmation, :current_password],
++        :sessions_controller => authentication_keys + [:password],
++        :unlocks_controller => [:email]
++      }
++    end
++
++    # Allow additional parameters for a Devise controller. If the
++    # controller_name doesn't exist in allowed_params, it will be added to it
++    # as an empty array and param_name will be appended to that array. Note
++    # that when adding a new controller, use the full controller name
++    # (:confirmations_controller) and not the short names
++    # (:confirmation/:confirmations).
++    def permit_devise_param(controller_name, param_name)","@lucasmazza This proposed API is a little bit weird.
+
+``` ruby
+parameters_sanitizer.permit(:sessions, :pin, :foo, :bar)
+```
+
+Is `:sessions` a parameter or the name of controller?
+
+Maybe
+
+``` ruby
+parameters_sanitizer_for(:sessions).permit(:pin, :foo, :bar)
+```
+",d20fdf87b6cc618306e92c66e11ef54e7eb1edce
+2286115,2,"You are absolutely right. This should be reverted. My bad.""",2012-12-01 07:41:50,asanghi,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2164#discussion_r2286115,2012-12-01T18:41:50Z,2012-12-01T18:41:50Z,asanghi,CONTRIBUTOR,lib/devise/models/recoverable.rb,,104.0,,,6,"@@ -101,10 +101,10 @@ def after_password_reset
+         end
+ 
+       module ClassMethods
+-        # Attempt to find a user by its email. If a record is found, send new
+-        # password instructions to it. If not user is found, returns a new user
++        # Attempt to find a user by it's email. If a record is found, send new","You are absolutely right. This should be reverted. My bad.
+",c026b5a3f652f46b4a3120396f4f09f8ce9f985b
+5428522,0,"It looks to me like """"Your session expired."""" and """"Please sign in again to continue."""" are independent clauses, so it is, in fact, incorrect to combine them into one sentence with only a comma.  Other correct ways of writing it are: Your session expired; """,2013-07-26 05:54:19,Kevin-North,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2529#discussion_r5428522,2013-07-26T17:54:19Z,2013-07-26T18:31:57Z,Kevin-North,NONE,config/locales/en.yml,,16.0,,,11,"@@ -8,12 +8,12 @@ en:
+       send_paranoid_instructions: ""If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.""
+     failure:
+       already_authenticated: ""You are already signed in.""
+-      inactive: ""Your account was not activated yet.""
++      inactive: ""Your account is not activated yet.""
+       invalid: ""Invalid email or password.""
+       invalid_token: ""Invalid authentication token.""
+       locked: ""Your account is locked.""
+       not_found_in_database: ""Invalid email or password.""
+-      timeout: ""Your session expired, please sign in again to continue.""
++      timeout: ""Your session expired. Please sign in again to continue.""","It looks to me like ""Your session expired."" and ""Please sign in again to continue."" are independent clauses, so it is, in fact, incorrect to combine them into one sentence with only a comma.
+
+Other correct ways of writing it are:
+Your session expired; please sign in again to continue.
+Your session expired, so please sign in again to continue.
+",9a60415e2ea3f88bf49e0290b8d39e18f853de0d
+4651227,0,"Let's go with `ensure_confirmation_token!` because that's [the API we use in token authenticatable](https://github.com/plataformatec/devise/blob/master/lib/devise/models/token_authenticatable.rb#L63).  Also, we can change [this line](https://github.com/""",2013-06-11 19:05:22,josevalim,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2464#discussion_r4651227,2013-06-12T07:05:22Z,2013-06-12T22:10:21Z,josevalim,CONTRIBUTOR,lib/devise/models/confirmable.rb,,,,,1,"@@ -106,6 +106,11 @@ def resend_confirmation_token
+           send_confirmation_instructions
+         end
+       end
++      
++      def get_or_create_confirmation_token","Let's go with `ensure_confirmation_token!` because that's [the API we use in token authenticatable](https://github.com/plataformatec/devise/blob/master/lib/devise/models/token_authenticatable.rb#L63).
+
+Also, we can change [this line](https://github.com/sslotnick/devise/blob/b5909f9b936078416732bf1d84b0fb8692e9cdff/lib/devise/models/confirmable.rb#L96) to use this new method. :)
+",b194882b2320cabf0d5187505f3bf80da9b9122b
+2285389,1,"@DaQuirm """"Never allows a change to SUBJECT"""" reads a lot better than """"Never allows to change SUBJECT"""" in my opinion.   While English is my first language, I'm not an authority over the language. :) """,2012-11-30 20:10:22,asanghi,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2164#discussion_r2285389,2012-12-01T07:10:22Z,2012-12-01T07:10:22Z,asanghi,CONTRIBUTOR,lib/devise/models/database_authenticatable.rb,,79.0,,,4,"@@ -76,7 +76,7 @@ def update_with_password(params, *options)
+       end
+ 
+       # Updates record attributes without asking for the current password.
+-      # Never allows to change the current password. If you are using this","@DaQuirm ""Never allows a change to SUBJECT"" reads a lot better than ""Never allows to change SUBJECT"" in my opinion. 
+
+While English is my first language, I'm not an authority over the language. :) 
+",c026b5a3f652f46b4a3120396f4f09f8ce9f985b
+1164733,0,"Maybe we can """"cache"""" it this way:  ```ruby @confirmation_period_expired ||= self.class.expire_confirmation_token_after && (Time.now > self.confirmation_sent_at + self.class.expire_confirmation_token_after) ``` """,2012-07-14 14:43:49,rodrigoflores,plataformatec,devise,,https://github.com/heartcombo/devise/pull/1975#discussion_r1164733,2012-07-15T02:43:49Z,2012-07-22T12:05:08Z,rodrigoflores,CONTRIBUTOR,lib/devise/models/confirmable.rb,,,,,1,"@@ -156,12 +159,34 @@ def confirmation_period_valid?
+           confirmation_sent_at && confirmation_sent_at.utc >= self.class.allow_unconfirmed_access_for.ago
+         end
+ 
++        # Checks if the user confirmation happens before the token becomes invalid
++        #
++        # Examples:
++        #
++        #   # expire_confirmation_token_after = 3.days and confirmation_sent_at = 2.days.ago
++        #   confirmation_period_expired?  # returns false
++        #
++        #   # expire_confirmation_token_after = 3.days and confirmation_sent_at = 4.days.ago
++        #   confirmation_period_expired?  # returns true
++        #
++        #   # expire_confirmation_token_after = nil
++        #   confirmation_period_expired?  # will always return false
++        #
++        def confirmation_period_expired?
++          self.class.expire_confirmation_token_after && (Time.now > self.confirmation_sent_at + self.class.expire_confirmation_token_after)","Maybe we can ""cache"" it this way:
+
+``` ruby
+@confirmation_period_expired ||= self.class.expire_confirmation_token_after && (Time.now > self.confirmation_sent_at + self.class.expire_confirmation_token_after)
+```
+",dcada8fe7568561e202ad66b8f2088a8b5c56ce5
+778897,0,"Instead of duplicating warden logic, maybe the test could simply call warden.authenticate!() in MyController's before filter passing the strategy?""",2012-05-05 21:54:51,josevalim,plataformatec,devise,,https://github.com/heartcombo/devise/pull/1832#discussion_r778897,2012-05-06T09:54:51Z,2012-05-06T09:54:51Z,josevalim,CONTRIBUTOR,test/controllers/custom_strategy_test.rb,,32.0,,,32,"@@ -0,0 +1,95 @@
++require 'test_helper'
++require 'ostruct'
++require 'warden/strategies/base'
++require 'devise/test_helpers'
++
++class MyController < DeviseController
++end
++
++class CustomStrategyTest < ActionController::TestCase
++  tests MyController
++
++  include Devise::TestHelpers
++
++  # These tests are to prove that a warden strategy can successfully return a custom response, including a specific
++  # status code and custom http response headers. This does work in production, however, at the time of writing this,
++  # the Devise test helpers do not recognise the custom response and proceed to calling the Failure App. This makes
++  # it impossible to write tests for a strategy that return a custom response with Devise.
++  #
++  # The code this test needs to verify is in Devise::TestHelpers#_catch_warden (which appears to have no other test
++  # coverage at this point.) The functionality of this function should mirror Warden::Manager#call(env) and
++  # Warden::Manager#process_unauthenticated which correctly detects the custom response when set by a strategy.
++  #
++  class CustomStrategy < Warden::Strategies::Base
++    def authenticate!
++      custom_headers = { ""X-FOO"" => ""BAR"" }
++      response = Rack::Response.new(""BAD REQUEST"", 400, custom_headers)
++      custom! response.finish
++    end
++  end
++
++  # call the custom strategy, returning the rack result array
++  def call_custom(env_params={})","Instead of duplicating warden logic, maybe the test could simply call warden.authenticate!() in MyController's before filter passing the strategy?
+",a9b7a4a1de6608bfb7808de2c047e1021b9c1913
+106391,0,"I agree - the existing email thing is very tricky.  It's in `database_authenticatable` aleady and will blow up as it stands currently if the existing model has that field (as many will, I suspect).  I had thought to possibly handle that by detecting the e""",2011-08-29 14:41:20,daf,plataformatec,devise,,https://github.com/heartcombo/devise/pull/1297#discussion_r106391,2011-08-30T02:41:20Z,2011-08-30T02:41:20Z,daf,NONE,lib/generators/active_record/templates/migration_existing.rb,,30.0,,,30,"@@ -0,0 +1,32 @@
++class AddDeviseTo<%= table_name.camelize %> < ActiveRecord::Migration
++  def self.up
++    change_table :<%= table_name %> do |t|
++      t.database_authenticatable :null => false
++      t.recoverable
++      t.rememberable
++      t.trackable
++    
++    # t.encryptable
++    # t.confirmable
++    # t.lockable :lock_strategy => :<%= Devise.lock_strategy %>, :unlock_strategy => :<%= Devise.unlock_strategy %>
++    # t.token_authenticatable
++
++<% for attribute in attributes -%>
++      t.<%= attribute.type %> :<%= attribute.name %>
++<% end -%>
++      #Uncomment below if timestamps were not included in your original model.
++      t.timestamps
++    end
++    add_index :<%= table_name %>, :email,                :unique => true
++    add_index :<%= table_name %>, :reset_password_token, :unique => true
++    # add_index :<%= table_name %>, :confirmation_token,   :unique => true
++    # add_index :<%= table_name %>, :unlock_token,         :unique => true
++    # add_index :<%= table_name %>, :authentication_token, :unique => true
++  end
++
++  def self.down
++    #By default, we don't want to make any assumption about how to roll back a migration when your
++    #model already existed. Please edit below which fields you would like to remove in this migration.
++    raise ActiveRecord::IrreversibleMigration   ","I agree - the existing email thing is very tricky.  It's in `database_authenticatable` aleady and will blow up as it stands currently if the existing model has that field (as many will, I suspect).
+
+I had thought to possibly handle that by detecting the existence of the model, and somehow checking its fields?  Then instead of `database_authenticatable`, something else, like `database_authenticatable_existing_email`, and the complementary rm would follow suit?  Getting very complicated, though...
+",8ad414b2175e71a9a00381537cea0ce1cb7813ea
+3742417,0,"As said by @rafaelfranca earlier, I also think that the API would be clearer like this:  ```ruby sanitizer_for(:confirmations).permit(:other) ``` instead of ```ruby sanitizer.permit(:confirmations, :other) ```""",2013-04-10 08:53:50,rymai,plataformatec,devise,,https://github.com/heartcombo/devise/pull/2358#discussion_r3742417,2013-04-10T20:53:50Z,2013-04-10T20:53:50Z,rymai,NONE,test/parameter_sanitizer_test.rb,,24.0,,,24,"@@ -0,0 +1,112 @@
++require 'test_helper'
++require 'devise/parameter_sanitizer'
++
++class BaseSanitizerTest < ActiveSupport::TestCase
++  def sanitizer
++    @sanitizer ||= Devise::BaseSanitizer.new(:user, {})
++  end
++
++  test '#default_params returns the params passed in' do
++    assert_equal({}, sanitizer.default_params)
++  end
++end
++
++if defined?(ActionController::StrongParameters)
++
++  require 'active_model/forbidden_attributes_protection'
++
++  class ParameterSanitizerTest < ActiveSupport::TestCase
++    def sanitizer(p={})
++      @sanitizer ||= Devise::ParameterSanitizer.new(:user, p)
++    end
++
++    test '#permit allows adding an allowed param for a specific controller' do
++      sanitizer.permit(:confirmations, :other)","As said by @rafaelfranca earlier, I also think that the API would be clearer like this:
+
+``` ruby
+sanitizer_for(:confirmations).permit(:other)
+```
+
+instead of
+
+``` ruby
+sanitizer.permit(:confirmations, :other)
+```
+",d20fdf87b6cc618306e92c66e11ef54e7eb1edce

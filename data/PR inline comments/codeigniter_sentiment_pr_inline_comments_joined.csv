@@ -1,0 +1,39 @@
+comment_id,polarity,text,created_at_gold,author_login,owner,repo,review_id,html_url,created_at_kaiaulu,updated_at,comment_user_login,author_association,file_path,start_line,line,original_start_line,original_line,position,diff_hunk,body,commit_id
+156709,2,"This line must be replaced with:      sscanf($str, '%s@%s', &$name, &$domain);  It was actually my mistake when I suggested it - sorry about that.""",2011-10-05 09:46:48,narfbg,EllisLab,CodeIgniter,,https://github.com/bcit-ci/CodeIgniter/pull/254#discussion_r156709,2011-10-05T21:46:48Z,2011-10-14T18:04:54Z,narfbg,CONTRIBUTOR,system/libraries/Form_validation.php,,,,,1,"@@ -1038,11 +1103,34 @@ class CI_Form_validation {
+ 	 *
+ 	 * @access	public
+ 	 * @param	string
++	 * @param	string	DNS checks (options: a,mx,both,none; default: none)
+ 	 * @return	bool
+ 	 */
+-	public function valid_email($str)
++	public function valid_email($str, $options = '')
+ 	{
+-		return ( ! preg_match(""/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix"", $str)) ? FALSE : TRUE;
++	    if ( ! preg_match(""/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix"", $str))
++	    {
++	        return FALSE;  
++	    }
++	    elseif (empty($options) // No further checks needed in this case ...
++	        OR ! function_exists('checkdnsrr')) // Might not exist under Windows, prior to PHP 5.3
++	    {
++	        return TRUE;
++	    }
++	
++	    sscanf('name@domain.com', '%s@%s', &$name, &$domain);","This line must be replaced with:
+
+```
+sscanf($str, '%s@%s', &$name, &$domain);
+```
+
+It was actually my mistake when I suggested it - sorry about that.
+",0ce536183e17b7d11316a17b1f2799875b3eeaf8
+108360,0,"I have about 3 different versions of these two lines hanging around. The ucfirst seemed to be causing problems, so I put in the version that's been working here at SPC.""",2011-08-31 00:34:06,dchill42,EllisLab,CodeIgniter,,https://github.com/bcit-ci/CodeIgniter/pull/353#discussion_r108360,2011-08-31T12:34:06Z,2012-08-29T12:47:19Z,dchill42,CONTRIBUTOR,system/libraries/Driver.php,,,,,1,"@@ -45,8 +66,8 @@ class CI_Driver_Library {
+ 		$child_class = $this->lib_name.'_'.$child;
+ 	
+ 		// Remove the CI_ prefix and lowercase
+-		$lib_name = ucfirst(strtolower(str_replace('CI_', '', $this->lib_name)));
+-		$driver_name = strtolower(str_replace('CI_', '', $child_class));
++		$lib_name = strtolower(preg_replace('/^CI_/', '', $this->lib_name));
++		$driver_name = strtolower(preg_replace('/^CI_/', '', $child_class));","I have about 3 different versions of these two lines hanging around. The ucfirst seemed to be causing problems, so I put in the version that's been working here at SPC.
+",88b636b06dd91807706e2d442d910fe8b6a3b50c
